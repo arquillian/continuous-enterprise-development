@@ -1,0 +1,9 @@
+== Continuous Enterprise Development in Java
+
+=== O'Reilly Media
+
+==== Andrew Lee Rubinger | +alr@alrubinger.com+ +
+==== Dan Allen | +dan.j.allen@gmail.com+ +
+==== Aslak Knutsen | +aslak@4fs.no+ +
+
+All contents of this repository licensed under http://creativecommons.org/licenses/by-sa/2.0/['Creative Commons Attribution-ShareAlike 2.0 Generic']
