@@ -1,5 +1,0 @@
-Continuous Enterprise Development
----------------------------------
-
-
-
