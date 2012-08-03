@@ -2,7 +2,7 @@
 
 _"Simplicity is the ultimate sophistication." - Leonardo DaVinci_ 
 
-Software development for the modern web continues to evolve at a furious pace.  In recent years we've seen the trend of client-side state move to the server only to correct itself back again.  Despite JavaScript's obvious utility, two engineers are likely to yield three opinions regarding its worthiness.  HTML5 ushers an armada of rich-media and concurrency support right into the browser.  The proven, forty-year-old relational data model has fallen out of vouge to defiant NoSQL systems, and our version-control stores have undergone both implementation and paradigm overhauls.
+Software development for the modern web continues to evolve at a furious pace.  In recent years we've seen the trend of client-side state move to the server only to correct itself back again.  Despite JavaScript's obvious utility, two engineers are likely to yield three opinions regarding its worthiness.  HTML5 ushers an armada of rich-media and concurrency support right into the browser.  The proven, forty-year-old relational data model has fallen out of vogue to defiant NoSQL systems, and our version-control stores have undergone both implementation and paradigm overhauls.
 
 Our tools constitute an ever-changing buffet of prescriptions, and sorting through the array of options presents a dizzying exercise.
 
@@ -14,7 +14,7 @@ So a few years back we set out to fill some of the holes left unspecified by Jav
 
 This text does not detail a singular specification.  Those volumes may be found elsewhere, because we've found it makes little sense to begin our learning with the Solutions.
 
-Instead, let's align our start with the Problems.  We'll take a use-case centric approach to the testable development of enterprise Java, and after a bit of exploratory theory and requisite background each chapter will tackle a single high-level issue.  The solutions we propose may span from the user interface to persitent storage, touching upon a number of standards or third-party projects along the way.  All examples are executable, and as proof run in production on the companion website.
+Instead, let's align our start with the Problems.  We'll take a use-case centric approach to the testable development of enterprise Java, and after a bit of exploratory theory and requisite background each chapter will tackle a single high-level issue.  The solutions we propose may span from the user interface to persistent storage, touching upon a number of standards or third-party projects along the way.  All examples are executable, and as proof run in production on the companion website.
 
 The newbie should expect to grasp an overview exposing the interaction of various pieces in an enterprise Java system, and bring a blank repository from scratch to a fully-deployed, live public application on the cloud.  Coders of all stripes may find interesting approaches to testing against seed data, pushing events to the client, interacting with a distributed data grid, validating the user interface, and more.
 
