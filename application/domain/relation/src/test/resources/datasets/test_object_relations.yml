@@ -1,0 +1,12 @@
+relation:
+  - sourceid: 11
+    targetid: 1
+    type: SPEAKING
+  
+  - sourceid: 12
+    targetid: 2
+    type: SPEAKING
+  
+  - sourceid: 13
+    targetid: 3
+    type: SPEAKING
