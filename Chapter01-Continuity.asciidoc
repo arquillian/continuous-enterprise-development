@@ -343,4 +343,4 @@ So why the _Continuous Development_ title of this book?
 
 In addition to the successful ideology and theory espoused by the Agile community, we'll be looking at concrete tools and projects both within and extending the Java Enterprise Platform to best address the real-world concerns of an Enterprise Java Developer.  Starting with the next chapter, each theoretical question will be answered in at least one manner using freely-available open-source technologies.
 
-The first step is to meet some of the key players who will become thematic in this text, and jumpstart our development with a new project to be created, built, tested, and pushed live to production.
+The first step is to meet some of the key players who will become thematic in this text.
