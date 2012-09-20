@@ -21,4 +21,3 @@ The newbie should expect to meet the players in an enterprise Java system, and b
 Quite simply, we'll aim to make the complicated much less so.  With luck, this will empower greater productivity and enjoyment in your work.
 
 At least, that's been our experience while employing the techniques which inspired this book.
-
