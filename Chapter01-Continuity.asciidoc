@@ -126,7 +126,7 @@ A well-tested application may have tests covering many of the above areas, and w
 
 ==== Unit
 
-The purpose of a unit test is to validate that a single function is operating as expected.  Unit tests are characterized as fast, simple, easy-to-run, and fine-grained.  They may dig into implementation details for use in _white-box testing.
+The purpose of a unit test is to validate that a single functionality is operating as expected in isolation.  Unit tests are characterized as fast, simple, easy-to-run, and fine-grained.  They may dig into implementation details for use in _white-box testing.
 
 For instance, every Java object inherits the method +Object.hashCode()+ and the value equality test +Object.equals(Object)+.  By API contract, calls to +hashCode+ of equal-by-value objects must return equal, that is:
 
@@ -148,7 +148,7 @@ public void testHashCodeOfEqualObjects()
 }
 ----
 
-The above test, implemented using the Java +assert+ keyword, is an classic example of a unit test; it checks for the smallest possible _invariant_ (in this case that the +equals()+ and +hashCode()+ implementations of +MyObject+ are working with respect to one another).  Many experts will advise that a unit test contains only one assertion; in our experience this is a fantastic guideline but as the above example illustrates, use common sense.  If more than one assertion is required to conclude that all participants in an invariant are in expected form, then use what's necessary.
+The above test, implemented using the Java +assert+ keyword, is a classic example of a unit test; it checks for the smallest possible _invariant_ (in this case that the +equals()+ and +hashCode()+ implementations of +MyObject+ are working with respect to one another).  Many experts will advise that a unit test contains only one assertion; in our experience this is a fantastic guideline but as the above example illustrates, use common sense.  If more than one assertion is required to conclude that all participants in an invariant are in expected form, then use what's necessary.
 
 In cases where a unit test may require inputs from unrelated components, the use of _mock objects_ is a common solution.  Mocks supply an alternate implementation used in testing which may help the developer to:
 
