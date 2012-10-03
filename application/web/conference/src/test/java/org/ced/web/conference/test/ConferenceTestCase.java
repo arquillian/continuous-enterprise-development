@@ -7,6 +7,7 @@ import org.ced.domain.Identifiable;
 import org.ced.domain.conference.model.Conference;
 import org.ced.web.conference.ConferenceBean;
 import org.ced.web.conference.Current;
+import org.ced.web.conference.test.component.ConferenceView;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.drone.api.annotation.Drone;
@@ -18,13 +19,12 @@ import org.jboss.arquillian.warp.Warp;
 import org.jboss.arquillian.warp.WarpTest;
 import org.jboss.arquillian.warp.extension.servlet.BeforeServlet;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.formatter.Formatters;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.FindBy;
 
 @WarpTest
 @RunAsClient
@@ -40,10 +40,13 @@ public class ConferenceTestCase {
 				.addAsWebInfResource(new File("src/main/webapp/WEB-INF/faces-config.xml"))
 				.addAsWebInfResource(new File("src/test/resources/beans.xml"));
 
-		System.out.println(war.toString(Formatters.VERBOSE));
+		//System.out.println(war.toString(Formatters.VERBOSE));
 
 		return war;
 	}
+
+	@FindBy(id = "conference")
+	private ConferenceView conferenceView;
 
 	@Drone
 	private WebDriver driver;
@@ -53,18 +56,25 @@ public class ConferenceTestCase {
 
 	@Test
 	public void shouldBeAbleToRenderFragment() throws Exception {
-		String name = "Test Conference";
-		execute(new Conference().setName(name).setTagLine("Tag"));
-		
-		Assert.assertEquals(name, driver.findElement(By.tagName("div")).getText());
+		Conference conference = new Conference()
+									.setName("Test Conference")
+									.setTagLine("Tag");
+		execute(conference);
+
+		Assert.assertEquals(conference.getName(), conferenceView.getName());
+		Assert.assertEquals(conference.getTagLine(), conferenceView.getTagline());
 	}
 	
 	@Test
 	public void shouldBeAbleToRenderFragment2() throws Exception {
-		String name = "Test Conference2";
-		execute(new Conference().setName(name).setTagLine("Tag"));
-		
-		Assert.assertEquals(name, driver.findElement(By.tagName("div")).getText());
+		Conference conference = new Conference()
+									.setName("Test Conference 2")
+									.setTagLine("Tag 2");
+
+		execute(conference);
+
+		Assert.assertEquals(conference.getName(), conferenceView.getName());
+		Assert.assertEquals(conference.getTagLine(), conferenceView.getTagline());
 	}
 
 	private void execute(Conference conference) throws Exception {

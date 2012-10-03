@@ -2,5 +2,12 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<div>#{conference.current.name}</div>
+	<div id="conference">
+		<dl>
+			<dt id="name">Name:</dt>
+			<dd>#{conference.current.name}</dd>
+			<dt id="tagline">Tagline:</dt>
+			<dd>#{conference.current.tagLine}</dd>
+		</dl>
+	</div>
 </ui:composition>

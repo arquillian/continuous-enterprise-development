@@ -6,12 +6,14 @@ import javax.inject.Named;
 
 import org.ced.domain.conference.model.Conference;
 
-@RequestScoped @Named("conference")
+@RequestScoped
+@Named("conference")
 public class ConferenceBean {
 
-	@Inject @Current
+	@Inject
+	@Current
 	private Conference conference;
-	
+
 	public Conference getCurrent() {
 		return conference;
 	}

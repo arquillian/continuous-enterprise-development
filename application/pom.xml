@@ -19,6 +19,7 @@
         <version.arquillian_core>1.0.2.Final</version.arquillian_core>
         <version.arquillian_persistence>1.0.0.Alpha5</version.arquillian_persistence>
         <version.arquillian_drone>1.1.0.CR2</version.arquillian_drone>
+        <version.arquillian_graphene>2.0.0.Alpha2</version.arquillian_graphene>
         <version.arquillian_warp>1.0.0.Alpha1</version.arquillian_warp>
         <version.jboss_as>7.1.1.Final</version.jboss_as>
         <version.hibernate_validator>4.3.0.Final</version.hibernate_validator>
@@ -79,6 +80,12 @@
                 <artifactId>arquillian-warp-bom</artifactId>
                 <version>${version.arquillian_warp}</version>
                 <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.graphene</groupId>
+                <artifactId>graphene-webdriver</artifactId>
+                <version>${version.arquillian_graphene}</version>
                 <type>pom</type>
             </dependency>
             <dependency>
