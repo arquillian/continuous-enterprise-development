@@ -5,3 +5,5 @@ include::Chapter00-Prelude.asciidoc[]
 include::Chapter01-Continuity.asciidoc[]
 
 include::Chapter02-EnablingTechnologies.asciidoc[]
+
+include::Chapter03-ScratchToProduction.asciidoc[]
