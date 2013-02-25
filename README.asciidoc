@@ -2,8 +2,9 @@
 
 === O'Reilly Media
 
-==== Andrew Lee Rubinger | +alr@alrubinger.com+ +
-==== Dan Allen | +dan.j.allen@gmail.com+ +
-==== Aslak Knutsen | +aslak@4fs.no+ +
+|==========================================================================================
+| Andrew Lee Rubinger | +alr@alrubinger.com+ | http://twitter.com/ALRubinger['@ALRubinger']
+| Aslak Knutsen | +aslak@4fs.no+ | http://twitter.com/aslakknutsen['@aslakknutsen']
+|==========================================================================================
 
 All contents of this repository licensed under http://creativecommons.org/licenses/by-sa/2.0/['Creative Commons Attribution-ShareAlike 2.0 Generic']
