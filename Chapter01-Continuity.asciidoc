@@ -42,7 +42,7 @@ Likely this isn't the result we'd been expecting, but we've put ourselves in thi
 [source,java]
 ----
 public String welcome(String name) {
-  if(name==null || name.length()==0) {
+  if (name == null || name.isEmpty()) {
     throw new IllegalArgumentException("name must be specified");
   }
   return "Hello, " + name;
