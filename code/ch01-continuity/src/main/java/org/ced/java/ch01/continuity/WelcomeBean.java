@@ -22,7 +22,7 @@ package org.ced.java.ch01.continuity;
 public class WelcomeBean {
 
     public String welcome(final String name) {
-        if (name == null || name.length() == 0) {
+        if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("name must be specified");
         }
         return "Hello, " + name;
