@@ -20,6 +20,11 @@
             <groupId>org.continuous.enterprise.domain</groupId>
             <artifactId>domain-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.continuous.enterprise.domain</groupId>
+            <artifactId>domain-core</artifactId>
+            <type>test-jar</type>
+        </dependency>
     </dependencies>
 
 </project>

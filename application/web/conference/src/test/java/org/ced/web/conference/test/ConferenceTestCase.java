@@ -3,8 +3,8 @@ package org.ced.web.conference.test;
 import java.io.File;
 import java.net.URL;
 
-import org.ced.domain.Identifiable;
 import org.ced.domain.conference.model.Conference;
+import org.ced.domain.model.Identifiable;
 import org.ced.web.conference.ConferenceBean;
 import org.ced.web.conference.Current;
 import org.ced.web.conference.test.component.ConferenceView;
@@ -13,11 +13,11 @@ import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.arquillian.warp.ClientAction;
-import org.jboss.arquillian.warp.ServerAssertion;
+import org.jboss.arquillian.warp.Activity;
+import org.jboss.arquillian.warp.Inspection;
 import org.jboss.arquillian.warp.Warp;
 import org.jboss.arquillian.warp.WarpTest;
-import org.jboss.arquillian.warp.extension.servlet.BeforeServlet;
+import org.jboss.arquillian.warp.servlet.BeforeServlet;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
@@ -81,16 +81,16 @@ public class ConferenceTestCase {
 		
 		final URL pageUrl = new URL(baseUrl, "conference.jsf");
 
-		Warp.execute(new ClientAction() {
+		Warp.initiate(new Activity() {
 			@Override
-			public void action() {
+			public void perform() {
 				driver.get(pageUrl.toExternalForm());
 				System.out.println(driver.getPageSource());
 			}
-		}).verify(new SetupConference(conference));
+		}).inspect(new SetupConference(conference));
 	}
 	
-	public static class SetupConference extends ServerAssertion {
+	public static class SetupConference extends Inspection {
 		private static final long serialVersionUID = 1L;
 
 		private Conference conference;

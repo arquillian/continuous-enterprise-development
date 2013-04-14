@@ -3,7 +3,7 @@ package org.ced.domain.relation.test;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import org.ced.domain.Identifiable;
+import org.ced.domain.model.Identifiable;
 
 @Entity
 public class SourceObject implements Identifiable {

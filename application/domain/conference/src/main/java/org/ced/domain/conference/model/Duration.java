@@ -8,42 +8,41 @@ public class Duration {
 
     @NotNull
     private Date start;
-    
+
     @NotNull
     private Date end;
-    
-    // hidden constructor for Persistence 
+
+    // hidden constructor for Persistence
     Duration() {
     }
-    
+
     public Duration(Date start, Date end) {
-	if(start == null) {
-	    throw new IllegalArgumentException("Start must be provided");
-	}
-	if(end == null) {
-	    throw new IllegalArgumentException("End must be provided");
-	}
-	if(end.before(start)) {
-	    throw new IllegalArgumentException("End can not be before Start");
-	}
-	this.start = start;
-	this.end = end;
-	
+        if (start == null) {
+            throw new IllegalArgumentException("Start must be provided");
+        }
+        if (end == null) {
+            throw new IllegalArgumentException("End must be provided");
+        }
+        if (end.before(start)) {
+            throw new IllegalArgumentException("End can not be before Start");
+        }
+        this.start = start;
+        this.end = end;
     }
-    
+
     public Date getEnd() {
-	return (Date)end.clone();
+        return (Date) end.clone();
     }
-    
+
     public Date getStart() {
-	return (Date)start.clone();
+        return (Date) start.clone();
     }
-    
+
     public Integer getNumberOfDays() {
-	return -1;
+        return -1;
     }
-    
+
     public Integer getNumberOfHours() {
-	return -1;
+        return -1;
     }
 }

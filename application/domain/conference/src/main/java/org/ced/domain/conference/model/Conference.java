@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,76 +15,86 @@ import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import org.ced.domain.Identifiable;
+import org.ced.domain.model.Identifiable;
 
 @Entity
 public class Conference implements Identifiable, Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	private String id;
+    @Id
+    private String id;
 
-	@NotNull
-	private String name;
+    @NotNull
+    private String name;
 
-	private String tagLine;
+    private String tagLine;
 
-	@Embedded
-	@Valid
-	@NotNull
-	private Duration duration;
+    @Embedded
+    @Valid
+    @NotNull
+    private Duration duration;
 
-	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
-	@Valid
-	private Set<Session> sessions;
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "conference", cascade=CascadeType.ALL)
+    @Valid
+    private Set<Session> sessions;
 
-	public Conference() {
-		this.id = UUID.randomUUID().toString();
-	}
+    public Conference() {
+        this.id = UUID.randomUUID().toString();
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Conference setName(String name) {
-		this.name = name;
-		return this;
-	}
+    public Conference setName(String name) {
+        this.name = name;
+        return this;
+    }
 
-	public String getTagLine() {
-		return tagLine;
-	}
+    public String getTagLine() {
+        return tagLine;
+    }
 
-	public Conference setTagLine(String tagLine) {
-		this.tagLine = tagLine;
-		return this;
-	}
+    public Conference setTagLine(String tagLine) {
+        this.tagLine = tagLine;
+        return this;
+    }
 
-	public Conference setDuration(Duration duration) {
-		this.duration = duration;
-		return this;
-	}
+    public Conference setDuration(Duration duration) {
+        this.duration = duration;
+        return this;
+    }
 
-	public Duration getDuration() {
-		return duration;
-	}
+    public Duration getDuration() {
+        return duration;
+    }
 
-	public Set<Session> getSessions() {
-		return Collections.unmodifiableSet(sessions);
-	}
+    public Set<Session> getSessions() {
+        if (sessions == null) {
+            this.sessions = new HashSet<Session>();
+        }
+        return Collections.unmodifiableSet(sessions);
+    }
 
-	public Conference addSession(Session session) {
-		if (sessions == null) {
-			this.sessions = new HashSet<Session>();
-		}
-		if (!sessions.contains(session)) {
-			sessions.add(session);
-		}
-		return this;
-	}
+    public Conference addSession(Session session) {
+        if (sessions == null) {
+            this.sessions = new HashSet<Session>();
+        }
+        if (!sessions.contains(session)) {
+            sessions.add(session);
+            session.setConference(this);
+        }
+        return this;
+    }
+
+    public void removeSession(Session session) {
+        if(sessions.remove(session)) {
+            session.setConference(null);
+        }
+    }
 }

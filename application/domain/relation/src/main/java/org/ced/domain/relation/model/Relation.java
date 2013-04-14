@@ -1,4 +1,4 @@
-package org.ced.domain.relation;
+package org.ced.domain.relation.model;
 
 import java.io.Serializable;
 import java.util.Date;

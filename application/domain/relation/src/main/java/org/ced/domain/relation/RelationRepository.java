@@ -7,7 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.ced.domain.Identifiable;
+import org.ced.domain.model.Identifiable;
+import org.ced.domain.relation.model.Relation;
 
 @Stateless
 public class RelationRepository {

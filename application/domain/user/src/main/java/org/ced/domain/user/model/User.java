@@ -1,9 +1,9 @@
-package org.ced.domain.user;
+package org.ced.domain.user.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import org.ced.domain.Identifiable;
+import org.ced.domain.model.Identifiable;
 
 @Entity
 public class User implements Identifiable {

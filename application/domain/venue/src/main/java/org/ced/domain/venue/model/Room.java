@@ -1,4 +1,4 @@
-package org.ced.domain.venue;
+package org.ced.domain.venue.model;
 
 import java.util.UUID;
 
