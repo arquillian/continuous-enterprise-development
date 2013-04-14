@@ -1,4 +1,4 @@
-package org.ced.domain;
+package org.ced.domain.model;
 
 public interface Identifiable {
 

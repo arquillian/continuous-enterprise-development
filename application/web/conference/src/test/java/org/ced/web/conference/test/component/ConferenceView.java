@@ -7,7 +7,6 @@ import org.openqa.selenium.support.FindBy;
 public class ConferenceView {
 
 	@Root
-	@SuppressWarnings("unused")
 	private WebElement root;
 	
 	@FindBy(xpath = "//dt[@id='name']/following-sibling::dd[1]")

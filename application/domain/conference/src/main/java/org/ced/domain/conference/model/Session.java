@@ -6,6 +6,8 @@ import java.util.UUID;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -16,43 +18,54 @@ public class Session implements Serializable {
 
     @Id
     private String id;
-    
-    @Embedded @NotNull @Valid
+
+    @Embedded
+    @NotNull
+    @Valid
     private Duration duration;
-    
+
     @NotNull
     private String title;
+    
+    @Lob
     private String outline;
     
+    @ManyToOne
+    private Conference conference;
+
     public Session() {
-	this.id = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID().toString();
     }
-    
+
     public String getId() {
-	return id;
+        return id;
     }
-    
+
     public Duration getDuration() {
-	return duration;
+        return duration;
     }
-    
+
     public void setDuration(Duration duration) {
-	this.duration = duration;
+        this.duration = duration;
     }
 
     public String getTitle() {
-	return title;
+        return title;
     }
-    
+
     public void setTitle(String title) {
-	this.title = title;
+        this.title = title;
     }
-    
+
     public String getOutline() {
-	return outline;
+        return outline;
+    }
+
+    public void setOutline(String outline) {
+        this.outline = outline;
     }
     
-    public void setOutline(String outline) {
-	this.outline = outline;
+    void setConference(Conference conference) {
+        this.conference = conference;
     }
 }

@@ -1,4 +1,4 @@
-package org.ced.domain.venue;
+package org.ced.domain.venue.model;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 
-import org.ced.domain.Identifiable;
+import org.ced.domain.model.Identifiable;
 
 @Entity
 public class Venue implements Identifiable {

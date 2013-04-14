@@ -9,6 +9,6 @@ import org.ced.domain.conference.model.Conference;
 public class ConferenceRepository extends Repository<Conference> {
 
     public ConferenceRepository() {
-	super(Conference.class);
+        super(Conference.class);
     }
 }

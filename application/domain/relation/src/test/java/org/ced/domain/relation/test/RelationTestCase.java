@@ -4,8 +4,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.ced.domain.relation.Relation;
+import org.ced.domain.CoreDeployments;
 import org.ced.domain.relation.RelationRepository;
+import org.ced.domain.relation.model.Relation;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.UsingDataSet;
@@ -22,11 +23,10 @@ public class RelationTestCase {
 
 	@Deployment
 	public static JavaArchive deploy() {
-		return Deployments
-				.relation()
+		return RelationDeployments.relation()
 				.addPackage(RelationTestCase.class.getPackage())
 				.addAsManifestResource(
-						new StringAsset(Deployments.persistence().exportAsString()), "persistence.xml")
+						new StringAsset(CoreDeployments.persistence().exportAsString()), "persistence.xml")
 				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 	}
 

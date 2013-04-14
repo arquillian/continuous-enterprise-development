@@ -16,11 +16,11 @@
         <version.jboss_spec>3.0.1.Final</version.jboss_spec>
 
         <version.junit>4.8.1</version.junit>
-        <version.arquillian_core>1.0.2.Final</version.arquillian_core>
-        <version.arquillian_persistence>1.0.0.Alpha5</version.arquillian_persistence>
-        <version.arquillian_drone>1.1.0.CR2</version.arquillian_drone>
-        <version.arquillian_graphene>2.0.0.Alpha2</version.arquillian_graphene>
-        <version.arquillian_warp>1.0.0.Alpha1</version.arquillian_warp>
+        <version.arquillian_core>1.0.3.Final</version.arquillian_core>
+        <version.arquillian_persistence>1.0.0.Alpha6</version.arquillian_persistence>
+        <version.arquillian_drone>1.1.1.Final</version.arquillian_drone>
+        <version.arquillian_graphene>2.0.0.Alpha3</version.arquillian_graphene>
+        <version.arquillian_warp>1.0.0.Alpha2</version.arquillian_warp>
         <version.jboss_as>7.1.1.Final</version.jboss_as>
         <version.hibernate_validator>4.3.0.Final</version.hibernate_validator>
     </properties>
@@ -103,6 +103,12 @@
             </dependency>
             <dependency>
                 <groupId>org.continuous.enterprise.domain</groupId>
+                <artifactId>domain-core</artifactId>
+                <version>${project.version}</version>
+                <type>test-jar</type>
+            </dependency>
+            <dependency>
+                <groupId>org.continuous.enterprise.domain</groupId>
                 <artifactId>domain-conference</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -131,7 +137,6 @@
                 <artifactId>web-conference</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
 
         </dependencies>
     </dependencyManagement>
@@ -239,6 +244,28 @@
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
