@@ -173,7 +173,192 @@ image:images/ch02-enabling_technologies/shrinkwrap_incremental_compilation.png["
 
 This piece fulfills the design goal of Arquillian to run tests based on full-fledged deployments directly from the IDE.
 
-While ShrinkWrap is a standalone virtual filesystem, in our examples we'll be primarily exercising it as the deployment mechanism for Arquillian.
+While ShrinkWrap is a standalone virtual filesystem, in our examples we'll be primarily exercising it as the deployment mechanism for Arquillian.  Let's take a moment to review its usage.
+
+The first step is getting your hands on the ShrinkWrap binaries. The Core is composed of three pieces:
+
+|=========================
+|_Name_|_Maven Coordinates_
+|API|org.jboss.shrinkwrap:shrinkwrap-api
+|SPI|org.jboss.shrinkwrap:shrinkwrap-spi
+|Implementation|org.jboss.shrinkwrap:shrinkwrap-impl-base
+|=========================
+
+Only the API should be available upon your compilation ClassPath, while the SPI and the Implementation modules are both required for the runtime. This is to enforce good sepatation between classes intended for direct use and the project’s internals.
+
+In Maven, these may be brought in under the proper scopes easily by using the ShrinkWrap Dependency Chain POM, available in Maven Central:
+
+[source,xml]
+----
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+  http://maven.apache.org/POM/4.0.0
+  http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- snip -->
+  
+  <dependency>
+    <groupId>org.jboss.shrinkwrap</groupId>
+    <artifactId>shrinkwrap-depchain</artifactId>
+    <version>${version.shrinkwrap}</version>
+    <type>pom</type>
+  </dependency>
+
+  <!-- snip -->
+</project>
+----
+
+For projects outside use of the Maven repository system, the ShrinkWrap Distribution makes all modules available as a download, and you may set up the dependencies manually to suit your needs.
+
+_Prerequisites_
+
+* JRE5+ Runtime
+* No additional dependencies
+
+ShrinkWrap may run on any Java5 runtime or higher, but requires at least JDK6 for compilation.
+
+The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.api.ShrinkWrap+ class.  From here you may call the +create+ method to make a new +Archive+, the a generic view of the virtual filesystem which allows the addition of content called +Asset+ s into a location called an +ArchivePath+.  The following table more easily shows ShrinkWrap nomenclature next to more common terms:
+
+|=============================
+|_Archive Type_|_Description_
+|+org.jboss.shrinkwrap.api.GenericArchive+|Simplest type of concrete user-view of an +Archive+; supports generic operations
+|+org.jboss.shrinkwrap.api.spec.JavaArchive+|JAR type; allows addition of +Class+ es, +Package+ s, and Manifest operations
+|+org.jboss.shrinkwrap.api.spec.EnterpriseArchive+|Java EE EAR type; supports Manifest and related spec operations
+|+org.jboss.shrinkwrap.api.spec.WebArchive+|Java EE WAR type; supports operations common to web application deployments
+|+org.jboss.shrinkwrap.api.spec.ResourceAdaptorArchive+|Java EE RAR type; supports operations common to resource adaptor deployments
+|=============================
+
+To create an +Archive+, simply choose your desired archive type and optionally supply a name to the static +ShrinkWrap:create+ method:
+
+[source,java]
+----
+GenericArchive myArchive = ShrinkWrap.create(GenericArchive.class,"myArchive.jar");
+----
+
+That's it!  You've got your first ShrinkWrap archive!
+
+Of course, an object representing an empty archive is pretty useless.  So let's have a look at adding in some content.  As we noted before, content is modeled by the +Asset+ class, so let's first take a look at some of the +Asset+ implementations provided by ShrinkWrap:
+
+|=====================
+|_Asset_|_Represents_
+|+org.jboss.shrinkwrap.api.asset.ArchiveAsset+|Nested +Archive+ content
+|+org.jboss.shrinkwrap.api.asset.ByteArrayAsset+|+byte[]+ or +InputStream+ content 
+|+org.jboss.shrinkwrap.api.asset.ClassAsset+|Java +Class+ content
+|+org.jboss.shrinkwrap.api.asset.ClassLoaderAsset+|A resource which can be loaded by an optionally-specified +ClassLoader+
+|+org.jboss.shrinkwrap.api.asset.FileAsset+|+File+ content
+|+org.jboss.shrinkwrap.api.asset.StringAsset+|+String+ content
+|+org.jboss.shrinkwrap.api.asset.UrlAsset+|Content located at a given +URL+
+|+org.jboss.shrinkwrap.api.asset.EmptyAsset+|Empty (0-byte) content
+|=====================
+
+Additionally, because +Asset+ is an interface, you may provide your own implementation to supply any byte-based content that may be represented as an +InputStream+ .  For instance, the snippet below shows how to present an Activation Framework +DataSource+ as an +Asset+ :
+
+[source,java]
+----
+final DataSource dataSource = null; // Assume you have this
+Asset asset = new Asset() {
+  @Override
+  public InputStream openStream() {
+    try {
+      return dataSource.getInputStream();
+    } catch (final IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+};
+----
+
+The +Archive:add+ method allows us to pass in some @Asset@ content and add it under an @ArchivePath@.
+
+[source,java]
+----
+myArchive.add(myAsset,"path/to/content");
+System.out.println(myArchive.toString(true));
+----
+
+Passing a +true+ verbosity flag into the +toString+ method of +Archive+ creates a recursive +"ls -l"+ -style output:
+
+----
+myArchive.jar:
+/path/
+/path/to/
+/path/to/content
+----
+
+The +Archive+ views we covered before are also really helpful, depending upon the type of content you're working with.  For instance, a standard JAR file typically contains +.class+ files and other resources, so the +JavaArchive+ type lets you add these.
+
+ShrinkWrap supports a simple mechanism allowing you to switch "views" of your archive, and it's provided by the +as+ method of the +org.jboss.shrinkwrap.api.Assignable+ interface; each view in turn extends +Assignable+. So in order to get your archive to use the +JavaArchive+ view in order to easily add +Class+ resources, you could simply:
+
+[source,java]
+----
+myArchive.as(JavaArchive.class).addClasses(String.class, Integer.class);
+System.out.println(myArchive.toString(true));
+----
+
+----
+archive.jar:
+/java/
+/java/lang/
+/java/lang/String.class
+/java/lang/Integer.class
+----
+
+Using this mechanism is central to keeping ShrinkWrap's usage clean and intuitive, while providing for a versatility typically found in true multiple-inheritence languages.
+
+While ShrinkWrap has its roots in Java EE and close ties to the Arquillian Testing Platform, it's certainly not limited to these domains.  In fact, ShrinkWrap on its own intentionally scoped to go no further than act as a virtual filesystem for archives.  As such, it provides a simple mechanism for playing nicely with flat-file structures.
+
+Borrowing from our example above, perhaps we'd like to use ShrinkWrap to packageup all of the @.class@ files in the current package and output these as a standard JAR in ZIP format.  The code for that would actually be pretty simple:
+
+[source,java]
+----
+ JavaArchive archive = ShrinkWrap.create(JavaArchive.class,
+  "myPackage.jar").addPackage(this.getClass().getPackage());
+  System.out.println(archive.toString(true));
+  archive.as(ZipExporter.class).exportTo(
+    new File("/home/alr/Desktop/myPackage.jar"), true);
+----
+
+----
+myPackage.jar:
+/org/
+/org/alr/
+/org/alr/test/
+/org/alr/test/TestClass.class
+----
+
+So let's see what's going on here.  First we create a +JavaArchive+ and add all contents of the current +Class+ 's +Package+ . Then we dump the output to the console, just to see what's included.  In the final line, we again use the +Assignable+ facilities of the +JavaArchive+ view to get us into a new view: one capable of exporting to ZIP format.  In this case we use the appropriately-named +ZipExporter+, allowing us to export to a +File+, +OutputStream+, or even get the contents as an +InputStream+ so we can deal with the bytes ourselves.
+
+There are 3 types of exporters which ship with ShrinkWrap:
+
+|==========================
+|_Exporter_|_Output Format_
+|+org.jboss.shrinkwrap.api.exporter.TarExporter+|TAR
+|+org.jboss.shrinkwrap.api.exporter.TarGzExporter+|TAR.GZ
+|+org.jboss.shrinkwrap.api.exporter.ZipExporter+|ZIP
+|==========================
+
+Of course, we can also obtain a ShrinkWrap archive from a flat-file in a similar fashion by using one of the standard importers:
+
+|==========================
+|_Importer_|_Output Format_
+|+org.jboss.shrinkwrap.api.importer.TarImporter+|TAR
+|+org.jboss.shrinkwrap.api.importer.TarGzImporter+|TAR.GZ
+|+org.jboss.shrinkwrap.api.importer.ZipImporter+|ZIP
+|==========================
+
+The code for running an import to roundtrip the previous example might look like this:
+
+[source,java]
+----
+ JavaArchive roundtrip = ShrinkWrap
+  .create(ZipImporter.class, "myPackageRoundtrip.jar")
+  .importFrom(new File("/home/alr/Desktop/myPackage.jar"))
+  .as(JavaArchive.class);
+----
+
+Note how we can pass +ZipImporter+ into the +ShrinkWrap.create+ method, as it's +Assignable+ as well!  Beginning to notice a theme here?
+
+This concludes our brief introduction into manipulating archive content with ShrinkWrap.
 
 === Runtime
 
