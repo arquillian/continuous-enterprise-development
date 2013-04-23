@@ -2,13 +2,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.ced.java</groupId>
-        <artifactId>ced-java-parent</artifactId>
+        <groupId>org.cedj</groupId>
+        <artifactId>cedj-parent</artifactId>
         <version>1.0.0-alpha-1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>ced-java-build-resources</artifactId>
+    <artifactId>cedj-build-resources</artifactId>
     <name>Continuous Enterprise Development in Java Build Resources</name>
 
     <build>

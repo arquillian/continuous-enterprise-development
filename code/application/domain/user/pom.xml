@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!--
+  vi:ts=2:sw=2:expandtab:
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!-- Parent -->
+  <parent>
+    <groupId>org.cedj</groupId>
+    <artifactId>cedj-application-domain-parent</artifactId>
+    <version>1.0.0-alpha-1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  
+  <!-- Model Version -->
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Artifact Configuration -->
+  <artifactId>cedj-application-domain-user</artifactId>
+  <packaging>jar</packaging>
+  <name>Continuous Enterprise in Java Example Application Domain: User</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.cedj</groupId>
+      <artifactId>cedj-application-domain-core</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>

@@ -4,3 +4,5 @@ target
 .settings
 test-output
 log.txt
+.idea
+*.iml

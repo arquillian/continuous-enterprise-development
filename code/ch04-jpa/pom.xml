@@ -16,9 +16,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <!-- Artifact Configuration -->
-  <artifactId>cedj-ch01-continuity</artifactId>
-  <name>Chapter 1: Continuity</name>
-  <description>Code Supporting Chapter 1: Continuity</description>
+  <artifactId>cedj-ch04-jpa</artifactId>
+  <name>Chapter 4: JPA</name>
+  <description>Code Supporting Chapter 4: JPA</description>
 
 
   <!-- Properties -->
@@ -32,15 +32,27 @@
   <dependencies>
   
     <dependency>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <version>1.0.1.Final</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
     
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-    </dependency>
-
   </dependencies>
+
+  <!-- Build Configuration -->
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
+      
+    </plugins>
+  </build>
   
 </project>

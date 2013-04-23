@@ -15,12 +15,12 @@
   <modelVersion>4.0.0</modelVersion>
   
     <!-- Artifact Information  -->
-  <groupId>org.ced.java</groupId>
-  <artifactId>ced-java-parent</artifactId>
+  <groupId>org.cedj</groupId>
+  <artifactId>cedj-parent</artifactId>
   <version>1.0.0-alpha-1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Continuous Enterprise Development in Java Aggregator and Build Parent</name>
-  <url>https://github.com/arquillian/continuous-enterprise-development</url>
+  <url>http://continuousdev.org</url>
   <description>Continuous Enterprise Development in Java Aggregator and Build Parent</description>
   
   <!-- Properties -->
@@ -118,6 +118,12 @@
     </pluginManagement>
   
     <plugins>
+
+      <!-- Code Style -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
 
       <!-- Release -->
       <plugin> 
@@ -229,7 +235,9 @@
 
   <!-- Aggregate Modules -->
   <modules>
+    <module>application</module>
     <module>ch01-continuity</module>
+    <module>ch04-jpa</module>
     <module>build-resources</module>
   </modules>
   
