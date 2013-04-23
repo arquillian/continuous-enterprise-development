@@ -1,0 +1,691 @@
+== Working with Data and Java Persistence
+
+_"Energy and persistence conquer all things." - Benjamin Franklin_
+
+If we really boil down the primary objective of most applications to bare metal, we'll find that nearly everything we do involves an interaction with _data_.  We supply it when we make a new online order.  We pull it out when we research on a Wiki.  We update it when we change our credit card's billing address.
+
+The information contained in a system at any point in time comprises the _state_ of the application, and state comes in a variety of _scopes_, including:
+
+|======================
+|Request|Limited access within one request/response cycle
+|Session|Limited access within one user session
+|Conversation/Sequence/Transaction|Limited access to a sequence of events (treated as one unit) within one user session
+|Application|Shared throughout the application
+|Environment|Shared throughout the host environment
+|======================
+
+Depending upon your view or framework of choice, there may be other ways to slice visibility, but the above table outlines some of the most commonly-used paradigms.
+
+As is thematic throughout the study of computer science, the rule of thumb is to limit ourselves to the smallest scope required.  Fine-grained access to data helps to ensure that we don't leak out state where it can cause security issues or difficult-to-debug behaviours.  Can you imagine what it'd be like if one user's access to his online bank account were to be replicated to all active sessions?
+
+In addition to the notion of scopes, which limit data's visibility, we also have the concept of _persistence_.  Persistence is a property which dictates whether or not state will survive outside of its confining scope.  For instance: we may allow a user to log in and change her online profile, but if we don't synchronize these updates with some sort of persistent storage, they'll be lost as soon as her user session which defines the scope of this data is closed.
+
+Perhaps the simplest way to handle persistent storage is to directly serialize information to the file system.  At first glance, this looks like a nice approach; we open up a file, write whatever we want in there, and close it up.  Later we go in and read as needed.  Easy!
+
+Until we start to think through how this is going to play out in practice.  Our applications are multi-user; they support any number of operations going on in parallel.  How are we to ensure that we don't have two writes happening on the same file at once?  We could put a read/write lock in place to ensure that only one write happens at a time, but then we could potentially queue up lots of write requests while work is being done.  And what about auditing our changes, or ensuring that the integrity of our data model is preserved in case of an error?  Very quickly we'll discover that the task of persisting our data is a first-class problem in and of itself, and one that probably doesn't belong on our desks as application developers.
+
+It'd be much better to delegate the task of persistent storage to another component equipped to handle this efficiently and securely.  Luckily, we'll have our pick of any number of Database Management Systems (DBMS) which do just that.
+
+***INSERT IMAGE OF APPLICATION > DBMS MODEL***
+
+The role of a DBMS is very generally to store and provide access to data.  They come in a variety of flavors which are differentiated in terms of how they internally organize information:
+
+|============
+|Relational (RDBMS)|Like data is grouped into tables where columns represent data types and rows represent records.  Most often employs a protocol language called _Structured Query Language_ (SQL) for interaction.
+|Object-oriented|Closely mirrors in storage an object model we might use in programming.  Less widely-deployed.
+|Key/Value or NoSQL|Nested Map or document-oriented structure, becoming very popular in recent years.
+|============
+
+This chapter will focus on today's most commonly-used relational model (NoSQL will be covered in later Chapter ***X***).
+
+=== The Relational Database Model
+
+To best understand the relational model, let's highlight how it differs from the object model with which we're already familiar.  For this example we'll seek to describe a family.
+
+Each member of the family may be represented by a +Person+ object:
+
+[source,java]
+----
+public class Person {
+
+    // Instance members
+    private Long id;
+    private String name;
+    private Boolean male;
+    private Person father;
+    private Person mother;
+    private List<Person> children;
+
+    // Accessors / Mutators
+    public Long getId() {
+        return id;
+    }
+    public void setId(final Long id) {
+        this.id = id;
+    }
+    /* Other properties ommitted for brevity... */
+}
+----
+
+Simple enough; this value object which explicitly declares the relationship between a parent and child is sufficient for us to further infer siblings, grandparents, cousins, aunts, uncles, and so on.  If we populate a few of these objects and wire them together, we'll end up with a _graph_ representing our family:
+
+***INSERT IMAGE OF FAMILY, MODELED AS A GRAPH***
+
+Now, let's take a look at how that same information might be represented in a relational database.  Much like a spreadsheet, classes from our object model are instead organized into tables:
+
+|============
+|*Data Type*|*Field Name*
+|+UNSIGNED INTEGER+ (_PK_)|id
+|+VARCHAR(255)+|name
+|+BIT(1)+|male
+|+UNSIGNED INTEGER+|father
+|+UNSIGNED INTEGER+|mother
+|============
+
+Already we see there are some differences here.  The +id+, +name+, and +male+ fields are as we might expect; simple data types where a Java +Long+ is now represented as a database +UNSIGNED INTEGER+, a Java +String+ maps to a +VARCHAR(255)+ (variable-length character String with maximum length of 255), and a Java +Boolean+ becomes a +BIT+ type.  But instead of a direct reference to the +mother+ or +father+, instead we see the data type there is +UNSIGNED INTEGER+.  Why?
+
+This is the defining characteristic of _relational_ in RDBMS.  These fields are in fact pointers to the _primary key_, or identifying +id+ field of another record.  As such, they are called _foreign keys_.  So our data may look something like this:
+
+|==========
+|+id+|+name+|+male+|+father+|+mother+
+|1|Paternal Grandpa|1||
+|2|Paternal Grandma|0||
+|3|Dad|1|1|2
+|4|Mom|0||
+|5|Brother|1|3|4
+|6|Sister|0|3|4
+|==========
+
+Note especially that there is no direct data reference to the children of a person in the relational model.  That's because this is the "many" side of a "one to many" relationship; one person may have many children and many children may have one father and one mother.  So therefore, to find the children of a given person, we'd ask the database something like:
+
+_"Please give me all the records where the 'mother' field is my ID if I'm not a male, and where the 'father' field is my ID if I am a male."_
+
+Of course, the English language might be a bit more confusing than we'd like, so luckily we'd execute a query in SQL to handle this for us.  
+
+So instead of the graph relationship we have with an object model, the relational model gives us something a little like this:
+
+***INSERT PICTURE OF RELATIONAL LAYOUT***
+
+=== The Java Persistence API
+
+It's nice that a DBMS allows us to relieve ourselves of the details involving persistence, but there are a few issues that introducing this separate data layer presents.
+
+* Though SQL is an ANSI Standard, its use is not truly portable between RDBMS vendors.  In truth each database product has its own dialect and extensions.
+* The details of interacting with a database are vendor-dependent, though there are connection-only abstractions (drivers) in Java (for instance Java Database Connectivity (JDBC)).
+* The relational model used by the database doesn't map on its own to the object model we use in Java; this is called the _object/relational impedence mismatch_
+
+To address each of these problems, Java EE6 provides a specification called the _Java Persistence API_ (JPA), defined by http://jcp.org/en/jsr/detail?id=317[JSR 317].  JPA is comprised of both an http://docs.oracle.com/javaee/6/api/javax/persistence/package-summary.html[API] for defining and interacting with entity objects and an SQL-like query language called _Java Persistence Query Language_ (JPQL) for portable interaction with a variety of database implementations.  Because JPA is itself a spec, there are a variety of open-source compliant implementations available, including http://hibernate.org/[Hibernate], http://www.eclipse.org/eclipselink/[EclipseLink], and http://openjpa.apache.org/[OpenJPA].
+
+So now our tiered data architecture may look something like this:
+
+***INSERT IMAGE OF APPLICATION ENABLED w/ JPA TALKING TO JDBC, GOING TO DB***
+
+Though a full overview of this technology stack is beyond the scope of this book, we'll be sure to point you to enough resources and explain the basics of interacting with data via JPA that you'll be able to understand our application and test examples.
+
+==== POJO Entities
+
+Again, as Java developers we're used to interacting with objects and the classes that define them.  Therefore, JPA allows us to design our object model as we wish, and by sprinkling on some additional metadata (typically in the form of annotations, though XML may also be applied), we can tell our JPA provider enough for it to take care of the _object/relational mapping_ for us.  For instance, applying the +javax.persistence.Entity+ annotation atop a value object like our +Person+ class above is enough to denote a JPA entity.  The data type mapping is largely inferred from our source Java types (though this may be overridden), and we define relationship fields using the +@javax.persistence.OneToOne+, +@javax.persistence.OneToMany+, and +@javax.persistence.ManyToMany+ annotations.  We'll see examples of this later in our application.
+
+The important thing to keep in mind is the concept of _managed entities_.  Because JPA exposes a POJO (plain old Java object) programming model, consider the actions that this code might do upon an entity class +Person+:
+
+[source,java]
+----
+Person person = new Person();
+person.setName("Dick Hoyt");
+----
+
+OK, so very clearly we've created a new +Person+ instance and set his name.  The beauty of the POJO programming model is also its drawback; this is just a regular object.  Without some additional magic, there's no link to the persistence layer.  This coupling is done transparently to us, and the machine providing the voodoo is the JPA +EntityManager+.
+
+The http://docs.oracle.com/javaee/6/api/javax/persistence/EntityManager.html[+javax.persistence.EntityManager+] is our hook to a defined _persistence unit_, our abstraction above the database.  By associating POJO entities with the +EntityManager+, they become monitored for changes such that any state differences which take place in the object will be reflected in persistent storage.  An object under such supervision is called _managed_.  Perhaps this is best illustrated by some examples:
+
+[source,java]
+----
+Person person = entityManager.find(Person.class, 1L); // Look up "Person" with Primary Key of 1
+System.out.println("Got " + person); // This "person" instance is managed
+person.setName("New Name"); // By changing the name of the person, 
+                            // the database will be updated when 
+                            // the EntityManager is flushed (likely when the current 
+                            // transaction commits)
+----
+
+Above we perform a lookup of the entity by its primary key, modify its properties just as we would any other object, then let the +EntityManager+ worry about synchronizing the state changes with the underlying database.  Alternatively, we could manually attach and detach the POJO from being _managed_:
+
+[source,java]
+----
+Person person = new Person();
+person.setId(1L); // Just a POJO
+managedPerson = entityManager.merge(person); // Sync the state with the existing persistence context
+managedPerson.setName("New Name"); // Make a change which be eventually become propagated to the DB
+entityManager.detach(managedPerson); // Make "managedPerson" unmanaged
+managedPerson.setName("Just a POJO");  // This state change will *not* be 
+                                       // propagated to the DB, as we're now unmanaged
+----
+
+=== The Example Application
+
+This is the first chapter we'll be dealing with the companion Example Application for the book; its purpose is to highlight all layers working in concert to fulfill the _user requirements_ dictated by each chapter.  From here out, we'll be pointing to selections from the example application in order to showcase how we wire together the domain, application, view, and test layers in a cohesive, usable project.
+
+The application's sources may be built via Apache Maven, and are located under the +code/application+ folder of the https://github.com/arquillian/continuous-enterprise-development/[Project Root in SCM].  As we go along, we'll note each file so that you may draw references between the text and the deployable example.  We're firm believers that you best learn by doing (or at least exploring real code), so we invite you to dig in and run the examples as we go along.
+
+Our application will be a simple conference tracker similar in functions to those provided by http://lanyrd.com/[Lanyrd].  We'll make it possible to track software conferences, their sessions and related entities, and in every chapter we'll lay out a new set of user requirements which we'll seek to satisfy using Java EE standards and extensions.  Testing is a first-class citizen in verifying that our development is done correctly, so for instance in this chapter we'll be focusing on interactions with persistent data.
+
+=== Requirements Gathering and Definition
+
+Before we can hope to arrive at any solutions, it's important to clearly identify the problem domain.  Each chapter will first outline the goals we're looking to address.
+
+==== User Perspective
+
+Our users are going to have to perform a series of _CRUD_ (Create, Read, Update, Delete) operations upon the entities which drive our application's data.  As such, we've defined a set of user-centric requirements:
+
+----
+As a User, I should be able to:
+...add a Conference.
+...add a Session.
+...view a Conference.
+...view a Session.
+...change a Conference.
+...change a Session.
+...remove a Conference.
+...remove a Session.
+----
+
+Quite simple (and maybe even redundant!) when put in these terms, especially for this persistence example.  However, it's wise to get into the habit of thinking about features from a user perspective; this technique will come in quite handy later on when in more complex cases it'll be easy to get mired in the implementation specifics of providing a feature, and we don't want to lose track of the _real_ goal we're aiming to deliver.
+
+To state even more generally:
+
+----
+As a User, I should be able to Create, Read, Update, and Delete Conference and Session types.
+----
+
+Of course, we have some other requirements which do not pertain to the user perspective.
+
+==== Technical Concerns
+
+As noted in the introduction, the issue of data persistence is not trivial.  We must ensure that our solution will address:
+
+* Concurrent access
+* Multi-user access
+* Fault-tolerance
+
+These constraints upon the environment will help to inform our implementation choices.  Again, explicitly stating these issues may seem obvious, but our experience teaches that sometimes we get so comfortable with an implementation choice that we may not first stop to think if it's even appropriate!  For instance, a news or blogging site which has a high read to write ratio may not even need to worry about concurrency if the application can support stale data safely.  In that case, we might not even need transactions, and bypassing that implementation choice can lead to great gains in performance.
+
+In our Example Application, however, we'll want to ensure that users are seeing up-to-date information that's consistent, and that implies a properly synchronized data source guarded by transactions.
+
+=== Implementation Technologies
+
+Given our user and technical concerns, the Java EE stack using JPA described above will do a satisfactory job towards meeting our requirements.  And there's an added benefit: by using frameworks designed to relieve the application developer of complicated programming, we'll end up writing a lot less code.  This will help us to reduce the _conceptual weight_ of our code and ease maintenance over the long run.  The slices of Java EE that we'll use specifically include: 
+
+* Java Transaction API (JTA)
+* Enterprise JavaBeans (EJB, http://jcp.org/aboutJava/communityprocess/final/jsr318/[JSR 318])
+* JPA
+
+Transactions are a wide subject that merit their own book when dealing with the mechanics of implementing a viable transactional engine.  For us as users, however, the rules are remarkably simple.  We'll imagine a transaction is a set of code that runs within a block.  The instructions that are executed within this block must adhere to the _ACID_ properties: Atomicity, Consistency, Isolation, and Durability.
+
+* Atomicity - The instructions in the block act as one unit; they either succeed (_commit_) or fail (_rollback_) together
+* Consistency - All resources associated with the transaction (in this case, our database), will always be in a legal, viable state.  For instance, a foreign key field will always point to a valid primary key.  These rules are typically enforced by the transactional resource (again, our database).
+* Isolation - Actions taken upon transactional resources within a Tx block will _not_ be seen outside the scope of the current transaction until and unless the transaction has successfully committed.
+* Durability - Once committed, the state of a transactional resource will not revert back or lose data.
+
+Enterprise JavaBeans, or EJBs, enjoy close integration with JTA, so we won't have to touch much of the transactional engine directly.  By managing our JPA entities through an +EntityManager+ which is encapsulated inside a transactional EJB, we'll get the benefits of transaction demarcation and management for free.  The overall architecture might be more easily described by this graphic:
+
+***INSERT IMAGE OF ENTITIES MANAGED BY AN EM INSIDE AN EJB IN A TX CONTEXT***
+
+Persistence is a case that's well-understood by and lives at the heart of most Java EE applications, and these standards have been built specifically with our kind of use case in mind.  What's left for us is to sanely tie the pieces together, but not before we consider that the runtime is not the only thing with which we should be concerned.
+
+=== Requirement Test Scenarios
+
+Of course the runtime will be the user-facing code of our application.  However, the theme of this book is in _testable development_, and we'll be focusing on proof through automated test.  To that end, every user and technical requirement we identify will be matched to an test which will ensure that functions are producing the correct results during the development cycle.  A nice rule of thumb is to abide by the motto: "If it's not tested, it doesn't exist."  
+
+In this case, we need to create coverage to ensure that we may:
+
+* Perform CRUD operations on the Conference and Session entities
+** Execute operations against known data sets and validate the results
+* Exercise our Transaction handling:
+** Commits should result in entity object state flushed to persistent storage
+** Rollbacks (when a commit fails) result in no changes to persistent storage
+
+=== Test Setup
+
+Our tests will be taking advantage of the https://docs.jboss.org/author/display/ARQ/Persistence[_Arquillian Persistence Extension_], which is created to aid in writing tests where the persistence layer is involved.  It supports the following features:
+
+* Wrapping each test in the separated transaction.
+* Seeding database using:
+** DBUnit with XML, XLS, YAML and JSON supported as data sets format.
+** Custom SQL scripts.
+** Comparing database state at the end of the test using given data sets (with column exclusion).
+
+Creating ad-hoc object graphs in the test code is often too verbose and makes it harder to read the tests themselves.  The Arquillian Persistence Extension provides alternatives to set database fixtures to be used for the given test.
+
+Adding transactional support to these tests is fairly straightforward.  If that's only what you need simply put a +@Transactional+ annotation either on the test which you want be wrapped in transaction or on the test class (which will result in all tests running in their own transactions).  The following modes are supported:
+
+* +COMMIT+: Each test will be finished with commit operation. This is default behaviour.
+* +ROLLBACK+: At the end of the test execution rollback will be performed.
+* +DISABLED+: If you have enabled transactional support at the test class level, marking given test with this mode will simply run it without the transaction.
+
+We'll start by defining the Arquillian Persistence Extension in the +dependencyManagement+ section of our parent POM:
+
++code/application/pom.xml+:
+----
+  <properties>
+    <version.arquillian_persistence>1.0.0.Alpha6</version.arquillian_persistence>
+    ...
+  </properties>
+
+  ...
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jboss.arquillian.extension</groupId>
+        <artifactId>arquillian-persistence-impl</artifactId>
+        <version>${version.arquillian_persistence}</version>
+        <scope>test</scope>
+      </dependency>
+      ...
+    </dependencies>
+  </dependencyManagement>
+----
+
+And we'll also enable this in the +dependencies+ section of the POMs of the projects in which we'll be using the extension:
+
++code/application/domain/pom.xml+:
+----
+  <dependencies>
+    <dependency>
+      <groupId>org.jboss.arquillian.extension</groupId>
+      <artifactId>arquillian-persistence-impl</artifactId>
+      <scope>test</scope>
+    </dependency>
+    ...
+  </dependencies>
+----
+
+Database configuration for tests powered by the Persistence Extension is done via the same mechanism as is used for the runtime: the +persistence.xml+ configuration file.
+
+***UPDATE THIS TO REFLECT WHAT WE'LL USE WHEN THE APP IS DONE***
++code/application/domain/core/src/test/java/org/cedj/app/domain/CoreDeployments.java+:
+[source,java]
+----
+public static PersistenceDescriptor persistence() {
+        return Descriptors.create(PersistenceDescriptor.class).createPersistenceUnit().name("test")
+            .getOrCreateProperties().createProperty().name("hibernate.hbm2ddl.auto").value("create-drop").up()
+            .createProperty().name("hibernate.show_sql").value("true").up().up()
+            .jtaDataSource("java:jboss/datasources/ExampleDS").up();
+    }
+----
+
+=== Runtime Components
+
+With our understanding of how we'll go about testing our entities, let's delve into the runtime code.  We'll start with a look at the entity definitions themselves.
+
+==== Entity Objects
+
+We're primarily concerned with the introduction of our +Conference+ and +Session+ entities; a +Conference+ may have many +Session+s associated with it.  So +Conference+ looks a bit like this:
+
++code/application/domain/conference/src/main/java/org/cedj/app/domain/conference/model/Conference.java+:
+[source,java]
+----
+package org.cedj.app.domain.conference.model;
+
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.cedj.app.domain.model.Identifiable;
+
+@Entity
+public class Conference implements Identifiable, Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    private String id;
+
+    @NotNull
+    private String name;
+
+    private String tagLine;
+
+    @Embedded
+    @Valid
+    @NotNull
+    private Duration duration;
+
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "conference", cascade = CascadeType.ALL)
+    @Valid
+    private Set<Session> sessions;
+
+    public Conference() {
+        this.id = UUID.randomUUID().toString();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Conference setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getTagLine() {
+        return tagLine;
+    }
+
+    public Conference setTagLine(String tagLine) {
+        this.tagLine = tagLine;
+        return this;
+    }
+
+    public Conference setDuration(Duration duration) {
+        this.duration = duration;
+        return this;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public Set<Session> getSessions() {
+        if (sessions == null) {
+            this.sessions = new HashSet<Session>();
+        }
+        return Collections.unmodifiableSet(sessions);
+    }
+
+    public Conference addSession(Session session) {
+        if (sessions == null) {
+            this.sessions = new HashSet<Session>();
+        }
+        if (!sessions.contains(session)) {
+            sessions.add(session);
+            session.setConference(this);
+        }
+        return this;
+    }
+
+    public void removeSession(Session session) {
+        if (sessions.remove(session)) {
+            session.setConference(null);
+        }
+    }
+}
+----
+
+You'll notice a few interesting bits in play here.  
+
+The +Id+ annotation denotes our primary key.
+
+The +javax.validation.*+ annotations allow us to impose validation constraints to ensure the data supplied to these methods is in the correct and expected form.  
+
+Also, +Conference+ has a relationship with +Session+ as denoted by the +@OneToMany+ annotation.  This is a bi-directional relationship; we perform the object association in both the +Conference+ and +Session+ classes.  Here's the definition of +Session+:
+
++code/application/domain/conference/src/main/java/org/cedj/app/domain/conference/model/Session.java+:
+[source,java]
+----
+package org.cedj.app.domain.conference.model;
+
+import java.io.Serializable;
+import java.util.UUID;
+
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+@Entity
+public class Session implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    private String id;
+
+    @Embedded
+    @NotNull
+    @Valid
+    private Duration duration;
+
+    @NotNull
+    private String title;
+
+    @Lob
+    private String outline;
+
+    @ManyToOne
+    private Conference conference;
+
+    public Session() {
+        this.id = UUID.randomUUID().toString();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getOutline() {
+        return outline;
+    }
+
+    public void setOutline(String outline) {
+        this.outline = outline;
+    }
+
+    void setConference(Conference conference) {
+        this.conference = conference;
+    }
+}
+----
+
+At this end of the relationship between +Session+ and +Conference+, you'll see that a +Session+ is associated with a +Conference+ via the +ManyToOne+ annotation.
+
+Finally, we make use of the +Embedded+ annotation to note that we'd like to store a field as a complex object, in this case, the +Duration+:
+
++code/application/domain/conference/src/main/java/org/cedj/app/domain/conference/model/Duration.java+:
+[source,java]
+----
+package org.cedj.app.domain.conference.model;
+
+import java.util.Date;
+
+import javax.validation.constraints.NotNull;
+
+public class Duration {
+
+    @NotNull
+    private Date start;
+
+    @NotNull
+    private Date end;
+
+    // hidden constructor for Persistence
+    Duration() {
+    }
+
+    public Duration(Date start, Date end) {
+        if (start == null) {
+            throw new IllegalArgumentException("Start must be provided");
+        }
+        if (end == null) {
+            throw new IllegalArgumentException("End must be provided");
+        }
+        if (end.before(start)) {
+            throw new IllegalArgumentException("End can not be before Start");
+        }
+        this.start = start;
+        this.end = end;
+    }
+
+    public Date getEnd() {
+        return (Date) end.clone();
+    }
+
+    public Date getStart() {
+        return (Date) start.clone();
+    }
+
+    public Integer getNumberOfDays() {
+        return -1;
+    }
+
+    public Integer getNumberOfHours() {
+        return -1;
+    }
+}
+----
+
+==== Repository EJBs
+
+The "Repository" EJBs are where we'll define the actions that may be taken by the user with respect to our entities.  Strictly speaking, they define the verbs: "Create" and "Read".
+
+We can place most of the logic supporting these operations in an abstract, genericized base class:
+
++code/application/domain/core/src/main/java/org/cedj/app/domain/Repository.java+:
+[source,java]
+----
+package org.cedj.app.domain;
+
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.cedj.app.domain.model.Identifiable;
+
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+public class Repository<T extends Identifiable> {
+
+    @PersistenceContext
+    private EntityManager manager;
+
+    private Class<T> type;
+
+    public Repository(Class<T> type) {
+        this.type = type;
+    }
+
+    public T store(T entity) {
+        T merged = merge(entity);
+        manager.persist(merged);
+        return merged;
+    }
+
+    public T get(String id) {
+        return manager.find(type, id);
+    }
+
+    public void remove(T entity) {
+        manager.remove(merge(entity));
+    }
+
+    private T merge(T entity) {
+        return manager.merge(entity);
+    }
+
+    protected EntityManager getManager() {
+        return manager;
+    }
+}
+----
+
+Despite the small amount of code here, there's a lot of utility going on.
+
+The +TransactionAttribute+ annotation and its +REQUIRES_NEW+ value on the class level notes that every method invocation upon one of the busines methods exposed by the EJB will run in its own transaction.  That means that if a transaction does not exist one will be created.  If there's currently a transaction in flight, it will be _suspended_ (ie. dis-associated with the running +Thread+) and a new one put in place.  The suspended transaction will resume when the business method invocation exits.
+
+An instance member of this class is our +EntityManager+, which will be used to carry out the public business methods +store+ (Create) and +get+ (Read).  Update is handled by simply reading in an entity, then making any changes to that object's state.  The application server will propogate these state changes to persistent storage when the transaction commits (ie. a transactional business method invocation completes successfully).
+
+We can now extend this behaviour with a concrete class and supply the requisite EJB annotations easily:
+
++code/application/domain/conference/src/main/java/org/cedj/app/domain/conference/ConferenceRepository.java+:
+[source,java]
+----
+package org.cedj.app.domain.conference;
+
+import javax.ejb.Stateless;
+
+import org.cedj.app.domain.Repository;
+import org.cedj.app.domain.conference.model.Conference;
+
+@Stateless
+public class ConferenceRepository extends Repository<Conference> {
+
+    public ConferenceRepository() {
+        super(Conference.class);
+    }
+}
+----
+
+The +Stateless+ annotation defines this class as an EJB, a Stateless Session Bean, meaning that the application server may create and destroy instances at will, and a client should not count on ever receiving any particular instance.
+
+==== FROM HERE OUT, JUST UPDATE W/ NEW TEST CODE
+
+===== Store
+
+* Setup dataset
+* Setup expected output
+* Create Conference Domain Model
+* Create Conference Repository 'create'
+
+===== Update
+
+* Setup dataset
+* Setup expected output
+* Create Conference Repository 'update'
+
+===== Remove
+
+
+* Setup dataset
+* Setup expected output
+* Create Conference Repository 'delete'
+
+==== Domain User
+
+* Not explained, only code
+* See Conference
+
+==== Domain Venue
+
+* Not explained, only code.
+* See Conference
+
+==== Domain Attachment
+
+* Not explained, only code.
+* See Conference
+
+

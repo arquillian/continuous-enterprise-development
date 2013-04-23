@@ -7,3 +7,5 @@ include::Chapter01-Continuity.asciidoc[]
 include::Chapter02-EnablingTechnologies.asciidoc[]
 
 include::Chapter03-ScratchToProduction.asciidoc[]
+
+include::Chapter04-JPA.asciidoc[]
