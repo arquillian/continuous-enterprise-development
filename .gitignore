@@ -6,3 +6,5 @@ test-output
 log.txt
 .idea
 *.iml
+*sublime-*
+*.html
