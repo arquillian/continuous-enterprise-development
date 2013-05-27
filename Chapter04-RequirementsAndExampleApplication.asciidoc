@@ -1,0 +1,5 @@
+== Requirements and the Example Application
+
+_"Whatever pursuit you undertake, the requirements should start with a love of what it is that you are pursuing." - Bill Toomey_
+
+Start.

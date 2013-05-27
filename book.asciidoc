@@ -8,4 +8,6 @@ include::Chapter02-EnablingTechnologies.asciidoc[]
 
 include::Chapter03-ScratchToProduction.asciidoc[]
 
-include::Chapter04-JPA.asciidoc[]
+include::Chapter04-RequirementsAndExampleApplication.asciidoc[]
+
+include::Chapter05-JavaPersistenceAndRelationalData.asciidoc[]

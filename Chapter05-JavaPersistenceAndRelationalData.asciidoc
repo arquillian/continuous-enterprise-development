@@ -1,4 +1,4 @@
-== Working with Data and Java Persistence
+== Java Persistence and Relational Data
 
 _"Energy and persistence conquer all things." - Benjamin Franklin_
 
