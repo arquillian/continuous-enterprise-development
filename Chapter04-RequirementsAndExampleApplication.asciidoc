@@ -2,4 +2,223 @@
 
 _"Whatever pursuit you undertake, the requirements should start with a love of what it is that you are pursuing." - Bill Toomey_
 
-Start.
+While the previous chapter provides decent proof that it's possible to jumpstart development on a greenfield Java EE project without too much hassle, we all recognize how this may be a far cry from how applications are built in the real world.  The benefits of quickly going from a blank canvas to a deployed, functioning application are largely educational or handy in rapid prototyping, but in the majority of cases we're likely looking to:
+
+* Have greater control over the architectural design of our program
+* Augment an existing application with new features
+* Integrate one or more systems
+* Increase modularity during development
+
+In short, the preceding chapter introduced us to some potentially new technologies and is capable of getting us up and running, but the end result is a toy that would need a lot more work before it became a viable product.
+
+This book will aim to address some of the common issues encountered during enterprise development.  Our primary goal is education, and that will inform some of the design choices we make in building our application; for instance we may expose more technologies than necessary to fulfill our objectives.  But just as a guide on design patterns doesn't advocate usage of every technique at the same time, neither should these examples.  It's your responsibility as developer to choose appropriate tools for the job, and we'll aspire to help you make informed decisions.
+
+=== Introducing GeekSeek
+
+Our example application will be a software conference tracker, roughly modeled after the excellent http://lanyrd.com/[Lanyrd] service.  Its purpose will be to expose information to aid conference-goers in planning their experience around technical sessions and related activities.  The goal is to provide a single example with all layers working in concert to showcase how various technologies interact, and each use case detailed in the book will dig into various slices of the application.  We've lovingly named this example: _GeekSeek_.
+
+==== Featureset
+
+We'll start by outlining in broad strokes the features provided by GeekSeek.  This will provide a high-level view of the actions users may take, and from these we can start to drill down into more technical requirements.
+
+* Account-Centric Actions
+** Users may sign up by associating the site with their http://www.twitter.com[Twitter] account
+** Users may track others whom they follow on Twitter
+** Users may see others whom may be interested in their activity (their Twitter followers).
+** Users may get updates on the activity of their followee's followees (transitively).
+* Directory View
+** Users may display upcoming and prior Conferences in the system
+* Conferences and Sessions
+** Users may add Conference and Session data, additionally associating them with a Venue and Room.
+** Users may define who is speaking at or attending a Session
+** Users may add arbitrary Attachments (media) information to a Conference, Session, Venue or Room
+** Users may track Conferences and Sessions to receive alerts for updates and changes
+* Search
+** Search for a Conference, Session, or User by some criteria
+
+==== Conceptual Data Model
+
+As we're still in the process of defining what our application does and the types of data it'll be dealing with, this is not the place to delve into database design just yet.  This is the stage where we describe our _conceptual data model_;  first we need to understand:
+
+* What kind of data is to be represented?
+* Who are the major players (entities), and what are their fields?
+
+
+Here we speak at a very coarse level of granularity, and we seek to define from a business perspective the _nouns_ of our application.  In our case, we have:
+
+===== User
+|==========
+|Name|Type
+|Twitter ID|String, unique among all users
+|Bio|String
+|==========
+
+===== Conference
+|==========
+|Name|String
+|Tagline|String
+|Start|Date/Time
+|End|Date/Time
+|==========
+
+===== Session
+|==========
+|Title|String
+|Outline|String
+|Start|Date/Time
+|End|Date/Time
+|==========
+
+===== Attachment
+|==========
+|Content|Binary
+|Type|Media Type (ie. JPEG, PDF, etc)
+|==========
+
+===== Venue
+|==========
+|Name|String
+|Location|Place
+|==========
+
+===== Room
+|==========
+|Name|String
+|Location|Place
+|==========
+
+Once we've got a solid understanding of the kinds of data we'll be addressing, we may go a bit further and see how these nouns might play out in the context of our proposed featureset.
+
+==== Logical Data Model
+
+We've taken the first step in describing our data types by acknowledging the information we'll need to capture.  Now we need to take into account some additional concerns:
+
+* What are the relationships inherent between entities?
+* How much data are we expecting in each entity?
+* What features will be demanded of our entities?
+
+It's questions like these which will help us to arrive at a _logical data model_, a representation of our data that isn't yet tied to any specific storage mechanism but still addresses the questions above.  Decisions at this step are instrumental in our later choices which will have heavy impact in areas like efficiency and performance.
+
+This is because database systems have varying strengths when we couple data representation with the requests we may make.  Actions like searching and sorting can take milliseconds or days, depending only upon the backing data structures and implementation used!  Therefore it's very important for us to define the relationships required between our data, and recognize cases where we could have potentially large result sets; it's here that we'll need to design efficiently.
+
+===== Relationships
+
+_Relationships_ are the bonds that tie our entities together, and come in three flavors of _cardinality_:
+
+[options="header"]
+|======
+|Cardinality|Name|Example 
+|1:1|One-to-one|I have one nose; my nose belongs to only me
+|1:N|One-to-many|I have many fingers; my fingers belong to only me
+|N:N|Many-to-many|I have many friends; my friends also have many other friends besides me
+|======
+
+So in the case of the entities for our application as defined by our desired featureset, we can draw the following relationships:
+
+[options="header"]
+|======
+|#|Entity 1|Entity 2|Cardinality|Description
+|1|Conference|Session|1:N|A conference may have many sessions
+|2|Session|Room|N:N|A session may take place in many rooms (spanned together)
+|3|Venue|Room|1:N|A venue may have many rooms; a room exists only in one venue
+|4|Conference|Venue|1:N|A conference may take place in many venues
+|5|Conference|Attachment|1:N|A conference may have many attachments
+|6|Session|Attachment|1:N|A session may have many attachments
+|7|Venue|Attachment|1:N|A venue may have many attachments
+|8|Room|Attachment|1:N|A room may have many attachments
+|9|User|User|N:N|A user may follow many other users on Twitter, and may also have many followers.
+|======
+
+In graphical terms, this may look a little like:
+
+***INSERT IMAGES HERE OF THE RELATIONSHIP MODEL BETWEEN ENTITIES (Fig 04-01)***
+
+===== Intended Use
+
+When considering the efficiency of operations like database lookups, we should attempt to strike a balance between premature optimization and planning for performance.  For instance, it really wouldn't matter how complex the relationships between these entities are if we were only expecting a small, finite number of records; these would likely be cached at some level and held in memory, avoiding the need for lengthy tasks like full table scans.  At the other end of the spectrum, it'd be an oversight to recognize that we're expecting lots of data in a _normalized_ form, and anticipate that querying against this model has time complexity of linear (_O(n)_), geometric (_O(n^2^)_) or worse.
+
+Unfortunately, a pick peek at our data types and featureset shows that given enough time and interest in the application, we could reasonably expect entries for each of our main data types to grow, unbounded.
+
+Of particular note is the many-to-many relationship among users.  Because a user may have both many followers and may follow many people, we have two unidirectional relationships; a follower of mine is not necessarily someone I follow.  This is in contrast to a mutual "friend" model employed by, say, the http://www.facebook.com[Facebook] social networking site.
+
+In effect this relationship has a graph structure:
+
+***INSERT MORE DETAILED IMAGE OF USER RELATIONSHIPS, (Fig 04-02)***
+
+While there are any number of ways we might store and model this structure, it's worth noting that requesting transient relationships can be a problem with geometric time complexity.  That is: we'd need one query to find all of a user's followers.  Then, *for each* of the results in that set, we'd need another query to find *their* followers.  With each level we drill in to find followers, the problem gets prohibitively complex and unsolveable when organized in standard tables and rows.
+
+Because the relationship is naturally a graph, it will likely make sense to store our relationship data in this fashion.  That way, instead of querying standard records, we can walk the graph (simply obtaining a value from a pointer is an operation with constant time complexity, and thus will perform many factors better when we compound the process in a loop).
+
+Another interesting area revolves around the system's attachments.  An attachment can be associated with a conference, session, venue, or room, and ultimately consists of some arbitrary series of bytes.  This amounts to a natural "key/value" store really, where we can add a bunch of content, associate some metadata with it, and draw a relationship to its "owner".  Again, we might tackle this in a standard table representation, but perhaps the problem domain suggests a native solution more in tune with the key/value model.
+
+Now that we've developed a better understanding of our data, what requests we'll make of it, and how much we might have, we can move on to designing some user-based and technical use cases to drive the construction of our application.
+
+=== Use Cases and Chapter Guide
+
+Each chapter from here on out will address a set of related technical and user-centric use cases.  They'll be organized as follows:
+
+==== Chapter 5 - Java Persistence and Relational Data
+
+Our featureset above demands a variety of operations that depend upon persistent data; information that must be saved longer than a user's session or even the application's startup/shutdown lifecycle.  It's likely we won't be able to hold all of our data in memory either, so we'll need to tackle issues like serialization and concurrent, multi-user access.
+
+As our logical data analysis has exposed, we have plenty of data types that might work well arranged in a table/row/column structure provided by the _relational_ model, and that's exactly what we'll cover in Chapter 5.
+
+We'll also give a brief overview of mapping from a relational database to an object model that's more familiar and friendly using the _Java Persistence API_ and transactional support via _Enterprise JavaBeans_, and we'll be sure to test that our domain layer is properly tested against known data sets using the handy _Arquillian Persistence Extension_.
+
+==== Chapter 6 - NoSQL: Data Grids and Graph Databases
+
+While it enjoys popularity as the most widely-deployed database management system flavor, the relational model is not the only representation we have at our disposal.  In recent years a paradigm shift has been prevalent in the persistence space.
+
+NoSQL is a blanket term which has varied definitions, but generally refers to any number of database systems which do not employ the relational model.  Popular implementations include a document store (ie. http://www.mongodb.org/[MongoDB]), a key/value store (ie. http://www.jboss.org/infinispan/[Infinispan]), or a graph database (ie. http://www.neo4j.org/[Neo4j]).
+
+We've noted above that our user relationship model is a natural graph and that our attachments might be well-served from a key/value store, so Chapter 6 will take a look at implementing persistent storage through these mechanisms.
+
+==== Chapter 7 - REST and the Services Layer
+
+With our persistence layers covered, we need to expose some way of allowing users to interact with the data and carry out the business logic demanded by our requirements.  Java EE recommends encapsulating business logic in components such as _Enterprise JavaBeans_ or _Contexts and Dependency Injection (CDI)_ beans.
+
+EJBs and CDI beans are very handy for either direct calling or via a _remote procedure call_ (RPC) style, but they don't do much to inform us as users about the possible state transitions and available operations as we navigate the application.
+
+REST (_Re_ presentational _S_ tate _T_ ransfer) is an architecture of patterns that reveal services as resources in a fashion consistent with the guiding concepts behind the web itself.  Chapter 7 will introduce the exposition of enterprise services using REST guidelines, and will be implemented with Java EE's JAX-RS framework.  Additionally, we'll test our endpoints using _Arquillian Warp_ and the http://code.google.com/p/rest-assured/[REST-assured] project.
+
+==== Chapter 8 - User Interfaces
+
+With our services made available via an addressable resource due to our REST layer, we can begin to create a client of our application which allows users to interact.  This will compose our user interface.
+
+===== JavaScript / REST client
+===== Angular.js ?
+
+==== Chapter 9 - Transactions
+
+===== Tx Testing Plan
+
+==== Chapter 10 - Security
+
+Our featureset requirements clearly couple user registration with an existing Twitter account, so we'll need plenty of implementation and testing to ensure that the integrity of our user are not compromised.
+
+Chapter 10 will involve OAuth authentication using security and identify management from the http://www.jboss.org/picketlink[PicketLink] project.  We'll again look to REST-assured to help us with our client testing strategy.
+
+==== Chapter 11 - Assembly and Deployment
+
+Once we've abided by proper modular design principles, it's time to bring everything together and do some full-scale integration testing upon the final deployable archive.  Chapter 11 will combine our application and set up some test configurations to flex all layers of GeekSeek working in tandem.
+
+==== Chapter 12 - Efficiency and Quality During Development
+
+Orthogonal to the task of creating our example application, there are a series of techniques we may employ to help us to code more quickly and confidently.  These include:
+
+* The use of "remote" containers during the development lifecycle
+* Hot-swapping new code into a deployed container with http://zeroturnaround.com/software/jrebel/[JRebel]
+* Analyzing code coverage and _Arquillian Jacoco_
+* Static analysis
+
+***TODO This is still incomplete and undefined***
+
+==== Chapter 13 - Arquillian Extensibility
+
+Throughout the text we'll be covering a series of "Containers" and "Extensions" to Arquillian; these extend the core behaviours allowing us to hook into 3rd-party tools or execute some custom logic during test execution.
+
+However, the Arquillian Community can't possibly forsee all testing use cases, and new integration points are emerging all of the time.  For this reason, we provide the Arquillian _Service Provider Interface_ (SPI), a set of hooks which allow you as a user of Arquillian to extend its behavior.
+
+Chapter 13 will cover the SPI and explain the construction of your own Arquillian extension points.
+
+With our birds-eye view of the GeekSeek example application complete, it's time to dig into some code.

@@ -32,11 +32,11 @@ The role of a DBMS is very generally to store and provide access to data.  They 
 
 |============
 |Relational (RDBMS)|Like data is grouped into tables where columns represent data types and rows represent records.  Most often employs a protocol language called _Structured Query Language_ (SQL) for interaction.
-|Object-oriented|Closely mirrors in storage an object model we might use in programming.  Less widely-deployed.
-|Key/Value or NoSQL|Nested Map or document-oriented structure, becoming very popular in recent years.
+|Graph|Stores objects with relationships in a graph structure; ideal for traversing nodes.
+|Key/Value|Nested Map or document-oriented structure, becoming very popular in recent years.
 |============
 
-This chapter will focus on today's most commonly-used relational model (NoSQL will be covered in later Chapter ***X***).
+This chapter will focus on today's most commonly-used relational model (NoSQL will be covered next in Chapter 6).
 
 === The Relational Database Model
 
