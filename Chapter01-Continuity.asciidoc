@@ -2,7 +2,9 @@
 
 _"If everyone is moving forward together, then success takes care of itself." - Henry Ford_
 
-At times it may feel that the universe mischievously conspires to destroy our work.  And to some extent this is true: nature doesn't like order.  This entropy manifests itself in many ways; we open a network socket, a router fails.  We write to a file, the disk fills up.  We fail to check for valid inputs, our program encounters a null pointer.
+=== The Zen of Prevention
+
+At times it may feel that the universe mischievously conspires to destroy our work.  And to some extent this is true: nature doesn't like order.  This entropy manifests itself in many ways; we open a network socket, a router may fail.  We write to a file, the disk could fill up.  We fail to check for valid inputs, our program could encounter a null pointer.
 
 Causes of potential failure are both infinite and inevitable.  As guardians of our own code quality, we're armed with two battle tactics: Be _reactive_, or be _proactive_.
 
