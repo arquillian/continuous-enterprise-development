@@ -58,24 +58,27 @@ public class Session implements Serializable {
         return duration;
     }
 
-    public void setDuration(Duration duration) {
+    public Session setDuration(Duration duration) {
         this.duration = duration;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public Session setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public String getOutline() {
         return outline;
     }
 
-    public void setOutline(String outline) {
+    public Session setOutline(String outline) {
         this.outline = outline;
+        return this;
     }
 
     void setConference(Conference conference) {

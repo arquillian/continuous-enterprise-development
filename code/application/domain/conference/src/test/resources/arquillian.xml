@@ -5,9 +5,9 @@
 
     <defaultProtocol type="Servlet 3.0" />
 
-<!-- // Property nowhere to be found? 
+    <!-- // Property nowhere to be found?
     <extension qualifier="persistence">
         <property name="alwaysExcludeFromDataSetsComparision">*id</property>
     </extension>
- -->
+    -->
 </arquillian>

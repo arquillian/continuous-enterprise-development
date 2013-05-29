@@ -15,11 +15,11 @@ package org.cedj.app.domain.venue;
 
 import javax.ejb.Stateless;
 
-import org.cedj.app.domain.Repository;
+import org.cedj.app.domain.PersistenceRepository;
 import org.cedj.app.domain.venue.model.Venue;
 
 @Stateless
-public class VenueRepository extends Repository<Venue> {
+public class VenueRepository extends PersistenceRepository<Venue> {
 
     public VenueRepository() {
         super(Venue.class);

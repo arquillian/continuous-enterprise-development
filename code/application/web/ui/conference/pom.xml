@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.cedj</groupId>
+    <artifactId>cedj-application-web-ui-parent</artifactId>
+    <version>1.0.0-alpha-1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>cedj-application-web-ui-conference</artifactId>
+  <name>Continuous Enterprise Development in Java Example Application Web UI: Conference</name>
+  <description></description>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>org.cedj</groupId>
+      <artifactId>cedj-application-web-ui-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.cedj</groupId>
+      <artifactId>cedj-application-domain-conference</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>
+

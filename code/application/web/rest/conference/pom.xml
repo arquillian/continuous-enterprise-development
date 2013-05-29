@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.cedj</groupId>
+    <artifactId>cedj-application-web-rest-parent</artifactId>
+    <version>1.0.0-alpha-1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>cedj-application-web-rest-conference</artifactId>
+  <name>Continuous Enterprise Development in Java Example Application Web REST: Conference</name>
+  <description></description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.jboss.spec.javax.servlet</groupId>
+      <artifactId>jboss-servlet-api_3.0_spec</artifactId>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.cedj</groupId>
+      <artifactId>cedj-application-web-rest-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.cedj</groupId>
+      <artifactId>cedj-application-domain-conference</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.cedj</groupId>
+      <artifactId>cedj-application-domain-conference</artifactId>
+      <type>test-jar</type>
+    </dependency>
+  </dependencies>
+</project>

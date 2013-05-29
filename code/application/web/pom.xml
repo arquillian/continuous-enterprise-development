@@ -1,36 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!--
-  vi:ts=2:sw=2:expandtab:
--->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <!-- Parent -->
   <parent>
     <groupId>org.cedj</groupId>
     <artifactId>cedj-application-parent</artifactId>
     <version>1.0.0-alpha-1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  
-  <!-- Model Version -->
-  <modelVersion>4.0.0</modelVersion>
 
-  <!-- Artifact Configuration -->
+  <modelVersion>4.0.0</modelVersion>
   <artifactId>cedj-application-web-parent</artifactId>
   <packaging>pom</packaging>
-  <name>Continuous Enterprise Development in Java - Web Parent</name>
-  <description>Web Layer - Application example for Continuous Enterprise Development in Java</description>
+  <name>Continuous Enterprise Development in Java Example Application Web Parent</name>
+  <description></description>
 
   <dependencies>
     <dependency>
       <groupId>javax.enterprise</groupId>
       <artifactId>cdi-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.spec.javax.servlet</groupId>
-      <artifactId>jboss-servlet-api_3.0_spec</artifactId>
       <scope>provided</scope>
     </dependency>
 
@@ -40,25 +28,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.jboss.arquillian.graphene</groupId>
-      <artifactId>graphene-webdriver</artifactId>
-      <type>pom</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-drone-webdriver-depchain</artifactId>
-      <type>pom</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.jboss.arquillian.extension</groupId>
       <artifactId>arquillian-warp-impl</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-warp-jsf</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -70,8 +41,8 @@
   </dependencies>
 
   <modules>
-    <module>core</module>
-    <module>conference</module>
+    <module>rest</module>
+    <module>ui</module>
   </modules>
 
 </project>

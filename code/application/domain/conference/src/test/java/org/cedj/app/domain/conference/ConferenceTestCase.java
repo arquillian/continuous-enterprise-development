@@ -18,7 +18,6 @@ import static org.cedj.app.domain.conference.TestUtils.toDate;
 import javax.inject.Inject;
 
 import org.cedj.app.domain.CoreDeployments;
-import org.cedj.app.domain.conference.ConferenceRepository;
 import org.cedj.app.domain.conference.model.Conference;
 import org.cedj.app.domain.conference.model.Duration;
 import org.cedj.app.domain.conference.model.Session;
@@ -43,7 +42,8 @@ public class ConferenceTestCase {
     @Deployment
     public static JavaArchive deploy() {
         return ConferenceDeployments.conference().addClasses(ConferenceTestCase.class, TestUtils.class)
-            .addAsManifestResource(new StringAsset(CoreDeployments.persistence().exportAsString()), "persistence.xml")
+            .addAsManifestResource(new StringAsset(
+                CoreDeployments.persistence().exportAsString()), "persistence.xml")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 

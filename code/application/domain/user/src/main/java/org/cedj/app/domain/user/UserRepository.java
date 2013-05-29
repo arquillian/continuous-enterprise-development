@@ -15,11 +15,11 @@ package org.cedj.app.domain.user;
 
 import javax.ejb.Stateless;
 
-import org.cedj.app.domain.Repository;
+import org.cedj.app.domain.PersistenceRepository;
 import org.cedj.app.domain.user.model.User;
 
 @Stateless
-public class UserRepository extends Repository<User> {
+public class UserRepository extends PersistenceRepository<User> {
 
     public UserRepository() {
         super(User.class);

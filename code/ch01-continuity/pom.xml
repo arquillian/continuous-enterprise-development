@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!--
-  vi:ts=2:sw=2:expandtab:
--->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<!-- vi:ts=2:sw=2:expandtab: -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <!-- Parent -->
   <parent>
@@ -17,7 +16,7 @@
 
   <!-- Artifact Configuration -->
   <artifactId>cedj-ch01-continuity</artifactId>
-  <name>Chapter 1: Continuity</name>
+  <name>Continuous Enterprise Development in Java Chapter 1: Continuity</name>
   <description>Code Supporting Chapter 1: Continuity</description>
 
 
@@ -30,17 +29,17 @@
 
   <!-- Dependencies -->
   <dependencies>
-  
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
     </dependency>
 
   </dependencies>
-  
+
 </project>

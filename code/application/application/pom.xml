@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <!--
-  vi:ts=2:sw=2:expandtab:
--->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <!-- Parent -->
   <parent>
     <groupId>org.cedj</groupId>
     <artifactId>cedj-application-parent</artifactId>
@@ -13,19 +9,16 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <!-- Model Version -->
   <modelVersion>4.0.0</modelVersion>
-
-  <!-- Artifact Configuration -->
-  <artifactId>cedj-application-war</artifactId>
+  <artifactId>cedj-application</artifactId>
   <packaging>war</packaging>
-  <name>Continuous Enterprise Development in Java - Web Application</name>
-  <description>Web Application example for Continuous Enterprise Development in Java</description>
+  <name>Continuous Enterprise Development in Java Example Deployment</name>
+  <description></description>
 
   <dependencies>
     <dependency>
       <groupId>org.cedj</groupId>
-      <artifactId>cedj-application-web-conference</artifactId>
+      <artifactId>cedj-application-web-ui-conference</artifactId>
     </dependency>
   </dependencies>
 
@@ -33,12 +26,10 @@
     <plugins>
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.2</version>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
     </plugins>
   </build>
-  
 </project>

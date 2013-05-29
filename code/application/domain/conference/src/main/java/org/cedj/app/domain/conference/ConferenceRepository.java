@@ -15,11 +15,11 @@ package org.cedj.app.domain.conference;
 
 import javax.ejb.Stateless;
 
-import org.cedj.app.domain.Repository;
+import org.cedj.app.domain.PersistenceRepository;
 import org.cedj.app.domain.conference.model.Conference;
 
 @Stateless
-public class ConferenceRepository extends Repository<Conference> {
+public class ConferenceRepository extends PersistenceRepository<Conference> {
 
     public ConferenceRepository() {
         super(Conference.class);

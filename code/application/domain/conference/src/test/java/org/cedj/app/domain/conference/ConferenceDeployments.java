@@ -14,14 +14,22 @@
 package org.cedj.app.domain.conference;
 
 import org.cedj.app.domain.CoreDeployments;
-import org.cedj.app.domain.conference.ConferenceRepository;
 import org.cedj.app.domain.conference.model.Conference;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 public class ConferenceDeployments {
 
     public static JavaArchive conference() {
-        return CoreDeployments.core().addPackage(Conference.class.getPackage())
-            .addPackage(ConferenceRepository.class.getPackage());
+        return CoreDeployments.core()
+                .merge(domain())
+                .merge(repository());
+    }
+
+    public static JavaArchive domain() {
+        return CoreDeployments.core().addPackage(Conference.class.getPackage());
+    }
+
+    public static JavaArchive repository() {
+        return CoreDeployments.core().addPackage(ConferenceRepository.class.getPackage());
     }
 }

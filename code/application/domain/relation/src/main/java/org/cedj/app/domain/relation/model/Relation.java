@@ -96,33 +96,25 @@ public class Relation {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj) {
+            if (this == obj)
                 return true;
-            }
-            if (obj == null) {
+            if (obj == null)
                 return false;
-            }
-            if (getClass() != obj.getClass()) {
+            if (getClass() != obj.getClass())
                 return false;
-            }
             Key other = (Key) obj;
             if (sourceId == null) {
-                if (other.sourceId != null) {
+                if (other.sourceId != null)
                     return false;
-                }
-            } else if (!sourceId.equals(other.sourceId)) {
+            } else if (!sourceId.equals(other.sourceId))
                 return false;
-            }
             if (targetId == null) {
-                if (other.targetId != null) {
+                if (other.targetId != null)
                     return false;
-                }
-            } else if (!targetId.equals(other.targetId)) {
+            } else if (!targetId.equals(other.targetId))
                 return false;
-            }
-            if (type != other.type) {
+            if (type != other.type)
                 return false;
-            }
             return true;
         }
     }

@@ -13,11 +13,14 @@
  */
 package org.cedj.app.domain.conference.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
-public class Duration {
+public class Duration implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @NotNull
     private Date start;
