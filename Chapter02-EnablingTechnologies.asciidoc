@@ -35,7 +35,7 @@ One very nice feature of Maven is that it strives for _"convention over configur
 
 At the core of the Maven engine is a sophisticated _dependency management_ solution capable of resolving libraries by name from a http://search.maven.org/[Central Respoitory] (or additionally-configured repository) onto a user's local system.  This feature allows us to skip the manual process of adding dependencies into our version control system, and allows us to instead fetch them on-demand as part of the build process.  As an added bonus, the requisite dependencies for all projects consuming ours are well-documented and automatically fetched for us.
 
-*** INSERT IMAGE : Project A depends on B depends on C, gets all as requested from the Central Repo ***
+***INSERT IMAGE : Project A depends on B depends on C, gets all as requested from the Central Repo***
 
 Maven is not without its detractors, however.  It's been criticized for a few points, among them:
 
@@ -70,7 +70,7 @@ Overall, the goal of Forge is to ease project setup at all stages of development
 
 From the moment we collaborate on a project with others or would like to inspect the evolution of our code over time, we need some form of _version control_.  Until recently, the most common paradigm for synchronizing access to a shared codebase was the _client/server_ model wherein developers may keep a local working copy and check their changes into a centralized server.  
 
-*** INSERT IMAGE SHOWING CENTRALIZED VERSION CONTROL ***
+***INSERT IMAGE SHOWING CENTRALIZED VERSION CONTROL***
 
 Some systems utilize file-level locking to ensure that no conflicts arise during development; others allow concurrent access at the file granularity but cue the developer to resolve line-level conflicts upon commiting changes upstream.
 
@@ -78,7 +78,7 @@ Likely the widest-deployed client/server version control system (VCS) from the 1
 
 These days, the centralized model has been superceded by _distributed version control systems_ (DVCS), which is differentiated by its ability to store the full repository including all history in any number of nodes.
 
-*** INSERT IMAGE SHOWING DVCS ***
+***INSERT IMAGE SHOWING DVCS***
 
 This layout creates a "pull model", where developers on a common project are given the authority over their own repository, free to incorporate changes from others (or not!).  At first, this can be a confusing topic to grasp for users vested in the centralized "push model", but its our opinion that the benefits of this design easily justify the initial confusion inherent when considering many full-fledged repositories representing the same project.
 
@@ -138,7 +138,7 @@ The Arquillian project adheres to three core principles:
 * *Tests should be executable from both the IDE and the build tool*.  By leveraging the IDE, the developer can skip the build for a faster turnaround and has a familiar environment for debugging. These benefits shouldn’t sacrifice the ability to run the tests in continuous integration using a build tool.
 * *The platform should extend or integrate existing test frameworks*.  An extensible architecture encourages reuse of existing software and fosters a unified Java testing ecosystem.  Regardless of how complex it becomes, executing an Arquillian test is as simple as selecting “Run As > Test” in the IDE or executing the “test” goal from the build tool.
 
-*** NOTE: Get a better image for this
+***NOTE: Get a better image for this***
 image:images/ch02-enabling_technologies/shrinkwrap_runas_junit.png["RunAs > JUnit"]
 
 ==== ShrinkWrap
@@ -359,6 +359,244 @@ The code for running an import to roundtrip the previous example might look like
 Note how we can pass +ZipImporter+ into the +ShrinkWrap.create+ method, as it's +Assignable+ as well!  Beginning to notice a theme here?
 
 This concludes our brief introduction into manipulating archive content with ShrinkWrap.
+
+==== ShrinkWrap Resolvers
+
+While ShrinkWrap is ideally-suited to creating new archives containing byte-based resources, often our applications are composed from pre-built libraries into more complex deployments.  These may bundle other archives together, for instance in the following example _Web application ARchive_ (WAR):
+
+----
+$> jar -tvf myApplication.war
+     0 Tue Apr 23 17:01:08 MST 2013 META-INF/
+   128 Tue Apr 23 17:01:06 MST 2013 META-INF/MANIFEST.MF
+     0 Tue Apr 23 17:01:08 MST 2013 WEB-INF/
+     0 Tue Apr 23 17:01:08 MST 2013 WEB-INF/classes/
+     0 Tue Apr 23 17:01:08 MST 2013 WEB-INF/lib/
+  3654 Tue Apr 23 16:59:44 MST 2013 WEB-INF/lib/hibernate.jar
+  3800 Tue Apr 23 17:01:00 MST 2013 WEB-INF/lib/commons-io.jar
+  4015 Tue Apr 23 17:00:44 MST 2013 WEB-INF/lib/myEjbModule.jar
+----
+
+As we can see, under +WEB-INF/lib+ there are a couple of thirdparty libraries used as dependencies by our own code, and an _Enterprise JavaBeans_ (EJB) module that we've written for our application.  This packaging structure is consistent with the final deployments used by most WARs and _Enterprise application ARchives_ (EARs).
+
+Often we don't control the construction of these libraries, and we certainly shouldn't be in the business of re-assembling them (and hence further differentiating our tests from the our production runtime deployments).  With the advent of Maven and other build systems, typically thirdparty libraries and our own dependent modules are obtained from a backing software _repository_.  In this case we supply a series of coordinates which uniquely identifies an artifact in the repository, and resolve the target files from there.
+
+That is precisely the aim of the ShrinkWrap Resolvers project; it is a Java API to obtain artifacts from a repository system.  Currently implemented are grammars and support for Maven-based respository structures (this is separate from the use of Maven as a project management system or build tool; it's possible to use a Maven repository layout with other build systems).
+
+ShrinkWrap Resolvers is comprised of the following modules:
+
+|=========================
+|_Name_|_Maven Coordinates_
+|API|org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-api
+|SPI|org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-spi
+|Maven API|org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-api-maven
+|Maven SPI|org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-spi-maven
+|Maven Implementation|org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-impl-maven
+|Maven Implementation with Archive Integration|org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-impl-maven-archive
+|=========================
+
+The separation between the Maven and non-Maven modules is there to enforce modular design and separate out generic resolution from Maven-specific grammars, should the project support other mechanisms in the future.
+
+Obtaining ShrinkWrap Resolvers for use in your system can be done in a single pass by declaring a dependency upon the +depchain+ module in a Maven +pom.xml+:
+
+[source,xml]
+----
+<dependencies>
+    <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-depchain</artifactId>
+      <version>${version.shrinkwrap.resolvers}</version>
+    </dependency>
+    ...
+</dependencies>
+----
+
+This will bring the APIs into the compilation classpath and the SPIs and Implementation modules into the runtime classpaths (which will not be transitively inherited, as per Maven rules in +runtime+ scope).
+
+Alternatively, you can have finer-grained control over using ShrinkWrap Resolvers by bringing in each module manually:
+
+[source,xml]
+----
+ <dependencies>
+    <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-spi</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-api-maven</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.jboss.shrinkwrap.resolver</groupId>
+        <artifactId>shrinkwrap-resolver-spi-maven</artifactId>
+        <version>${project.version}</version>
+        <scope>runtime</scope>
+      </dependency>
+    <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-impl-maven-archive</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    ...
+  </dependencies>
+----
+
+The general entry point for resolution is the convenience +org.jboss.shrinkwrap.resolver.api.maven.Maven+ class, which has static hooks to obtain a new +org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem+.
+
+[source,java]
+----
+MavenResolverSystem resolver = Maven.resolver();
+----
+
+This is really a shorthand for the typesafe and generic call via the standard +org.jboss.shrinkwrap.resolver.api.Resolvers+ API (which, as mentioned before, is not bound to Maven-specific grammars):
+
+[source,java]
+----
+MavenResolverSystem resolver = Resolvers.use(MavenResolverSystem.class);
+----
+
+We may also want to configure our +MavenResolverSystem+ via some +settings.xml+ file on the filesystem or through the +--classpath+ (ie. visible to the +Thread+ Context +ClassLoader+ or some other explicit +ClassLoader+, and that's easily enough done:
+
+[source,java]
+----
+MavenResolverSystem resolverConfiguredFromFile = Maven.configureResolver().fromFile("~/.m2/settings.xml");
+MavenResolverSystem resolverConfiguredFromClResource = Maven.configureResolver().fromClassloaderResource("settings.xml");
+----
+
+This will give us a +MavenResolverSystem+ which should act similar to a Maven build invoked using the +-s [filename]+ switch.
+
+From there, we can begin to carry out all kinds of resolution requests.  Under the hood, the mechanism is powered by the same engine running Maven and the http://www.sonatype.org/m2eclipse/[m2eclipse] IDE Plugin: the http://www.sonatype.org/aether[Aether] project.
+
+Let's say we'd like to resolve a single artifact from its Maven coordinates (_GAV_, or "groupId, artifactId, and version") as a +File+ without any of its dependencies:
+
+[source,java]
+----
+File artifact = Maven.resolver().resolve("G:A:V").withoutTransitivity()
+                .asSingle(File.class);
+----
+
+We can also obtain an artifact and all of its dependencies by enabling transitivity:
+
+[source,java]
+----
+File[] files = Maven.resolver().resolve("G:A:V").withTransitivity().as(File.class);
+----
+
+You'll note the +as+ and +asSingle+ methods allow us to specify other formats to receive, so we may prefer to resolve these as a ShrinkWrap +JavaArchive+.
+
+[source,java]
+----
+JavaArchive artifact = Maven.resolver().resolve("G:A:V").withoutTransitivity()
+                .asSingle(JavaArchive.class);
+----
+
+Other valid types to these methods include +InputStream+ and +org.jboss.shrinkwrap.resolver.api.maven.MavenResolvedArtifact+.  There are shortcut methods for these as well:
+
+[source,java]
+----
+File file = Maven.resolver().resolve("G:A:V").withoutTransitivity()
+                 // Resolve as a single file; error if more than one result was resolved
+                .asSingleFile();
+File[] artifactAndDependencies = Maven.resolver().resolve("G:A:V").withTransitivity()
+                // Return all resolved artifacts as an array of Files
+                .asFile();
+----
+
+The +MavenResolvedArtifact+ grants us a peek into some of the resolution data:
+
+[source,java]
+----
+MavenResolvedArtifact artifact = Maven.resolver().resolve("G:A:V").withoutTransitivity()
+                .asSingle(MavenResolvedArtifact.class);
+MavenCoordinate coordinate = artifact.getCoordinate();
+String groupId = coordinate.getGroupId();
+String artifactId = coordinate.getArtifactId();
+String version = coordinate.getVersion();
+String resolvedVersion = artifact.getResolvedVersion();
+String type = coordinate.getType().toString();
+boolean isSnapshot = artifact.isSnapshotVersion();
+String classifier = coordinate.getClassifier();
+File file = artifact.asFile();
+File file2 = artifact.as(File.class);
+InputStream in = artifact.as(InputStream.class);
+InputStream in2 = artifact.as(InputStream.class);
+JavaArchive archive = artifact.as(JavaArchive.class);
+----
+
+Perhaps we'd like to work only from the backing local repositories on disk, skipping any defined remote repositories (including Maven Central); this is done by setting +offline+ on the +MavenResolverSystem:
+
+[source,java]
+----
+Maven.resolver().offline(true).resolve("groupId:artifactId:version").withoutTransitivity().asSingle(File.class);
+----
+
+We can also have finer-grained control over the repositories used.  For instance, we may wish to disable resolution from the +--classpath+ (which is a default):
+
+[source,java]
+----
+Maven.resolver().resolve("G:A:V").withClassPathResolution(false)
+            .withTransitivity().asFile();
+----
+
+Or maybe we'd like to not consult the Maven Central Repository during resolution:
+
+[source,java]
+----
+Maven.resolver().resolve("G:A:V").withMavenCentralRepo(false).
+            withTransitivity().asFile();
+----
+
+Often, we have a Maven _POM_ (Project Object Model) file which contains dependency information about our current project.  In many cases it might be more desireable to pull information from there rather than hardcode and potentially duplicate dependency information in our code.  Therefore ShrinkWrap Resolvers supports the "loading" of POM metadata from a +File+ or +ClassLoader+ resource:
+
+[source,java]
+----
+// Load from File
+Maven.resolver().loadPomFromFile("path/to/pom").resolve("G:A").withoutTransitivity()
+                .asFile();
+// Load From CL resource
+Maven.resolver().loadPomFromClassloaderResource("pom.xml").resolve("G:A").withoutTransitivity()
+                .asFile();
+----
+
+In the above code, we can omit the "V" portion of the _GAV_ coordinates, the version, because that information is defined in the +dependencies+ section of the loaded POM.
+
+Or perhaps we'd like to obtain all dependencies defined in the POM:
+
+[source,java]
+----
+File[] allDependencies = Maven.resolver().loadPomFromFile("path/to/pom").importRuntimeAndTestDependencies().asFile();
+----
+
+We can also obtain the runtime dependencies only:
+
+[source,java]
+----
+File[] runtimeDependencies = Maven.resolver().loadPomFromFile("path/to/pom").importRuntimeDependencies().asFile();
+----
+
+The +loadPomFromFile+ and +loadPomFromClassloaderResource+ methods both have overloaded variants to accept one or more Maven profiles to enable during execution, similar to providing the +-P [profileName]+ option on the command line:
+
+[source,java]
+----
+Maven.resolver().loadPomFromFile("path/to/pom", "profileName").
+		importRuntimeDependencies().asFile();
+----
+
+By enabling resolution in a friendly, intuitive API, ShrinkWrap Resolvers arms ShrinkWrap archives with a powerful mechanism to create deployment units which are applicable in real-world scenarios that demand libraries and modules not owned by the current project.
 
 === Runtime
 
