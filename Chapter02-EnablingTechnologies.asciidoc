@@ -268,7 +268,7 @@ Asset asset = new Asset() {
 };
 ----
 
-The +Archive:add+ method allows us to pass in some @Asset@ content and add it under an @ArchivePath@.
+The +Archive:add+ method allows us to pass in some +Asset+ content and add it under an +ArchivePath+.
 
 [source,java]
 ----
