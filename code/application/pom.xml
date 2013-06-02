@@ -29,7 +29,7 @@
     <version.arquillian_persistence>1.0.0.Alpha6</version.arquillian_persistence>
     <version.arquillian_drone>1.1.1.Final</version.arquillian_drone>
     <version.arquillian_graphene>2.0.0.Alpha3</version.arquillian_graphene>
-    <version.arquillian_warp>1.0.0.Beta1-SNAPSHOT</version.arquillian_warp>
+    <version.arquillian_warp>1.0.0.Alpha2</version.arquillian_warp>
     <version.arquillian_warp_rest>1.0.0.Final-SNAPSHOT</version.arquillian_warp_rest>
     <version.restassured>1.8.0</version.restassured>
     <version.wildfly>8.0.0.Alpha1</version.wildfly>
@@ -88,6 +88,7 @@
         <version>${version.arquillian_persistence}</version>
         <scope>test</scope>
       </dependency>
+<!-- Warp JaxRs currently not used, disable 
       <dependency>
         <groupId>org.jboss.arquillian.extension</groupId>
         <artifactId>arquillian-warp-jaxrs-bom</artifactId>
@@ -95,6 +96,7 @@
         <scope>import</scope>
         <type>pom</type>
       </dependency>
+-->
       <dependency>
         <groupId>com.jayway.restassured</groupId>
         <artifactId>rest-assured</artifactId>

@@ -29,6 +29,7 @@
 
   <profiles>
     <!-- Only Wildfly use RestEasy -->
+<!-- Warp JaxRs currently not used, disable
     <profile>
       <id>arq-wildfly-remote</id>
       <dependencies>
@@ -49,6 +50,7 @@
         </dependency>
       </dependencies>
     </profile>
+-->
   </profiles>
 
   <modules>

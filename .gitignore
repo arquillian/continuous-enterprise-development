@@ -2,6 +2,7 @@ target
 .classpath
 .project
 .settings
+.checkstyle
 test-output
 log.txt
 .idea
