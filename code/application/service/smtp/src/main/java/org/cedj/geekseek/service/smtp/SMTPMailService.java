@@ -119,13 +119,13 @@ public class SMTPMailService {
         }
     }
 
-    private void close(Connection connection) {
+    private void close(final Connection connection) {
         try {
             if(connection != null) {
                 connection.close();
             }
         }
-        catch(Exception e) {
+        catch(final Exception e) {
             throw new RuntimeException(e);
         }
     }

@@ -1,0 +1,668 @@
+== EJB, CDI and the Services Layer
+
+_"The best way to find yourself is to lose yourself in the service of others." - Mahatma Gandhi_
+
+The code we’ve developed and tested up to this point has dealt with data: organizing, accessing, mutating, and transforming it into formats more comfortable to us as application developers. We’ve mentioned that these are the nouns of our GeekSeek project; now it’s time to put these to some good use and take _action_.
+
+_Business logic_ governs the behaviors which power our applications. As compared with more generic (and _cross-cutting_) concerns which may be abstracted - security, transactions, object-relational mapping, resource management - business logic lies at the heart of our projects. It is unique to our needs, and no one else can write it for us.
+
+That said, the cross cutting concerns mentioned above (and many more!) are all commonly-demanded by our business needs. For instance, imagine we have a series of services, each of which needing to be accessed by and authenticated and authorized user, and in the context of a transaction. If we were diligently applying proper modularization and encapsulation, we might implement separate functions for the transactional and security enforcement, then call these from our services:
+
+*INSERT IMAGE SHOWING MANY SERVICES CALLING A AT THE HEAD AND FOOT A COMMON TX AND SECURITY FUNCTION (Fig 07-01)*
+
+A glaring problem with this approach is that while we’ve nicely extracted out the logic for our security and transactions for reuse, we must still manually _invoke_ them, sprinkling these method calls at the head and foot of every function requiring their use. Additionally, we may have to pass around contextual objects which know about the state of the current user or transactional registration (though in practice, these are commonly associated with a +Thread+, thus able to fly under the visible API radar in an obfuscated context).
+
+Things get more complicated when we introduce _dependent_ services. A +UserRegistration+ function may in turn call many finer-grained services like +SendEmail+, +PutUserInDatabase+, and +GenerateHashOfPassword+. This composition is desirable because it separates concerns, but we’re left with the problem of _looking up_ or locating each of this disparate services from +UserRegistration+. Ultimately this adds to the "plumbing" code which provides no benefit to us aside from hooking our cleanly-decoupled modules together. While this has historically been addressed by employing a technique known as the _Service Locator Pattern_, for reasons we’ll soon see, this is a largely outdated and inferior approach.
+
+A more subtle, yet very important, issue that arises with pure _POJO_ (Plain Old Java Object) programming in a multi-user environment is one of _shared state_. Consider the following code:
+
+[source,java]
+----
+public class UserService {
+
+  /** Cached flag denoting if our current user has logged in **/
+  private boolean isLoggedIn;
+
+  public boolean authenticate(final String userName,
+    final String password){
+
+    // First check if we're already logged in
+    if(isLoggedIn){
+      return true;
+    }
+
+    // Else hash the password, check against the hash
+    // in the database, and return true if and
+    // only if they match
+    /** Omitted for brevity **/
+
+  }
+}
+----
+
+This +UserService+ is clearly meant to be associated with a current user session, and thus has what we call _conversational scope_ confined to that session. When writing manual POJO services, the onus is upon us as developers to ensure that this is enforced; imagine if UserB were to come along and receive the object that UserA had already set +isLoggedIn+ to +true+? Scope confinement is vitally important to the integrity of our system, and we have to be very careful when rolling our own solutions.
+
+In this chapter we'll be examining each of these complications and a proposed solution when tackling the testable development of a common, and seemingly innocuous, business requirement: sending email from a Java EE-based application.
+
+=== Use Case: Send Email On New User Signup
+
+Web-based applications offer few avenues to push information to their users once offline; perhaps the most prevalent is through the use of email.  We see this in a variety of user stories: "Confirm Email Address", "Reset Password", and "Welcome New User" are all subject lines we've grown to expect from the sites we use.  It's fitting, then, that we devise a simple strategy to send email from our application which may be easily reused by the more coarsely-grained operations.
+
+Our GeekSeek application will therefore introduce the requirement: "Send an Email to the new User upon successful Signup"
+
+At first blush, this seems like a farily trivial problems to solve.  The http://www.oracle.com/technetwork/java/javamail/index.html[JavaMail] API is straightforward enough to use (though a bit dated), and is included as part of the Java EE platform.
+
+Unfortunately, there are many issues to consider beyond the boilerplate code required to send the email itself.
+
+_Should we block (wait) while the mail message is sent to the SMTP server?_ Connecting to an external service can take some time, depending upon how it handles open connections.  The delivery of the email isn't designed to be immediate, so there's not much sense forcing the user to wait while we connect to an SMTP server, construct a +MimeMessage+, and send.
+
+_What if sending the email fails?  Should the enclosing user registration action which called the email service fail, too?_  Sending the email is, in our case, part of a welcome operation.  A new user registration doesn't strictly *need* this to succeed as we won't be relying upon email to validate the user's identity.  Still, we'd like to make every available effort to ensure that the email goes through, independent of the user registration action.  And we'd like to have some notification and options to handle emails that were attempted to be sent, but have failed.
+
+_How do we test to ensure that the emails we've sent are received?  How do we validate the email's contents are correct?_  Even if we don't dispatch the communication with the SMTP server to a new Thread, interacting with this external process makes for an asynchronous action.  Asynchronous testing is not always the most simple process to set up, but this does not excuse us from the responsibility of ensuring that our email service is worked as designed.
+
+==== The SMTP Service
+
+We'll begin our example with the construction of a generic +SMTPMailService+.  As the name implies, its job will be to act as our Java interface to perform SMTP operations.  Specifically, we'll write this to send email.
+
+First we'll make a self-explanatory value object to encapsulate the fields needed to send an email message.  This is implemented as a mutable builder for ease-of-use:
+
+[source,java]
+----
+public class MailMessageBuilder implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private static final String[] EMPTY = new String[]{};
+    private String from;
+    private String subject;
+    private String body;
+    private String contentType;
+    private final Collection<String> toAddresses = new HashSet<String>();
+
+    public MailMessageBuilder from(final String from) throws IllegalArgumentException {
+        if (from == null || from.length() == 0) {
+            throw new IllegalArgumentException("from address must be specified");
+        }
+        this.from = from;
+        return this;
+    }
+    // Other fluent API methods omitted for brevity; see full source for details
+----
+
++MailMessageBuilder+ has a +build+ method which may then return an immutable view:
+
+[source,java]
+----
+public MailMessage build() throws IllegalStateException {
+
+        // Validate
+        if (from == null || from.length() == 0) {
+            throw new IllegalStateException("from address must be specified");
+        }
+        if (toAddresses.size() == 0) {
+            throw new IllegalStateException("at least one to address must be specified");
+        }
+        if (subject == null || subject.length() == 0) {
+            throw new IllegalStateException("subject must be specified");
+        }
+        if (body == null || body.length() == 0) {
+            throw new IllegalStateException("body must be specified");
+        }
+        if (contentType == null || contentType.length() == 0) {
+            throw new IllegalStateException("contentType must be specified");
+        }
+
+        // Construct immutable object and return
+        return new MailMessage(from, toAddresses.toArray(EMPTY), subject, body, contentType);
+
+    }
+----
+
+It's this immutable +MailMessageBuilder.MailMessage+ which will be safely passed between our services.
+
+With our value object defined, we can now create our +SMTPMailService+.  We know that we'll need to connect to some external SMTP server via the +JavaMail+ API, and Java EE allows injection of these via the +@Resource+ annotation (though the mechanics of exactly where some services are bound is vendor-dependent.).  Also, we know that this +SMTPMailService+ is meant to be shared by all users running the application, and won't have any session-specific state.  For these reasons, we'll implement the +SMTPMailService+ as a Singleton Session EJB.  Note that a a Stateless Session Bean (for use of a pool of instances) might work in an equally-appropriate fashion.
+
+[source,java]
+----
+@Singleton
+@LocalBean
+@TransactionAttribute(value = TransactionAttributeType.SUPPORTS)
+public class SMTPMailService {
+----
+
+The above is our Singleton bean declaration.  Of particular note is the +TransactionAttributeType.SUPPORTS+ value for +@TransactionAttribute+, which will apply to all business methods of this EJB.
+
+An SMTP server is an external resource which is not transactionally-aware.  Therefore, we'll have to make note of any exceptions and ensure that if we want a transaction rolled back, we either explicitly tell that to the +TransactionManager+ or throw an unchecked exception which will signal the EJB container to mark any currently-executing transaction for rollback.
+
+We're making a general-purpose SMTP service here, so we may not always know the appropriate actions to take with regards to transactions.  The default for EJB is +@TransactionAttributeType.MANDATORY+, which creates a transaction if one is not already in flight.  That's not really appropriate here; the SMTP server with which we interact is not transactional, it it'd be silly to sacrifice the overhead of starting a transaction when we're not even dealing with a resource which will respect its semantics!  +@TransactionAttributeType.SUPPORTS+, which we've used here, will accept existing transactions if one is in play, or do nothing if we're invoked outside of a transactional context.
+
+Now we need to define a method to do the dirty work: accept our +MailMessage+ as a parameter and send it along to the SMTP server.  The +JavaMail+ API will act as our conduit to connect to the SMTP server, so we'll take advantage of Java EE's +@Resource+ annotation to inject some relevant supporting services into our +SMTPMailService+.
+
+With our service and class declaration handled, we're now ready to inject the external hooks we'll need to send email.  The Java EE container will provide these for us:
+
+[source,java]
+----
+@Resource(lookup = SMTPMailServiceConstants.JNDI_BIND_NAME_MAIL_SESSION)
+private javax.mail.Session mailSession;
+
+@Resource(lookup = "java:/ConnectionFactory")
+private javax.jms.ConnectionFactory connectionFactory;
+
+@Resource(lookup = SMTPMailServiceConstants.JNDI_BIND_NAME_SMTP_QUEUE)
+private javax.jms.Queue smtpQueue;
+----
+
+The +@Resource.lookup+ attribute has vendor-specific function, but most often maps to a JNDI name.  This use case has been coded to run specifically on the JBoss family of application servers, so some adjustment to these values may be necessary in your environment.  To that end we've centralized some JNDI names in a small interface:
+
+[source,java]
+----
+public interface SMTPMailServiceConstants {
+
+    /**
+     * Name in JNDI to which the SMTP {@link javax.mail.Session} will be bound
+     */
+    String JNDI_BIND_NAME_MAIL_SESSION = "java:jboss/mail/GeekSeekSMTP";
+
+    /**
+     * Name in JNDI to which the SMTP Queue is bound
+     */
+    String JNDI_BIND_NAME_SMTP_QUEUE = "java:/jms/queue/GeekSeekSMTP";
+}
+----
+
+Note that we have put into place a field called +smtpQueue+, of type +javax.jms.Queue+.  This is how we'll handle two of the "hidden" problems with testable development of sending email raised earlier.
+
+First, sending a message to a JMS Queue is a "fire and forget" operation.  Once the message is received by the queue (which is in-process, unlike our production SMTP server), control is returned to the caller and the handling of the message is processed asynchronously.  If we create a listener to pull messages off the queue and send emails, then we won't have to wait for this process to complete.  This gives us asynchrony for free.
+
+The other tangible benefit to using a JMS queue to send messages is in the guaranteed processing afforded by JMS.  If there's a temporary error in sending the email, for instance a connection problem to the remote SMTP server, the messaging server will dutifully retry (as configured) a number of times.  This process will even survive server restarts; if for some reason all of these retries fail to yield a successful result (again, after some configured number of tries or timeout), messages can be forwarded to the DLQ (dead-letter queue) for manual inspection by system administrators later.  This gives us some assurance that we won't lose messages we intended to send, and we also won't have to fail our user registration process entirely if there's some issue with sending the welcome email.
+
+In WildFly / JBossAS7 / JBoss EAP, we deploy a JMS Queue with the deployment descriptor +geekseek-smtp-queue-jms.xml+ (the filename may be anything located in the EJB JAR's +META-INF+ and ending with the suffix +-jms.xml+):
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<messaging-deployment xmlns="urn:jboss:messaging-deployment:1.0">
+    <hornetq-server>
+        <jms-destinations>
+            <jms-queue name="GeekSeekSMTP">
+                <entry name="jms/queue/GeekSeekSMTP"/>
+            </jms-queue>
+        </jms-destinations>
+    </hornetq-server>
+</messaging-deployment>
+----
+
+This will bind a new JMS Queue to the JNDI address +java:/jms/queue/GeekSeekSMTP+, which we reference above in the +@Resource.lookup+ attribute.
+
+With our supporting services and resources hooked in and available to our EJB, we can code the +sendMail+ method.  As noted before, this is likely the least interesting part of the use case, even though it's technically the code which drives the entire feature.
+
+[source,java]
+----
+public void sendMail(final MailMessageBuilder.MailMessage mailMessage) 
+  throws IllegalArgumentException {
+
+    // Precondition check
+    if (mailMessage == null) {
+        throw new IllegalArgumentException("Mail message must be specified");
+    }
+
+    try {
+        // Translate
+        final MimeMessage mime = new MimeMessage(mailSession);
+        final Address from = new InternetAddress(mailMessage.from);
+        final int numToAddresses = mailMessage.to.length;
+        final Address[] to = new InternetAddress[numToAddresses];
+        for (int i = 0; i < numToAddresses; i++) {
+            to[i] = new InternetAddress(mailMessage.to[i]);
+        }
+        mime.setFrom(from);
+        mime.setRecipients(Message.RecipientType.TO, to);
+        mime.setSubject(mailMessage.subject);
+        mime.setContent(mailMessage.body, mailMessage.contentType);
+        Transport.send(mime);
+    } // Puke on error
+    catch (final javax.mail.MessagingException e) {
+        throw new RuntimeException("Error in sending " + mailMessage, e);
+    }
+}
+----
+
+Nothing special going on here; we translate our own value object +MailMessageBuilder.MailMessage+ into fields required by JavaMail's +MimeMessage+, and send.  Any errors we'll wrap in a +RuntimeException+ to be handled by the EJB container (resulting in transaction rollback if one is being used).
+
+This method, of course, is synchronous up until the mail message is delivered to the SMTP server.  We noted earlier that it's likely better in a multiuser environment to queue the mail for sending such that we don't have to wait on interaction with this external resource, so we'll also supply a +queueMailForDelivery+ method to send our desired message to a JMS queue.
+
+[source,java]
+----
+public void queueMailForDelivery(final MailMessageBuilder.MailMessage mailMessage)
+        throws IllegalArgumentException {
+
+    // Precondition check
+    if (mailMessage == null) {
+        throw new IllegalArgumentException("Mail message must be specified");
+    }
+
+    try {
+        final Connection connection = connectionFactory.createConnection();
+        final javax.jms.Session session = connection
+          .createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
+        final MessageProducer producer = session.createProducer(smtpQueue);
+        final ObjectMessage jmsMessage = session.createObjectMessage(mailMessage);
+        producer.send(jmsMessage);
+    } catch (final JMSException jmse) {
+        throw new RuntimeException("Could not deliver mail message to the outgoing queue", 
+          jmse);
+    }
+}
+----
+
+Sending the JMS message doesn't fully get our mail delivered, however; it just sends it to a JMS queue.  We still need a component to pull this JMS message off the queue, unwrap the +MailMessage+ it contains, and call upon our +sendMail+ method to send the mail.  For this we can again turn to EJB, which provides listeners to any JCA (Java Connector Architecture) backend by means of the _Message-Driven Bean_ (MDB).  Our MDB will be configured as a JMS +Queue+ listener, and is defined:
+
+* +org.cedj.geekseek.service.smtp.SMTPMessageConsumer+
+[source,java]
+----
+@MessageDriven(activationConfig = {
+        @ActivationConfigProperty(propertyName = "acknowledgeMode", 
+          propertyValue = "Auto-acknowledge"),
+        @ActivationConfigProperty(propertyName = "destinationType", 
+          propertyValue = "javax.jms.Queue"),
+        @ActivationConfigProperty(propertyName = "destination", 
+          propertyValue = SMTPMailServiceConstants.JNDI_BIND_NAME_SMTP_QUEUE)})
+public class SMTPMessageConsumer implements MessageListener {
+----
+
+The +ActivationConfigProperty+ annotations are in place to tell the EJB container how to connect to the backing JCA resource, in this case our queue.  Because MBDs are business components just like EJB Session Beans, we have injection at our disposal, which we'll use to obtain a reference back to the +SMTPMailService+
+
+[source,java]
+----
+@EJB
+private SMTPMailService mailService;
+----
+
+Now, our +SMTPMessageConsumer+ is registered by the EJB container as a listener upon our queue; when a new message arrives, we'll receive a callback to the +onMessage+ method.  By implementing this, we can unwrap the +MailMessage+ and send it directly to the +SMTPMailService+ to be sent.
+
+[source,java]
+----
+@Override
+public void onMessage(final javax.jms.Message message) {
+
+    // Casting and unwrapping
+    final ObjectMessage objectMessage;
+    try {
+        objectMessage = ObjectMessage.class.cast(message);
+    } catch (final ClassCastException cce) {
+        throw new RuntimeException(
+          "Incorrect message type sent to object message consumer; got:"
+          + message.getClass().getSimpleName(), cce);
+    }
+    final MailMessageBuilder.MailMessage mailMessage;
+    try {
+        final Object obj = objectMessage.getObject();
+        mailMessage = MailMessageBuilder.MailMessage.class.cast(obj);
+    } catch (final JMSException jmse) {
+        throw new RuntimeException("Could not unwrap JMS Message", jmse);
+    } catch (final ClassCastException cce) {
+        throw new RuntimeException("Expected message contents of type "
+                + MailMessageBuilder.MailMessage.class.getSimpleName(), cce);
+    }
+
+    // Send the mail
+    mailService.sendMail(mailMessage);
+}
+----
+
+These compose all the working pieces of the business logic supporting this feature.  However, the true challenge lies in verifying that everything works as expected.
+
+==== A Test-Only SMTP Server
+
+The JavaMail API nicely abstracts out connections to an SMTP server, and we've built our +SMTPMailService+ to pull *any* configured JavaMail +Session+ from JNDI.  This gives us the option to provide a test-only SMTP server for use development and staging environments with only configuration changes differing between these and the production setup.  While it's true that this text has generally discouraged the use of mock objects and services, that's a guideline.  In this instance, we'll absolutely need a hook that differs from production in order to validate that emails are being delivered as expected.  Otherwise, we'd be using a real SMTP service which could send emails out to real email addresses.
+
+For our own testing, we'll aim to change not the code in our +SMTPMailService+, but configure it to point to an embeddable SMTP server; one that will allow us to see what messages were received and do some assertion checking to be sure the contents are as expected.  For this we look to the https://code.google.com/p/subetha/[SubEtha] project, an open-source Java SMTP server which fulfills our requirements nicely.
+
+We'll let our SMTP Server run in the same process as our application server and tests; this will allow us to use shared memory and set guards to handle the asynchrony implicit in dispatching messages to an SMTP server.
+
+A nice technique is to install SubEtha to come up alongside our application.  In Java EE, the mechanism for creating application start events is by implementing a +PostConstruct+ callback on a Singleton Session EJB that's configured to eagerly-load.  This is done by defining a new service:
+
++org.cedj.geekseek.service.smtp.SMTPServerService+
+[source,java]
+----
+import javax.ejb.LocalBean;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import javax.ejb.TransactionAttribute;
+
+/**
+ * Test fixture; installs an embedded SMTP Server on startup, shuts it down on undeployment.
+ * Allows for pluggable handling of incoming messages for use in testing.
+ */
+@Singleton
+@Startup
+@LocalBean
+@TransactionAttribute(TransactionAttributeType.SUPPORTS)
+public class SMTPServerService {
+----
+
+The +@Startup+ annotation will trigger this EJB bean instance to be created alongside application start, which in turn will lead to the container invoking the +PostConstruct+ method:
+
+[source,java]
+----
+private SMTPServer server;
+private final PluggableReceiveHandlerMessageListener listener = 
+  new PluggableReceiveHandlerMessageListener();
+
+@javax.annotation.PostConstruct
+public void startup() throws Exception {
+  server = new SMTPServer(new SimpleMessageListenerAdapter(listener));
+  server.setBindAddress(InetAddress.getLoopbackAddress());
+  server.setPort(BIND_PORT);
+  server.start();
+}
+----
+
+This gives us an opportunity to create a new +SMTPServer+ instance, register a handler (which defines what will be done when a new message is received), and start it on our configured port on +localhost+.  The companion +PreDestroy+ callback method provides for graceful shutdown of this server when the application is undeployed and the Singleton EJB instance brought out of service:
+
+[source,java]
+----
+@javax.annotation.@PreDestroy
+public void shutdown() throws Exception {
+  server.stop();
+}
+----
+
+In our test +SMTPServerService+, we also define an inner +TestHandler+ interface;  the simple type our tests may implement, containing one method, +handle(String)+:
+
+[source,java]
+----
+interface TestReceiveHandler {
+    void handle(String data) throws AssertionFailedError;
+}
+----
+
+The +TestReceiveHandler+ will serve as our extension point for tests to apply behavior fitting their requirements.  This is done via the +setHandler(TestReceiveHandler+) method on our test EJB:
+
+[source,java]
+----
+public void setHandler(final TestReceiveHandler handler) {
+    this.listener.setHandler(handler);
+}
+----
+
+Pluggable handling in our SMTP server may then be set up on-the-fly by tests.  When a new message is received by the SMTP server, our listener will read in the contents, log them for our convenience, then call upon our +TestReceiveHandler+:
+
+[source,java]
+----
+private class PluggableReceiveHandlerMessageListener implements SimpleMessageListener {
+
+    private TestReceiveHandler handler;
+
+    @Override
+    public boolean accept(String from, String recipient) {
+        return true;
+    }
+
+    @Override
+    public void deliver(final String from, 
+      final String recipient, final InputStream data) 
+      throws TooMuchDataException, IOException {
+
+        // Get contents as String
+        byte[] buffer = new byte[4096];
+        int read;
+        final StringBuilder s = new StringBuilder();
+        while ((read = data.read(buffer)) != -1) {
+            s.append(new String(buffer, 0, read, CHARSET));
+        }
+        final String contents = s.toString();
+        if (log.isLoggable(Level.INFO)) {
+            log.info("Received SMTP event: " + contents);
+        }
+
+        // Pluggable handling
+        if (handler == null) {
+            log.warning("No SMTP receive handler has been associated");
+        } else {
+            handler.handle(contents);
+        }
+    }
+    void setHandler(final TestReceiveHandler handler) {
+        this.handler = handler;
+    }
+}
+----
+
+==== The Test
+
+Our test will again use Arquillian for the container interaction as we've seen before, but will require no extra extensions.  Therefore the declaration here is fairly simple:
+
++org.cedj.geekseek.service.smtp.SMTPMailServiceTestCase+
+[source,java]
+----
+@RunWith(Arquillian.class)
+public class SMTPMailServiceTestCase {
+----
+
+Unlike in previous examples, this time we'll handle deployment and undeployment operations manually.  This is because we'd first like to configure the server _before_ deployment, but _after_ it has started.  As Arquillian currently does not provide for a lifecycle operation between the server startup and deployment, we'll make use of ordered test methods to clearly delineate which actions should be handled when.  What we'd like to see:
+
+* Server start (handled automatically by Arquillian)
+* Server configuration
+* Deployment
+* Test methods
+* Undeployment
+* Reset server configuration
+* Server shutdown
+
+We do manual deployment in Arquillian by associating a name with the deployment, then creating a +@Deployment+ method just like we've seen before.
+
+Define deployment:
+
+[source,java]
+----
+/**
+ * Name of the deployment for manual operations
+ */
+private static final String DEPLOYMENT_NAME = "mailService";
+
+/**
+ * Deployment to be tested; will be manually deployed/undeployed
+ * such that we can configure the server first
+ *
+ * @return
+ */
+@Deployment(managed = false, name = DEPLOYMENT_NAME)
+public static WebArchive getApplicationDeployment() {
+    final File[] subethamailandDeps = Maven.resolver().
+      loadPomFromFile("pom.xml").resolve("org.subethamail:subethasmtp")
+      .withTransitivity().asFile();
+    final WebArchive war = ShrinkWrap.create(WebArchive.class)
+      .addAsLibraries(subethamailandDeps)
+      .addClasses(SMTPMailService.class, MailMessageBuilder.class,
+        SMTPMailServiceConstants.class, 
+        SMTPMessageConsumer.class, SMTPServerService.class)
+      .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+      .addAsWebInfResource("META-INF/geekseek-smtp-queue-jms.xml");
+    System.out.println(war.toString(true));
+    return war;
+}
+----
+
+Of special note is the +Deployment.managed+ attribute, which when set to +false+ will tell Arquillian that we'll handle the act of deployment on our own.  The above method constructs us a deployment with the following layout:
+
+----
+/WEB-INF/
+/WEB-INF/geekseek-smtp-queue-jms.xml
+/WEB-INF/lib/
+/WEB-INF/lib/subethasmtp-3.1.7.jar
+/WEB-INF/lib/slf4j-api-1.6.1.jar
+/WEB-INF/lib/activation-1.1.jar
+/WEB-INF/lib/mail-1.4.4.jar
+/WEB-INF/lib/jsr305-1.3.9.jar
+/WEB-INF/beans.xml
+/WEB-INF/classes/
+/WEB-INF/classes/org/
+/WEB-INF/classes/org/cedj/
+/WEB-INF/classes/org/cedj/geekseek/
+/WEB-INF/classes/org/cedj/geekseek/service/
+/WEB-INF/classes/org/cedj/geekseek/service/smtp/
+/WEB-INF/classes/org/cedj/geekseek/service/smtp/SMTPMessageConsumer.class
+/WEB-INF/classes/org/cedj/geekseek/service/smtp/SMTPMailServiceConstants.class
+/WEB-INF/classes/org/cedj/geekseek/service/smtp/SMTPMailService.class
+/WEB-INF/classes/org/cedj/geekseek/service/smtp/SMTPServerService$1.class
+/WEB-INF/classes/org/cedj/geekseek/service/smtp/MailMessageBuilder$MailMessage.class
+/WEB-INF/classes/org/cedj/geekseek/service/smtp/SMTPServerService$TestReceiveHandler.class
+/WEB-INF/classes/org/cedj/geekseek/service/smtp/SMTPServerService.class
+/WEB-INF/classes/org/cedj/geekseek/service/smtp/SMTPServerService$PluggableReceiveHandlerMessageListener.class
+/WEB-INF/classes/org/cedj/geekseek/service/smtp/MailMessageBuilder.class
+----
+
+As you can see, the SubEtha project and its dependencies are dutifully added to the +WEB-INF/lib+ folder as we've requested ShrinkWrap Resolver to fetch these as configured from the project POM.
+
+With the deployment accounted for, we may inject both the +SMTPMailService+ EJB and our test +SMTPServerService+ EJB into the test:
+
+[source,java]
+----
+/**
+ * Service which sends email to a backing SMTP Server
+ */
+@Inject
+private SMTPMailService mailService;
+
+/**
+ * Hook into the embeddable SMTP server so we can customize its handling from the tests
+ */
+@Inject
+private SMTPServerService smtpServerService;
+----
+
+We can also inject a hook to manually deploy and undeploy our deployment, such that we may configure the server before our +@Deployment+ is sent to the server.  This is done with the +@ArquillianResource+ annotation.
+
+[source,java]
+----
+@ArquillianResource
+private Deployer deployer;
+----
+
+At this point, Arquillian is set to run and start the server, and the deployment is defined but not yet deployed.  Next on our agenda is to configure the server; we'll ensure this is done in the proper order by creating a test method to run first by using Arquillian's +@InSequence+ annotation.  Also, we don't want this test method running inside the container (as is the default), but rather on the client process, so we'll flag this method with +@RunAsClient+:
+
+[source,java]
+----
+/*
+ * Lifecycle events; implemented as tests, though in truth they perform no assertions.  Used to configure
+ * the server and deploy/undeploy the @Deployment archive at the appropriate times
+ */
+
+@RunAsClient
+@InSequence(value = 1)
+@Test
+public void configureAppServer() throws Exception {
+
+    /*
+     * First configure a JavaMail Session for the Server to bind into JNDI; this
+     * will be used by our MailService EJB.  In a production environment, we'll likely have configured
+     * the server before it was started to point to a real SMTP server
+     */
+    // Code ommitted for brevity, not really relevant to 
+    // our objectives here
+
+    /*
+     * With the config all set and dependencies in place, now we can deploy
+     */
+    deployer.deploy(DEPLOYMENT_NAME);
+
+}
+----
+
+Yes, the code above is technically implemented as a test method, and it'd be much cleaner to fully-separate out our tests from our harness.  Future versions of Arquillian may provide more fine-grained handling of lifecycle events to accommodate that kind of separation, but for the time-being, this is our mechanism to configure running servers before issuing a deployment.
+
+Now with server configuration completed and our application deployed, we're free to write our test logic.
+
+The test is fairly simple from a conceptual standpoint, though the steps we've taken to achieve it have admittedly involved some more work.  We'd like to:
+
+* Construct a mail message
+* Set a handler on the test SMTP service to ensure the email is in the proper form, then signal to the test that we're ready to proceed
+* Send the email asynchronously
+* Wait on the handler to let us know that the message was received and that we may now proceed
+
+The test logic looks like this:
+
+[source,java]
+----
+    @InSequence(value = 2)
+    @Test
+    public void testSmtpAsync() {
+
+        // Set the body of the email to be sent
+        final String body = "This is a test of the async SMTP Service";
+
+        // Define a barrier for us to wait upon while email is sent through the JMS Queue
+        final CyclicBarrier barrier = new CyclicBarrier(2);
+
+        // Set a handler which will ensure the body was received properly
+        smtpServerService.setHandler(new SMTPServerService.TestReceiveHandler() {
+            @Override
+            public void handle(final String contents) throws AssertionFailedError {
+                try {
+
+                    // Perform assertion
+                    Assert.assertTrue("message received does not contain body sent in email", contents.contains(body));
+
+                    // Should probably be the second and last to arrive, but this
+                    // Thread can block indefinitely w/ no timeout needed.  If
+                    // the test waiting on the barrier times out, it'll trigger a test
+                    // failure and undeployment of the SMTP Service
+                    barrier.await();
+                } catch (final InterruptedException e) {
+                    // Swallow, this would occur if undeployment were triggered
+                    // because the test failed (and we'd get a proper
+                    // AssertionFailureError on the client side)
+                } catch (final BrokenBarrierException e) {
+                    throw new RuntimeException("Broken test setup", e);
+                }
+            }
+        });
+
+        // Construct and send the message async
+        final MailMessageBuilder.MailMessage message =
+                new MailMessageBuilder().from("alr@continuousdev.org").addTo("alr@continuousdev.org")
+                        .subject("Test").body(body).contentType("text/plain").build();
+        mailService.queueMailForDelivery(message);
+
+        // Wait on the barrier until the message is received by the SMTP
+        // server (pass) or the test times out (failure)
+        try {
+            barrier.await(5, TimeUnit.SECONDS);
+        } catch (final InterruptedException e) {
+            throw new RuntimeException("Broken test setup", e);
+        } catch (final BrokenBarrierException e) {
+            throw new RuntimeException("Broken test setup", e);
+        } catch (final TimeoutException e) {
+            // If the SMTP server hasn't processed the message in the allotted time
+            Assert.fail("Test did not receive confirmation message in the allotted time");
+        }
+    }
+----
+
+Walking through this, we see that first we define the subject of the email to be sent.  Then we create a +java.util.concurrent.CyclicBarrier+ initialized to a +count+ of +2+; this will be the mutual waiting point between the test and the SMTP server to coordinate that both parties have completed their actions and that control should not continue until each caller (+Thread+) has arrived at this waiting point.
+
+The handler will perform our assertions to validate the message contents, then wait at the barrier until the test is done with its processing.
+
+Meanwhile, the test will send the email via the +SMTPMailService+, then wait for the handler to receive the mail message and carry through the logic we'd put in place above.
+
+When both the test client and the handler arrive at the +CyclicBarrer+ and no +AssertionErrors+ or other issues have cropped up, we know that we're free to proceed; the test method may continue its execution until invocation is complete and it reports a success.
+
+Finally, we need to be sure to undeploy the archive (remember, we'd opted for manual deployment this time around) and reset the server's configuration.  Again, we'll run this code in the client/test process:
+
+[source,java]
+----
+@RunAsClient
+@InSequence(value = 3)
+@Test
+public void resetAppServerConfig()
+        throws Exception
+{
+    deployer.undeploy(DEPLOYMENT_NAME);
+
+    // Server config code ommitted for brevity,
+    // not really relevant to our objectives here
+ }
+----
+
+This example serves to illustrate a common and often undertested aspect of enterprise development.  Though the techniques we've applied here deal with external, non-transactional resources, asynchronous calling, and server configurations, this should serve as proof that even difficult cases may be adequately-tested given a little thought and effort.  It's our belief that this will pay off dividends in avoiding production runtime errors and peace-of-mind in being armed with one more weapon in the battle to maintain a comprehensive, automated testsuite.
