@@ -13,9 +13,9 @@
  */
 package org.cedj.app.domain.relation.test;
 
-import org.cedj.app.domain.CoreDeployments;
 import org.cedj.app.domain.relation.RelationRepository;
 import org.cedj.app.domain.relation.model.Relation;
+import org.cedj.app.domain.test.CoreDeployments;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 public class RelationDeployments {

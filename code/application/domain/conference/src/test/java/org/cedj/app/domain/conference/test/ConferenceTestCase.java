@@ -11,25 +11,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cedj.app.domain.conference;
+package org.cedj.app.domain.conference.test;
 
-import static org.cedj.app.domain.conference.TestUtils.toDate;
+import static org.cedj.app.domain.conference.test.TestUtils.toDate;
 
 import javax.inject.Inject;
 
-import org.cedj.app.domain.CoreDeployments;
+import org.cedj.app.domain.conference.ConferenceRepository;
 import org.cedj.app.domain.conference.model.Conference;
 import org.cedj.app.domain.conference.model.Duration;
 import org.cedj.app.domain.conference.model.Session;
+import org.cedj.app.domain.test.CoreDeployments;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -40,11 +42,14 @@ public class ConferenceTestCase {
 
     // Given
     @Deployment
-    public static JavaArchive deploy() {
-        return ConferenceDeployments.conference().addClasses(ConferenceTestCase.class, TestUtils.class)
-            .addAsManifestResource(new StringAsset(
-                CoreDeployments.persistence().exportAsString()), "persistence.xml")
-            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+    public static WebArchive deploy() {
+        return ShrinkWrap.create(WebArchive.class)
+            .addAsLibraries(
+                ConferenceDeployments.conference().addClasses(ConferenceTestCase.class, TestUtils.class)
+                    .addAsManifestResource(new StringAsset(
+                        CoreDeployments.persistence().exportAsString()), "persistence.xml")
+                    .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml"))
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     @Inject

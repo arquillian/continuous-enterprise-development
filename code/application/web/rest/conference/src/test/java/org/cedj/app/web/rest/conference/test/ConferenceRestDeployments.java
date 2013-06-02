@@ -1,6 +1,6 @@
 package org.cedj.app.web.rest.conference.test;
 
-import org.cedj.app.domain.conference.ConferenceDeployments;
+import org.cedj.app.domain.conference.test.ConferenceDeployments;
 import org.cedj.app.web.rest.conference.ConferenceResource;
 import org.cedj.app.web.rest.conference.model.ConferenceRepresentation;
 import org.cedj.app.web.rest.core.Resource;

@@ -44,6 +44,7 @@ public class CreateConferenceAndSessionStory {
 
     @Test @InSequence(0)
     public void shouldBeAbleToLocateConferenceRoot() throws Exception {
+        //uri_conference = new URL(base, "api/conference").toExternalForm();
         uri_conference =
               given().
               then().
@@ -238,6 +239,7 @@ public class CreateConferenceAndSessionStory {
 
         given().
         then().
+           contentType(CONFERENCE_MEDIA_TYPE).
            statusCode(Status.NOT_FOUND.getStatusCode()).
         when().
            get(uri_conferenceInstance);

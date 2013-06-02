@@ -11,10 +11,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cedj.app.domain.conference;
+package org.cedj.app.domain.conference.test;
 
-import org.cedj.app.domain.CoreDeployments;
+import org.cedj.app.domain.conference.ConferenceRepository;
 import org.cedj.app.domain.conference.model.Conference;
+import org.cedj.app.domain.persistence.PersistenceRepository;
+import org.cedj.app.domain.test.CoreDeployments;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 public class ConferenceDeployments {
@@ -22,7 +24,7 @@ public class ConferenceDeployments {
     public static JavaArchive conference() {
         return CoreDeployments.core()
                 .merge(domain())
-                .merge(repository());
+                .merge(persistenceRepository());
     }
 
     public static JavaArchive domain() {
@@ -31,5 +33,9 @@ public class ConferenceDeployments {
 
     public static JavaArchive repository() {
         return CoreDeployments.core().addPackage(ConferenceRepository.class.getPackage());
+    }
+
+    public static JavaArchive persistenceRepository() {
+        return repository().addPackage(PersistenceRepository.class.getPackage());
     }
 }

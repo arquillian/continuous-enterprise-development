@@ -15,8 +15,8 @@ package org.cedj.app.domain.conference;
 
 import javax.ejb.Stateless;
 
-import org.cedj.app.domain.PersistenceRepository;
 import org.cedj.app.domain.conference.model.Conference;
+import org.cedj.app.domain.persistence.PersistenceRepository;
 
 @Stateless
 public class ConferenceRepository extends PersistenceRepository<Conference> {

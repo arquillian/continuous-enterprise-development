@@ -1,0 +1,28 @@
+<div class="row-fluid">
+	<div class="span12">
+		
+		<div class="span10">
+			<div class="content offset1">
+				<ul class="breadcrumb">
+				  	<li data-ng-repeat="level in parents()">
+				  		<a data-ng-click="get(level)">{{level.meta.rel}}</a> <span class="divider">/</span>
+				  	</li>
+				</ul>
+				<div data-ng-include="template"></div>
+			</div>
+		</div>
+		
+		<div id="sidebar" class="pull-right">
+			<div data-ng-repeat="link in resource.links">
+				<div data-ng-show="link.canGet()">
+				 	<button class="btn btn-success" data-ng-click="get(link)">Get {{link.meta.rel}}</button>
+				</div>
+				<div data-ng-show="link.canCreate()">
+				 	<button class="btn btn-success" data-ng-click="create(link)">Add {{link.meta.rel}}</button>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+</div>

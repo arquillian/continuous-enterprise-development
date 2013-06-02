@@ -37,6 +37,7 @@
     <version.jboss_eap>7.2.0.Final</version.jboss_eap>
     <version.jboss_eap_managed>eap-6.1.0</version.jboss_eap_managed>
     <version.hibernate_validator>4.3.0.Final</version.hibernate_validator>
+    <version.jackson>1.8.5</version.jackson>
   </properties>
 
   <dependencyManagement>
@@ -104,6 +105,12 @@
         <artifactId>rest-assured</artifactId>
         <version>${version.restassured}</version>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.jackson</groupId>
+        <artifactId>jackson-mapper-asl</artifactId>
+        <version>${version.jackson}</version>
+        <scope>provided</scope>
       </dependency>
 
       <!-- Internal Application Modules -->

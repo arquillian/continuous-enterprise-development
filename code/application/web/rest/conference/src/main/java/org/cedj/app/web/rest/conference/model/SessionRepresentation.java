@@ -3,12 +3,13 @@ package org.cedj.app.web.rest.conference.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.cedj.app.domain.conference.model.Duration;
 import org.cedj.app.domain.conference.model.Session;
+import org.cedj.app.web.rest.conference.ConferenceResource;
 import org.cedj.app.web.rest.core.LinkableRepresenatation;
 import org.cedj.app.web.rest.core.ResourceLink;
 
@@ -16,7 +17,7 @@ import org.cedj.app.web.rest.core.ResourceLink;
 public class SessionRepresentation extends LinkableRepresenatation {
 
     private Session session;
-    private UriBuilder uriBuilder;
+    private UriInfo uriInfo;
 
     private Date start;
     private Date end;
@@ -25,9 +26,9 @@ public class SessionRepresentation extends LinkableRepresenatation {
         session = new Session();
     }
 
-    public SessionRepresentation(Session session, UriBuilder uriBuilder) {
+    public SessionRepresentation(Session session, UriInfo uriInfo) {
         this.session = session;
-        this.uriBuilder = uriBuilder;
+        this.uriInfo = uriInfo;
     }
 
     @XmlElement
@@ -76,8 +77,21 @@ public class SessionRepresentation extends LinkableRepresenatation {
 
     public List<ResourceLink> getLinks() {
         List<ResourceLink> links = super.getLinks();
-        if (uriBuilder != null) {
-            links.add(new ResourceLink("self", uriBuilder.path(session.getId()).build()));
+        if (uriInfo != null) {
+            links.add(
+                new ResourceLink(
+                    "self",
+                    uriInfo.getBaseUriBuilder()
+                        .path(ConferenceResource.class)
+                        .path(ConferenceResource.class, "getSession")
+                        .build(session.getConference().getId(), session.getId())));
+            links.add(
+                new ResourceLink(
+                    "parent",
+                    uriInfo.getBaseUriBuilder()
+                        .path(ConferenceResource.class)
+                        .path(ConferenceResource.class, "getConference")
+                        .build(session.getConference().getId())));
         }
         return links;
     }

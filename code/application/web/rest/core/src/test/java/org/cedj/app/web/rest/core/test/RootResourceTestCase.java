@@ -25,8 +25,10 @@ import com.jayway.restassured.filter.log.ResponseLoggingFilter;
 @RunWith(Arquillian.class)
 public class RootResourceTestCase {
 
-    private static String BASE_MEDIA_TYPE = "application/vnd.ced+xml";
-    private static String ROOT_MEDIA_TYPE = BASE_MEDIA_TYPE + ";type=root";
+    private static String BASE_XML_MEDIA_TYPE = "application/vnd.ced+xml";
+    private static String ROOT_XML_MEDIA_TYPE = BASE_XML_MEDIA_TYPE + ";type=root";
+    private static String BASE_JSON_MEDIA_TYPE = "application/vnd.ced+json";
+    private static String ROOT_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + ";type=root";
 
     @Deployment(testable = false)
     public static WebArchive deploy() {
@@ -51,9 +53,20 @@ public class RootResourceTestCase {
     public void shouldAssambleRootResourcesXML() throws Exception {
         given().
         then().
-            contentType(ROOT_MEDIA_TYPE).
+            contentType(ROOT_XML_MEDIA_TYPE).
             body("root.link[0].@rel", equalTo("test")).
             body("root.link[0].@href", equalTo(new URL(baseURL, "api/test").toExternalForm())).
+        when().
+            get(baseURL + "api/");
+    }
+
+    @Test
+    public void shouldAssambleRootResourcesJSON() throws Exception {
+        given().
+        then().
+            contentType(ROOT_JSON_MEDIA_TYPE).
+            body("link[0].rel", equalTo("test")).
+            body("link[0].href", equalTo(new URL(baseURL, "api/test").toExternalForm())).
         when().
             get(baseURL + "api/");
     }

@@ -1,10 +1,11 @@
-package org.cedj.app.domain;
+package org.cedj.app.domain.persistence;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.cedj.app.domain.Repository;
 import org.cedj.app.domain.model.Identifiable;
 
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)

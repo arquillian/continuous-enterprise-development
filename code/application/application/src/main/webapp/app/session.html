@@ -1,0 +1,92 @@
+<div class="row-fluid">
+
+	<div class="content" data-ng-switch="getViewType()">
+		<div data-ng-switch-when="form">
+		
+			<form data-ng-submit="submit()">
+				<fieldset>
+					<legend>
+						<span data-ng-show="isCreateMode()">Add</span>
+						<span data-ng-show="isEditMode()">Edit</span> 
+						 Session
+					</legend>
+					
+					<div class="row-fluid">
+						<div class="control-group">
+							<label class="control-label" for="title">Title</label>
+							<div class="controls">
+								<input class="input-large" id="title" type="text" data-ng-model="form.title" required placeholder="The tile of the session"/>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="outline">Outline/Abstract</label>
+							<div class="controls">
+								<span class="help-block">The outline or abstract for this session.</span>
+								<textarea class="input-xxlarge" id="outline" data-ng-model="form.outline" required></textarea>
+							</div>
+						</div>
+						
+					</div>
+					
+					<div class="row-fluid">
+						<div class="span3 control-group">
+							<label class="control-label" for="strt">Start time</label>
+							<div class="controls input-append">
+		  						<input class="input-small" type="text" id="start" data-ng-model="form.start" bs-timepicker required>
+		  						<button type="button" class="btn" data-toggle="timepicker"><i class="icon-time"></i></button>
+							</div>
+							<span class="error" data-ng-show="formval.start">{{formval.start}}</span>
+							<span class="help-block">When does the session begin?</span>
+						</div>
+						<div class="span3 control-group">
+							<label class="control-label" for="end">End time</label>
+							<div class="controls input-append">
+		  						<input class="input-small" type="text" id="end" data-ng-model="form.end" bs-timepicker required>
+		  						<button type="button" class="btn" data-toggle="timepicker"><i class="icon-time"></i></button>
+							</div>
+							<span class="error" data-ng-show="formval.end">{{formval.end}}</span>
+							<span class="help-block">When does the session end?</span>
+						</div>
+					</div>
+
+					<hr/>		
+					<div class="row-fluid">
+						<button type="submit" class="btn btn-primary" data-ng-show="isEditMode()">Update session</button>
+						<button type="submit" class="btn btn-primary" data-ng-show="isCreateMode()">Add session</button>
+					</div>
+				</fieldset>
+			
+			</form>
+			
+		</div>
+		<div data-ng-switch-when="display">
+			<div data-ng-switch="isList()">
+				<div class="well" data-ng-switch-when="false">
+					<div class="pull-right">
+						<a data-ng-show="resource.canUpdate()" data-ng-click="edit()"><i class="icon-edit-sign" /></a>
+						<a data-ng-show="resource.canRemove()" data-ng-click="remove()"><i class="icon-remove-sign" /></a>
+					</div>
+				
+					<h2>{{resource.data.title}}</h2>					
+				 	
+				 	{{resource.data.outline}}
+				 	
+				 	<br/>
+					{{resource.data.start|date:fullDate}} - {{resource.data.end|date:fullDate}}
+				 </div>
+				<div data-ng-switch-when="true">
+					<div class="well" data-ng-repeat="child in resource.data">
+						<h2>{{child.title}}</h2>					
+					 	
+					 	{{child.outline}}
+					 	
+					 	<br/>
+						{{child.start|date:fullDate}} - {{child.end|date:fullDate}}
+					 </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

@@ -81,6 +81,10 @@ public class Session implements Serializable {
         return this;
     }
 
+    public Conference getConference() {
+        return conference;
+    }
+
     void setConference(Conference conference) {
         this.conference = conference;
     }

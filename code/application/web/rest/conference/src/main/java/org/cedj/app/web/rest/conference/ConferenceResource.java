@@ -13,6 +13,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
@@ -28,15 +30,21 @@ import org.cedj.app.web.rest.core.Resource;
 @Path("/conference")
 public class ConferenceResource implements Resource {
 
-    private static final String BASE_MEDIA_TYPE = "application/vnd.ced+xml";
-    private static final String CONFERENCE_MEDIA_TYPE = BASE_MEDIA_TYPE + ";type=conference";
-    private static final String SESSION_MEDIA_TYPE = BASE_MEDIA_TYPE + ";type=session";
+    private static final String BASE_XML_MEDIA_TYPE = "application/vnd.ced+xml";
+    private static final String BASE_JSON_MEDIA_TYPE = "application/vnd.ced+json";
+    private static final String CONFERENCE_XML_MEDIA_TYPE = BASE_XML_MEDIA_TYPE + "; type=conference";
+    private static final String CONFERENCE_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + "; type=conference";
+    private static final String SESSION_XML_MEDIA_TYPE = BASE_XML_MEDIA_TYPE + "; type=session";
+    private static final String SESSION_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + "; type=session";
 
     @Context
     private UriInfo uriInfo;
 
     @Inject
     private Repository<Conference> repository;
+
+    @Context
+    private HttpHeaders headers;
 
     @Override
     public Class<? extends Resource> getResourceClass() {
@@ -45,14 +53,14 @@ public class ConferenceResource implements Resource {
 
     @Override
     public String getResourceMediaType() {
-        return CONFERENCE_MEDIA_TYPE;
+        return CONFERENCE_XML_MEDIA_TYPE;
     }
 
     // Conference
 
     @POST
-    @Consumes({"application/vnd.ced+xml"})
-    public Response create(ConferenceRepresentation conferenceRepresenttion) {
+    @Consumes({BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE})
+    public Response createConference(ConferenceRepresentation conferenceRepresenttion) {
         Conference conference = conferenceRepresenttion.toConference();
         repository.store(conference);
         return Response.created(UriBuilder.fromResource(ConferenceResource.class)
@@ -62,8 +70,7 @@ public class ConferenceResource implements Resource {
 
     @DELETE
     @Path("/{id}")
-    @Produces("application/vnd.ced+xml")
-    public Response delete(@PathParam("id") String id) {
+    public Response deleteConference(@PathParam("id") String id) {
         Conference conference = repository.get(id);
         if(conference == null) {
             return Response.status(Status.NOT_FOUND).build();
@@ -74,21 +81,22 @@ public class ConferenceResource implements Resource {
 
     @GET
     @Path("/{id}")
-    @Produces("application/vnd.ced+xml")
-    public Response get(@PathParam("id") String id) {
+    @Produces({BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE})
+    public Response getConference(@PathParam("id") String id) {
         Conference conference = repository.get(id);
         if(conference == null) {
-            return Response.status(Status.NOT_FOUND).type(CONFERENCE_MEDIA_TYPE).build();
+            return Response.status(Status.NOT_FOUND).type(CONFERENCE_XML_MEDIA_TYPE).build();
         }
+
         return Response.ok(
                 new ConferenceRepresentation(conference, uriInfo.getAbsolutePathBuilder()))
-                .type(CONFERENCE_MEDIA_TYPE).build();
+                .type(getConferenceMediaType()).build();
     }
 
     @PUT
     @Path("/{id}")
-    @Consumes("application/vnd.ced+xml")
-    public Response update(@PathParam("id") String id, ConferenceRepresentation conferenceRepresentation) {
+    @Consumes({BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE})
+    public Response updateConference(@PathParam("id") String id, ConferenceRepresentation conferenceRepresentation) {
         Conference conference = repository.get(id);
         if(conference == null) {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
@@ -108,21 +116,21 @@ public class ConferenceResource implements Resource {
 
     @GET
     @Path("/{c_id}/session")
-    @Produces("application/vnd.ced+xml")
-    public Response list(@PathParam("c_id") String conferenceId) {
+    @Produces({BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE})
+    public Response listSessions(@PathParam("c_id") String conferenceId) {
         List<SessionRepresentation> result = new ArrayList<SessionRepresentation>();
         for(Session session : repository.get(conferenceId).getSessions()) {
             result.add(new SessionRepresentation(
                     session,
-                    uriInfo.getAbsolutePathBuilder()));
+                    uriInfo));
         }
-        return Response.ok(result).type(SESSION_MEDIA_TYPE).build();
+        return Response.ok(result).type(getSessionMediaType()).build();
     }
 
     @POST
     @Path("/{c_id}/session")
-    @Consumes("application/vnd.ced+xml")
-    public Response create(@PathParam("c_id") String conferenceId, SessionRepresentation sessionRepresentation) {
+    @Consumes({BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE})
+    public Response createSession(@PathParam("c_id") String conferenceId, SessionRepresentation sessionRepresentation) {
         Conference conference = repository.get(conferenceId);
         if(conference == null) {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
@@ -139,8 +147,7 @@ public class ConferenceResource implements Resource {
 
     @DELETE
     @Path("/{c_id}/session/{s_id}")
-    @Produces("application/vnd.ced+xml")
-    public Response delete(@PathParam("c_id") String conferenceId, @PathParam("s_id") String sessionId) {
+    public Response deleteSession(@PathParam("c_id") String conferenceId, @PathParam("s_id") String sessionId) {
         Conference conference = repository.get(conferenceId);
         if(conference == null) {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
@@ -162,8 +169,8 @@ public class ConferenceResource implements Resource {
 
     @PUT
     @Path("/{c_id}/session/{s_id}")
-    @Consumes("application/vnd.ced+xml")
-    public Response update(@PathParam("c_id") String conferenceId, @PathParam("s_id") String sessionId, SessionRepresentation sessionRepresentation) {
+    @Consumes({BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE})
+    public Response updateSession(@PathParam("c_id") String conferenceId, @PathParam("s_id") String sessionId, SessionRepresentation sessionRepresentation) {
         Conference conference = repository.get(conferenceId);
         if(conference == null) {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
@@ -191,14 +198,37 @@ public class ConferenceResource implements Resource {
 
     @GET
     @Path("/{c_id}/session/{s_id}")
-    public Response get(@PathParam("c_id") String conferenceId, @PathParam("s_id") String sessionId) {
-        for(Session session : repository.get(conferenceId).getSessions()) {
+    public Response getSession(@PathParam("c_id") String conferenceId, @PathParam("s_id") String sessionId) {
+        Conference conference = repository.get(conferenceId);
+        if(conference == null) {
+            return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
+        }
+        for(Session session : conference.getSessions()) {
             if(session.getId().equals(sessionId)) {
                 return Response.ok(
-                        new SessionRepresentation(session, uriInfo.getAbsolutePathBuilder()))
-                        .type(SESSION_MEDIA_TYPE).build();
+                        new SessionRepresentation(session, uriInfo))
+                        .type(getSessionMediaType()).build();
             }
         }
-        return Response.status(Status.NOT_FOUND).type(SESSION_MEDIA_TYPE).build();
+        return Response.status(Status.NOT_FOUND).build();
+    }
+
+    private String getConferenceMediaType() {
+        return matchMediaType(CONFERENCE_XML_MEDIA_TYPE, CONFERENCE_JSON_MEDIA_TYPE);
+    }
+
+    private String getSessionMediaType() {
+        return matchMediaType(SESSION_XML_MEDIA_TYPE, SESSION_JSON_MEDIA_TYPE);
+    }
+
+    private String matchMediaType(String defaultMediaType, String alternativeMediaType) {
+        String selected = defaultMediaType;
+        for(MediaType mt : headers.getAcceptableMediaTypes()) {
+            if(mt.isCompatible(MediaType.valueOf(alternativeMediaType))) {
+                selected = alternativeMediaType;
+                break;
+            }
+        }
+        return selected;
     }
 }

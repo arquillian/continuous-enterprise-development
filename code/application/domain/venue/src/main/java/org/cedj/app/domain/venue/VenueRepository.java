@@ -15,7 +15,7 @@ package org.cedj.app.domain.venue;
 
 import javax.ejb.Stateless;
 
-import org.cedj.app.domain.PersistenceRepository;
+import org.cedj.app.domain.persistence.PersistenceRepository;
 import org.cedj.app.domain.venue.model.Venue;
 
 @Stateless

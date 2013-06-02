@@ -11,10 +11,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cedj.app.domain;
+package org.cedj.app.domain.test;
 
+import org.cedj.app.domain.Repository;
 import org.cedj.app.domain.model.Identifiable;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.descriptor.api.Descriptors;
 import org.jboss.shrinkwrap.descriptor.api.persistence10.PersistenceDescriptor;
@@ -23,7 +25,8 @@ public class CoreDeployments {
     public static JavaArchive core() {
         return ShrinkWrap.create(JavaArchive.class)
             .addPackage(Identifiable.class.getPackage())
-            .addPackage(Repository.class.getPackage());
+            .addPackage(Repository.class.getPackage())
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     public static PersistenceDescriptor persistence() {
@@ -38,5 +41,6 @@ public class CoreDeployments {
                             .name("hibernate.show_sql")
                             .value("true").up().up()
                     .jtaDataSource("java:jboss/datasources/ExampleDS").up();
+                    //.jtaDataSource("ExampleDS").up();
     }
 }

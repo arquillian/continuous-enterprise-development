@@ -17,9 +17,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.cedj.app.domain.CoreDeployments;
 import org.cedj.app.domain.relation.RelationRepository;
 import org.cedj.app.domain.relation.model.Relation;
+import org.cedj.app.domain.test.CoreDeployments;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.UsingDataSet;
