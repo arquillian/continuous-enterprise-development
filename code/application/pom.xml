@@ -34,6 +34,7 @@
     <version.restassured>1.8.0</version.restassured>
     <version.wildfly>8.0.0.Alpha1</version.wildfly>
     <version.jboss_as>7.1.1.Final</version.jboss_as>
+    <version.jboss_eap>7.2.0.Final</version.jboss_eap>
     <version.hibernate_validator>4.3.0.Final</version.hibernate_validator>
   </properties>
 
@@ -117,6 +118,7 @@
         <artifactId>cedj-application-domain-core</artifactId>
         <version>${project.version}</version>
         <type>test-jar</type>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.cedj</groupId>
@@ -128,6 +130,7 @@
         <artifactId>cedj-application-domain-conference</artifactId>
         <version>${project.version}</version>
         <type>test-jar</type>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.cedj</groupId>
@@ -188,6 +191,53 @@
 
   <profiles>
     <profile>
+      <id>arq-glassfish-remote</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.jboss.arquillian.container</groupId>
+          <artifactId>arquillian-glassfish-remote-3.1</artifactId>
+          <version>1.0.0.CR4</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>arq-tomee-remote</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.apache.openejb</groupId>
+          <artifactId>arquillian-tomee-remote</artifactId>
+          <version>1.5.2</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>arq-jbosseap-remote</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.jboss.as</groupId>
+          <artifactId>jboss-as-arquillian-container-remote</artifactId>
+          <version>${version.jboss_eap}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.arquillian.protocol</groupId>
+          <artifactId>arquillian-protocol-servlet</artifactId>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
       <id>arq-jbossas-remote</id>
       <activation>
         <activeByDefault>false</activeByDefault>
@@ -207,7 +257,7 @@
       </dependencies>
     </profile>
     <profile>
-      <id>arq-jboss-as-managed</id>
+      <id>arq-jbossas-managed</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>

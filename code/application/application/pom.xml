@@ -18,7 +18,13 @@
   <dependencies>
     <dependency>
       <groupId>org.cedj</groupId>
-      <artifactId>cedj-application-web-ui-conference</artifactId>
+      <artifactId>cedj-application-web-rest-conference</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.spec.javax.ws.rs</groupId>
+      <artifactId>jboss-jaxrs-api_1.1_spec</artifactId>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 

@@ -18,6 +18,7 @@
     <dependency>
       <groupId>org.jboss.spec.javax.servlet</groupId>
       <artifactId>jboss-servlet-api_3.0_spec</artifactId>
+      <scope>provided</scope>
     </dependency>
 
 
@@ -33,6 +34,13 @@
       <groupId>org.cedj</groupId>
       <artifactId>cedj-application-domain-conference</artifactId>
       <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.cedj</groupId>
+      <artifactId>cedj-application-domain-core</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
