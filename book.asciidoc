@@ -11,3 +11,5 @@ include::Chapter03-ScratchToProduction.asciidoc[]
 include::Chapter04-RequirementsAndExampleApplication.asciidoc[]
 
 include::Chapter05-JavaPersistenceAndRelationalData.asciidoc[]
+
+include::Chapter11-AssemblyAndDeployment.asciidoc[]
