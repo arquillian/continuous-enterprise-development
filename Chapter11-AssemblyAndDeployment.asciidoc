@@ -10,7 +10,7 @@ This chapter will ultimately link a +git push+ to validate new commits in a _con
 
 === Obtaining JBoss EAP
 
-_JBoss Enterprise Application Platform_ (EAP) is Red Hat's supportable application server distribution built born from the community open-source _WildFly_ project (formerly known as the JBoss Application Server).  A full discussion of the relationship and differences between community and supportable middleware is detailed by Red Hat http://www.redhat.com/products/jbossenterprisemiddleware/community-enterprise/[here], and some of the most important points are:
+_JBoss Enterprise Application Platform_ (EAP) is Red Hat's supportable application server distribution born from the community open-source _WildFly_ project (formerly known as the JBoss Application Server).  A full discussion of the relationship and differences between community and supportable middleware is detailed by Red Hat http://www.redhat.com/products/jbossenterprisemiddleware/community-enterprise/[here], and some of the most important points are:
 
 * The community projects are built to innovate quickly and push new features at a rapid rate.
 * Supportable products are intended to have a multi-year life span, and receive updates and bug fixes over this time period.
@@ -18,7 +18,7 @@ _JBoss Enterprise Application Platform_ (EAP) is Red Hat's supportable applicati
 
 In March of 2013, JBoss Senior Director of Engineering https://community.jboss.org/blogs/mark.little/2013/03/07/eap-binaries-available-for-all-developers[announced] that EAP binaries and its dependencies will be made freely-available (at no monetary cost) through a _0-dollar subscription_ through Red Hat.  As this runtime comes with no obligation and allows us a migration path to support if our little _GeekSeek_ business were to need it, we'll opt for EAP as our target runtime.
 
-EAP has some additional differences with Wildfly which become very apparent during our development experience.  Though EAP is available for free, there is a _Terms and Conditions_ prerequisite to its use, and therefore is not currently-available in the JBoss Nexus or Maven Central repositories.  Therefore we'll have to perform some extra steps to setup our environments for EAP before we can enable this option in our builds.
+EAP has some additional differences with Wildfly which become very apparent during our development experience.  Though EAP is available for free, there is a _Terms and Conditions_ prerequisite to its use, and therefore is not currently-available in the JBoss Nexus or Maven Central repositories.  We'll have to perform some extra steps to setup our environments for EAP before we can enable this option in our builds.
 
 First, let's obtain the EAP distribution and private JBoss EAP Maven Repository.  This is done from the http://www.jboss.org/jbossas/downloads/[JBoss Downloads] page.
 
@@ -46,7 +46,7 @@ Downloads $> rm jboss-eap-6.1.0-maven-repository.zip
 
 === Running Against JBoss EAP
 
-With our EAP installation in place, we're now in a position to exercise our application against this server instead of WildFly, which we've used as a convenient default.
+With our EAP installation in place, we're now in a position to exercise our application against this server instead of WildFly, which we've used up to this point as a convenient default.
 
 ==== Using the EAP Remote Container
 
@@ -306,7 +306,7 @@ The +fstab+ utility on *nix systems acts to automatically handle mounting to reg
 https://repository-{domainId}.forge.cloudbees.com/private/ {/mnt/location/path} davfs rw,user,noauto,conf=/etc/davfs2/davfs2.conf,uid=$UID 0 0
 ----
 
-The +private+ repository requires authentication, so we must add authentication information to /etc/davfs2/secrets:
+The +private+ repository requires authentication, so we must add authentication information to +/etc/davfs2/secrets+:
 
 ----
 {/mnt/location/path}   {cloudbees username}   {password}
@@ -322,7 +322,7 @@ Now we should be ready to mount our volume (subsequent reboots to the system sho
 $> sudo mount /mnt/cloudbees/arquillian/private/
 ----
 
-With our volume mounted, now any file activities we make under +/mnt/cloudbees/arquillian/private/+ will be reflected in our remote +private+ CloudBees Maven Repository.  Let's now copy the contents of the JBoss EAP Maven Repository into +private+:
+With our volume mounted, any file activities we make under +/mnt/cloudbees/arquillian/private/+ will be reflected in our remote +private+ CloudBees Maven Repository.  Let's copy the contents of the JBoss EAP Maven Repository into +private+:
 
 ----
 sudo cp -Rv ~/.m2/jboss-eap-6.1.0.GA-maven-repository/* \
@@ -493,17 +493,17 @@ geekseek $> git commit -m 'Remove OpenShift default application structure'
 geekseek $> git push origin master
 ----
 
-When the +git push+ command concludes and the remote build is complete, reloading our application in the web browser should now yield us a blank page, as we've deleted the only content in the OpenShift repo.  Now we'll replace that with fresh content from our CI builds.
+When the +git push+ command concludes and the remote build is complete, reloading our application in the web browser should now yield us a blank page, as we've deleted the only content in the OpenShift repo.  We'll replace that with fresh content from our CI builds.
 
 ==== Pushing From the CI Build Job to OpenShift
 
 The final piece of the automated deployment puzzle lies in deploying artifacts built from our CI server into our runtime environment.  In our case, this amounts to configuring the CloudBees Jenkins instance to perform some Git operations against our OpenShift repository.
 
-We'll need to allow access for CloudBees Jenkins to interact with the OpenShift repository.  On the "Configure" screen for our CI job is a section entitled "CloudBees DEV@Cloud Authorization", which contains our public key.  Copy and paste this.
+We'll need to allow access for CloudBees Jenkins to interact with the OpenShift repository.  On the "Configure" screen for our CI job is a section entitled "CloudBees DEV@Cloud Authorization", which contains our public key.  Copy this to your OS's clipboard.
 
 image:images/ch11-assembly_deployment/cloudbees_ssh.png[CloudBees SSH Public Key]
 
-Then log into your OpenShift Management Console and select https://openshift.redhat.com/app/console/settings[Settings]; there will be a dialog to manage the public keys allowed access to our repository.  Add the CloudBees Jenkins key here.
+Then log into your OpenShift Management Console and select https://openshift.redhat.com/app/console/settings[Settings]; there will be a dialog to manage the public keys allowed access to our repository.  Add the CloudBees Jenkins key by pasting it here.
 
 image:images/ch11-assembly_deployment/openshift_public_keys.png[OpenShift Public Keys]
 
@@ -531,7 +531,7 @@ git commit -m "$COMMIT_MESSAGE"
 git push origin master
 ----
 
-Let's see what's going on here.  First we have some bash logic to either clone the remote OpenShift repository if this node hasn't already, or update the existing copy.  Then we copy the final deployable web application WAR into the +deployments+ directory of the repository, renaming it to +ROOT.war+ so that this acts as our application servicing requests from the web root.  Also, we'll add or update a +ROOT.war.dodeploy+ to let OpenShift know that we want this application deployed when it's discovered (full documentation on this feature is https://access.redhat.com/site/documentation/en-US/OpenShift/2.0/html/User_Guide/sect-OpenShift-User_Guide-Deploying_JBoss_Applications-Example_JBoss_Application_Deployment_Workflows.html[available on the OpenShift site]).  Finally, we add our changes to be staged for commit, perform the commit, and then push the changes to our remote OpenShift repository.
+Let's see what's going on here.  First we have some bash logic to either clone the remote OpenShift repository if this node hasn't already, or update the existing copy.  Then we copy the final deployable web application WAR into the +deployments+ directory of the repository, renaming it to +ROOT.war+ so that this acts as our application servicing requests from the web root.  Also, we'll add or update an empty +ROOT.war.dodeploy+ file to let OpenShift know that we want this application deployed when it's discovered (full documentation on this feature is https://access.redhat.com/site/documentation/en-US/OpenShift/2.0/html/User_Guide/sect-OpenShift-User_Guide-Deploying_JBoss_Applications-Example_JBoss_Application_Deployment_Workflows.html[available on the OpenShift site]).  Finally, we add our changes to be staged for commit, perform the commit, and then push the changes to our remote OpenShift repository.
 
 As we've seen before, OpenShift will dutifully exercise the remote operations to redeploy our application and make it available for our use.
 
