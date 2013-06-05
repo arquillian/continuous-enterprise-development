@@ -516,6 +516,9 @@ The following script will handle the task for us.
 ----
 if [ -d geekseek ]; then
   cd geekseek
+  if [ -f deployments/*.war ]; then
+    rm -rf deployments/*.war
+  fi
   git pull origin master
 else
   git clone ssh://51abd6c84382ec5c160002e2@geekseek-continuousdev.rhcloud.com/~/git/geekseek.git/
