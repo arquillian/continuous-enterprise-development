@@ -7,8 +7,8 @@
     <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
 
     <!-- Figure out dynamic scan of multiple modules -->
-    <class>org.cedj.app.domain.conference.model.Conference</class>
-    <class>org.cedj.app.domain.conference.model.Session</class>
+    <class>org.cedj.geekseek.domain.conference.model.Conference</class>
+    <class>org.cedj.geekseek.domain.conference.model.Session</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
     <properties>
