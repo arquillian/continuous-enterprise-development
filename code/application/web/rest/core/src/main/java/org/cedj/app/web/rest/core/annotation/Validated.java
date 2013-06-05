@@ -5,16 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Stereotype;
+import javax.interceptor.InterceptorBinding;
 
-@Secured
-@Linked
-@Validated
-@RequestScoped
-@Stereotype
+@InterceptorBinding
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface ResourceModel {
+public @interface Validated {
 
 }

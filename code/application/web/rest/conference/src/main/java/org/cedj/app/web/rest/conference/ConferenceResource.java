@@ -61,7 +61,8 @@ public class ConferenceResource implements Resource {
     @POST
     @Consumes({BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE})
     public Response createConference(ConferenceRepresentation conferenceRepresenttion) {
-        Conference conference = conferenceRepresenttion.toConference();
+        Conference conference = conferenceRepresenttion.to();
+
         repository.store(conference);
         return Response.created(UriBuilder.fromResource(ConferenceResource.class)
                             .segment("{id}")
@@ -103,7 +104,7 @@ public class ConferenceResource implements Resource {
         }
 
         // TODO: Move to some 'converter'
-        Conference updatedConference = conferenceRepresentation.toConference();
+        Conference updatedConference = conferenceRepresentation.to();
         conference.setName(updatedConference.getName());
         conference.setTagLine(updatedConference.getTagLine());
         conference.setDuration(updatedConference.getDuration());
@@ -136,7 +137,7 @@ public class ConferenceResource implements Resource {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
         }
 
-        Session session = sessionRepresentation.toSession();
+        Session session = sessionRepresentation.to();
         conference.addSession(session);
         repository.store(conference);
 
@@ -187,7 +188,7 @@ public class ConferenceResource implements Resource {
         }
 
         // TODO: Move to some 'converter'
-        Session updatedSession = sessionRepresentation.toSession();
+        Session updatedSession = sessionRepresentation.to();
         session.setTitle(updatedSession.getTitle());
         session.setOutline(updatedSession.getOutline());
         session.setDuration(updatedSession.getDuration());
@@ -231,4 +232,5 @@ public class ConferenceResource implements Resource {
         }
         return selected;
     }
+
 }

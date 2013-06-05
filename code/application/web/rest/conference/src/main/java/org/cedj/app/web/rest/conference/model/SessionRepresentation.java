@@ -14,7 +14,7 @@ import org.cedj.app.web.rest.core.LinkableRepresenatation;
 import org.cedj.app.web.rest.core.ResourceLink;
 
 @XmlRootElement(name = "session", namespace = "urn:ced:session")
-public class SessionRepresentation extends LinkableRepresenatation {
+public class SessionRepresentation extends LinkableRepresenatation<Session> {
 
     private Session session;
     private UriInfo uriInfo;
@@ -96,7 +96,7 @@ public class SessionRepresentation extends LinkableRepresenatation {
         return links;
     }
 
-    public Session toSession() {
+    public Session to() {
         return session;
     }
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 
-public class LinkableRepresenatation {
+public abstract class LinkableRepresenatation<X> implements Representation<X> {
 
     private List<ResourceLink> links;
 

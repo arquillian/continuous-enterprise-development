@@ -13,7 +13,7 @@ import org.cedj.app.web.rest.core.LinkableRepresenatation;
 import org.cedj.app.web.rest.core.ResourceLink;
 
 @XmlRootElement(name = "conference", namespace = "urn:ced:conference")
-public class ConferenceRepresentation extends LinkableRepresenatation {
+public class ConferenceRepresentation extends LinkableRepresenatation<Conference> {
 
     private Conference conference;
     private UriBuilder uriBuilder;
@@ -83,7 +83,7 @@ public class ConferenceRepresentation extends LinkableRepresenatation {
         return links;
     }
 
-    public Conference toConference() {
+    public Conference to() {
         return conference;
     }
 }
