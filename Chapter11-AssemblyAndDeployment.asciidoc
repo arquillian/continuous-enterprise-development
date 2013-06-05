@@ -516,8 +516,8 @@ The following script will handle the task for us.
 ----
 if [ -d geekseek ]; then
   cd geekseek
-  if [ -f deployments/*.war ]; then
-    rm -rf deployments/*.war
+  if [ -f deployments/ROOT.war ]; then
+    rm -rf deployments/ROOT.war
   fi
   git pull origin master
 else
