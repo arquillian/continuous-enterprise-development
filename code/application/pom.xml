@@ -15,9 +15,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <!-- Artifact Configuration -->
-  <artifactId>cedj-application-parent</artifactId>
+  <groupId>org.cedj.geekseek</groupId>
+  <artifactId>geekseek-parent</artifactId>
   <packaging>pom</packaging>
-  <name>Continuous Enterprise Development in Java Example Application Parent</name>
+  <name>CEDJ Example App: GeekSeek Parent</name>
   <description>Parent POM - Application example for Continuous Enterprise Development in Java</description>
 
   <properties>
@@ -117,66 +118,66 @@
 
       <!-- Domain -->
       <dependency>
-        <groupId>org.cedj</groupId>
-        <artifactId>cedj-application-domain-core</artifactId>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-domain-core</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.cedj</groupId>
-        <artifactId>cedj-application-domain-core</artifactId>
-        <version>${project.version}</version>
-        <type>test-jar</type>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.cedj</groupId>
-        <artifactId>cedj-application-domain-conference</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.cedj</groupId>
-        <artifactId>cedj-application-domain-conference</artifactId>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-domain-core</artifactId>
         <version>${project.version}</version>
         <type>test-jar</type>
         <scope>test</scope>
       </dependency>
       <dependency>
-        <groupId>org.cedj</groupId>
-        <artifactId>cedj-application-domain-venue</artifactId>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-domain-conference</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.cedj</groupId>
-        <artifactId>cedj-application-domain-relation</artifactId>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-domain-conference</artifactId>
+        <version>${project.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-domain-venue</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.cedj</groupId>
-        <artifactId>cedj-application-domain-attachment</artifactId>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-domain-relation</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-domain-attachment</artifactId>
         <version>${project.version}</version>
       </dependency>
 
       <!-- REST -->
       <dependency>
-        <groupId>org.cedj</groupId>
-        <artifactId>cedj-application-web-rest-core</artifactId>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-web-rest-core</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.cedj</groupId>
-        <artifactId>cedj-application-web-rest-conference</artifactId>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-web-rest-conference</artifactId>
         <version>${project.version}</version>
       </dependency>
 
       <!-- UI -->
       <dependency>
-        <groupId>org.cedj</groupId>
-        <artifactId>cedj-application-web-ui-core</artifactId>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-web-ui-core</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.cedj</groupId>
-        <artifactId>cedj-application-web-ui-conference</artifactId>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-web-ui-conference</artifactId>
         <version>${project.version}</version>
       </dependency>
 

@@ -5,8 +5,8 @@
 
   <!-- Parent -->
   <parent>
-    <groupId>org.cedj</groupId>
-    <artifactId>cedj-application-parent</artifactId>
+    <groupId>org.cedj.geekseek</groupId>
+    <artifactId>geekseek-parent</artifactId>
     <version>1.0.0-alpha-1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
@@ -15,9 +15,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <!-- Artifact Configuration -->
-  <artifactId>cedj-application-domain-parent</artifactId>
+  <artifactId>geekseek-domain-parent</artifactId>
   <packaging>pom</packaging>
-  <name>Continuous Enterprise Development in Java Example Application Domain Parent</name>
+  <name>CEDJ Example App: GeekSeek Domain Parent</name>
   <description>Domain Layer - Application example for Continuous Enterprise Development in Java</description>
 
   <dependencies>

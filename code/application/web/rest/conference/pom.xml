@@ -3,15 +3,15 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
-    <groupId>org.cedj</groupId>
-    <artifactId>cedj-application-web-rest-parent</artifactId>
+    <groupId>org.cedj.geekseek</groupId>
+    <artifactId>geekseek-web-rest-parent</artifactId>
     <version>1.0.0-alpha-1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>cedj-application-web-rest-conference</artifactId>
-  <name>Continuous Enterprise Development in Java Example Application Web REST: Conference</name>
+  <artifactId>geekseek-web-rest-conference</artifactId>
+  <name>CEDJ Example App: GeekSeek Web REST: Conference</name>
   <description></description>
 
   <dependencies>
@@ -23,22 +23,22 @@
 
 
     <dependency>
-      <groupId>org.cedj</groupId>
-      <artifactId>cedj-application-web-rest-core</artifactId>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-web-rest-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.cedj</groupId>
-      <artifactId>cedj-application-domain-conference</artifactId>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-domain-conference</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.cedj</groupId>
-      <artifactId>cedj-application-domain-conference</artifactId>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-domain-conference</artifactId>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.cedj</groupId>
-      <artifactId>cedj-application-domain-core</artifactId>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-domain-core</artifactId>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

@@ -3,26 +3,26 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
-    <groupId>org.cedj</groupId>
-    <artifactId>cedj-application-web-ui-parent</artifactId>
+    <groupId>org.cedj.geekseek</groupId>
+    <artifactId>geekseek-web-ui-parent</artifactId>
     <version>1.0.0-alpha-1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>cedj-application-web-ui-conference</artifactId>
-  <name>Continuous Enterprise Development in Java Example Application Web UI: Conference</name>
+  <artifactId>geekseek-web-ui-conference</artifactId>
+  <name>CEDJ Example App: GeekSeek Web UI: Conference</name>
   <description></description>
 
 
   <dependencies>
     <dependency>
-      <groupId>org.cedj</groupId>
-      <artifactId>cedj-application-web-ui-core</artifactId>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-web-ui-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.cedj</groupId>
-      <artifactId>cedj-application-domain-conference</artifactId>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-domain-conference</artifactId>
     </dependency>
   </dependencies>
 
