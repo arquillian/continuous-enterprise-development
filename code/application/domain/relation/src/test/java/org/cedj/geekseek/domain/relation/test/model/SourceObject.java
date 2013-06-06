@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cedj.geekseek.domain.relation.test;
+package org.cedj.geekseek.domain.relation.test.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

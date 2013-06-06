@@ -16,11 +16,6 @@
   <description></description>
 
   <dependencies>
-    <dependency>
-      <groupId>javax.enterprise</groupId>
-      <artifactId>cdi-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
 
     <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>

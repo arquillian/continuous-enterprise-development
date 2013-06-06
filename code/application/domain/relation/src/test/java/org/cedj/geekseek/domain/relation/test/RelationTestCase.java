@@ -17,15 +17,18 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.relation.RelationRepository;
 import org.cedj.geekseek.domain.relation.model.Relation;
+import org.cedj.geekseek.domain.relation.test.model.SourceObject;
+import org.cedj.geekseek.domain.relation.test.model.TargetObject;
 import org.cedj.geekseek.domain.test.CoreDeployments;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.persistence.UsingDataSet;
+import org.jboss.arquillian.junit.InSequence;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.asset.StringAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,10 +38,14 @@ import org.junit.runner.RunWith;
 public class RelationTestCase {
 
     @Deployment
-    public static JavaArchive deploy() {
-        return RelationDeployments.relation().addPackage(RelationTestCase.class.getPackage())
-            .addAsManifestResource(new StringAsset(CoreDeployments.persistence().exportAsString()), "persistence.xml")
-            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+    public static WebArchive deploy() {
+        return ShrinkWrap.create(WebArchive.class)
+            .addAsLibraries(
+                RelationDeployments.relationWithNeo(),
+                CoreDeployments.core())
+            .addAsLibraries(RelationDeployments.neo4j())
+            .addPackage(SourceObject.class.getPackage())
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     private static final String SOURCE_ID = "11";
@@ -46,7 +53,7 @@ public class RelationTestCase {
 
     private SourceObject source;
     private TargetObject target;
-    private Relation.Type type;
+    private String type;
 
     @Inject
     private RelationRepository repository;
@@ -55,11 +62,10 @@ public class RelationTestCase {
     public void createTypes() {
         source = new SourceObject(SOURCE_ID);
         target = new TargetObject(TARGET_ID);
-        type = Relation.Type.SPEAKING;
+        type = "SPEAKING";
     }
 
-    @Test
-    @UsingDataSet("test_objects.yml")
+    @Test @InSequence(0)
     public void shouldBeAbleToCreateRelation() {
 
         Relation relation = repository.add(source, type, target);
@@ -71,9 +77,10 @@ public class RelationTestCase {
         Assert.assertNotNull("Verify created date was set", relation.getCreated());
     }
 
-    @Test
-    @UsingDataSet({ "test_objects.yml", "test_object_relations.yml" })
-    public void shouldBeAbleToFindTargetedRelations() {
+    @Test @InSequence(1)
+    public void shouldBeAbleToFindTargetedRelations(Repository<TargetObject> targetRepo, Repository<SourceObject> sourceRepo) {
+        targetRepo.store(target);
+        sourceRepo.store(source);
 
         List<TargetObject> tagets = repository.findTargets(source, type, TargetObject.class);
 

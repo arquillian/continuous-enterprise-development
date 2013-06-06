@@ -26,12 +26,13 @@
     <version.jboss_spec>3.0.1.Final</version.jboss_spec>
 
     <version.junit>4.8.1</version.junit>
-    <version.arquillian_core>1.0.3.Final</version.arquillian_core>
+    <version.arquillian_core>1.0.4.Final</version.arquillian_core>
     <version.arquillian_persistence>1.0.0.Alpha6</version.arquillian_persistence>
     <version.arquillian_drone>1.1.1.Final</version.arquillian_drone>
     <version.arquillian_graphene>2.0.0.Alpha3</version.arquillian_graphene>
     <version.arquillian_warp>1.0.0.Alpha2</version.arquillian_warp>
     <version.arquillian_warp_rest>1.0.0.Final-SNAPSHOT</version.arquillian_warp_rest>
+    <version.shrinkwrap_resolver>2.0.0-beta-5</version.shrinkwrap_resolver>
     <version.restassured>1.8.0</version.restassured>
     <version.wildfly>8.0.0.Alpha1</version.wildfly>
     <version.jboss_as>7.1.1.Final</version.jboss_as>
@@ -39,6 +40,7 @@
     <version.jboss_eap_managed>eap-6.1.0</version.jboss_eap_managed>
     <version.hibernate_validator>4.3.0.Final</version.hibernate_validator>
     <version.jackson>1.8.5</version.jackson>
+    <version.neo4j>1.9</version.neo4j>
   </properties>
 
   <dependencyManagement>
@@ -57,8 +59,24 @@
         <version>${version.hibernate_validator}</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>org.neo4j</groupId>
+        <artifactId>neo4j</artifactId>
+        <version>${version.neo4j}</version>
+      </dependency>
 
       <!-- External Test Modules -->
+
+      <!-- Override dependency resolver with latest version.
+         This must go *BEFORE* the Arquillian BOM. -->
+      <dependency>
+        <groupId>org.jboss.shrinkwrap.resolver</groupId>
+        <artifactId>shrinkwrap-resolver-bom</artifactId>
+        <version>${version.shrinkwrap_resolver}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
       <dependency>
         <groupId>org.jboss.arquillian</groupId>
         <artifactId>arquillian-bom</artifactId>
@@ -185,6 +203,11 @@
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

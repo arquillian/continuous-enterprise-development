@@ -15,8 +15,6 @@ package org.cedj.geekseek.web.core.layout;
 
 import java.io.File;
 
-import org.cedj.geekseek.web.core.layout.Attachment;
-import org.cedj.geekseek.web.core.layout.PageExtension;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;

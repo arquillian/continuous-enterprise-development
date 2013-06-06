@@ -13,14 +13,38 @@
  */
 package org.cedj.geekseek.domain.relation.test;
 
+import java.io.File;
+
 import org.cedj.geekseek.domain.relation.RelationRepository;
 import org.cedj.geekseek.domain.relation.model.Relation;
-import org.cedj.geekseek.domain.test.CoreDeployments;
+import org.cedj.geekseek.domain.relation.neo.GraphDatabaseProducer;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 
 public class RelationDeployments {
+
     public static JavaArchive relation() {
-        return CoreDeployments.core().addPackage(Relation.class.getPackage())
-            .addPackage(RelationRepository.class.getPackage());
+        return ShrinkWrap.create(JavaArchive.class)
+            .addPackage(Relation.class.getPackage())
+            .addPackages(false, RelationRepository.class.getPackage())
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+    }
+
+    public static JavaArchive relationWithNeo() {
+        return relation()
+                .addPackage(GraphDatabaseProducer.class.getPackage());
+    }
+
+    public static File[] neo4j() {
+        long start = System.currentTimeMillis();
+        File[] result = Maven.resolver()
+                    .loadPomFromFile("pom.xml")
+                    .resolve("org.neo4j:neo4j")
+                    .withTransitivity()
+                    .asFile();
+        System.out.println("Neo4j Resovled in " + (System.currentTimeMillis() - start) + " ms");
+        return result;
     }
 }

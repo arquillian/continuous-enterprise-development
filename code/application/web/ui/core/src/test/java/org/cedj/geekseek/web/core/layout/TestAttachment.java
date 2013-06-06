@@ -13,8 +13,6 @@
  */
 package org.cedj.geekseek.web.core.layout;
 
-import org.cedj.geekseek.web.core.layout.Attachment;
-
 public class TestAttachment implements Attachment {
 
     public String getSource() {

@@ -16,31 +16,12 @@ package org.cedj.geekseek.domain.relation.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-@Entity
 public class Relation {
 
-    public enum Type {
-        SPEAKING, TRACKING, ATTENDING, ORGANIZING
-    }
-
-    @EmbeddedId
-    @Valid
     private Key key;
-
     private Date created;
 
-    @SuppressWarnings("unused")
-    private Relation() {
-    } // JPA
-
-    public Relation(String sourceId, String targetId, Type type) {
+    public Relation(String sourceId, String targetId, String type) {
         this.key = new Key(sourceId, targetId, type);
         this.created = new Date();
     }
@@ -53,7 +34,7 @@ public class Relation {
         return key.targetId;
     }
 
-    public Type getType() {
+    public String getType() {
         return key.type;
     }
 
@@ -65,20 +46,13 @@ public class Relation {
 
         private static final long serialVersionUID = 1L;
 
-        @NotNull
         private String sourceId;
 
-        @NotNull
         private String targetId;
 
-        @Enumerated(EnumType.STRING)
-        @NotNull
-        private Type type;
+        private String type;
 
-        private Key() {
-        } // JPA
-
-        private Key(String sourceId, String targetId, Type type) {
+        private Key(String sourceId, String targetId, String type) {
             this.sourceId = sourceId;
             this.targetId = targetId;
             this.type = type;

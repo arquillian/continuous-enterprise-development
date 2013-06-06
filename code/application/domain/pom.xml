@@ -52,16 +52,6 @@
       <artifactId>shrinkwrap-descriptors-impl-javaee</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-validator</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.enterprise</groupId>
-      <artifactId>cdi-api</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <modules>
