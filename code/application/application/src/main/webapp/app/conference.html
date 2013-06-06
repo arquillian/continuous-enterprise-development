@@ -10,9 +10,14 @@
 						<span data-ng-show="isEditMode()">Edit</span> 
 						 Conference
 					</legend>
-					
+
+					<div data-ng-show="formval">
+						<span class="error" data-ng-show="formval.start">{{formval.start}}</span>
+						<span class="error" data-ng-show="formval.end">{{formval.end}}</span>
+					</div>
+
 					<div class="row-fluid">
-						<div class="control-group">
+						<div class="control-group" data-ng-class="{'error':formval.name}">
 							<label class="control-label" for="name">Name</label>
 							<div class="controls">
 								<input class="input-xxlarge" type="text" id="name" data-ng-model="form.name" required placeholder="The conference brand name"/>
@@ -27,7 +32,7 @@
 					</div>
 										
 					<div class="row-fluid">
-						<div class="span3 control-group">
+						<div class="span3 control-group" data-ng-class="{'error':formval.start}">
 							<label class="control-label" for="start">Start date</label>
 							<div class="controls input-append">
 		  						<input class="input-small" type="text" id="start" data-date-format="dd/mm/yyyy" data-ng-model="form.start" bs-datepicker required>
@@ -40,7 +45,6 @@
 							<div class="controls input-append">
 		  						<input class="input-small" type="text" id="end" data-date-format="dd/mm/yyyy" data-ng-model="form.end" bs-datepicker required>
 		  						<button type="button" class="btn" data-toggle="datepicker"><i class="icon-calendar"></i></button>
-		  						<span data-ng-show="formval.end" class="help-inline">{{formval.end}}</span>
 							</div>
 							<span class="help-block">What's the last day of the conference?</span>
 						</div>

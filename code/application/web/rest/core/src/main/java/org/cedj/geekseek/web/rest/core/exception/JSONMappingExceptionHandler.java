@@ -24,9 +24,16 @@ public class JSONMappingExceptionHandler implements ExceptionMapper<JsonMappingE
         Map<String, String> map = new HashMap<String, String>();
 
         for(Reference ref : exception.getPath()) {
-            map.put(ref.getFieldName(), exception.getMessage());
+            map.put(ref.getFieldName(), process(exception.getMessage()));
         }
         return map;
+    }
+
+    private String process(String message) {
+        if(message.indexOf("(") > -1) {
+            return message.substring(0, message.indexOf("("));
+        }
+        return message;
     }
 
 }

@@ -26,7 +26,9 @@ import org.cedj.geekseek.domain.conference.model.Session;
 import org.cedj.geekseek.web.rest.conference.model.ConferenceRepresentation;
 import org.cedj.geekseek.web.rest.conference.model.SessionRepresentation;
 import org.cedj.geekseek.web.rest.core.Resource;
+import org.cedj.geekseek.web.rest.core.annotation.ResourceModel;
 
+@ResourceModel
 @Path("/conference")
 public class ConferenceResource implements Resource {
 
@@ -59,21 +61,20 @@ public class ConferenceResource implements Resource {
     // Conference
 
     @POST
-    @Consumes({BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE})
+    @Consumes({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
     public Response createConference(ConferenceRepresentation conferenceRepresenttion) {
         Conference conference = conferenceRepresenttion.to();
 
         repository.store(conference);
-        return Response.created(UriBuilder.fromResource(ConferenceResource.class)
-                            .segment("{id}")
-                            .build(conference.getId())).build();
+        return Response.created(
+            UriBuilder.fromResource(ConferenceResource.class).segment("{id}").build(conference.getId())).build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteConference(@PathParam("id") String id) {
         Conference conference = repository.get(id);
-        if(conference == null) {
+        if (conference == null) {
             return Response.status(Status.NOT_FOUND).build();
         }
         repository.remove(conference);
@@ -82,24 +83,23 @@ public class ConferenceResource implements Resource {
 
     @GET
     @Path("/{id}")
-    @Produces({BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE})
+    @Produces({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
     public Response getConference(@PathParam("id") String id) {
         Conference conference = repository.get(id);
-        if(conference == null) {
+        if (conference == null) {
             return Response.status(Status.NOT_FOUND).type(CONFERENCE_XML_MEDIA_TYPE).build();
         }
 
-        return Response.ok(
-                new ConferenceRepresentation(conference, uriInfo.getAbsolutePathBuilder()))
-                .type(getConferenceMediaType()).build();
+        return Response.ok(new ConferenceRepresentation(conference, uriInfo.getAbsolutePathBuilder()))
+            .type(getConferenceMediaType()).build();
     }
 
     @PUT
     @Path("/{id}")
-    @Consumes({BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE})
+    @Consumes({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
     public Response updateConference(@PathParam("id") String id, ConferenceRepresentation conferenceRepresentation) {
         Conference conference = repository.get(id);
-        if(conference == null) {
+        if (conference == null) {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
         }
 
@@ -117,23 +117,21 @@ public class ConferenceResource implements Resource {
 
     @GET
     @Path("/{c_id}/session")
-    @Produces({BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE})
+    @Produces({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
     public Response listSessions(@PathParam("c_id") String conferenceId) {
         List<SessionRepresentation> result = new ArrayList<SessionRepresentation>();
-        for(Session session : repository.get(conferenceId).getSessions()) {
-            result.add(new SessionRepresentation(
-                    session,
-                    uriInfo));
+        for (Session session : repository.get(conferenceId).getSessions()) {
+            result.add(new SessionRepresentation(session, uriInfo));
         }
         return Response.ok(result).type(getSessionMediaType()).build();
     }
 
     @POST
     @Path("/{c_id}/session")
-    @Consumes({BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE})
+    @Consumes({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
     public Response createSession(@PathParam("c_id") String conferenceId, SessionRepresentation sessionRepresentation) {
         Conference conference = repository.get(conferenceId);
-        if(conference == null) {
+        if (conference == null) {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
         }
 
@@ -141,26 +139,26 @@ public class ConferenceResource implements Resource {
         conference.addSession(session);
         repository.store(conference);
 
-        return Response.created(UriBuilder.fromResource(ConferenceResource.class)
-                            .segment("{c_id}").segment("session").segment("{s_id}")
-                            .build(conference.getId(), session.getId())).build();
+        return Response.created(
+            UriBuilder.fromResource(ConferenceResource.class).segment("{c_id}").segment("session").segment("{s_id}")
+                .build(conference.getId(), session.getId())).build();
     }
 
     @DELETE
     @Path("/{c_id}/session/{s_id}")
     public Response deleteSession(@PathParam("c_id") String conferenceId, @PathParam("s_id") String sessionId) {
         Conference conference = repository.get(conferenceId);
-        if(conference == null) {
+        if (conference == null) {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
         }
         Session session = null;
-        for(Session foundSession: conference.getSessions()) {
-            if(foundSession.getId().equals(sessionId)) {
+        for (Session foundSession : conference.getSessions()) {
+            if (foundSession.getId().equals(sessionId)) {
                 session = foundSession;
                 break;
             }
         }
-        if(session == null) {
+        if (session == null) {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
         }
         conference.removeSession(session);
@@ -170,20 +168,21 @@ public class ConferenceResource implements Resource {
 
     @PUT
     @Path("/{c_id}/session/{s_id}")
-    @Consumes({BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE})
-    public Response updateSession(@PathParam("c_id") String conferenceId, @PathParam("s_id") String sessionId, SessionRepresentation sessionRepresentation) {
+    @Consumes({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
+    public Response updateSession(@PathParam("c_id") String conferenceId, @PathParam("s_id") String sessionId,
+        SessionRepresentation sessionRepresentation) {
         Conference conference = repository.get(conferenceId);
-        if(conference == null) {
+        if (conference == null) {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
         }
         Session session = null;
-        for(Session foundSession: conference.getSessions()) {
-            if(foundSession.getId().equals(sessionId)) {
+        for (Session foundSession : conference.getSessions()) {
+            if (foundSession.getId().equals(sessionId)) {
                 session = foundSession;
                 break;
             }
         }
-        if(session == null) {
+        if (session == null) {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
         }
 
@@ -201,14 +200,12 @@ public class ConferenceResource implements Resource {
     @Path("/{c_id}/session/{s_id}")
     public Response getSession(@PathParam("c_id") String conferenceId, @PathParam("s_id") String sessionId) {
         Conference conference = repository.get(conferenceId);
-        if(conference == null) {
+        if (conference == null) {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
         }
-        for(Session session : conference.getSessions()) {
-            if(session.getId().equals(sessionId)) {
-                return Response.ok(
-                        new SessionRepresentation(session, uriInfo))
-                        .type(getSessionMediaType()).build();
+        for (Session session : conference.getSessions()) {
+            if (session.getId().equals(sessionId)) {
+                return Response.ok(new SessionRepresentation(session, uriInfo)).type(getSessionMediaType()).build();
             }
         }
         return Response.status(Status.NOT_FOUND).build();
@@ -224,8 +221,8 @@ public class ConferenceResource implements Resource {
 
     private String matchMediaType(String defaultMediaType, String alternativeMediaType) {
         String selected = defaultMediaType;
-        for(MediaType mt : headers.getAcceptableMediaTypes()) {
-            if(mt.isCompatible(MediaType.valueOf(alternativeMediaType))) {
+        for (MediaType mt : headers.getAcceptableMediaTypes()) {
+            if (mt.isCompatible(MediaType.valueOf(alternativeMediaType))) {
                 selected = alternativeMediaType;
                 break;
             }

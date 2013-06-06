@@ -83,6 +83,7 @@ function MainCtrl($scope, $location, graph) {
 				$scope.resource = resp;
 				$scope.mode = MODE_SHOW;
 			});
+			$scope.formval = {};
 			$scope.form = {};
 		};
 		var error = function(res) {

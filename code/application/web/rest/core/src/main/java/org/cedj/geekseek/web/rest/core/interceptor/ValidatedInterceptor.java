@@ -39,7 +39,7 @@ public class ValidatedInterceptor {
     private void validateAllRepresentations(InvocationContext ic) {
         for(Object obj : ic.getParameters()) {
             if(obj instanceof Representation) {
-                validate(obj);
+                validate(((Representation<?>) obj).to());
             }
         }
     }
