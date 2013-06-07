@@ -18,8 +18,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.cedj.geekseek.domain.Repository;
-import org.cedj.geekseek.domain.relation.RelationRepository;
 import org.cedj.geekseek.domain.relation.model.Relation;
+import org.cedj.geekseek.domain.relation.neo.GraphRelationRepository;
 import org.cedj.geekseek.domain.relation.test.model.SourceObject;
 import org.cedj.geekseek.domain.relation.test.model.TargetObject;
 import org.cedj.geekseek.domain.test.CoreDeployments;
@@ -56,7 +56,7 @@ public class RelationTestCase {
     private String type;
 
     @Inject
-    private RelationRepository repository;
+    private GraphRelationRepository repository;
 
     @Before
     public void createTypes() {

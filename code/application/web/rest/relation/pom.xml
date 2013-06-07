@@ -10,11 +10,17 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>geekseek-web-rest-conference</artifactId>
-  <name>CEDJ Example App: GeekSeek Web REST: Conference</name>
+  <artifactId>geekseek-web-rest-relation</artifactId>
+  <name>CEDJ Example App: GeekSeek Web REST: Relation</name>
   <description></description>
 
   <dependencies>
+    <dependency>
+      <groupId>org.jboss.spec.javax.servlet</groupId>
+      <artifactId>jboss-servlet-api_3.0_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
 
     <dependency>
       <groupId>org.cedj.geekseek</groupId>
@@ -22,17 +28,17 @@
     </dependency>
     <dependency>
       <groupId>org.cedj.geekseek</groupId>
-      <artifactId>geekseek-domain-conference</artifactId>
+      <artifactId>geekseek-domain-relation</artifactId>
     </dependency>
     <dependency>
       <groupId>org.cedj.geekseek</groupId>
-      <artifactId>geekseek-domain-conference</artifactId>
+      <artifactId>geekseek-web-rest-core</artifactId>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.cedj.geekseek</groupId>
-      <artifactId>geekseek-web-rest-core</artifactId>
+      <artifactId>geekseek-domain-relation</artifactId>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

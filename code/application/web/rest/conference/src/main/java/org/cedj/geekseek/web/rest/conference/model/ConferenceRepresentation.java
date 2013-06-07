@@ -21,13 +21,14 @@ public class ConferenceRepresentation extends LinkableRepresenatation<Conference
     private Date start;
     private Date end;
 
-    public ConferenceRepresentation(Conference conference, UriBuilder uriBuilder) {
-        this.conference = conference;
-        this.uriBuilder = uriBuilder;
+    public ConferenceRepresentation() {
+        this(new Conference(), null);
     }
 
-    public ConferenceRepresentation() {
-        this.conference = new Conference();
+    public ConferenceRepresentation(Conference conference, UriBuilder uriBuilder) {
+        super(Conference.class);
+        this.conference = conference;
+        this.uriBuilder = uriBuilder;
     }
 
     @XmlElement
@@ -78,7 +79,6 @@ public class ConferenceRepresentation extends LinkableRepresenatation<Conference
         List<ResourceLink> links = super.getLinks();
         if (uriBuilder != null) {
             links.add(new ResourceLink("session", uriBuilder.clone().path("session").build()));
-            // links.add(new ResourceLink("session2", uriBuilder.clone().path("session").build()));
         }
         return links;
     }

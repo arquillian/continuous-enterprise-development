@@ -13,20 +13,11 @@
  */
 package org.cedj.geekseek.domain.relation.test.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 import org.cedj.geekseek.domain.model.Identifiable;
 
-@Entity
 public class SourceObject implements Identifiable {
 
-    @Id
     public String id;
-
-    @SuppressWarnings("unused")
-    private SourceObject() {
-    } // JPA
 
     public SourceObject(String id) {
         this.id = id;

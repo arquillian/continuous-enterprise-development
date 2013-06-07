@@ -38,4 +38,9 @@ public class TestRepository implements Repository<Conference> {
         conferences = new HashSet<Conference>();
         conferences.add(conference);
     }
+
+    @Override
+    public Class<Conference> getType() {
+        return Conference.class;
+    }
 }

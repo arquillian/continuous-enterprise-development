@@ -27,8 +27,9 @@ public class RelationDeployments {
 
     public static JavaArchive relation() {
         return ShrinkWrap.create(JavaArchive.class)
-            .addPackage(Relation.class.getPackage())
-            .addPackages(false, RelationRepository.class.getPackage())
+            .addPackages(false,
+                Relation.class.getPackage(),
+                RelationRepository.class.getPackage())
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 

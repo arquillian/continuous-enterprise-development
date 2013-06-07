@@ -23,10 +23,11 @@ public class SessionRepresentation extends LinkableRepresenatation<Session> {
     private Date end;
 
     public SessionRepresentation() {
-        session = new Session();
+        this(new Session(), null);
     }
 
     public SessionRepresentation(Session session, UriInfo uriInfo) {
+        super(Session.class);
         this.session = session;
         this.uriInfo = uriInfo;
     }
