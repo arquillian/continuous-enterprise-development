@@ -4,7 +4,7 @@ _"If everyone is moving forward together, then success takes care of itself." - 
 
 === The Zen of Prevention
 
-At times it may feel that the universe mischievously conspires to destroy our work.  And to some extent this is true: nature doesn't like order.  This entropy manifests itself in many ways; we open a network socket, a router may fail.  We write to a file, the disk could fill up.  We fail to check for valid inputs, our program could encounter a null pointer.
+At times it may feel that the universe mischievously conspires to destroy our work.  And to some extent this is true: nature doesn't like order.  This entropy manifests itself in many ways; we open a network socket, a router may fail.  We write to a file, the disk could fill up.  We fail to check for valid inputs, our program could blow up unexpectedly.
 
 Causes of potential failure are both infinite and inevitable.  As guardians of our own code quality, we're armed with two battle tactics: Be _reactive_, or be _proactive_.
 
@@ -16,7 +16,7 @@ Colloquially referred to as "firefighting", a reactive position calls us to acti
 . The unprotected areas of code which allowed the cause to wreck greater havoc
 . Any resultant artifacts which persist after the error is encountered
 
-Anyone who's rifled through a database's binary log file to restore data to a consistent state can attest to the stressful waste of time incurred in handling emergency situations after a breach in expected execution.  Dealing with issues as they arise also imposes a sense of immediacy; the activities of a normal workday may be suspended to address more pressing concerns.
+Anyone who's rifled through a database's binary log file to restore data to a consistent state can attest to the stressful waste of time incurred in handling emergency situations after a breach in expected execution. Dealing with issues as they arise also imposes a sense of immediacy; the activities of a normal workday may be suspended to address more pressing concerns.
 
 Clearly, the reactive model is not our best option if it can be avoided.
 
@@ -93,11 +93,11 @@ In fact, XP along with other models has both inspired and acts as an implementat
 
 _"Move testing from the caboose to the engine." - Tim Ottinger, Senior Consultant, Industrial Logic_ 
 
-No matter the development method your team prescribes, and no matter how rigidly you adhere to its principles, eventually you're going to need to assert that your code works.  Of course you could handle this manually by deploying the application and letting a human user follow a scripted test plan, but wherever possible it's much more efficient and fail-proof to automate the test execution wherever possible.  So you're going to need to write some tests.
+No matter the development method your team prescribes, and no matter how rigidly you adhere to its principles, eventually you're going to need to assert that your code works.  Of course you could handle this manually by deploying the application and letting a human user follow a scripted test plan, but wherever possible it's much more efficient and fail-proof to automate the test execution. So you're going to need to write some tests.
 
 But it's our opinion that testing is not simply about making sure your code works as expected.
 
-When you write tests, you're a _user_ of your API.  You'll see how intuitive it is to use, you'll discover gaps in documentation.  You might discover that it's too verbose or ugly.  You're putting yourself in the shoes of your target audience.
+When you write tests, you're a _user_ of your API.  You'll see how intuitive it is to use, you'll discover gaps in documentation.  You might discover that it's too verbose or ugly, and most importantly: you can re-evaluate your design before it's too late. You're putting yourself in the shoes of your target audience.
 
 What's more, if you write tests alongside the development of your business logic, you might find your work to be more _enjoyable_.  You'll know when a feature is completed; you'll have the satisfaction of seeing concrete feedback in real-time.  Proponents of _Test-Driven Development_ even make the case for writing tests _before_ implementation.  In our experience, testing may be done alongside construction of the primary code such that the experience from one end of the tunnel can inform the other.
 
@@ -138,8 +138,7 @@ For instance, every Java object inherits the method +Object.hashCode()+ and the 
  * Test bullet 2 of the hashCode contract as defined by:
  * http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#hashCode()
 */
-public void testHashCodeOfEqualObjects()
-{
+public void testHashCodeOfEqualObjects() {
   // Declare some vars that are equal-by-value
   MyObject a = new MyObject("a");
   MyObject b = new MyObject("a");
@@ -156,10 +155,11 @@ In cases where a unit test may require inputs from unrelated components, the use
 
 * Simulate an error condition
 * Avoid starting up an expensive process or code path
+* Avoid dependence upon a third-party system which might not be reliable (or even not available) for testing purposes
 * Avoid dependence upon a mechanism which supplies non-idempotent (non-repeatable) values.
 ** For instance a random-number generator or something that relies on the current time
 
-While mocks absolutely have their place in the testing arsenal, in the context of Enterprise development it's our opinion that their use is to be avoided.  The Java Enterprise Edition is based on a _POJO_ (Plain Old Java Object) component model which enables us to directly instantiate Servlets, EJBs, and CDI beans; this is great for validating business logic in simple calls.  However the true power of Java EE is in the _loose coupling_ between components, and mocks do not account for the linkage between these pieces that's provided by the container.  To fully test an application, you must test the whole runtime, not simply the code you've written on your own.  For that, we need a more comprehensive solution to validation than is allowed by Unit Tests.
+While mocks absolutely have their place in the testing arsenal, in the context of Enterprise development it's our opinion that their use is to be limited.  The Java Enterprise Edition is based on a _POJO_ (Plain Old Java Object) component model which enables us to directly instantiate Servlets, EJBs, and CDI beans; this is great for validating business logic in simple calls.  However the true power of Java EE is in the _loose coupling_ between components, and mocks do not account for the linkage between these pieces that's provided by the container.  To fully test an application, you must test the whole runtime, not simply the code you've written on your own.  For that, we need a more comprehensive solution to validation than is allowed by Unit Tests.
 
 ==== Integration
 
@@ -180,7 +180,7 @@ Java has built-in support for +java.lang.Assertion+ error and the +assert+ keywo
 [source,java]
 ----
 private String welcome(String name) {
-  assert name!=null && name.length()>0 : "name must be specified";
+  assert name!=null && !name.isEmpty() : "name must be specified";
   return "Hello, " + name;
 }
 ----
@@ -222,7 +222,7 @@ public class WelcomeJDKTest {
     boolean gotExpectedException = false;
     try {
       welcomer.welcome(null);
-    } catch (IllegalArgumentException iae) {
+    } catch (final IllegalArgumentException iae) {
       gotExpectedException = true;
     }
     if(!gotExpectedException) {
