@@ -20,6 +20,11 @@ public abstract class PersistenceRepository<T extends Identifiable> implements R
         this.type = type;
     }
 
+    @Override
+    public Class<T> getType() {
+        return type;
+    }
+
     public T store(T entity) {
         T merged = merge(entity);
         manager.persist(merged);

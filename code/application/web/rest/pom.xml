@@ -62,6 +62,7 @@
   <modules>
     <module>core</module>
     <module>conference</module>
+    <module>relation</module>
   </modules>
 
 </project>

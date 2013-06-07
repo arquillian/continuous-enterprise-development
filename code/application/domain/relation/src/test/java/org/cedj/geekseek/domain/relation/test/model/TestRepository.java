@@ -13,6 +13,21 @@ public abstract class TestRepository<T extends Identifiable> implements Reposito
 
     private Set<T> data = new HashSet<T>();
 
+    private Class<T> type;
+
+    // Needed to proxy @NormalScope CDI
+    public TestRepository() {
+    }
+
+    public TestRepository(Class<T> type) {
+        this.type = type;
+    }
+
+    @Override
+    public Class<T> getType() {
+        return type;
+    }
+
     @Override
     public T store(T entity) {
         data.add(entity);
@@ -33,5 +48,4 @@ public abstract class TestRepository<T extends Identifiable> implements Reposito
     public void remove(T entity) {
         data.remove(entity);
     }
-
 }

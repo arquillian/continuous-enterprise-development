@@ -8,12 +8,10 @@ import javax.xml.bind.annotation.XmlElement;
 public abstract class LinkableRepresenatation<X> implements Representation<X> {
 
     private List<ResourceLink> links;
+    private Class<X> type;
 
-    public LinkableRepresenatation() {
-    }
-
-    public LinkableRepresenatation(List<ResourceLink> links) {
-        this.links = links;
+    public LinkableRepresenatation(Class<X> type) {
+        this.type = type;
     }
 
     @XmlElement(name = "link", namespace = "urn:ced:link")
@@ -28,4 +26,8 @@ public abstract class LinkableRepresenatation<X> implements Representation<X> {
         getLinks().add(link);
     }
 
+    @Override
+    public Class<X> getType() {
+        return type;
+    }
 }

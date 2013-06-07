@@ -18,8 +18,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.cedj.geekseek.domain.Repository;
-import org.cedj.geekseek.domain.relation.RelationRepository;
 import org.cedj.geekseek.domain.relation.model.Relation;
+import org.cedj.geekseek.domain.relation.neo.GraphRelationRepository;
 import org.cedj.geekseek.domain.relation.test.model.SourceObject;
 import org.cedj.geekseek.domain.relation.test.model.TargetObject;
 import org.cedj.geekseek.domain.test.CoreDeployments;
@@ -56,7 +56,7 @@ public class RelationTestCase {
     private String type;
 
     @Inject
-    private RelationRepository repository;
+    private GraphRelationRepository repository;
 
     @Before
     public void createTypes() {
@@ -81,6 +81,30 @@ public class RelationTestCase {
     public void shouldBeAbleToFindTargetedRelations(Repository<TargetObject> targetRepo, Repository<SourceObject> sourceRepo) {
         targetRepo.store(target);
         sourceRepo.store(source);
+
+        List<TargetObject> tagets = repository.findTargets(source, type, TargetObject.class);
+
+        Assert.assertNotNull("Verify a non null list returned", tagets);
+        Assert.assertEquals("Verify expected targets count", 1, tagets.size());
+
+        Assert.assertEquals("Verify expected target returned", TARGET_ID, tagets.get(0).getId());
+    }
+
+    @Test @InSequence(2)
+    public void shouldBeAbleToDeleteRelations() {
+
+        repository.remove(source, type, target);
+
+        List<TargetObject> tagets = repository.findTargets(source, type, TargetObject.class);
+        Assert.assertNotNull("Verify a non null list returned", tagets);
+        Assert.assertEquals("Verify expected targets count", 0, tagets.size());
+    }
+
+    @Test @InSequence(3)
+    public void shouldOnlyFindGivenRelation() {
+
+        repository.add(source, type, target);
+        repository.add(source, type + "X", target);
 
         List<TargetObject> tagets = repository.findTargets(source, type, TargetObject.class);
 
