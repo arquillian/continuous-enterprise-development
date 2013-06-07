@@ -44,7 +44,7 @@ public class GraphDatabaseProducer {
                 tmp.delete();
                 parent.mkdirs();
                 path = parent.getAbsolutePath();
-                path = "/home/aslak/dev/source/neo/";
+                //path = "/home/aslak/dev/source/neo/";
             }catch (IOException e) {
                 throw new RuntimeException(
                     "Could not create temp location for Nepo4j Database. " +
