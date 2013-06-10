@@ -13,7 +13,6 @@
  */
 package org.cedj.geekseek.domain.conference.model;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,20 +22,16 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import org.cedj.geekseek.domain.model.Identifiable;
+import org.cedj.geekseek.domain.persistence.model.BaseEntity;
 
 @Entity
-public class Conference implements Identifiable, Serializable {
+public class Conference extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    private String id;
 
     @NotNull
     private String name;
@@ -53,11 +48,7 @@ public class Conference implements Identifiable, Serializable {
     private Set<Session> sessions;
 
     public Conference() {
-        this.id = UUID.randomUUID().toString();
-    }
-
-    public String getId() {
-        return id;
+        super(UUID.randomUUID().toString());
     }
 
     public String getName() {

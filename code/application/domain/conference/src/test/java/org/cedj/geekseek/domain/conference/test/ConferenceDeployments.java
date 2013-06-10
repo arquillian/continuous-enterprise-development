@@ -36,6 +36,6 @@ public class ConferenceDeployments {
     }
 
     public static JavaArchive persistenceRepository() {
-        return repository().addPackage(PersistenceRepository.class.getPackage());
+        return repository().addPackages(true, PersistenceRepository.class.getPackage());
     }
 }

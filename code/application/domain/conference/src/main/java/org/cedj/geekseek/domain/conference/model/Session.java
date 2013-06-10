@@ -13,24 +13,21 @@
  */
 package org.cedj.geekseek.domain.conference.model;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.cedj.geekseek.domain.persistence.model.BaseEntity;
+
 @Entity
-public class Session implements Serializable {
+public class Session extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    private String id;
 
     @Embedded
     @NotNull
@@ -47,11 +44,7 @@ public class Session implements Serializable {
     private Conference conference;
 
     public Session() {
-        this.id = UUID.randomUUID().toString();
-    }
-
-    public String getId() {
-        return id;
+        super(UUID.randomUUID().toString());
     }
 
     public Duration getDuration() {

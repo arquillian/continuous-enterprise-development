@@ -20,28 +20,22 @@ import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 
-import org.cedj.geekseek.domain.model.Identifiable;
+import org.cedj.geekseek.domain.persistence.model.BaseEntity;
 
 @Entity
-public class Venue implements Identifiable {
+public class Venue extends BaseEntity {
 
-    @Id
-    private String id;
+    private static final long serialVersionUID = 1L;
 
     @OneToMany(fetch = FetchType.EAGER)
     @Valid
     private Set<Room> rooms;
 
     public Venue() {
-        this.id = UUID.randomUUID().toString();
-    }
-
-    public String getId() {
-        return id;
+        super(UUID.randomUUID().toString());
     }
 
     public Set<Room> getRooms() {

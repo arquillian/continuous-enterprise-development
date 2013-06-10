@@ -15,6 +15,7 @@ package org.cedj.geekseek.domain.test;
 
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.model.Identifiable;
+import org.cedj.geekseek.domain.persistence.model.BaseEntity;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -24,8 +25,10 @@ import org.jboss.shrinkwrap.descriptor.api.persistence10.PersistenceDescriptor;
 public class CoreDeployments {
     public static JavaArchive core() {
         return ShrinkWrap.create(JavaArchive.class)
-            .addPackage(Identifiable.class.getPackage())
-            .addPackage(Repository.class.getPackage())
+            .addPackages(false,
+                Identifiable.class.getPackage(),
+                Repository.class.getPackage(),
+                BaseEntity.class.getPackage())
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 

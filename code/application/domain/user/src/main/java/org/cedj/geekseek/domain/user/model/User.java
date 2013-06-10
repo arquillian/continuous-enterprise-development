@@ -14,25 +14,21 @@
 package org.cedj.geekseek.domain.user.model;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
-import org.cedj.geekseek.domain.model.Identifiable;
+import org.cedj.geekseek.domain.persistence.model.BaseEntity;
 
 @Entity
-public class User implements Identifiable {
+public class User extends BaseEntity {
 
-    @Id
-    // twitter handle
-    private String id;
+    private static final long serialVersionUID = 1L;
 
     private String bio;
 
-    public User(String id) {
-        this.id = id;
-    }
+    // JPA Default constructor
+    protected User() {}
 
-    public String getId() {
-        return id;
+    public User(String id) {
+        super(id);
     }
 
     public String getBio() {

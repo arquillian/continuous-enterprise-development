@@ -18,6 +18,7 @@ import java.net.URL;
 
 import org.cedj.geekseek.domain.conference.model.Conference;
 import org.cedj.geekseek.domain.model.Identifiable;
+import org.cedj.geekseek.domain.persistence.model.BaseEntity;
 import org.cedj.geekseek.web.conference.ConferenceBean;
 import org.cedj.geekseek.web.conference.Current;
 import org.cedj.geekseek.web.conference.test.component.ConferenceView;
@@ -47,7 +48,8 @@ public class ConferenceTestCase {
     @Deployment
     public static WebArchive create() {
         WebArchive war = ShrinkWrap.create(WebArchive.class, "test.war")
-            .addClasses(Identifiable.class, ConferenceBean.class, Current.class, TestConferenceProducer.class)
+            .addClasses(ConferenceBean.class, Current.class, TestConferenceProducer.class)
+            .addPackages(false, Identifiable.class.getPackage(), BaseEntity.class.getPackage())
             .addPackage(Conference.class.getPackage())
             .addAsWebResource(new File("src/main/webapp/conference.xhtml"))
             .addAsWebInfResource(new File("src/main/webapp/WEB-INF/faces-config.xml"))

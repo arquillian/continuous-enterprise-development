@@ -16,31 +16,23 @@ package org.cedj.geekseek.domain.venue.model;
 import java.util.UUID;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
-@Entity
-public class Room {
+import org.cedj.geekseek.domain.persistence.model.BaseEntity;
 
-    @Id
-    private String id;
+@Entity
+public class Room extends BaseEntity {
+
+    private static final long serialVersionUID = 1L;
 
     @NotNull
     private String name;
 
     public Room() {
-        this.id = UUID.randomUUID().toString();
-    }
-
-    public String getId() {
-        return id;
+        super(UUID.randomUUID().toString());
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 }

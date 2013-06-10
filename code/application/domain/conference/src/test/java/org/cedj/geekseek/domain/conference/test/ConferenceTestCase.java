@@ -17,6 +17,8 @@ import static org.cedj.geekseek.domain.conference.test.TestUtils.toDate;
 
 import javax.inject.Inject;
 
+import junit.framework.Assert;
+
 import org.cedj.geekseek.domain.conference.ConferenceRepository;
 import org.cedj.geekseek.domain.conference.model.Conference;
 import org.cedj.geekseek.domain.conference.model.Duration;
@@ -75,7 +77,8 @@ public class ConferenceTestCase {
         Conference conference = createConference();
         conference.addSession(createSession());
 
-        repository.store(conference);
+        Conference stored = repository.store(conference);
+        Assert.assertNotNull("Validate Created date has been set", stored.getCreated());
     }
 
     // Story: As a User I should be able to add a Session to a existing Conference
@@ -127,7 +130,8 @@ public class ConferenceTestCase {
         Conference conference = repository.get("CA");
         conference.setName("UPDATED");
 
-        repository.store(conference);
+        Conference stored = repository.store(conference);
+        Assert.assertNotNull("Validate Updated date has been set", stored.getLastUpdated());
     }
 
     // Story: As a User I should be able to change a Session

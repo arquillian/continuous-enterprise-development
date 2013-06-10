@@ -47,6 +47,7 @@ public class ConferenceResource implements Resource {
 
     @Inject
     private RepresentationConverter<ConferenceRepresentation, Conference> conferenceConverter;
+
     @Inject
     private RepresentationConverter<SessionRepresentation, Session> sessionConverter;
 
@@ -96,7 +97,9 @@ public class ConferenceResource implements Resource {
         }
 
         return Response.ok(conferenceConverter.from(conference))
-            .type(getConferenceMediaType()).build();
+            .type(getConferenceMediaType())
+            .lastModified(conference.getLastModified())
+            .build();
     }
 
     @PUT
@@ -122,7 +125,9 @@ public class ConferenceResource implements Resource {
     public Response listSessions(@PathParam("c_id") String conferenceId) {
         Set<Session> sessions = repository.get(conferenceId).getSessions();
 
-        return Response.ok(sessionConverter.from(sessions)).type(getSessionMediaType()).build();
+        return Response.ok(sessionConverter.from(sessions))
+            .type(getSessionMediaType())
+            .build();
     }
 
     @POST
@@ -139,8 +144,10 @@ public class ConferenceResource implements Resource {
         repository.store(conference);
 
         return Response.created(
-            UriBuilder.fromResource(ConferenceResource.class).segment("{c_id}").segment("session").segment("{s_id}")
-                .build(conference.getId(), session.getId())).build();
+            UriBuilder.fromResource(
+                ConferenceResource.class).segment("{c_id}").segment("session").segment("{s_id}")
+                .build(conference.getId(), session.getId()))
+            .build();
     }
 
     @DELETE
@@ -200,7 +207,10 @@ public class ConferenceResource implements Resource {
         }
         for (Session session : conference.getSessions()) {
             if (session.getId().equals(sessionId)) {
-                return Response.ok(sessionConverter.from(session)).type(getSessionMediaType()).build();
+                return Response.ok(sessionConverter.from(session))
+                    .type(getSessionMediaType())
+                    .lastModified(session.getLastModified())
+                    .build();
             }
         }
         return Response.status(Status.NOT_FOUND).build();
@@ -208,6 +218,7 @@ public class ConferenceResource implements Resource {
 
     // Internal Helpers
 
+    // Work around for faulty @Produces alg when using type arguments
     private String getConferenceMediaType() {
         return matchMediaType(CONFERENCE_XML_MEDIA_TYPE, CONFERENCE_JSON_MEDIA_TYPE);
     }
