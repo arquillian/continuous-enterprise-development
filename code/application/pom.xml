@@ -32,6 +32,7 @@
     <version.arquillian_graphene>2.0.0.Alpha3</version.arquillian_graphene>
     <version.arquillian_warp>1.0.0.Alpha2</version.arquillian_warp>
     <version.arquillian_warp_rest>1.0.0.Final-SNAPSHOT</version.arquillian_warp_rest>
+    <version.shrinkwrap>1.1.2</version.shrinkwrap>
     <version.shrinkwrap_resolver>2.0.0-beta-5</version.shrinkwrap_resolver>
     <version.restassured>1.8.0</version.restassured>
     <version.wildfly>8.0.0.Alpha1</version.wildfly>
@@ -66,7 +67,15 @@
       </dependency>
 
       <!-- External Test Modules -->
-
+      <!-- Override SW with latest version.
+        This must go *BEFORE* the Arquillian BOM. -->
+      <dependency>
+        <groupId>org.jboss.shrinkwrap</groupId>
+        <artifactId>shrinkwrap-bom</artifactId>
+        <version>${version.shrinkwrap}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <!-- Override dependency resolver with latest version.
          This must go *BEFORE* the Arquillian BOM. -->
       <dependency>
@@ -233,6 +242,7 @@
     <module>domain</module>
     <module>web</module>
     <module>application</module>
+    <module>service</module>
   </modules>
 
   <profiles>
