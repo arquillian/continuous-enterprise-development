@@ -209,6 +209,13 @@
         <artifactId>geekseek-web-rest-conference</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-web-rest-conference</artifactId>
+        <version>${project.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
 
       <!-- UI -->
       <dependency>

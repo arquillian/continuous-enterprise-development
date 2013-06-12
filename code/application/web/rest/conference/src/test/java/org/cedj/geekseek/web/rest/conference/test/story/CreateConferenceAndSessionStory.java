@@ -14,15 +14,18 @@ import javax.ws.rs.core.Response.Status;
 
 import org.cedj.geekseek.web.rest.conference.test.model.Conference;
 import org.cedj.geekseek.web.rest.conference.test.model.Session;
+import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.filter.log.RequestLoggingFilter;
 import com.jayway.restassured.filter.log.ResponseLoggingFilter;
 
+@RunWith(Arquillian.class)
 public class CreateConferenceAndSessionStory {
 
     private static String uri_conference = null;

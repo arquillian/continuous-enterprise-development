@@ -28,6 +28,7 @@
     <!-- Versioning -->
     <version.junit_junit>4.10</version.junit_junit>
     <version.org.testng_testng>6.7</version.org.testng_testng>
+    <version.maven_surefire>2.15</version.maven_surefire>
 
   </properties>
 
@@ -176,6 +177,7 @@
       <!-- Surefire -->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>${version.maven_surefire}</version>
         <configuration>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <trimStackTrace>false</trimStackTrace>

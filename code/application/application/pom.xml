@@ -26,6 +26,26 @@
       <artifactId>jboss-jaxrs-api_1.1_spec</artifactId>
       <scope>provided</scope>
     </dependency>
+
+    <!-- Test Resources -->
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-container</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.jayway.restassured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Import Test Stories -->
+    <dependency>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-web-rest-conference</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -36,6 +56,34 @@
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
+
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <phase>integration-test</phase>
+            <configuration>
+              <systemPropertyVariables>
+                <arquillian.debug>true</arquillian.debug>
+              </systemPropertyVariables>
+              <skipTests>false</skipTests>
+              <includes>
+                <include>**/*Story.java</include>
+              </includes>
+              <dependenciesToScan>
+                <dependency>org.cedj.geekseek:geekseek-web-rest-conference</dependency>
+              </dependenciesToScan>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 </project>
