@@ -16,7 +16,7 @@ The information contained in a system at any point in time comprises the _state_
 
 Depending upon your view or framework of choice, there may be other ways to slice visibility, but the above table outlines some of the most commonly-used paradigms.
 
-As is thematic throughout the study of computer science, the rule of thumb is to limit ourselves to the smallest scope required.  Fine-grained access to data helps to ensure that we don't leak out state where it can cause security issues or difficult-to-debug behaviours.  Can you imagine what it'd be like if one user's access to his online bank account were to be replicated to all active sessions?
+As is thematic throughout the study of computer science, the rule of thumb is to limit ourselves to the smallest scope required.  Fine-grained access to data helps to ensure that we don't leak out state where it can cause security issues or difficult-to-debug behaviors.  Can you imagine what it'd be like if one user's access to his online bank account were to be replicated to all active sessions?
 
 In addition to the notion of scopes, which limit data's visibility, we also have the concept of _persistence_.  Persistence is a property which dictates whether or not state will survive outside of its confining scope.  For instance: we may allow a user to log in and change her online profile, but if we don't synchronize these updates with some sort of persistent storage, they'll be lost as soon as her user session which defines the scope of this data is closed.
 
@@ -219,7 +219,7 @@ Given our user and technical concerns, the Java EE stack using JPA described abo
 * Enterprise JavaBeans (EJB, http://jcp.org/aboutJava/communityprocess/final/jsr318/[JSR 318])
 * JPA
 
-Transactions are a wide subject that merit their own book when dealing with the mechanics of implementing a viable transactional engine.  For us as users, however, the rules are remarkably simple.  We'll imagine a transaction is a set of code that runs within a block.  The instructions that are executed within this block must adhere to the _ACID_ properties: Atomicity, Consistency, Isolation, and Durability.
+Transactions are a wide subject that merits its own book when dealing with the mechanics of implementing a viable transactional engine.  For us as users, however, the rules are remarkably simple.  We'll imagine a transaction is a set of code that runs within a block.  The instructions that are executed within this block must adhere to the _ACID_ properties: Atomicity, Consistency, Isolation, and Durability.
 
 * Atomicity - The instructions in the block act as one unit; they either succeed (_commit_) or fail (_rollback_) together
 * Consistency - All resources associated with the transaction (in this case, our database), will always be in a legal, viable state.  For instance, a foreign key field will always point to a valid primary key.  These rules are typically enforced by the transactional resource (again, our database).
@@ -258,7 +258,7 @@ Creating ad-hoc object graphs in the test code is often too verbose and makes it
 
 Adding transactional support to these tests is fairly straightforward.  If that's only what you need simply put a +@Transactional+ annotation either on the test which you want be wrapped in transaction or on the test class (which will result in all tests running in their own transactions).  The following modes are supported:
 
-* +COMMIT+: Each test will be finished with commit operation. This is default behaviour.
+* +COMMIT+: Each test will be finished with commit operation. This is default behavior.
 * +ROLLBACK+: At the end of the test execution rollback will be performed.
 * +DISABLED+: If you have enabled transactional support at the test class level, marking given test with this mode will simply run it without the transaction.
 
@@ -544,7 +544,7 @@ public class Duration {
             throw new IllegalArgumentException("End must be provided");
         }
         if (end.before(start)) {
-            throw new IllegalArgumentException("End can not be before Start");
+            throw new IllegalArgumentException("End cannot be before Start");
         }
         this.start = start;
         this.end = end;
@@ -628,7 +628,7 @@ The +TransactionAttribute+ annotation and its +REQUIRES_NEW+ value on the class 
 
 An instance member of this class is our +EntityManager+, which will be used to carry out the public business methods +store+ (Create) and +get+ (Read).  Update is handled by simply reading in an entity, then making any changes to that object's state.  The application server will propagate these state changes to persistent storage when the transaction commits (ie. a transactional business method invocation completes successfully).
 
-We can now extend this behaviour with a concrete class and supply the requisite EJB annotations easily:
+We can now extend this behavior with a concrete class and supply the requisite EJB annotations easily:
 
 +code/application/domain/conference/src/main/java/org/cedj/app/domain/conference/ConferenceRepository.java+:
 [source,java]
