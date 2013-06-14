@@ -145,7 +145,7 @@ In effect this relationship has a graph structure:
 
 ***INSERT MORE DETAILED IMAGE OF USER RELATIONSHIPS, (Fig 04-02)***
 
-While there are any number of ways we might store and model this structure, it's worth noting that requesting transient relationships can be a problem with geometric time complexity.  That is: we'd need one query to find all of a user's followers.  Then, *for each* of the results in that set, we'd need another query to find *their* followers.  With each level we drill in to find followers, the problem gets prohibitively complex and unsolveable when organized in standard tables and rows.
+While there are any number of ways we might store and model this structure, it's worth noting that requesting transient relationships can be a problem with geometric time complexity.  That is: we'd need one query to find all of a user's followers.  Then, *for each* of the results in that set, we'd need another query to find *their* followers.  With each level we drill in to find followers, the problem gets prohibitively complex and unsolvable when organized in standard tables and rows.
 
 Because the relationship is naturally a graph, it will likely make sense to store our relationship data in this fashion.  That way, instead of querying standard records, we can walk the graph (simply obtaining a value from a pointer is an operation with constant time complexity, and thus will perform many factors better when we compound the process in a loop).
 
@@ -217,7 +217,7 @@ Orthogonal to the task of creating our example application, there are a series o
 
 Throughout the text we'll be covering a series of "Containers" and "Extensions" to Arquillian; these extend the core behaviours allowing us to hook into 3rd-party tools or execute some custom logic during test execution.
 
-However, the Arquillian Community can't possibly forsee all testing use cases, and new integration points are emerging all of the time.  For this reason, we provide the Arquillian _Service Provider Interface_ (SPI), a set of hooks which allow you as a user of Arquillian to extend its behavior.
+However, the Arquillian Community can't possibly foresee all testing use cases, and new integration points are emerging all of the time.  For this reason, we provide the Arquillian _Service Provider Interface_ (SPI), a set of hooks which allow you as a user of Arquillian to extend its behavior.
 
 Chapter 13 will cover the SPI and explain the construction of your own Arquillian extension points.
 
