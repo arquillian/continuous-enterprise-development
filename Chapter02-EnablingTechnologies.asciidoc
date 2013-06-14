@@ -33,7 +33,7 @@ Perhaps the most prominent figure in the Java automated build tool landscape, ht
 
 One very nice feature of Maven is that it strives for _"convention over configuration"_.  By following a set of recommended best practices, you're likely to trim down on the amount of metadata you'd otherwise need to explicitly define.  Additionally, Maven actions (called _goals_) are bound to a documented http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html[lifecycle] which are common to all Maven-based projects.  For instance, in order to compile, test, and package your project, the command +$> mvn package+ applies.  This standardization alleviates us from having to declare or learn different build commands for each project.
 
-At the core of the Maven engine is a sophisticated _dependency management_ solution capable of resolving libraries by name from a http://search.maven.org/[Central Respoitory] (or additionally-configured repository) onto a user's local system.  This feature allows us to skip the manual process of adding dependencies into our version control system, and allows us to instead fetch them on-demand as part of the build process.  As an added bonus, the requisite dependencies for all projects consuming ours are well-documented and automatically fetched for us.
+At the core of the Maven engine is a sophisticated _dependency management_ solution capable of resolving libraries by name from a http://search.maven.org/[Central Repository] (or additionally-configured repository) onto a user's local system.  This feature allows us to skip the manual process of adding dependencies into our version control system, and allows us to instead fetch them on-demand as part of the build process.  As an added bonus, the requisite dependencies for all projects consuming ours are well-documented and automatically fetched for us.
 
 ***INSERT IMAGE : Project A depends on B depends on C, gets all as requested from the Central Repo***
 
@@ -44,7 +44,7 @@ Maven is not without its detractors, however.  It's been criticized for a few po
 * Transitive dependencies as a default trigger a lot of downloading on first build.  Without care, a project may inherit more dependencies than are necessary or desired.
 * Deviation from the defined Maven standard is often difficult to reconcile.
 
-It _is_ possible to use Maven-structured repositories from outside Maven.  In fact, standalone dependency manager http://ant.apache.org/ivy/[Apache Ivy] (often used in concert with task-based tool http://ant.apache.org/[Apache Ant]), does just that.  Groovy-based http://www.gradle.org/[Gradle] seeks to provide the flexibity of Ant with the dpeendency management of Maven.
+It _is_ possible to use Maven-structured repositories from outside Maven.  In fact, standalone dependency manager http://ant.apache.org/ivy/[Apache Ivy] (often used in concert with task-based tool http://ant.apache.org/[Apache Ant]), does just that.  Groovy-based http://www.gradle.org/[Gradle] seeks to provide the flexibility of Ant with the dependency management of Maven.
 
 That said, Maven continues to be a popular and widely-used tool in Java development, and will satisfy our requirements to build our examples.
 
@@ -72,11 +72,11 @@ From the moment we collaborate on a project with others or would like to inspect
 
 ***INSERT IMAGE SHOWING CENTRALIZED VERSION CONTROL***
 
-Some systems utilize file-level locking to ensure that no conflicts arise during development; others allow concurrent access at the file granularity but cue the developer to resolve line-level conflicts upon commiting changes upstream.
+Some systems utilize file-level locking to ensure that no conflicts arise during development; others allow concurrent access at the file granularity but cue the developer to resolve line-level conflicts upon committing changes upstream.
 
 Likely the widest-deployed client/server version control system (VCS) from the 1990s through the 2000s has been http://savannah.nongnu.org/projects/cvs[Concurrent Versions Systems], most often referred by its acronym _CVS_.  While CVS has enabled teams to freely work on all files in the tree through _unreserved checkouts_, its shortcomings including non-atomic commits and absent tracking for file renames prompted the development of http://subversion.apache.org/[Subversion] (SVN), hier apparent to CVS.  Boasting a wider featureset and greater stability as contrasted with CVS, SVN has enjoyed its reign from the mid- to late-2000s.
 
-These days, the centralized model has been superceded by _distributed version control systems_ (DVCS), which is differentiated by its ability to store the full repository including all history in any number of nodes.
+These days, the centralized model has been superseded by _distributed version control systems_ (DVCS), which is differentiated by its ability to store the full repository including all history in any number of nodes.
 
 ***INSERT IMAGE SHOWING DVCS***
 
@@ -157,7 +157,7 @@ $ mvn clean install
 [INFO] ------------------------------------------------------------------------
 ----
 
-But as developers, we live in our coding environments. Switching out of that mindset to run a build is wasteful.  So we asked: "What if we could declare, in Java, an object to represent that archive?"  What resulted was a Java API analouge to the "jar" tool, a virtual filesystem with an intuitive syntax.
+But as developers, we live in our coding environments. Switching out of that mindset to run a build is wasteful.  So we asked: "What if we could declare, in Java, an object to represent that archive?"  What resulted was a Java API analogue to the "jar" tool, a virtual filesystem with an intuitive syntax.
 
 [source,java]
 ----
@@ -184,7 +184,7 @@ The first step is getting your hands on the ShrinkWrap binaries. The Core is com
 |Implementation|org.jboss.shrinkwrap:shrinkwrap-impl-base
 |=========================
 
-Only the API should be available upon your compilation ClassPath, while the SPI and the Implementation modules are both required for the runtime. This is to enforce good sepatation between classes intended for direct use and the project’s internals.
+Only the API should be available upon your compilation ClassPath, while the SPI and the Implementation modules are both required for the runtime. This is to enforce good separation between classes intended for direct use and the project’s internals.
 
 In Maven, these may be brought in under the proper scopes easily by using the ShrinkWrap Dependency Chain POM, available in Maven Central:
 
@@ -303,11 +303,11 @@ archive.jar:
 /java/lang/Integer.class
 ----
 
-Using this mechanism is central to keeping ShrinkWrap's usage clean and intuitive, while providing for a versatility typically found in true multiple-inheritence languages.
+Using this mechanism is central to keeping ShrinkWrap's usage clean and intuitive, while providing for a versatility typically found in true multiple-inheritance languages.
 
 While ShrinkWrap has its roots in Java EE and close ties to the Arquillian Testing Platform, it's certainly not limited to these domains.  In fact, ShrinkWrap on its own intentionally scoped to go no further than act as a virtual filesystem for archives.  As such, it provides a simple mechanism for playing nicely with flat-file structures.
 
-Borrowing from our example above, perhaps we'd like to use ShrinkWrap to packageup all of the @.class@ files in the current package and output these as a standard JAR in ZIP format.  The code for that would actually be pretty simple:
+Borrowing from our example above, perhaps we'd like to use ShrinkWrap to package up all of the @.class@ files in the current package and output these as a standard JAR in ZIP format.  The code for that would actually be pretty simple:
 
 [source,java]
 ----
@@ -380,7 +380,7 @@ As we can see, under +WEB-INF/lib+ there are a couple of thirdparty libraries us
 
 Often we don't control the construction of these libraries, and we certainly shouldn't be in the business of re-assembling them (and hence further differentiating our tests from the our production runtime deployments).  With the advent of Maven and other build systems, typically thirdparty libraries and our own dependent modules are obtained from a backing software _repository_.  In this case we supply a series of coordinates which uniquely identifies an artifact in the repository, and resolve the target files from there.
 
-That is precisely the aim of the ShrinkWrap Resolvers project; it is a Java API to obtain artifacts from a repository system.  Currently implemented are grammars and support for Maven-based respository structures (this is separate from the use of Maven as a project management system or build tool; it's possible to use a Maven repository layout with other build systems).
+That is precisely the aim of the ShrinkWrap Resolvers project; it is a Java API to obtain artifacts from a repository system.  Currently implemented are grammars and support for Maven-based repository structures (this is separate from the use of Maven as a project management system or build tool; it's possible to use a Maven repository layout with other build systems).
 
 ShrinkWrap Resolvers is comprised of the following modules:
 
@@ -560,7 +560,7 @@ Maven.resolver().resolve("G:A:V").withMavenCentralRepo(false).
             withTransitivity().asFile();
 ----
 
-Often, we have a Maven _POM_ (Project Object Model) file which contains dependency information about our current project.  In many cases it might be more desireable to pull information from there rather than hardcode and potentially duplicate dependency information in our code.  Therefore ShrinkWrap Resolvers supports the "loading" of POM metadata from a +File+ or +ClassLoader+ resource:
+Often, we have a Maven _POM_ (Project Object Model) file which contains dependency information about our current project.  In many cases it might be more desirable to pull information from there rather than hardcode and potentially duplicate dependency information in our code.  Therefore ShrinkWrap Resolvers supports the "loading" of POM metadata from a +File+ or +ClassLoader+ resource:
 
 [source,java]
 ----
@@ -627,7 +627,7 @@ image:images/ch02-enabling_technologies/openshift.png["OpenShift"]
 
 While getting our applications running on our own machine is a great step in developing, the beauty of the internet is that we can expose our content and services to the world at large.  Until very recently, Java EE hosting typically involved a dedicated and expensive server colocated in a data center.  With the rapid advent of virtualization and the Cloud, we're now able to gain public access much more easily, and at far reduced cost.
 
-OpenShift is Red Hat's free Platform as a Service (PaaS) for applications.  While it supports a variety of frameworks bundled as "cartidges", we'll be using OpenShift's built-in JBossAS7 support.  With just a little bit of initial setup, pushing changes from our local Git repository to the OpenShift remote will trigger a build and deployment of our application for all to see.  We'll be relieved of the responsibility to obtain a server, install JBossAS, configure the networking and firewalls, or manually deploy new versions.
+OpenShift is Red Hat's free Platform as a Service (PaaS) for applications.  While it supports a variety of frameworks bundled as "cartridges", we'll be using OpenShift's built-in JBossAS7 support.  With just a little bit of initial setup, pushing changes from our local Git repository to the OpenShift remote will trigger a build and deployment of our application for all to see.  We'll be relieved of the responsibility to obtain a server, install JBossAS, configure the networking and firewalls, or manually deploy new versions.
 
 === On to the Code
 

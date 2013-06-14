@@ -18,7 +18,7 @@ _JBoss Enterprise Application Platform_ (EAP) is Red Hat's supportable applicati
 
 In March of 2013, JBoss Senior Director of Engineering https://community.jboss.org/blogs/mark.little/2013/03/07/eap-binaries-available-for-all-developers[announced] that EAP binaries and its dependencies will be made freely-available (at no monetary cost) through a _0-dollar subscription_ through Red Hat.  As this runtime comes with no obligation and allows us a migration path to support if our little _GeekSeek_ business were to need it, we'll opt for EAP as our target runtime.
 
-EAP has some additional differences with Wildfly which become very apparent during our development experience.  Though EAP is available for free, there is a _Terms and Conditions_ prerequisite to its use, and therefore is not currently-available in the JBoss Nexus or Maven Central repositories.  We'll have to perform some extra steps to setup our environments for EAP before we can enable this option in our builds.
+EAP has some additional differences with WildFly which become very apparent during our development experience.  Though EAP is available for free, there is a _Terms and Conditions_ prerequisite to its use, and therefore is not currently-available in the JBoss Nexus or Maven Central repositories.  We'll have to perform some extra steps to setup our environments for EAP before we can enable this option in our builds.
 
 First, let's obtain the EAP distribution and private JBoss EAP Maven Repository.  This is done from the http://www.jboss.org/jbossas/downloads/[JBoss Downloads] page.
 
@@ -241,7 +241,7 @@ Our goal here is to set up a continuous integration environment which will serve
 
 In this way we chain events together in order to automate the human action of a code commit all the way through deployment to a publicly-accessible application server.
 
-While we have our choice of build servers and cloud services backing them, we've chosen for our examples the http://jenkins-ci.org/[Jenkins CI Server] (the project forked off http://hudson-ci.org/[Hudson]) run by the http://www.cloudbees.com/[CloudBees] service.  Of course, we could install a CI server and maintain it outselves, but the excellent folks at CloudBees have proven more than capable at keeping our infrastructure running, patched, and updated.  Additionally, they offer a few extension services (which we'll soon see) that fit well with our desired use cases.  
+While we have our choice of build servers and cloud services backing them, we've chosen for our examples the http://jenkins-ci.org/[Jenkins CI Server] (the project forked off http://hudson-ci.org/[Hudson]) run by the http://www.cloudbees.com/[CloudBees] service.  Of course, we could install a CI server and maintain it ourselves, but the excellent folks at CloudBees have proven more than capable at keeping our infrastructure running, patched, and updated.  Additionally, they offer a few extension services (which we'll soon see) that fit well with our desired use cases.  
 
 It's worth noting that the CloudBees team has kindly provided the Arquillian and ShrinkWrap communities with gratis service and support over the past several years, so we'd like to thank them for their contributions in keeping the open-source ecosystem running smoothly.
 
