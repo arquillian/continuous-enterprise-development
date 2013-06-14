@@ -17,7 +17,7 @@ This book will aim to address some of the common issues encountered during enter
 
 Our example application will be a software conference tracker, roughly modeled after the excellent http://lanyrd.com/[Lanyrd] service.  Its purpose will be to expose information to aid conference-goers in planning their experience around technical sessions and related activities.  The goal is to provide a single example with all layers working in concert to showcase how various technologies interact, and each use case detailed in the book will dig into various slices of the application.  We've lovingly named this example: _GeekSeek_.
 
-==== Featureset
+==== Feature Set
 
 We'll start by outlining in broad strokes the features provided by GeekSeek.  This will provide a high-level view of the actions users may take, and from these we can start to drill down into more technical requirements.
 
@@ -25,7 +25,7 @@ We'll start by outlining in broad strokes the features provided by GeekSeek.  Th
 ** Users may sign up by associating the site with their http://www.twitter.com[Twitter] account
 ** Users may track others whom they follow on Twitter
 ** Users may see others whom may be interested in their activity (their Twitter followers).
-** Users may get updates on the activity of their followee's followees (transitively).
+** Users may get updates on the activity of their follower's followers (transitively).
 * Directory View
 ** Users may display upcoming and prior Conferences in the system
 * Conferences and Sessions
@@ -145,7 +145,7 @@ In effect this relationship has a graph structure:
 
 ***INSERT MORE DETAILED IMAGE OF USER RELATIONSHIPS, (Fig 04-02)***
 
-While there are any number of ways we might store and model this structure, it's worth noting that requesting transient relationships can be a problem with geometric time complexity.  That is: we'd need one query to find all of a user's followers.  Then, *for each* of the results in that set, we'd need another query to find *their* followers.  With each level we drill in to find followers, the problem gets prohibitively complex and unsolveable when organized in standard tables and rows.
+While there are any number of ways we might store and model this structure, it's worth noting that requesting transient relationships can be a problem with geometric time complexity.  That is: we'd need one query to find all of a user's followers.  Then, *for each* of the results in that set, we'd need another query to find *their* followers.  With each level we drill in to find followers, the problem gets prohibitively complex and unsolvable when organized in standard tables and rows.
 
 Because the relationship is naturally a graph, it will likely make sense to store our relationship data in this fashion.  That way, instead of querying standard records, we can walk the graph (simply obtaining a value from a pointer is an operation with constant time complexity, and thus will perform many factors better when we compound the process in a loop).
 
@@ -159,7 +159,7 @@ Each chapter from here on out will address a set of related technical and user-c
 
 ==== Chapter 5 - Java Persistence and Relational Data
 
-Our featureset above demands a variety of operations that depend upon persistent data; information that must be saved longer than a user's session or even the application's startup/shutdown lifecycle.  It's likely we won't be able to hold all of our data in memory either, so we'll need to tackle issues like serialization and concurrent, multi-user access.
+Our feature set above demands a variety of operations that depend upon persistent data; information that must be saved longer than a user's session or even the application's startup/shutdown lifecycle.  It's likely we won't be able to hold all of our data in memory either, so we'll need to tackle issues like serialization and concurrent, multi-user access.
 
 As our logical data analysis has exposed, we have plenty of data types that might work well arranged in a table/row/column structure provided by the _relational_ model, and that's exactly what we'll cover in Chapter 5.
 
@@ -194,7 +194,7 @@ With our services made available via an addressable resource due to our REST lay
 
 ==== Chapter 10 - Security
 
-Our featureset requirements clearly couple user registration with an existing Twitter account, so we'll need plenty of implementation and testing to ensure that the integrity of our user are not compromised.
+Our feature set requirements clearly couple user registration with an existing Twitter account, so we'll need plenty of implementation and testing to ensure that the integrity of our users is not compromised.
 
 Chapter 10 will involve OAuth authentication using security and identify management from the http://www.jboss.org/picketlink[PicketLink] project.  We'll again look to REST-assured to help us with our client testing strategy.
 
@@ -215,9 +215,9 @@ Orthogonal to the task of creating our example application, there are a series o
 
 ==== Chapter 13 - Arquillian Extensibility
 
-Throughout the text we'll be covering a series of "Containers" and "Extensions" to Arquillian; these extend the core behaviours allowing us to hook into 3rd-party tools or execute some custom logic during test execution.
+Throughout the text we'll be covering a series of "Containers" and "Extensions" to Arquillian; these extend the core behaviors allowing us to hook into 3rd-party tools or execute some custom logic during test execution.
 
-However, the Arquillian Community can't possibly forsee all testing use cases, and new integration points are emerging all of the time.  For this reason, we provide the Arquillian _Service Provider Interface_ (SPI), a set of hooks which allow you as a user of Arquillian to extend its behavior.
+However, the Arquillian Community can't possibly foresee all testing use cases, and new integration points are emerging all of the time.  For this reason, we provide the Arquillian _Service Provider Interface_ (SPI), a set of hooks which allow you as a user of Arquillian to extend its behavior.
 
 Chapter 13 will cover the SPI and explain the construction of your own Arquillian extension points.
 
