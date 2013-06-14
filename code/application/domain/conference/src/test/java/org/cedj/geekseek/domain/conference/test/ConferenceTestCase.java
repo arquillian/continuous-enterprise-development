@@ -15,10 +15,15 @@ package org.cedj.geekseek.domain.conference.test;
 
 import static org.cedj.geekseek.domain.conference.test.TestUtils.toDate;
 
+import java.io.File;
+
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
 import junit.framework.Assert;
 
+import org.cedj.geekseek.domain.Created;
+import org.cedj.geekseek.domain.Removed;
 import org.cedj.geekseek.domain.conference.ConferenceRepository;
 import org.cedj.geekseek.domain.conference.model.Conference;
 import org.cedj.geekseek.domain.conference.model.Duration;
@@ -34,6 +39,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -50,8 +56,19 @@ public class ConferenceTestCase {
                 ConferenceDeployments.conference().addClasses(ConferenceTestCase.class, TestUtils.class)
                     .addAsManifestResource(new StringAsset(
                         CoreDeployments.persistence().exportAsString()), "persistence.xml")
-                    .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml"))
+                    .addAsManifestResource(new File("src/main/resources/META-INF/beans.xml")))
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+    }
+
+    // these fields are static because Events observed by this TestClass are not
+    // are not observed on the same TestClass instance as @Test is running.
+    private static boolean createdEventFired = false;
+    private static boolean removedEventFired = false;
+
+    @After
+    public void cleanUpEventState() {
+        createdEventFired = false;
+        removedEventFired = false;
     }
 
     @Inject
@@ -66,6 +83,7 @@ public class ConferenceTestCase {
         Conference conference = createConference();
 
         repository.store(conference);
+        Assert.assertTrue(createdEventFired);
     }
 
     // Story: As a User I should be able to create a Conference with a Session
@@ -104,6 +122,7 @@ public class ConferenceTestCase {
         Conference conference = repository.get("CA");
 
         repository.remove(conference);
+        Assert.assertTrue(removedEventFired);
     }
 
     // Story: As a User I should be able to remove a Session from a Conference
@@ -132,6 +151,7 @@ public class ConferenceTestCase {
 
         Conference stored = repository.store(conference);
         Assert.assertNotNull("Validate Updated date has been set", stored.getLastUpdated());
+        Assert.assertTrue(createdEventFired);
     }
 
     // Story: As a User I should be able to change a Session
@@ -145,6 +165,14 @@ public class ConferenceTestCase {
         conference.getSessions().toArray(new Session[0])[0].setTitle("UPDATED");
 
         repository.store(conference);
+    }
+
+    public void createdEventFired(@Observes @Created Conference conference) {
+        createdEventFired = true;
+    }
+
+    public void removedEventFired(@Observes @Removed Conference conference) {
+        removedEventFired = true;
     }
 
     // TODO: Move to reusable util ? How to not mix "in test data" vs "external dataset"?
