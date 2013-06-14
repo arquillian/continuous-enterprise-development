@@ -10,13 +10,13 @@ Causes of potential failure are both infinite and inevitable.  As guardians of o
 
 ==== Reactive Error Handling
 
-Colloquially referred to as "firefighting", a reactive position calls us to action.  In most cases, an undesireable situation has already presented itself, and now we're charged with fixing:
+Colloquially referred to as "firefighting", a reactive position calls us to action.  In most cases, an undesirable situation has already presented itself, and now we're charged with fixing:
 
 . The initial cause of the error, if under our control
 . The unprotected areas of code which allowed the cause to wreck greater havoc
 . Any resultant artifacts which persist after the error is encountered
 
-Anyone who's rilfed through a database's binary log file to restore data to a consistent state can attest to the stressful waste of time incurred in handling emergency situations after a breach in expected execution.  Dealing with issues as they arise also imposes a sense of immediacy; the activities of a normal workday may be suspended to address more pressing concerns.
+Anyone who's rifled through a database's binary log file to restore data to a consistent state can attest to the stressful waste of time incurred in handling emergency situations after a breach in expected execution.  Dealing with issues as they arise also imposes a sense of immediacy; the activities of a normal workday may be suspended to address more pressing concerns.
 
 Clearly, the reactive model is not our best option if it can be avoided.
 
@@ -93,7 +93,7 @@ In fact, XP along with other models has both inspired and acts as an implementat
 
 _"Move testing from the caboose to the engine." - Tim Ottinger, Senior Consultant, Industrial Logic_ 
 
-No matter the development method your team prescribes, and no matter how ridigly you adhere to its principles, eventually you're going to need to assert that your code works.  Of course you could handle this manually by deploying the application and letting a human user follow a scripted test plan, but wherever possible it's much more efficient and fail-proof to automate the test execution wherever possible.  So you're going to need to write some tests.
+No matter the development method your team prescribes, and no matter how rigidly you adhere to its principles, eventually you're going to need to assert that your code works.  Of course you could handle this manually by deploying the application and letting a human user follow a scripted test plan, but wherever possible it's much more efficient and fail-proof to automate the test execution wherever possible.  So you're going to need to write some tests.
 
 But it's our opinion that testing is not simply about making sure your code works as expected.
 
@@ -326,7 +326,7 @@ public class WelcomeTestNGTest {
 
 Some of the parameter orders and API names for the annotations have changed, but the concept remains: write less, and let the framework wire up the call stack.
 
-IDE Integration, while not standard for Eclipse Juno, is http://testng.org/doc/download.html[simple enough to intall] and provides a GUI runner as we've seen with JUnit:
+IDE Integration, while not standard for Eclipse Juno, is http://testng.org/doc/download.html[simple enough to install] and provides a GUI runner as we've seen with JUnit:
 
 image:images/ch01-continuity/testng_test_execution.png["TestNG IDE Runner Integration"]
 
