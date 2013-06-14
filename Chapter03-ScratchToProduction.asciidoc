@@ -316,7 +316,7 @@ Wrote ./feedback/src/main/webapp/resources/true.png
 Wrote ./feedback/src/main/webapp/WEB-INF/web.xml
 ----
 
-As shown by the somewhat lengthy output, we're now equipped with a +src/main/webapp+ folder laid out with a nice starting point from which we can build our own UI.  With just one more command, we can generate a CRUD (CReate, Update, Delete) interface to our entities:
+As shown by the somewhat lengthy output, we're now equipped with a +src/main/webapp+ folder laid out with a nice starting point from which we can build our own UI.  With just one more command, we can generate a CRUD (Create, Read, Update, Delete) interface to our entities:
 
 ----
 $> scaffold from-entity org.cedj.feedback.model.*;
