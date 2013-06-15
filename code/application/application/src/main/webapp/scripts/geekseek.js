@@ -112,8 +112,8 @@ function MainCtrl($scope, $location, graph) {
 }
 
 MainCtrl.resolve = {
-	graph: function(RestGraph) {
-		return RestGraph.init().then(function(d){
+	graph: function(RestGraph, $location) {
+		return RestGraph("api").init().then(function(d){
 			return d.get();
 		});
 	}
@@ -121,8 +121,6 @@ MainCtrl.resolve = {
 
 angular.module('geekseek', ['restgraph','$strap.directives'], function() {
 }).config(function($routeProvider, $httpProvider, $locationProvider, RestGraphProvider){
-	
-	RestGraphProvider.setInitURL("http://localhost\:8080/cedj-application/api");
 	
 	$routeProvider.otherwise({
 		templateUrl: 'app/front.html',

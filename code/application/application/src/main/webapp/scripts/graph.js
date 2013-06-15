@@ -91,7 +91,7 @@ module.provider('RestGraph', function() {
 		}, function(data) {
 			d.reject(data);
 		});
-		return d.promdise;
+		return d.promise;
 	};
 	Node.prototype.remove = function() {
 		var self = this;
@@ -117,14 +117,10 @@ module.provider('RestGraph', function() {
 		return d.promise;
 	};
 	
-	this._initURL;
-	this.setInitURL = function(url) {
-		this._initURL = url;
-	}
-	
-	self = this;
 	this.$get = function($q, $http) {
-		return new Node($q, $http, {href:self._initURL, rel: 'root'}, self._initURL);
+		return function(baseURL) {
+			return new Node($q, $http, {href:baseURL, rel: 'root'}, baseURL);
+		};
 	};
 
 });

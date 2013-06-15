@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 public abstract class LinkableRepresenatation<X> implements Representation<X> {
 
@@ -26,7 +27,7 @@ public abstract class LinkableRepresenatation<X> implements Representation<X> {
         getLinks().add(link);
     }
 
-    @Override
+    @Override @XmlTransient
     public Class<X> getType() {
         return type;
     }
