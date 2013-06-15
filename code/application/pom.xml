@@ -248,8 +248,8 @@
   <modules>
     <module>domain</module>
     <module>web</module>
-    <module>application</module>
     <module>service</module>
+    <module>application</module>
   </modules>
 
   <profiles>
