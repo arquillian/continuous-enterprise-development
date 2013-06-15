@@ -1,6 +1,16 @@
 package org.cedj.geekseek.service.smtp;
 
+import java.io.File;
+import java.net.InetAddress;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import javax.inject.Inject;
+
 import junit.framework.AssertionFailedError;
+
 import org.jboss.arquillian.container.test.api.Deployer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
@@ -16,14 +26,6 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.net.InetAddress;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Ensures that our SMTP Service sends emails to an SMTP Server in both
@@ -139,9 +141,7 @@ public class SMTPMailServiceTestCase {
     @InSequence(value = 3)
     @Test
     public void resetAppServerConfig()
-            throws Exception
-
-    {
+            throws Exception {
         final ModelControllerClient client = ModelControllerClient.Factory.create(InetAddress.getLoopbackAddress(), 9990);
 
         deployer.undeploy(DEPLOYMENT_NAME);

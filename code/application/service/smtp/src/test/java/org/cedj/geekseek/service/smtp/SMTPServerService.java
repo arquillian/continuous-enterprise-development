@@ -1,10 +1,11 @@
 package org.cedj.geekseek.service.smtp;
 
-import junit.framework.AssertionFailedError;
-import org.subethamail.smtp.TooMuchDataException;
-import org.subethamail.smtp.helper.SimpleMessageListener;
-import org.subethamail.smtp.helper.SimpleMessageListenerAdapter;
-import org.subethamail.smtp.server.SMTPServer;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.nio.charset.Charset;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -13,12 +14,12 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.nio.charset.Charset;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import junit.framework.AssertionFailedError;
+
+import org.subethamail.smtp.helper.SimpleMessageListener;
+import org.subethamail.smtp.helper.SimpleMessageListenerAdapter;
+import org.subethamail.smtp.server.SMTPServer;
 
 /**
  * Test fixture; installs an embedded SMTP Server on startup, shuts it down on undeployment.
@@ -76,7 +77,8 @@ public class SMTPServerService {
         }
 
         @Override
-        public void deliver(final String from, final String recipient, final InputStream data) throws TooMuchDataException, IOException {
+        public void deliver(final String from, final String recipient, final InputStream data)
+            throws IOException {
 
             // Get contents as String
             byte[] buffer = new byte[4096];

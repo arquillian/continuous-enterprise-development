@@ -105,14 +105,28 @@ public class SMTPMailService {
             throw new IllegalArgumentException("Mail message must be specified");
         }
 
+        Connection connection = null;
         try {
-            final Connection connection = connectionFactory.createConnection();
+            connection = connectionFactory.createConnection();
             final javax.jms.Session session = connection.createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
             final MessageProducer producer = session.createProducer(smtpQueue);
             final ObjectMessage jmsMessage = session.createObjectMessage(mailMessage);
             producer.send(jmsMessage);
         } catch (final JMSException jmse) {
             throw new RuntimeException("Could not deliver mail message to the outgoing queue", jmse);
+        } finally {
+            close(connection);
+        }
+    }
+
+    private void close(Connection connection) {
+        try {
+            if(connection != null) {
+                connection.close();
+            }
+        }
+        catch(Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

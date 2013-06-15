@@ -12,6 +12,8 @@ import java.util.HashSet;
  */
 public class MailMessageBuilder implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String[] EMPTY = new String[]{};
     private String from;
     private String subject;
@@ -23,6 +25,8 @@ public class MailMessageBuilder implements Serializable {
      * Immutable object model representing an outgoing mail message to be sent
      */
     public class MailMessage implements Serializable{
+        private static final long serialVersionUID = 1L;
+
         final String from;
         final String[] to;
         final String subject;
