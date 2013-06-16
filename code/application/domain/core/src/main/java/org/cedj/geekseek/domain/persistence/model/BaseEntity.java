@@ -22,7 +22,7 @@ public abstract class BaseEntity implements Identifiable, Timestampable, Seriali
     private String id;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date created;
+    private Date created = new Date();
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updated;

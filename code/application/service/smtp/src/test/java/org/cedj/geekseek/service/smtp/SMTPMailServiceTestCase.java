@@ -94,7 +94,7 @@ public class SMTPMailServiceTestCase {
          * the server before it was started to point to a real SMTP server
          */
 
-        final ModelControllerClient client = ModelControllerClient.Factory.create(InetAddress.getLoopbackAddress(), 9990);
+        final ModelControllerClient client = ModelControllerClient.Factory.create(InetAddress.getLoopbackAddress(), 9999);
 
         final ModelNode createSocketBindingOperation = new ModelNode();
         createSocketBindingOperation.get("operation").set("add");
@@ -142,7 +142,7 @@ public class SMTPMailServiceTestCase {
     @Test
     public void resetAppServerConfig()
             throws Exception {
-        final ModelControllerClient client = ModelControllerClient.Factory.create(InetAddress.getLoopbackAddress(), 9990);
+        final ModelControllerClient client = ModelControllerClient.Factory.create(InetAddress.getLoopbackAddress(), 9999);
 
         deployer.undeploy(DEPLOYMENT_NAME);
 

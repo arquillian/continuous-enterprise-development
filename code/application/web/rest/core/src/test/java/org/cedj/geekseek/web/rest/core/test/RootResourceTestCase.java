@@ -2,12 +2,13 @@ package org.cedj.geekseek.web.rest.core.test;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 
 import java.net.URL;
 
-import org.cedj.geekseek.web.rest.core.ResourceLink;
-import org.cedj.geekseek.web.rest.core.annotation.ResourceModel;
-import org.cedj.geekseek.web.rest.core.root.RootResource;
+import javax.ws.rs.core.Response;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -33,8 +34,8 @@ public class RootResourceTestCase {
     @Deployment(testable = false)
     public static WebArchive deploy() {
         return ShrinkWrap.create(WebArchive.class)
-                .addPackages(false, ResourceLink.class.getPackage(), ResourceModel.class.getPackage())
-                .addPackages(true, RootResource.class.getPackage())
+                .addAsLibraries(RestCoreDeployments.rootWithJSON())
+                .addAsLibraries(RestCoreDeployments.resolveDependencies())
                 .addClasses(TestApplication.class, TestResource.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
@@ -69,5 +70,16 @@ public class RootResourceTestCase {
             body("link[0].href", equalTo(new URL(baseURL, "api/test").toExternalForm())).
         when().
             get(baseURL + "api/");
+    }
+
+    @Test
+    public void shouldProvideOptions() throws Exception {
+        given().
+        then().
+            statusCode(Response.Status.OK.getStatusCode()).
+            headers("Allow", containsString("GET")).
+            headers("Allow", not(containsString("POST"))).
+        when().
+            options(baseURL + "api/test");
     }
 }

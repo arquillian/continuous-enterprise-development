@@ -242,7 +242,8 @@ public class CreateConferenceAndSessionStory {
 
         given().
         then().
-           contentType(CONFERENCE_MEDIA_TYPE).
+            // Few Containers support custom 404 media types. 404's are overwritten by default error page.
+           //contentType(CONFERENCE_MEDIA_TYPE).
            statusCode(Status.NOT_FOUND.getStatusCode()).
         when().
            get(uri_conferenceInstance);

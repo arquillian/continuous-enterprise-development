@@ -40,8 +40,8 @@
     <version.jboss_eap>7.2.0.Final</version.jboss_eap>
     <version.jboss_eap_managed>eap-6.1.0</version.jboss_eap_managed>
     <version.hibernate_validator>4.3.0.Final</version.hibernate_validator>
-    <version.jackson>1.8.5</version.jackson>
     <version.neo4j>1.9</version.neo4j>
+    <version.jackson_jaxrs>2.2.2</version.jackson_jaxrs>
   </properties>
 
   <dependencyManagement>
@@ -55,20 +55,26 @@
         <type>pom</type>
       </dependency>
       <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-validator</artifactId>
-        <version>${version.hibernate_validator}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
         <groupId>org.neo4j</groupId>
         <artifactId>neo4j</artifactId>
         <version>${version.neo4j}</version>
       </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.jaxrs</groupId>
+        <artifactId>jackson-jaxrs-json-provider</artifactId>
+        <version>${version.jackson_jaxrs}</version>
+      </dependency>
+      <!-- Transitive dep from jackson-jaxrs-provider. Declare to force override
+        of older version provided by RestAssured. -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${version.jackson_jaxrs}</version>
+      </dependency>
 
       <!-- External Test Modules -->
-      <!-- Override SW with latest version.
-        This must go *BEFORE* the Arquillian BOM. -->
+      <!-- Override SW with latest version. This must go *BEFORE* the Arquillian 
+        BOM. -->
       <dependency>
         <groupId>org.jboss.shrinkwrap</groupId>
         <artifactId>shrinkwrap-bom</artifactId>
@@ -76,8 +82,8 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- Override dependency resolver with latest version.
-         This must go *BEFORE* the Arquillian BOM. -->
+      <!-- Override dependency resolver with latest version. This must go *BEFORE* 
+        the Arquillian BOM. -->
       <dependency>
         <groupId>org.jboss.shrinkwrap.resolver</groupId>
         <artifactId>shrinkwrap-resolver-bom</artifactId>
@@ -119,15 +125,9 @@
         <version>${version.arquillian_persistence}</version>
         <scope>test</scope>
       </dependency>
-<!-- Warp JaxRs currently not used, disable 
-      <dependency>
-        <groupId>org.jboss.arquillian.extension</groupId>
-        <artifactId>arquillian-warp-jaxrs-bom</artifactId>
-        <version>${version.arquillian_warp_rest}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
--->
+      <!-- Warp JaxRs currently not used, disable <dependency> <groupId>org.jboss.arquillian.extension</groupId> 
+        <artifactId>arquillian-warp-jaxrs-bom</artifactId> <version>${version.arquillian_warp_rest}</version> 
+        <scope>import</scope> <type>pom</type> </dependency> -->
       <dependency>
         <groupId>com.jayway.restassured</groupId>
         <artifactId>rest-assured</artifactId>
@@ -135,10 +135,10 @@
         <scope>test</scope>
       </dependency>
       <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-mapper-asl</artifactId>
-        <version>${version.jackson}</version>
-        <scope>provided</scope>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>${version.hibernate_validator}</version>
+        <scope>test</scope>
       </dependency>
 
       <!-- Internal Application Modules -->

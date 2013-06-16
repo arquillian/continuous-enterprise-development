@@ -11,6 +11,8 @@ public abstract class LinkableRepresenatation<X> implements Representation<X> {
     private List<ResourceLink> links;
     private Class<X> type;
 
+    protected LinkableRepresenatation() {}
+
     public LinkableRepresenatation(Class<X> type) {
         this.type = type;
     }

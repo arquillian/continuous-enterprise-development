@@ -25,6 +25,8 @@ public interface RepresentationConverter<REST, SOURCE> {
         private Class<REST> representationClass;
         private Class<SOURCE> sourceClass;
 
+        protected Base() {}
+
         public Base(Class<REST> representationClass, Class<SOURCE> sourceClass) {
             this.representationClass = representationClass;
             this.sourceClass = sourceClass;

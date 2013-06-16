@@ -7,16 +7,18 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.JsonMappingException.Reference;
+import org.cedj.geekseek.web.rest.core.provider.JSONProvider.CustomMappingException;
+
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 
 @Provider
-public class JSONMappingExceptionHandler implements ExceptionMapper<JsonMappingException>{
+public class JSONMappingExceptionHandler implements ExceptionMapper<CustomMappingException>{
 
     @Override
-    public Response toResponse(JsonMappingException exception) {
+    public Response toResponse(CustomMappingException exception) {
         return Response.status(Response.Status.BAD_REQUEST)
-                .entity(createContent(exception))
+                .entity(createContent(exception.getCause()))
                 .build();
     }
 
