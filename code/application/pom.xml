@@ -30,7 +30,7 @@
     <version.arquillian_persistence>1.0.0.Alpha6</version.arquillian_persistence>
     <version.arquillian_drone>1.1.1.Final</version.arquillian_drone>
     <version.arquillian_graphene>2.0.0.Alpha3</version.arquillian_graphene>
-    <version.arquillian_warp>1.0.0.Alpha2</version.arquillian_warp>
+    <version.arquillian_warp>1.0.0.Alpha3</version.arquillian_warp>
     <version.arquillian_warp_rest>1.0.0.Final-SNAPSHOT</version.arquillian_warp_rest>
     <version.shrinkwrap>1.1.2</version.shrinkwrap>
     <version.shrinkwrap_resolver>2.0.0-beta-5</version.shrinkwrap_resolver>
