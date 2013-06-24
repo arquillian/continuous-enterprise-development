@@ -35,7 +35,7 @@
     <version.shrinkwrap>1.1.2</version.shrinkwrap>
     <version.shrinkwrap_resolver>2.0.0-beta-5</version.shrinkwrap_resolver>
     <version.restassured>1.8.0</version.restassured>
-    <version.wildfly>8.0.0.Alpha1</version.wildfly>
+    <version.wildfly>8.0.0.Alpha2</version.wildfly>
     <version.jboss_as>7.1.1.Final</version.jboss_as>
     <version.jboss_eap>7.2.0.Final</version.jboss_eap>
     <version.jboss_eap_managed>eap-6.1.0</version.jboss_eap_managed>
