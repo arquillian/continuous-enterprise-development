@@ -42,6 +42,7 @@
     <version.hibernate_validator>4.3.0.Final</version.hibernate_validator>
     <version.neo4j>1.9</version.neo4j>
     <version.jackson_jaxrs>2.2.2</version.jackson_jaxrs>
+    <version.infinispan>5.3.0.Final</version.infinispan>
   </properties>
 
   <dependencyManagement>
@@ -64,12 +65,18 @@
         <artifactId>jackson-jaxrs-json-provider</artifactId>
         <version>${version.jackson_jaxrs}</version>
       </dependency>
-      <!-- Transitive dep from jackson-jaxrs-provider. Declare to force override
+      <!-- Transitive dep from jackson-jaxrs-provider. Declare to force override 
         of older version provided by RestAssured. -->
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
         <version>${version.jackson_jaxrs}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.infinispan</groupId>
+        <artifactId>infinispan-core</artifactId>
+        <version>${version.infinispan}</version>
       </dependency>
 
       <!-- External Test Modules -->
@@ -189,6 +196,13 @@
         <groupId>org.cedj.geekseek</groupId>
         <artifactId>geekseek-domain-attachment</artifactId>
         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-domain-attachment</artifactId>
+        <version>${project.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
       </dependency>
 
       <!-- REST -->
