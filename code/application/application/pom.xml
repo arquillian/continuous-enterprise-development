@@ -20,6 +20,10 @@
       <groupId>org.cedj.geekseek</groupId>
       <artifactId>geekseek-web-rest-conference</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-web-rest-attachment</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.jboss.spec.javax.ws.rs</groupId>
@@ -43,6 +47,12 @@
     <dependency>
       <groupId>org.cedj.geekseek</groupId>
       <artifactId>geekseek-web-rest-conference</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-web-rest-attachment</artifactId>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -78,6 +88,7 @@
               </includes>
               <dependenciesToScan>
                 <dependency>org.cedj.geekseek:geekseek-web-rest-conference</dependency>
+                <dependency>org.cedj.geekseek:geekseek-web-rest-attachment</dependency>
               </dependenciesToScan>
             </configuration>
           </execution>

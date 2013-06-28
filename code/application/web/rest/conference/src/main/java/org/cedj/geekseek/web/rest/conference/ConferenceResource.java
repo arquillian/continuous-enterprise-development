@@ -39,7 +39,7 @@ public class ConferenceResource implements Resource {
     private static final String SESSION_XML_MEDIA_TYPE = BASE_XML_MEDIA_TYPE + "; type=session";
     private static final String SESSION_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + "; type=session";
 
-    @Context @javax.enterprise.inject.Produces
+    @Context
     private UriInfo uriInfo;
 
     @Inject
@@ -69,7 +69,7 @@ public class ConferenceResource implements Resource {
     @POST
     @Consumes({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
     public Response createConference(ConferenceRepresentation conferenceRepresenttion) {
-        Conference conference = conferenceConverter.to(conferenceRepresenttion);
+        Conference conference = conferenceConverter.to(uriInfo, conferenceRepresenttion);
 
         repository.store(conference);
         return Response.created(
@@ -96,7 +96,7 @@ public class ConferenceResource implements Resource {
             return Response.status(Status.NOT_FOUND).type(CONFERENCE_XML_MEDIA_TYPE).build();
         }
 
-        return Response.ok(conferenceConverter.from(conference))
+        return Response.ok(conferenceConverter.from(uriInfo, conference))
             .type(getConferenceMediaType())
             .lastModified(conference.getLastModified())
             .build();
@@ -111,7 +111,7 @@ public class ConferenceResource implements Resource {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
         }
 
-        conferenceConverter.update(conferenceRepresentation, conference);
+        conferenceConverter.update(uriInfo, conferenceRepresentation, conference);
         repository.store(conference);
 
         return Response.noContent().build();
@@ -125,7 +125,7 @@ public class ConferenceResource implements Resource {
     public Response listSessions(@PathParam("c_id") String conferenceId) {
         Set<Session> sessions = repository.get(conferenceId).getSessions();
 
-        return Response.ok(sessionConverter.from(sessions))
+        return Response.ok(sessionConverter.from(uriInfo, sessions))
             .type(getSessionMediaType())
             .build();
     }
@@ -139,7 +139,7 @@ public class ConferenceResource implements Resource {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
         }
 
-        Session session = sessionConverter.to(sessionRepresentation);
+        Session session = sessionConverter.to(uriInfo, sessionRepresentation);
         conference.addSession(session);
         repository.store(conference);
 
@@ -192,7 +192,7 @@ public class ConferenceResource implements Resource {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
         }
 
-        sessionConverter.update(sessionRepresentation, session);
+        sessionConverter.update(uriInfo, sessionRepresentation, session);
         repository.store(conference);
 
         return Response.noContent().build();
@@ -207,7 +207,7 @@ public class ConferenceResource implements Resource {
         }
         for (Session session : conference.getSessions()) {
             if (session.getId().equals(sessionId)) {
-                return Response.ok(sessionConverter.from(session))
+                return Response.ok(sessionConverter.from(uriInfo, session))
                     .type(getSessionMediaType())
                     .lastModified(session.getLastModified())
                     .build();

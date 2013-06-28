@@ -1,7 +1,5 @@
 package org.cedj.geekseek.web.rest.conference.model;
 
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
 import javax.ws.rs.core.UriInfo;
 
 import org.cedj.geekseek.domain.conference.model.Duration;
@@ -10,25 +8,22 @@ import org.cedj.geekseek.web.rest.core.RepresentationConverter;
 
 public class SessionRepresentationConverter extends RepresentationConverter.Base<SessionRepresentation, Session> {
 
-    @Inject
-    private Instance<UriInfo> uriInfo;
-
     public SessionRepresentationConverter() {
         super(SessionRepresentation.class, Session.class);
     }
 
     @Override
-    public SessionRepresentation from(Session source) {
-        return new SessionRepresentation(source, uriInfo.get());
+    public SessionRepresentation from(UriInfo uriInfo, Session source) {
+        return new SessionRepresentation(source, uriInfo);
     }
 
     @Override
-    public Session to(SessionRepresentation representation) {
-        return update(representation, new Session());
+    public Session to(UriInfo uriInfo, SessionRepresentation representation) {
+        return update(uriInfo, representation, new Session());
     }
 
     @Override
-    public Session update(SessionRepresentation representation, Session target) {
+    public Session update(UriInfo uriInfo, SessionRepresentation representation, Session target) {
         target.setTitle(representation.getTitle());
         target.setOutline(representation.getOutline());
         target.setDuration(new Duration(representation.getStart(), representation.getEnd()));

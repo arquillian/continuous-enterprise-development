@@ -40,7 +40,7 @@ public class RelationResource {
     @Inject
     private BeanManager manager;
 
-    @Context @javax.enterprise.inject.Produces
+    @Context
     private UriInfo uriInfo;
 
     @GET
@@ -71,7 +71,7 @@ public class RelationResource {
         if(targets == null || targets.size() == 0) {
             return Response.noContent().build();
         }
-        return Response.ok(converter.from(targets)).build();
+        return Response.ok(converter.from(uriInfo, targets)).build();
     }
 
     @PUT

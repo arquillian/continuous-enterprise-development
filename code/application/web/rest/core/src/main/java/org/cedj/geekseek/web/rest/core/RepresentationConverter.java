@@ -3,21 +3,23 @@ package org.cedj.geekseek.web.rest.core;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.ws.rs.core.UriInfo;
+
 public interface RepresentationConverter<REST, SOURCE> {
 
     Class<REST> getRepresentationClass();
 
     Class<SOURCE> getSourceClass();
 
-    REST from(SOURCE source);
+    REST from(UriInfo uriInfo, SOURCE source);
 
-    Collection<REST> from(Collection<SOURCE> sources);
+    Collection<REST> from(UriInfo uriInfo, Collection<SOURCE> sources);
 
-    SOURCE to(REST representation);
+    SOURCE to(UriInfo uriInfo, REST representation);
 
-    SOURCE update(REST representation, SOURCE target);
+    SOURCE update(UriInfo uriInfo, REST representation, SOURCE target);
 
-    Collection<SOURCE> to(Collection<REST> representations);
+    Collection<SOURCE> to(UriInfo uriInfo, Collection<REST> representations);
 
 
     public abstract static class Base<REST, SOURCE> implements RepresentationConverter<REST, SOURCE> {
@@ -43,19 +45,19 @@ public interface RepresentationConverter<REST, SOURCE> {
         }
 
         @Override
-        public Collection<REST> from(Collection<SOURCE> ins) {
+        public Collection<REST> from(UriInfo uriInfo, Collection<SOURCE> ins) {
             Collection<REST> out = new ArrayList<REST>();
             for(SOURCE in : ins) {
-                out.add(from(in));
+                out.add(from(uriInfo, in));
             }
             return out;
         }
 
         @Override
-        public Collection<SOURCE> to(Collection<REST> ins) {
+        public Collection<SOURCE> to(UriInfo uriInfo, Collection<REST> ins) {
             Collection<SOURCE> out = new ArrayList<SOURCE>();
             for(REST in : ins) {
-                out.add(to(in));
+                out.add(to(uriInfo, in));
             }
             return out;
         }

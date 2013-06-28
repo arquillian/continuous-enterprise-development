@@ -1,5 +1,7 @@
 package org.cedj.geekseek.web.rest.relation.test.model;
 
+import javax.ws.rs.core.UriInfo;
+
 import org.cedj.geekseek.web.rest.core.RepresentationConverter;
 
 public abstract class TestConverter<OBJ> extends RepresentationConverter.Base<OBJ, OBJ> {
@@ -9,17 +11,17 @@ public abstract class TestConverter<OBJ> extends RepresentationConverter.Base<OB
     }
 
     @Override
-    public OBJ from(OBJ source) {
+    public OBJ from(UriInfo uriInfo, OBJ source) {
         return source;
     }
 
     @Override
-    public OBJ to(OBJ representation) {
+    public OBJ to(UriInfo uriInfo, OBJ representation) {
         return representation;
     }
 
     @Override
-    public OBJ update(OBJ representation, OBJ target) {
+    public OBJ update(UriInfo uriInfo, OBJ representation, OBJ target) {
         return representation;
     }
 
