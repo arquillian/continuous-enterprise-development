@@ -6,6 +6,6 @@
     <defaultProtocol type="Servlet 3.0" />
 
   <extension qualifier="suite">
-    <property name="deploymentClass">org.cdej.geekseek.test.Deployments</property>
+    <property name="deploymentClass">org.cdej.geekseek.test.functional.Deployments</property>
   </extension>
 </arquillian>

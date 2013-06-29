@@ -22,6 +22,9 @@
   <description>Parent POM - Application example for Continuous Enterprise Development in Java</description>
 
   <properties>
+    <version.neo4j>1.9</version.neo4j>
+    <version.jackson_jaxrs>2.2.2</version.jackson_jaxrs>
+    <version.infinispan>5.3.0.Final</version.infinispan>
 
     <version.jboss_spec>3.0.1.Final</version.jboss_spec>
 
@@ -40,9 +43,7 @@
     <version.jboss_eap>7.2.0.Final</version.jboss_eap>
     <version.jboss_eap_managed>eap-6.1.0</version.jboss_eap_managed>
     <version.hibernate_validator>4.3.0.Final</version.hibernate_validator>
-    <version.neo4j>1.9</version.neo4j>
-    <version.jackson_jaxrs>2.2.2</version.jackson_jaxrs>
-    <version.infinispan>5.3.0.Final</version.infinispan>
+    <version.subethamail>3.1.7</version.subethamail>
   </properties>
 
   <dependencyManagement>
@@ -145,6 +146,12 @@
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-validator</artifactId>
         <version>${version.hibernate_validator}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.subethamail</groupId>
+        <artifactId>subethasmtp</artifactId>
+        <version>${version.subethamail}</version>
         <scope>test</scope>
       </dependency>
 
@@ -279,6 +286,44 @@
   </modules>
 
   <profiles>
+    <profile>
+      <id>unit</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/unit/*TestCase.java</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- Profile only used to activate integration tests by default -->
+      <id>integration</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <!-- We append this configuration to the default -->
+              <includes combine.children="append">
+                <include>**/integration/*TestCase.java</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>arq-glassfish-remote</id>
       <activation>

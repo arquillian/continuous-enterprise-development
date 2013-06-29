@@ -41,6 +41,26 @@ public class MailMessageBuilder implements Serializable {
             this.contentType = contentType;
         }
 
+        public String getFrom() {
+            return from;
+        }
+
+        public String[] getTo() {
+            return to;
+        }
+
+        public String getSubject() {
+            return subject;
+        }
+
+        public String getBody() {
+            return body;
+        }
+
+        public String getContentType() {
+            return contentType;
+        }
+
         @Override
         public String toString() {
             return "MailMessage{" +

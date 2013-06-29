@@ -31,6 +31,11 @@
     </dependency>
 
     <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-impl-maven-archive</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.cedj.geekseek</groupId>
       <artifactId>geekseek-domain-core</artifactId>
       <type>test-jar</type>
