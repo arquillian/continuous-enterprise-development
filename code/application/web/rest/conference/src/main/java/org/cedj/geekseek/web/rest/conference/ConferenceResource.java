@@ -15,9 +15,11 @@ import org.cedj.geekseek.web.rest.conference.model.ConferenceRepresentation;
 import org.cedj.geekseek.web.rest.conference.model.SessionRepresentation;
 import org.cedj.geekseek.web.rest.core.RepositoryResource;
 import org.cedj.geekseek.web.rest.core.RepresentationConverter;
+import org.cedj.geekseek.web.rest.core.TopLevelResource;
 
 @Path("/conference")
-public class ConferenceResource extends RepositoryResource<Conference, ConferenceRepresentation> {
+public class ConferenceResource extends RepositoryResource<Conference, ConferenceRepresentation>
+    implements TopLevelResource {
 
     private static final String CONFERENCE_XML_MEDIA_TYPE = BASE_XML_MEDIA_TYPE + "; type=conference";
     private static final String CONFERENCE_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + "; type=conference";

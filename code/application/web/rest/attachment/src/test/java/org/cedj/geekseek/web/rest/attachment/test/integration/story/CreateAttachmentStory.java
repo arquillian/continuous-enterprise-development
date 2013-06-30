@@ -41,26 +41,24 @@ public class CreateAttachmentStory {
     // Story: As a 3. party Integrator I should be able locate the Attachment root Resource
 
     @Test @InSequence(0)
-    public void shouldBeAbleToLocateAttachmentRoot() throws Exception {
-        //uri_attachment = new URL(base, "api/attachment").toExternalForm();
-        uri_attachment =
+    public void shouldNotBeAbleToLocateAttachmentRoot() throws Exception {
               given().
               then().
                   contentType(BASE_MEDIA_TYPE).
                   statusCode(Status.OK.getStatusCode()).
                   root("root").
-                      body("link.find {it.@rel == 'attachment'}.size()", equalTo(1)).
+                      body("link.find {it.@rel == 'attachment'}.size()", equalTo(0)).
               when().
                   get(new URL(base, "api/").toExternalForm()).
-              body().
-                  path("root.link.find {it.@rel == 'attachment'}.@href");
+              body();
     }
 
     // Story: As a 3. party Integrator I should be able create a Attachment
 
     @Test @InSequence(1)
     public void shouldBeAbleToCreateAttachment() throws Exception {
-        assertNotNull("Previous step failed", uri_attachment);
+        // Attachment is not a top level resource, so in the test we hardcode the known location
+        uri_attachment = new URL(base, "api/attachment").toExternalForm();
 
         Attachment conf = getCreateAttachment();
 

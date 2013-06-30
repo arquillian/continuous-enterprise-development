@@ -11,8 +11,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.cedj.geekseek.web.rest.core.Resource;
 import org.cedj.geekseek.web.rest.core.ResourceLink;
+import org.cedj.geekseek.web.rest.core.TopLevelResource;
 import org.cedj.geekseek.web.rest.core.annotation.ResourceModel;
 import org.cedj.geekseek.web.rest.core.root.model.RootRepresentation;
 
@@ -29,7 +29,7 @@ public class RootResource {
     private UriInfo uriInfo;
 
     @Inject
-    private Instance<Resource> resources;
+    private Instance<TopLevelResource> resources;
 
     @Context
     private HttpHeaders headers;
@@ -39,7 +39,7 @@ public class RootResource {
     public Response listAllResources() {
 
         RootRepresentation root = new RootRepresentation();
-        for (Resource resource : resources) {
+        for (TopLevelResource resource : resources) {
             root.addLink(
                     new ResourceLink(
                             toResourceName(resource.getResourceClass()),

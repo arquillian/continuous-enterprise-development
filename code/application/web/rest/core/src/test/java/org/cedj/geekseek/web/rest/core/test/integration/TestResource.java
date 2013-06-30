@@ -4,9 +4,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 import org.cedj.geekseek.web.rest.core.Resource;
+import org.cedj.geekseek.web.rest.core.TopLevelResource;
 
 @Path("/test")
-public class TestResource implements Resource {
+public class TestResource implements TopLevelResource {
 
     @Override
     public Class<? extends Resource> getResourceClass() {
