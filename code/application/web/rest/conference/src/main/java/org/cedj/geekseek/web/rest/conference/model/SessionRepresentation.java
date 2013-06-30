@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.cedj.geekseek.domain.conference.model.Duration;
 import org.cedj.geekseek.domain.conference.model.Session;
 import org.cedj.geekseek.web.rest.conference.ConferenceResource;
+import org.cedj.geekseek.web.rest.conference.SessionResource;
 import org.cedj.geekseek.web.rest.core.LinkableRepresenatation;
 import org.cedj.geekseek.web.rest.core.ResourceLink;
 
@@ -83,15 +84,15 @@ public class SessionRepresentation extends LinkableRepresenatation<Session> {
                 new ResourceLink(
                     "self",
                     uriInfo.getBaseUriBuilder()
-                        .path(ConferenceResource.class)
-                        .path(ConferenceResource.class, "getSession")
-                        .build(session.getConference().getId(), session.getId())));
+                        .path(SessionResource.class)
+                        .segment("{id}")
+                        .build(session.getId())));
             links.add(
                 new ResourceLink(
                     "parent",
                     uriInfo.getBaseUriBuilder()
                         .path(ConferenceResource.class)
-                        .path(ConferenceResource.class, "getConference")
+                        .segment("{id}")
                         .build(session.getConference().getId())));
         }
         return links;

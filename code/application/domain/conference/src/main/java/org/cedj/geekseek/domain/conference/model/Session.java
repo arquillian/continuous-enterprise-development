@@ -19,6 +19,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.PreRemove;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -80,5 +81,12 @@ public class Session extends BaseEntity {
 
     void setConference(Conference conference) {
         this.conference = conference;
+    }
+
+    @PreRemove
+    public void removeConferenceRef() {
+        if(conference != null) {
+            conference.removeSession(this);
+        }
     }
 }

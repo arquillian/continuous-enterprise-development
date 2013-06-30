@@ -17,6 +17,10 @@ public class ConferenceRestDeployments {
             .addAsLibraries(ConferenceDeployments.domain(), RestCoreDeployments.root())
             .addPackage(ConferenceResource.class.getPackage())
             .addPackage(ConferenceRepresentation.class.getPackage())
-            .addClasses(TestApplication.class, TestRepository.class);
+            .addClasses(
+                TestApplication.class,
+                TestRepository.class,
+                TestConferenceRepository.class,
+                TestSessionRepository.class);
     }
 }

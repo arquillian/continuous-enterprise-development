@@ -3,25 +3,38 @@ package org.cedj.geekseek.web.rest.conference.test.integration;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ApplicationScoped;
 
 import org.cedj.geekseek.domain.Repository;
-import org.cedj.geekseek.domain.conference.model.Conference;
+import org.cedj.geekseek.domain.model.Identifiable;
 
-@RequestScoped
-public class TestRepository implements Repository<Conference> {
+@ApplicationScoped
+public abstract class TestRepository<T extends Identifiable> implements Repository<T> {
 
-    private static Set<Conference> conferences = new HashSet<Conference>();
+    private Set<T> conferences = new HashSet<T>();
+
+    private Class<T> type;
+
+    // for CDI proxyabillity
+    protected TestRepository() {}
+
+    public TestRepository(Class<T> type) {
+        this.type = type;
+    }
+
+    protected Set<T> getStored() {
+        return conferences;
+    }
 
     @Override
-    public Conference store(Conference entity) {
+    public T store(T entity) {
         conferences.add(entity);
         return entity;
     }
 
     @Override
-    public Conference get(String id) {
-        for(Conference conference: conferences) {
+    public T get(String id) {
+        for(T conference: conferences) {
             if(conference.getId().equals(id)) {
                 return conference;
             }
@@ -30,17 +43,12 @@ public class TestRepository implements Repository<Conference> {
     }
 
     @Override
-    public void remove(Conference entity) {
+    public void remove(T entity) {
         conferences.remove(entity);
     }
 
-    public static void addConference(Conference conference) {
-        conferences = new HashSet<Conference>();
-        conferences.add(conference);
-    }
-
     @Override
-    public Class<Conference> getType() {
-        return Conference.class;
+    public Class<T> getType() {
+        return type;
     }
 }

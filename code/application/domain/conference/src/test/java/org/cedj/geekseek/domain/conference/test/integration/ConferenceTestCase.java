@@ -13,7 +13,8 @@
  */
 package org.cedj.geekseek.domain.conference.test.integration;
 
-import static org.cedj.geekseek.domain.conference.test.TestUtils.toDate;
+import static org.cedj.geekseek.domain.conference.test.TestUtils.createConference;
+import static org.cedj.geekseek.domain.conference.test.TestUtils.createSession;
 
 import java.io.File;
 
@@ -26,7 +27,6 @@ import org.cedj.geekseek.domain.Created;
 import org.cedj.geekseek.domain.Removed;
 import org.cedj.geekseek.domain.conference.ConferenceRepository;
 import org.cedj.geekseek.domain.conference.model.Conference;
-import org.cedj.geekseek.domain.conference.model.Duration;
 import org.cedj.geekseek.domain.conference.model.Session;
 import org.cedj.geekseek.domain.conference.test.TestUtils;
 import org.cedj.geekseek.domain.test.integration.CoreDeployments;
@@ -174,24 +174,5 @@ public class ConferenceTestCase {
 
     public void removedEventFired(@Observes @Removed Conference conference) {
         removedEventFired = true;
-    }
-
-    // TODO: Move to reusable util ? How to not mix "in test data" vs "external dataset"?
-
-    private Conference createConference() {
-        Conference conference = new Conference();
-        conference.setName("Devoxx Belgium 2013");
-        conference.setTagLine("We Code In Peace");
-        conference.setDuration(new Duration(toDate(2013, 11, 11), toDate(2013, 11, 15)));
-        return conference;
-    }
-
-    private Session createSession() {
-        Session session = new Session();
-        session.setTitle("Testing the Enterprise layers - The A, B, C’s of integration testing");
-        session
-            .setOutline("For years we’ve been exploring how to layer and separate our code to test in isolation on the unit level. We’ve kept integration and functional testing as a big ball of mud; jumping straight from unit to full system testing. But can we apply some of the same lessons learned from unit to integration testing?\\n\\nThis session explore the different technologies within the Java Enterprise specification and see how our application can be tested in isolation; layer for layer, module for module and component for component.\\n\\nCan we isolate and stay real at the same time? Does mocks, stubs and test doubles have a place in the world of integration testing? Are there other lessons to be learned?");
-        session.setDuration(new Duration(toDate(2013, 11, 11, 15, 00), toDate(2013, 11, 11, 16, 00)));
-        return session;
     }
 }
