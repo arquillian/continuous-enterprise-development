@@ -19,4 +19,11 @@
   <packaging>jar</packaging>
   <name>CEDJ Example App: GeekSeek Domain: Core</name>
 
+  <dependencies>
+      <dependency>
+        <groupId>org.jboss.spec.javax.transaction</groupId>
+        <artifactId>jboss-transaction-api_1.1_spec</artifactId>
+        <scope>provided</scope>
+      </dependency>
+  </dependencies>
 </project>

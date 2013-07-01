@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 
+import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.conference.model.Conference;
 import org.cedj.geekseek.domain.conference.model.Session;
 import org.cedj.geekseek.web.rest.conference.model.ConferenceRepresentation;
@@ -27,6 +28,12 @@ public class ConferenceResource extends RepositoryResource<Conference, Conferenc
     @Inject
     private RepresentationConverter<SessionRepresentation, Session> sessionConverter;
 
+    @Inject
+    private Repository<Conference> repository;
+
+    @Inject
+    private RepresentationConverter<ConferenceRepresentation, Conference> converter;
+
     @Override
     public String getResourceMediaType() {
         return CONFERENCE_XML_MEDIA_TYPE;
@@ -35,6 +42,16 @@ public class ConferenceResource extends RepositoryResource<Conference, Conferenc
     @Override
     protected String[] getMediaTypes() {
         return new String[]{CONFERENCE_XML_MEDIA_TYPE, CONFERENCE_JSON_MEDIA_TYPE};
+    }
+
+    @Override
+    protected Repository<Conference> getRepository() {
+        return repository;
+    }
+
+    @Override
+    protected RepresentationConverter<ConferenceRepresentation, Conference> getConverter() {
+        return converter;
     }
 
     @POST
@@ -56,6 +73,4 @@ public class ConferenceResource extends RepositoryResource<Conference, Conferenc
                 .build(session.getId()))
             .build();
     }
-
-    // Internal Helpers
 }

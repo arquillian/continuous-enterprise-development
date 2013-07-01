@@ -17,11 +17,11 @@ import org.cedj.geekseek.domain.attachment.model.Attachment;
 import org.infinispan.Cache;
 
 @Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class AttachmentRepository implements Repository<Attachment> {
 
     @Inject
-    private Cache<Object, Object> cache;
+    private Cache<Object, Map<String, String>> cache;
 
     @Override
     public Class<Attachment> getType() {

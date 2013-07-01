@@ -11,6 +11,8 @@ import org.cedj.geekseek.domain.attachment.model.Attachment;
 import org.cedj.geekseek.domain.test.integration.CoreDeployments;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
+import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -18,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
+@Transactional(value = TransactionMode.COMMIT)
 public class AttachmentRepositoryTestCase {
 
     // Given
@@ -89,7 +92,7 @@ public class AttachmentRepositoryTestCase {
 
         Attachment stored = repository.store(attachment);
 
-        // tile change not stored.
+        // tile change not stored to repository
         stored.setTitle(updatedTitle);
 
         Attachment refreshed = repository.get(attachment.getId());

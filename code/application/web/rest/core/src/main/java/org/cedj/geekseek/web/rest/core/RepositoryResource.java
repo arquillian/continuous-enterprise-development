@@ -1,6 +1,5 @@
 package org.cedj.geekseek.web.rest.core;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -35,12 +34,6 @@ public abstract class RepositoryResource<DOMAIN extends Identifiable&Timestampab
     @Context
     private UriInfo uriInfo;
 
-    @Inject
-    private Repository<DOMAIN> repository;
-
-    @Inject
-    private RepresentationConverter<REP, DOMAIN> converter;
-
     @Context
     private HttpHeaders headers;
 
@@ -51,6 +44,9 @@ public abstract class RepositoryResource<DOMAIN extends Identifiable&Timestampab
         this.domainClass = domainClass;
         this.representationClass = representationClass;
     }
+
+    protected abstract Repository<DOMAIN> getRepository();
+    protected abstract RepresentationConverter<REP, DOMAIN> getConverter();
 
     public Class<DOMAIN> getDomainClass() {
         return domainClass;
@@ -65,14 +61,6 @@ public abstract class RepositoryResource<DOMAIN extends Identifiable&Timestampab
         return this.getClass();
     }
 
-    protected Repository<DOMAIN> getRepository() {
-        return repository;
-    }
-
-    protected RepresentationConverter<REP, DOMAIN> getConverter() {
-        return converter;
-    }
-
     protected UriInfo getUriInfo() {
         return uriInfo;
     }
@@ -80,9 +68,9 @@ public abstract class RepositoryResource<DOMAIN extends Identifiable&Timestampab
     @POST
     @Consumes({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
     public Response create(REP representtion) {
-        DOMAIN entity = converter.to(uriInfo, representtion);
+        DOMAIN entity = getConverter().to(uriInfo, representtion);
 
-        repository.store(entity);
+        getRepository().store(entity);
         return Response.created(
             UriBuilder.fromResource(getResourceClass()).segment("{id}").build(entity.getId())).build();
     }
@@ -90,11 +78,11 @@ public abstract class RepositoryResource<DOMAIN extends Identifiable&Timestampab
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") String id) {
-        DOMAIN entity = repository.get(id);
+        DOMAIN entity = getRepository().get(id);
         if (entity == null) {
             return Response.status(Status.NOT_FOUND).build();
         }
-        repository.remove(entity);
+        getRepository().remove(entity);
         return Response.noContent().build();
     }
 
@@ -102,12 +90,12 @@ public abstract class RepositoryResource<DOMAIN extends Identifiable&Timestampab
     @Path("/{id}")
     @Produces({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
     public Response get(@PathParam("id") String id) {
-        DOMAIN entity = repository.get(id);
+        DOMAIN entity = getRepository().get(id);
         if (entity == null) {
             return Response.status(Status.NOT_FOUND).type(getMediaType()).build();
         }
 
-        return Response.ok(converter.from(uriInfo, entity))
+        return Response.ok(getConverter().from(uriInfo, entity))
             .type(getMediaType())
             .lastModified(entity.getLastModified())
             .build();
@@ -117,13 +105,13 @@ public abstract class RepositoryResource<DOMAIN extends Identifiable&Timestampab
     @Path("/{id}")
     @Consumes({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
     public Response update(@PathParam("id") String id, REP representation) {
-        DOMAIN entity = repository.get(id);
+        DOMAIN entity = getRepository().get(id);
         if (entity == null) {
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
         }
 
-        converter.update(uriInfo, representation, entity);
-        repository.store(entity);
+        getConverter().update(uriInfo, representation, entity);
+        getRepository().store(entity);
 
         return Response.noContent().build();
     }
