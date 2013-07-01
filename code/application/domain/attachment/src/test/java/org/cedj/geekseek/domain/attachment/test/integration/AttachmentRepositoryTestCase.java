@@ -48,23 +48,24 @@ public class AttachmentRepositoryTestCase {
         Assert.assertEquals(attachment.getTitle(), stored.getTitle());
         Assert.assertEquals(attachment.getUrl(), stored.getUrl());
         Assert.assertEquals(attachment.getMimeType(), stored.getMimeType());
+        Assert.assertNotNull(stored.getCreated());
     }
 
     // Story: As a User I should be able to update an Attachment
 
     @Test
     public void shouldBeAbleToUpdateAttachmnt() throws Exception {
+        String updatedTitle = "Test 2";
         Attachment attachment = createAttachment();
         attachment = repository.store(attachment);
 
-        attachment.setTitle("Test 2");
+        attachment.setTitle(updatedTitle);
+        attachment = repository.store(attachment);
 
         Attachment updated = repository.get(attachment.getId());
 
-        Assert.assertEquals(attachment.getId(), updated.getId());
-        Assert.assertEquals(attachment.getTitle(), updated.getTitle());
-        Assert.assertEquals(attachment.getUrl(), updated.getUrl());
-        Assert.assertEquals(attachment.getMimeType(), updated.getMimeType());
+        Assert.assertEquals(updated.getTitle(), updatedTitle);
+        Assert.assertNotNull(attachment.getLastUpdated());
     }
 
     // Story: As a User I should be able to remove an Attachment
@@ -78,6 +79,22 @@ public class AttachmentRepositoryTestCase {
 
         Attachment removed = repository.get(attachment.getId());
         Assert.assertNull(removed);
+    }
+
+    @Test
+    public void shouldNotReflectNonStoredChanges() throws Exception {
+        String updatedTitle = "Test 2";
+        Attachment attachment = createAttachment();
+        String originalTitle = attachment.getTitle();
+
+        Attachment stored = repository.store(attachment);
+
+        // tile change not stored.
+        stored.setTitle(updatedTitle);
+
+        Attachment refreshed = repository.get(attachment.getId());
+
+        Assert.assertEquals(refreshed.getTitle(), originalTitle);
     }
 
     private Attachment createAttachment() throws Exception {
