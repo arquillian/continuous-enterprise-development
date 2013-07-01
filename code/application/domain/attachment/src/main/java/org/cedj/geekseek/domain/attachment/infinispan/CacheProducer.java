@@ -5,19 +5,33 @@ import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 
 import org.infinispan.Cache;
+import org.infinispan.configuration.cache.CacheMode;
+import org.infinispan.configuration.cache.Configuration;
+import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.configuration.global.GlobalConfiguration;
 import org.infinispan.configuration.global.GlobalConfigurationBuilder;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
+import org.infinispan.transaction.TransactionMode;
+import org.infinispan.transaction.lookup.GenericTransactionManagerLookup;
 
 public class CacheProducer {
 
     @Produces @ApplicationScoped
-    public EmbeddedCacheManager  create() {
-        GlobalConfiguration config = new GlobalConfigurationBuilder()
-            .globalJmxStatistics().cacheManagerName("geekseek").build();
+    public EmbeddedCacheManager create() {
+        GlobalConfiguration global = new GlobalConfigurationBuilder()
+            .globalJmxStatistics().cacheManagerName("geekseek")
+            .build();
 
-        return new DefaultCacheManager(config);
+        Configuration local = new ConfigurationBuilder()
+            .clustering()
+                .cacheMode(CacheMode.LOCAL)
+            .transaction()
+                .transactionMode(TransactionMode.TRANSACTIONAL)
+                .transactionManagerLookup(new GenericTransactionManagerLookup())
+             .autoCommit(false)
+            .build();
+        return new DefaultCacheManager(global, local);
     }
 
     @Produces @ApplicationScoped

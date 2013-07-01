@@ -39,6 +39,7 @@ public class Attachment implements Identifiable, Timestampable, Serializable {
 
     public Attachment() {
         this.id = UUID.randomUUID().toString();
+        this.created = new Date();
     }
 
     @Override
