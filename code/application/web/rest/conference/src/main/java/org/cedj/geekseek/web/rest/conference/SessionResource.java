@@ -14,6 +14,7 @@ public class SessionResource extends RepositoryResource<Session, SessionRepresen
     private static final String SESSION_XML_MEDIA_TYPE = BASE_XML_MEDIA_TYPE + "; type=session";
     private static final String SESSION_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + "; type=session";
 
+
     public SessionResource() {
         super(SessionResource.class, Session.class, SessionRepresentation.class);
     }

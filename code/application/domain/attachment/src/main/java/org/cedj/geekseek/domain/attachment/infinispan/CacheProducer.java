@@ -1,5 +1,7 @@
 package org.cedj.geekseek.domain.attachment.infinispan;
 
+import java.util.Map;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
@@ -35,7 +37,7 @@ public class CacheProducer {
     }
 
     @Produces @ApplicationScoped
-    public Cache<Object, Object> create(EmbeddedCacheManager manager) {
+    public Cache<Object, Map<String, String>> create(EmbeddedCacheManager manager) {
         return manager.getCache();
     }
 
@@ -43,7 +45,7 @@ public class CacheProducer {
         manager.stop();
     }
 
-    public void destory(@Disposes Cache<Object, Object> cache) {
+    public void destory(@Disposes Cache<?, ?> cache) {
         cache.stop();
     }
 }

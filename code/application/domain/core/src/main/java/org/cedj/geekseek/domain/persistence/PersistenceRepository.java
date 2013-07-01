@@ -1,14 +1,11 @@
 package org.cedj.geekseek.domain.persistence;
 
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.model.Identifiable;
 
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public abstract class PersistenceRepository<T extends Identifiable> implements Repository<T> {
 
     @PersistenceContext
@@ -25,16 +22,19 @@ public abstract class PersistenceRepository<T extends Identifiable> implements R
         return type;
     }
 
+    @Override
     public T store(T entity) {
         T merged = merge(entity);
         manager.persist(merged);
         return merged;
     }
 
+    @Override
     public T get(String id) {
         return manager.find(type, id);
     }
 
+    @Override
     public void remove(T entity) {
         manager.remove(merge(entity));
     }

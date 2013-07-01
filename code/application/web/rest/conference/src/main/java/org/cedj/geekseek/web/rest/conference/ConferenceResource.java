@@ -62,6 +62,4 @@ public class ConferenceResource extends RepositoryResource<Conference, Conferenc
                 .build(session.getId()))
             .build();
     }
-
-    // Internal Helpers
 }

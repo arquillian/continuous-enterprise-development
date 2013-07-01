@@ -25,6 +25,7 @@ import junit.framework.Assert;
 
 import org.cedj.geekseek.domain.Created;
 import org.cedj.geekseek.domain.Removed;
+import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.conference.ConferenceRepository;
 import org.cedj.geekseek.domain.conference.model.Conference;
 import org.cedj.geekseek.domain.conference.model.Session;
@@ -44,8 +45,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@Transactional(TransactionMode.DISABLED)
-// our Repository is transactional
+@Transactional(TransactionMode.COMMIT)
 @RunWith(Arquillian.class)
 public class ConferenceTestCase {
 
@@ -73,7 +73,7 @@ public class ConferenceTestCase {
     }
 
     @Inject
-    private ConferenceRepository repository;
+    private Repository<Conference> repository;
 
     // Story: As a User I should be able to create a Conference
 
@@ -96,8 +96,7 @@ public class ConferenceTestCase {
         Conference conference = createConference();
         conference.addSession(createSession());
 
-        Conference stored = repository.store(conference);
-        Assert.assertNotNull("Validate Created date has been set", stored.getCreated());
+        repository.store(conference);
     }
 
     // Story: As a User I should be able to add a Session to a existing Conference
@@ -150,9 +149,7 @@ public class ConferenceTestCase {
         Conference conference = repository.get("CA");
         conference.setName("UPDATED");
 
-        Conference stored = repository.store(conference);
-        Assert.assertNotNull("Validate Updated date has been set", stored.getLastUpdated());
-        Assert.assertTrue(createdEventFired);
+        repository.store(conference);
     }
 
     // Story: As a User I should be able to change a Session

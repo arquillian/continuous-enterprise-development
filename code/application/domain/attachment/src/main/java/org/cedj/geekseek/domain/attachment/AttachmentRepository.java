@@ -7,9 +7,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 
 import org.cedj.geekseek.domain.Repository;
@@ -17,11 +19,13 @@ import org.cedj.geekseek.domain.attachment.model.Attachment;
 import org.infinispan.Cache;
 
 @Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+@LocalBean
+@Typed(AttachmentRepository.class)
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class AttachmentRepository implements Repository<Attachment> {
 
     @Inject
-    private Cache<Object, Object> cache;
+    private Cache<Object, Map<String, String>> cache;
 
     @Override
     public Class<Attachment> getType() {

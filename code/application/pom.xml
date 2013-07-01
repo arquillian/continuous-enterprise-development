@@ -76,6 +76,12 @@
         <groupId>org.infinispan</groupId>
         <artifactId>infinispan-core</artifactId>
         <version>${version.infinispan}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>jboss-transaction-api_1.1_spec</artifactId>
+            <groupId>org.jboss.spec.javax.transaction</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <!-- External Test Modules -->

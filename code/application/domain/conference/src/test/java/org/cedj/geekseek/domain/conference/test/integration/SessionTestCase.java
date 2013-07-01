@@ -22,7 +22,7 @@ import junit.framework.Assert;
 
 import org.cedj.geekseek.domain.Created;
 import org.cedj.geekseek.domain.Removed;
-import org.cedj.geekseek.domain.conference.SessionRepository;
+import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.conference.model.Session;
 import org.cedj.geekseek.domain.conference.test.TestUtils;
 import org.cedj.geekseek.domain.test.integration.CoreDeployments;
@@ -69,7 +69,7 @@ public class SessionTestCase {
     }
 
     @Inject
-    private SessionRepository repository;
+    private Repository<Session> repository;
 
     // Story: As a User I should be able to remove a Session
 
