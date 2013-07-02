@@ -14,16 +14,20 @@ module.provider('RestGraph', function() {
 				var link =  context.data.link[i];
 				var d = context.$q.defer();
 				children.push(d.promise);
-				
+
+				var resolve = function(defer) {
+					return function(node) {
+						defer.resolve(node);
+					};
+				};
 				var linkNode = new Node(context.$q, context.$http, link, link.href, context.parent);
-				linkNode.init().then(function(node) {
-					d.resolve(linkNode);
-				});
+				linkNode.init().then(resolve(d));
 			};
 			context.data.$link = context.data.link;
 			delete context.data.link;
 		}
-		return context.$q.all(children);
+		all = context.$q.all(children);
+		return all;
 	};
 	var Node = function($q, $http, meta, startURL, parent) {
 		this.$q = $q,
@@ -38,6 +42,19 @@ module.provider('RestGraph', function() {
 	
 	Node.prototype.__defineGetter__("parent", function(){
         return this._parent;
+    });
+	Node.prototype.__defineGetter__("root", function(){
+        var par = this.parent;
+        if(par == null) {
+            return this;
+        }
+        while(angular.isDefined(par.parent)) {
+            par = par.parent;
+        }
+        return par;
+    });
+	Node.prototype.__defineGetter__("url", function(){
+        return this._startURL;
     });
 	Node.prototype.__defineGetter__("data", function(){
         return this._data;
@@ -68,11 +85,41 @@ module.provider('RestGraph', function() {
 			self._options = headers("Allow").split(", ");
 			d.resolve(self);
 		}).error(function(data, status, headers, config) {
-			d.reject("failed");
+			d.reject(self);
 		});
 		return d.promise;
 	};
 	
+	Node.prototype.getLink = function(name) {
+		for(var i = 0; i < this.links; i++) {
+			var link = this.links[i];
+			if(link.rel === name) {
+				return link;
+			}
+		}
+		return;
+	};
+
+	Node.prototype.bookmark = function(type, id) {
+		var self = this;
+		var root = this.root;
+		//var link = root.getLink("bookmark"); // TODO: lookup bookmark template url from root
+
+		var d = this.$q.defer();
+		var url = root.url + "/bookmark/" + type + "/" + id;
+		this.$http.get(url).then(function(data) {
+			var linkNode = new Node(
+					self.$q, self.$http,
+					{rel: type, url: data.config.url, mediaType: data.headers('Content-Type')}, url, root);
+			linkNode.init().then(function(node) {
+				node.get().then(function(node) {
+					d.resolve(node);
+				});
+			});
+		});
+		return d.promise;
+	};
+
 	Node.prototype.get = function() {
 		var self = this;
 		var d = this.$q.defer();
@@ -96,8 +143,8 @@ module.provider('RestGraph', function() {
 	Node.prototype.remove = function() {
 		var self = this;
 		var d = this.$q.defer();
-		this.$http.delete(this._startURL).then(function(data) {
-			self._data = {}
+		this.$http['delete'](this._startURL).then(function(data) {
+			self._data = {};
 			d.resolve(self.parent);
 		});
 		return d.promise;
