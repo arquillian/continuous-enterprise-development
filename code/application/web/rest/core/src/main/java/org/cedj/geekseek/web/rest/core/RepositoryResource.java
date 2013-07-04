@@ -20,15 +20,14 @@ import javax.ws.rs.core.UriInfo;
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.domain.model.Timestampable;
-import org.cedj.geekseek.web.rest.core.annotation.ResourceModel;
 
-@ResourceModel
 public abstract class RepositoryResource<DOMAIN extends Identifiable&Timestampable, REP extends Representation<DOMAIN>>
     implements Resource {
 
     protected static final String BASE_XML_MEDIA_TYPE = "application/vnd.ced+xml";
     protected static final String BASE_JSON_MEDIA_TYPE = "application/vnd.ced+json";
 
+    private Class<? extends Resource> resourceClass;
     private Class<DOMAIN> domainClass;
     private Class<REP> representationClass;
 
@@ -47,9 +46,15 @@ public abstract class RepositoryResource<DOMAIN extends Identifiable&Timestampab
     // for CDI proxyabillity
     protected RepositoryResource() {}
 
-    public RepositoryResource(Class<DOMAIN> domainClass, Class<REP> representationClass) {
+    public RepositoryResource(Class<? extends Resource> resourceClass, Class<DOMAIN> domainClass, Class<REP> representationClass) {
+        this.resourceClass = resourceClass;
         this.domainClass = domainClass;
         this.representationClass = representationClass;
+    }
+
+    @Override
+    public Class<? extends Resource> getResourceClass() {
+        return resourceClass;
     }
 
     public Class<DOMAIN> getDomainClass() {
@@ -58,11 +63,6 @@ public abstract class RepositoryResource<DOMAIN extends Identifiable&Timestampab
 
     public Class<REP> getRepresentationClass() {
         return representationClass;
-    }
-
-    @Override
-    public Class<? extends Resource> getResourceClass() {
-        return this.getClass();
     }
 
     protected Repository<DOMAIN> getRepository() {

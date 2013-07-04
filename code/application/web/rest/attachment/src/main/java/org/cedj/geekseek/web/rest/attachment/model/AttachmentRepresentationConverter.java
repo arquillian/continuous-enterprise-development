@@ -15,7 +15,7 @@ public class AttachmentRepresentationConverter extends RepresentationConverter.B
 
     @Override
     public AttachmentRepresentation from(UriInfo uriInfo, Attachment source) {
-        return new AttachmentRepresentation(source);
+        return new AttachmentRepresentation(source, uriInfo);
     }
 
     @Override

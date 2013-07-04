@@ -4,11 +4,14 @@ import java.io.File;
 
 import org.cedj.geekseek.web.rest.core.Resource;
 import org.cedj.geekseek.web.rest.core.annotation.ResourceModel;
+import org.cedj.geekseek.web.rest.core.exception.CatchAllExceptionMapper;
+import org.cedj.geekseek.web.rest.core.interceptor.ValidatedInterceptor;
 import org.cedj.geekseek.web.rest.core.provider.JSONMappingExceptionHandler;
 import org.cedj.geekseek.web.rest.core.provider.JSONProvider;
 import org.cedj.geekseek.web.rest.core.root.RootResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
@@ -28,7 +31,9 @@ public class RestCoreDeployments {
         return ShrinkWrap.create(JavaArchive.class)
             .addPackages(false,
                 Resource.class.getPackage(),
-                ResourceModel.class.getPackage())
+                ResourceModel.class.getPackage(),
+                ValidatedInterceptor.class.getPackage(),
+                CatchAllExceptionMapper.class.getPackage())
             .addPackages(true,
                 RootResource.class.getPackage())
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
@@ -46,5 +51,14 @@ public class RestCoreDeployments {
                 "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider")
             .withTransitivity()
             .asFile();
+    }
+
+    public static StringAsset linkableBeansXml() {
+        return new StringAsset("<?xml version=\"1.0\"?>" +
+                "<beans>" +
+                  "<interceptors>" +
+                    "<class>org.cedj.geekseek.web.rest.core.interceptor.LinkedInterceptor</class>" +
+                  "</interceptors>" +
+                "</beans>");
     }
 }

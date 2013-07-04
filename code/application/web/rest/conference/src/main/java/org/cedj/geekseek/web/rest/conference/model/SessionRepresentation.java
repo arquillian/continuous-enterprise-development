@@ -18,7 +18,6 @@ import org.cedj.geekseek.web.rest.core.ResourceLink;
 public class SessionRepresentation extends LinkableRepresenatation<Session> {
 
     private Session session;
-    private UriInfo uriInfo;
 
     private Date start;
     private Date end;
@@ -28,9 +27,8 @@ public class SessionRepresentation extends LinkableRepresenatation<Session> {
     }
 
     public SessionRepresentation(Session session, UriInfo uriInfo) {
-        super(Session.class);
+        super(Session.class, "session", uriInfo);
         this.session = session;
-        this.uriInfo = uriInfo;
     }
 
     @XmlElement
@@ -79,21 +77,25 @@ public class SessionRepresentation extends LinkableRepresenatation<Session> {
 
     public List<ResourceLink> getLinks() {
         List<ResourceLink> links = super.getLinks();
-        if (uriInfo != null) {
-            links.add(
-                new ResourceLink(
-                    "self",
-                    uriInfo.getBaseUriBuilder()
+        if (getUriInfo() != null) {
+            if(doesNotContainRel("self")) {
+                links.add(
+                    new ResourceLink(
+                        "self",
+                        getUriInfo().getBaseUriBuilder()
                         .path(SessionResource.class)
                         .segment("{id}")
                         .build(session.getId())));
-            links.add(
-                new ResourceLink(
-                    "parent",
-                    uriInfo.getBaseUriBuilder()
+            }
+            if(doesNotContainRel("parent")) {
+                links.add(
+                    new ResourceLink(
+                        "parent",
+                        getUriInfo().getBaseUriBuilder()
                         .path(ConferenceResource.class)
                         .segment("{id}")
                         .build(session.getConference().getId())));
+            }
         }
         return links;
     }

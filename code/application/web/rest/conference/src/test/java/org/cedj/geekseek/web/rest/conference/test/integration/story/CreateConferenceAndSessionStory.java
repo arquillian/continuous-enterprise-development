@@ -91,6 +91,9 @@ public class CreateConferenceAndSessionStory {
               then().
                   contentType(CONFERENCE_MEDIA_TYPE).
                   statusCode(Status.OK.getStatusCode()).
+                  root("conference").
+                      body("link.find {it.@rel == 'bookmark'}.size()", equalTo(1)).
+                      body("link.find {it.@rel == 'self'}.size()", equalTo(1)).
               when().
                   get(uri_conferenceInstance).
               body().
@@ -160,6 +163,10 @@ public class CreateConferenceAndSessionStory {
         then().
            contentType(SESSION_MEDIA_TYPE).
            statusCode(Status.OK.getStatusCode()).
+           root("session").
+               body("link.find {it.@rel == 'bookmark'}.size()", equalTo(1)).
+               body("link.find {it.@rel == 'self'}.size()", equalTo(1)).
+               body("link.find {it.@rel == 'parent'}.size()", equalTo(1)).
         when().
            get(uri_sessionInstance);
     }

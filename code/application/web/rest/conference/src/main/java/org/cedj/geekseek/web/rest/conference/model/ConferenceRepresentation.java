@@ -3,12 +3,13 @@ package org.cedj.geekseek.web.rest.conference.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.cedj.geekseek.domain.conference.model.Conference;
 import org.cedj.geekseek.domain.conference.model.Duration;
+import org.cedj.geekseek.web.rest.conference.ConferenceResource;
 import org.cedj.geekseek.web.rest.core.LinkableRepresenatation;
 import org.cedj.geekseek.web.rest.core.ResourceLink;
 
@@ -16,7 +17,6 @@ import org.cedj.geekseek.web.rest.core.ResourceLink;
 public class ConferenceRepresentation extends LinkableRepresenatation<Conference> {
 
     private Conference conference;
-    private UriBuilder uriBuilder;
 
     private Date start;
     private Date end;
@@ -25,10 +25,9 @@ public class ConferenceRepresentation extends LinkableRepresenatation<Conference
         this(new Conference(), null);
     }
 
-    public ConferenceRepresentation(Conference conference, UriBuilder uriBuilder) {
-        super(Conference.class);
+    public ConferenceRepresentation(Conference conference, UriInfo uriInfo) {
+        super(Conference.class, "conference", uriInfo);
         this.conference = conference;
-        this.uriBuilder = uriBuilder;
     }
 
     @XmlElement
@@ -77,8 +76,24 @@ public class ConferenceRepresentation extends LinkableRepresenatation<Conference
 
     public List<ResourceLink> getLinks() {
         List<ResourceLink> links = super.getLinks();
-        if (uriBuilder != null) {
-            links.add(new ResourceLink("session", uriBuilder.clone().path("session").build()));
+        if (getUriInfo() != null) {
+            if(doesNotContainRel("self")) {
+                links.add(
+                    new ResourceLink(
+                        "self",
+                        getUriInfo().getBaseUriBuilder().clone()
+                            .path(ConferenceResource.class)
+                            .segment("{id}")
+                            .build(conference.getId())));
+            }
+            if(doesNotContainRel("session")) {
+                links.add(
+                    new ResourceLink(
+                        "session",
+                        getUriInfo().getAbsolutePathBuilder().clone()
+                            .path("session")
+                            .build()));
+            }
         }
         return links;
     }

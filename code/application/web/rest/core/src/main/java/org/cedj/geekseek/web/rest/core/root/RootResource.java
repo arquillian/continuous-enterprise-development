@@ -16,14 +16,15 @@ import org.cedj.geekseek.web.rest.core.TopLevelResource;
 import org.cedj.geekseek.web.rest.core.annotation.ResourceModel;
 import org.cedj.geekseek.web.rest.core.root.model.RootRepresentation;
 
-@Path("/")
 @ResourceModel
+@Path("/")
 public class RootResource {
 
+    private static final String REP_TYPE = "root";
     private static final String BASE_XML_MEDIA_TYPE = "application/vnd.ced+xml";
     private static final String BASE_JSON_MEDIA_TYPE = "application/vnd.ced+json";
-    private static final String SUB_XML_MEDIA_TYPE = BASE_XML_MEDIA_TYPE + ";type=root";
-    private static final String SUB_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + ";type=root";
+    private static final String SUB_XML_MEDIA_TYPE = BASE_XML_MEDIA_TYPE + ";type=" + REP_TYPE;
+    private static final String SUB_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + ";type=" + REP_TYPE;
 
     @Context
     private UriInfo uriInfo;
@@ -38,7 +39,7 @@ public class RootResource {
     @Produces({BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE})
     public Response listAllResources() {
 
-        RootRepresentation root = new RootRepresentation();
+        RootRepresentation root = new RootRepresentation(REP_TYPE, uriInfo);
         for (TopLevelResource resource : resources) {
             root.addLink(
                     new ResourceLink(

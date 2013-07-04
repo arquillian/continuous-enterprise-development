@@ -2,12 +2,25 @@ package org.cedj.geekseek.web.rest.core.test.integration;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.cedj.geekseek.web.rest.core.Resource;
 import org.cedj.geekseek.web.rest.core.TopLevelResource;
+import org.cedj.geekseek.web.rest.core.annotation.ResourceModel;
 
+@ResourceModel
 @Path("/test")
 public class TestResource implements TopLevelResource {
+
+    private static final String REP_TYPE = "test";
+    private static final String TEST_MEDIA_TYPE = "application/vnd.ced+xml;type=" + REP_TYPE;
+
+    @Context
+    private UriInfo uriInfo;
 
     @Override
     public Class<? extends Resource> getResourceClass() {
@@ -16,11 +29,21 @@ public class TestResource implements TopLevelResource {
 
     @Override
     public String getResourceMediaType() {
-        return "urn:ced:test";
+        return TEST_MEDIA_TYPE;
     }
 
     @GET
-    public String get() {
-        return "test";
+    @Produces(TEST_MEDIA_TYPE)
+    public Response get() {
+        return Response.ok(
+            new TestRepresentation(REP_TYPE, uriInfo, new TestObject("100", "msg"))).type(TEST_MEDIA_TYPE).build();
+    }
+
+    @GET
+    @Path("/{id}/")
+    @Produces(TEST_MEDIA_TYPE)
+    public Response get(@PathParam("id") String id) {
+        return Response.ok(
+            new TestRepresentation(REP_TYPE, uriInfo, new TestObject(id, "msg"))).type(TEST_MEDIA_TYPE).build();
     }
 }

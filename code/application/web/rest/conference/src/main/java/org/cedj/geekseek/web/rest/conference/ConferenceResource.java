@@ -16,7 +16,9 @@ import org.cedj.geekseek.web.rest.conference.model.SessionRepresentation;
 import org.cedj.geekseek.web.rest.core.RepositoryResource;
 import org.cedj.geekseek.web.rest.core.RepresentationConverter;
 import org.cedj.geekseek.web.rest.core.TopLevelResource;
+import org.cedj.geekseek.web.rest.core.annotation.ResourceModel;
 
+@ResourceModel
 @Path("/conference")
 public class ConferenceResource extends RepositoryResource<Conference, ConferenceRepresentation>
     implements TopLevelResource {
@@ -26,6 +28,10 @@ public class ConferenceResource extends RepositoryResource<Conference, Conferenc
 
     @Inject
     private RepresentationConverter<SessionRepresentation, Session> sessionConverter;
+
+    public ConferenceResource() {
+        super(ConferenceResource.class, Conference.class, ConferenceRepresentation.class);
+    }
 
     @Override
     public String getResourceMediaType() {

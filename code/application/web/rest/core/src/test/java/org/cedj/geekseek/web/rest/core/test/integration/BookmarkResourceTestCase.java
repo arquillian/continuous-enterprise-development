@@ -2,8 +2,6 @@ package org.cedj.geekseek.web.rest.core.test.integration;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
 
 import java.net.URL;
 
@@ -14,7 +12,6 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,12 +22,9 @@ import com.jayway.restassured.filter.log.RequestLoggingFilter;
 import com.jayway.restassured.filter.log.ResponseLoggingFilter;
 
 @RunWith(Arquillian.class)
-public class RootResourceTestCase {
+public class BookmarkResourceTestCase {
 
-    private static String BASE_XML_MEDIA_TYPE = "application/vnd.ced+xml";
-    private static String ROOT_XML_MEDIA_TYPE = BASE_XML_MEDIA_TYPE + ";type=root";
-    private static String BASE_JSON_MEDIA_TYPE = "application/vnd.ced+json";
-    private static String ROOT_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + ";type=root";
+    public static final String TEST_MEDIA_TYPE = "application/vnd.ced+xml;type=test";
 
     @Deployment(testable = false)
     public static WebArchive deploy() {
@@ -38,8 +32,8 @@ public class RootResourceTestCase {
                 .addAsLibraries(CoreDeployments.core())
                 .addAsLibraries(RestCoreDeployments.rootWithJSON())
                 .addAsLibraries(RestCoreDeployments.resolveDependencies())
-                .addClasses(TestApplication.class, TestResource.class)
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addClasses(TestApplication.class, TestResource.class, TestRepresentation.class, TestObject.class)
+                .addAsWebInfResource(RestCoreDeployments.linkableBeansXml(), "beans.xml");
     }
 
     @ArquillianResource
@@ -53,35 +47,36 @@ public class RootResourceTestCase {
     }
 
     @Test
-    public void shouldAssambleRootResourcesXML() throws Exception {
+    public void shouldRedirectToResource() throws Exception {
         given().
+            redirects().
+                follow(false).
         then().
-            contentType(ROOT_XML_MEDIA_TYPE).
-            body("root.link[0].@rel", equalTo("test")).
-            body("root.link[0].@href", equalTo(new URL(baseURL, "api/test").toExternalForm())).
+            statusCode(Response.Status.SEE_OTHER.getStatusCode()).
+            header("Location", new URL(baseURL, "api/test/200").toExternalForm()).
         when().
-            get(baseURL + "api/");
+            get(baseURL + "api/bookmark/test/200");
     }
 
     @Test
-    public void shouldAssambleRootResourcesJSON() throws Exception {
+    public void shouldReturnNotFoundOnUnknownType() throws Exception {
         given().
         then().
-            contentType(ROOT_JSON_MEDIA_TYPE).
-            body("link[0].rel", equalTo("test")).
-            body("link[0].href", equalTo(new URL(baseURL, "api/test").toExternalForm())).
+            statusCode(Response.Status.NOT_FOUND.getStatusCode()).
         when().
-            get(baseURL + "api/");
+            get(baseURL + "api/bookmark/missing/200");
     }
 
     @Test
-    public void shouldProvideOptions() throws Exception {
+    public void shouldProvideBookmarkLinkToResource() throws Exception {
         given().
+            contentType(TEST_MEDIA_TYPE).
         then().
+            contentType(TEST_MEDIA_TYPE).
             statusCode(Response.Status.OK.getStatusCode()).
-            headers("Allow", containsString("GET")).
-            headers("Allow", not(containsString("POST"))).
+            body("test.link.find {it.@rel == 'bookmark'}.size()", equalTo(1)).
+            body("test.link.@href", equalTo(new URL(baseURL, "api/bookmark/test/200").toExternalForm())).
         when().
-            options(baseURL + "api/test");
+            get(baseURL + "api/test/200");
     }
 }

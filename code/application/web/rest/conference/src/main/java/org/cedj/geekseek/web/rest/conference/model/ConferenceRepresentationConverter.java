@@ -16,7 +16,7 @@ public class ConferenceRepresentationConverter extends RepresentationConverter.B
 
     @Override
     public ConferenceRepresentation from(UriInfo uriInfo, Conference source) {
-        return new ConferenceRepresentation(source, uriInfo.getAbsolutePathBuilder());
+        return new ConferenceRepresentation(source, uriInfo);
     }
 
     @Override
