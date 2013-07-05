@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.cedj.geekseek.web.rest.core.Resource;
 import org.cedj.geekseek.web.rest.core.annotation.ResourceModel;
-import org.cedj.geekseek.web.rest.core.exception.JSONMappingExceptionHandler;
+import org.cedj.geekseek.web.rest.core.provider.JSONMappingExceptionHandler;
 import org.cedj.geekseek.web.rest.core.provider.JSONProvider;
 import org.cedj.geekseek.web.rest.core.root.RootResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;

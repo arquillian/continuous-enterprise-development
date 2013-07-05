@@ -1,8 +1,5 @@
 package org.cedj.geekseek.web.rest.core.exception;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -33,10 +30,8 @@ public class CatchAllExceptionMapper implements ExceptionMapper<Throwable> {
                 return Response.status(Status.INTERNAL_SERVER_ERROR).build();
             }
         }
-        // TODO: add some more filtering
-        Map<String, String> error = new HashMap<String, String>();
-        error.put("error", exception.toString());
-
+        exception.printStackTrace();
+        Error error = new Error(exception.toString());
         return Response.status(Status.BAD_REQUEST).entity(error).build();
     }
 }

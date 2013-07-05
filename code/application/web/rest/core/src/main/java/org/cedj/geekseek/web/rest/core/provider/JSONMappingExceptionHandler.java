@@ -1,4 +1,4 @@
-package org.cedj.geekseek.web.rest.core.exception;
+package org.cedj.geekseek.web.rest.core.provider;
 
 import java.util.HashMap;
 import java.util.Map;
