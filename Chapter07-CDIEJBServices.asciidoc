@@ -1,4 +1,4 @@
-== The Services Layer
+== Business Logic and the Services Layer
 
 _"The best way to find yourself is to lose yourself in the service of others." - Mahatma Gandhi_
 
