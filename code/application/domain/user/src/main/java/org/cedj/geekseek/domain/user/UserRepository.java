@@ -13,12 +13,19 @@
  */
 package org.cedj.geekseek.domain.user;
 
+import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.enterprise.inject.Typed;
 
 import org.cedj.geekseek.domain.persistence.PersistenceRepository;
 import org.cedj.geekseek.domain.user.model.User;
 
 @Stateless
+@LocalBean
+@Typed(UserRepository.class)
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class UserRepository extends PersistenceRepository<User> {
 
     public UserRepository() {

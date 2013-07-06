@@ -22,6 +22,7 @@ public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    private String name;
     private String bio;
 
     // JPA Default constructor
@@ -31,11 +32,21 @@ public class User extends BaseEntity {
         super(id);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public User setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     public String getBio() {
         return bio;
     }
 
-    public void setBio(String bio) {
+    public User setBio(String bio) {
         this.bio = bio;
+        return this;
     }
 }

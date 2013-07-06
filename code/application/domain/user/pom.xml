@@ -24,6 +24,18 @@
       <groupId>org.cedj.geekseek</groupId>
       <artifactId>geekseek-domain-core</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-domain-core</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.spec.javax.transaction</groupId>
+      <artifactId>jboss-transaction-api_1.1_spec</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>
