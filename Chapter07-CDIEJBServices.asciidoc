@@ -257,7 +257,7 @@ public void queueMailForDelivery(final MailMessageBuilder.MailMessage mailMessag
 
 Sending the JMS message doesn't fully get our mail delivered, however; it just sends it to a JMS queue.  We still need a component to pull this JMS message off the queue, unwrap the +MailMessage+ it contains, and call upon our +sendMail+ method to send the mail.  For this we can again turn to EJB, which provides listeners to any JCA (Java Connector Architecture) backend by means of the _Message-Driven Bean_ (MDB).  Our MDB will be configured as a JMS +Queue+ listener, and is defined:
 
-* +org.cedj.geekseek.service.smtp.SMTPMessageConsumer+
++org.cedj.geekseek.service.smtp.SMTPMessageConsumer+
 [source,java]
 ----
 @MessageDriven(activationConfig = {
