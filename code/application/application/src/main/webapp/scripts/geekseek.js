@@ -10,6 +10,7 @@ function MainCtrl($q, $rootScope, $scope, $location, graph) {
 	$scope.mode = MODE_SHOW;
 	$scope.form = {};
 	$scope.parents = [];
+	$scope.actionlinks = [];
 
 	if(angular.isUndefined($rootScope.root)) {
 		$rootScope.root = graph;
@@ -27,6 +28,7 @@ function MainCtrl($q, $rootScope, $scope, $location, graph) {
 					}
 				}
 				$scope.parents = $scope.$calcParents(value);
+				$scope.actionlinks = $scope.$calcUserActionLinks(value);
 			});
 		}
 	});
@@ -62,7 +64,7 @@ function MainCtrl($q, $rootScope, $scope, $location, graph) {
 			$location.path(q.b + "/" + q.m);
 		});
 	};
-	
+
 	$scope.$calcParents = function(resource) {
 		var res = [];
 		var curr = resource;
@@ -73,6 +75,22 @@ function MainCtrl($q, $rootScope, $scope, $location, graph) {
 			curr = curr.parent;
 		}
 		return res.reverse();
+	};
+
+	$scope.$calcUserActionLinks = function(resource) {
+		var res = [];
+		if(angular.isDefined(resource.data)) {
+			if(angular.isDefined(resource.links)) {
+				$q.when(resource.links).then(function(links) {
+					angular.forEach(links, function(link) {
+						if('_bookmark_self_parent_'.indexOf("_" + link.meta.rel + "_") == -1) {
+							res.push(link);
+						}
+					});
+				});
+			}
+		}
+		return res;
 	};
 
 	$scope.isList = function() {

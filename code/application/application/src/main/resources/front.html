@@ -13,7 +13,7 @@
 		</div>
 
 		<div id="sidebar" class="pull-right">
-			<div data-ng-repeat="link in resource.links">
+			<div data-ng-repeat="link in actionlinks">
 				<div data-ng-show="link.canGet()">
 				 	<button class="btn btn-success" data-ng-click="get(link)">Get {{link.meta.rel}}</button>
 				</div>
