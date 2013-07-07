@@ -602,11 +602,11 @@ By enabling resolution in a friendly, intuitive API, ShrinkWrap Resolvers arms S
 
 Being simply a component model, Java EE needs a concrete implementation to provide the runtime services to our applications.
 
-==== JBoss Application Server 7
+==== WildFly
 
-image:images/ch02-enabling_technologies/jbossas7.png["JBoss AS7"]
+image:images/ch02-enabling_technologies/wildfly.png["WildFly"]
 
-The latest community edition of the http://www.jboss.org/jbossas[JBoss Application Server 7] will be the target runtime for our examples.  Written from the ground up, AS7 was designed with the following goals at the core:
+The latest community edition of the application server offered by JBoss has recently been renamed to http://wildfly.org/[_WildFly_], and this will be the default target runtime for our examples.  Written from the ground up, WildFly (previously-known as _JBoss Application Server 7_) was designed with the following goals at the core:
 
 * *Speed*.  Startup, deployment, and request processing demands leverage a concurrent state machine and constant-time ClassLoading.
 * *Efficiency*.  Memory usage is kept to a minimum.
@@ -615,11 +615,15 @@ The latest community edition of the http://www.jboss.org/jbossas[JBoss Applicati
 * *Compliance*.  http://fedoraproject.org/wiki/Features/JBossAS7#Strict_Compliance[Java EE6 Full Profile Certification]
 * *Testable*.  Uses Arquillian and ShrinkWrap in its own internal test suite
 
-Because a quick feedback loop is important in testing during development, the speed afforded by JBossAS7 makes it a compelling candidate for our target runtime:
+Because a quick feedback loop is important in testing during development, the speed afforded by WildFly makes it a compelling candidate for our target runtime:
 
 ----
-08:23:26,759 INFO  [org.jboss.as] (Controller Boot Thread) JBAS015874: JBoss AS 7.1.1.Final "Brontes" started in 1775ms - Started 133 of 208 services (74 services are passive or on-demand)
+19:16:06,662 INFO  [org.jboss.as] (Controller Boot Thread) 
+ JBAS015874: WildFly 8.0.0.Alpha2 "WildFly" started in 2702ms - 
+ Started 153 of 189 services (56 services are lazy, passive or on-demand)
 ----
+
+The online User Guide for WildFly is located at https://docs.jboss.org/author/display/WFLY8/Documentation[https://docs.jboss.org/author/display/WFLY8/Documentation].
 
 ==== OpenShift
 
@@ -627,7 +631,7 @@ image:images/ch02-enabling_technologies/openshift.png["OpenShift"]
 
 While getting our applications running on our own machine is a great step in developing, the beauty of the internet is that we can expose our content and services to the world at large.  Until very recently, Java EE hosting typically involved a dedicated and expensive server colocated in a data center.  With the rapid advent of virtualization and the Cloud, we're now able to gain public access much more easily, and at far reduced cost.
 
-OpenShift is Red Hat's free Platform as a Service (PaaS) for applications.  While it supports a variety of frameworks bundled as "cartridges", we'll be using OpenShift's built-in JBossAS7 support.  With just a little bit of initial setup, pushing changes from our local Git repository to the OpenShift remote will trigger a build and deployment of our application for all to see.  We'll be relieved of the responsibility to obtain a server, install JBossAS, configure the networking and firewalls, or manually deploy new versions.
+http://www.openshift.com[_OpenShift_] is Red Hat's free Platform as a Service (PaaS) for applications.  While it supports a variety of frameworks bundled as "cartridges", we'll be using OpenShift's built-in JBossAS7 support.  With just a little bit of initial setup, pushing changes from our local Git repository to the OpenShift remote will trigger a build and deployment of our application for all to see.  We'll be relieved of the responsibility to obtain a server, install JBossAS, configure the networking and firewalls, or manually deploy new versions.
 
 === On to the Code
 
