@@ -61,23 +61,23 @@ public class ConferenceResourceTestCase {
             .setTagLine("TagName")
             .setDuration(new Duration(new Date(), new Date()));
 
-            Warp.initiate(new Activity() {
-                @Override
-                public void perform() {
-                    given().
-                    then().
-                        contentType(CONFERENCE_MEDIA_TYPE).
-                        root("conference").
-                            body("name", equalTo(conference.getName())).
-                            body("tagLine", equalTo(conference.getTagLine())).
-                            body("start", equalToXmlDate(conference.getDuration().getStart())).
-                            body("end", equalToXmlDate(conference.getDuration().getEnd())).
-                            body("link.find {it.@rel == 'session'}.size()", equalTo(1)).
-                    when().
-                        get(baseURL + "api/conference/{id}", conference.getId()).
-                    body();
-                }
-            }).inspect(new SetupConference(conference));
+        Warp.initiate(new Activity() {
+            @Override
+            public void perform() {
+                given().
+                then().
+                    contentType(CONFERENCE_MEDIA_TYPE).
+                    root("conference").
+                        body("name", equalTo(conference.getName())).
+                        body("tagLine", equalTo(conference.getTagLine())).
+                        body("start", equalToXmlDate(conference.getDuration().getStart())).
+                        body("end", equalToXmlDate(conference.getDuration().getEnd())).
+                        body("link.find {it.@rel == 'session'}.size()", equalTo(1)).
+                when().
+                    get(baseURL + "api/conference/{id}", conference.getId()).
+                body();
+            }
+        }).inspect(new SetupConference(conference));
     }
 
     public static class SetupConference extends Inspection {
