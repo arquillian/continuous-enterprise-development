@@ -13,7 +13,7 @@ All contents of this repository licensed under http://creativecommons.org/licens
 
 The official distribution for the book will be available in print and electronic formats via http://shop.oreilly.com/product/0636920025368.do[O'Reilly] or various 3rd-party retailers in September 2013.  The Early Access Release has been open for purchase since the Fall of 2012.
 
-The print release of the book and its example is set to be given the git tag of +1.0.0+ in this repository, and development will continue thereafter in the +master+ branch to correct errata and add supplmentary material including new chapters and use cases.  The community is welcome to suggest or request topics for additional coverage.
+The print release of the book and its example is set to be given the Git tag of +1.0.0+ in this repository, and development will continue thereafter in the +master+ branch to correct errata and add supplmentary material including new chapters and use cases.  The community is welcome to suggest or request topics for additional coverage.
 
 The example application accompanying the use cases raised in the text is called GeekSeek, and is publicly-available at http://geekseek.continuousdev.org[http://geekseek.continuousdev.org].  The source is located in this repository under +code/application+, and instructions for building, testing, and running locally are detailed in https://github.com/arquillian/continuous-enterprise-development/blob/master/Chapter04-RequirementsAndExampleApplication.asciidoc[Chapter 4].
 
