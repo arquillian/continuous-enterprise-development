@@ -17,6 +17,10 @@ This book will aim to address some of the common issues encountered during enter
 
 Our example application will be a software conference tracker, roughly modeled after the excellent http://lanyrd.com/[Lanyrd] service.  Its purpose will be to expose information to aid conference-goers in planning their experience around technical sessions and related activities.  The goal is to provide a single example with all layers working in concert to showcase how various technologies interact, and each use case detailed in the book will dig into various slices of the application.  We've lovingly named this example: _GeekSeek_.
 
+Reading this book should not be a passive endeavor; we've designed the example application to be an executable proof of the approaches we'll use to satisfy our broad uses cases.  Readers will likely get the greatest benefit by pulling down the GeekSeek source, building, testing, and running the application locally.
+
+The live "production" GeekSeek site is hosted at http://geekseek.continuousdev.org[http://geekseek.continuousdev.org]; let's first have a look at the requirements comprising this application.
+
 ==== Feature Set
 
 We'll start by outlining in broad strokes the features provided by GeekSeek.  This will provide a high-level view of the actions users may take, and from these we can start to drill down into more technical requirements.
@@ -152,6 +156,156 @@ Because the relationship is naturally a graph, it will likely make sense to stor
 Another interesting area revolves around the system's attachments.  An attachment can be associated with a conference, session, venue, or room, and ultimately consists of some arbitrary series of bytes.  This amounts to a natural "key/value" store really, where we can add a bunch of content, associate some metadata with it, and draw a relationship to its "owner".  Again, we might tackle this in a standard table representation, but perhaps the problem domain suggests a native solution more in tune with the key/value model.
 
 Now that we've developed a better understanding of our data, what requests we'll make of it, and how much we might have, we can move on to designing some user-based and technical use cases to drive the construction of our application.
+
+==== Obtaining, Building, Testing, and Running GeekSeek
+
+We'd mentioned earlier that we'd be using the distributed version control system _Git_ to store the source for this book and its examples, and our friends at http://www.github.com[GitHub] kindly host our _authoritative repository_ at https://github.com/arquillian/continuous-enterprise-development[https://github.com/arquillian/continuous-enterprise-development].  Unlike centralized version control systems, Git stores the full repository history in each clone; when you "fork" or "copy" our repo, you'll get the entire history with every commit made since the book's inception.  The _authoritative repository_ refers to the one we elect to act as the _upstream_; changes that are approved to make it into new releases go here.
+
+===== Obtaining the Source
+
+The first step towards obtaining the source is to sign up for a GitHub account.  While it's absolutely possible to clone the authoritative repo locally, without an account either here or at some other writable host you won't have an avenue to push changes of your own or contribute ideas.  As signing up for an account is free for our uses and has become commonplace espeically in open-source development, it's the avenue we'll advise.
+
+Signup is fairly simple and the process starts at https://github.com[https://github.com]
+
+image:images/ch04-requirements_example_app/github_signup.png["GitHub Signup"]
+
+Once logged in, we'll _fork_ the authoritative repo into your own publicly-viewable repository.  This is done by visiting the book's repo and pressing the "Fork" button:
+
+image:images/ch04-requirements_example_app/fork.png["Forking a GitHub Repository"]
+
+With the fork in your account, now you'll be able to _clone_ this repository locally.  And because you have your own fork on GitHub, you'll be able to _push_ the _commits_ you make locally to your own fork, where you have write access.  This provides two important benefits; first, it serves as a backup in case of disk failure, loss of machine, or a synchronization point if you develop on many machines.  Second, it allows others to see the changes you've made an optionally bring them in for their own use.
+
+Before bringing in your fork of the repository locally, we'll need to have a Git client installed.  This is a command-line tool available on many platforms, but there are also GUI wrappers, for instance included in many IDEs like Eclipse or IntelliJ IDEA.  We'll offer instructions based on the command-line.
+
+Installation is platform-specific, but in flavors of Linux, this is easily enough achived via your package manager of choice:
+
+----
+$> sudo apt-get install -y git
+----
+
++apt-get+ is the default for Debian-based distributions including Ubuntu and Linux Mint; for others (including RHEL and Fedora), +yum+ may be more appropriate:
+
+----
+$> sudo yum install -y git
+----
+
+The Git Client for Windows can be obtained as an executable installer at http://git-scm.com/download/win[http://git-scm.com/download/win].  Similarly, the client for Mac is available at http://git-scm.com/download/mac[http://git-scm.com/download/mac].
+
+You may verify your installation at the command prompt by executing:
+
+----
+$> git --version
+git version 1.8.1.2
+----
+
+With your Git client installed locally, now you're free to pull down the book's repository from your public fork on GitHub to your local machine.  This is done by first finding the URI to your repository on your GitHub repo's home page:
+
+image:images/ch04-requirements_example_app/clone.png["GitHub URI to Clone"]
+
+Then simply move to a directory in which you'd like to place your local clone, and issue the +git clone+ command, passing in the URI to your GitHub repository.  For instance:
+
+----
+$> git clone git@github.com:ALRubinger/continuous-enterprise-development.git
+Cloning into 'continuous-enterprise-development'...
+remote: Counting objects: 2661, done.
+remote: Compressing objects: 100% (1170/1170), done.
+remote: Total 2661 (delta 534), reused 2574 (delta 459)
+Receiving objects: 100% (2661/2661), 1.19 MiB | 1.24 MiB/s, done.
+Resolving deltas: 100% (534/534), done.
+----
+
+The above will create a new directory called +continuous-enterprise-development+, under which you'll be able to see the book's source in the root and all supporting code under the +code+ directory.  The _GeekSeek_ application root is housed under +code/application+.
+
+----
+$> ls -l
+total 492
+-rw-r--r-- 1 alr alr   468 Jul  6 17:18 book.asciidoc
+-rw-r--r-- 1 alr alr  3227 Jun 26 03:20 Chapter00-Prelude.asciidoc
+-rw-r--r-- 1 alr alr 23634 Jun 28 18:03 Chapter01-Continuity.asciidoc
+-rw-r--r-- 1 alr alr 40527 Jun 28 18:03 Chapter02-EnablingTechnologies.asciidoc
+-rw-r--r-- 1 alr alr 29803 Jun 28 18:03 Chapter03-ScratchToProduction.asciidoc
+-rw-r--r-- 1 alr alr 20772 Jul  7 17:29 Chapter04-RequirementsAndExampleApplication.asciidoc
+-rw-r--r-- 1 alr alr 61834 Jul  7 17:29 Chapter04-RequirementsAndExampleApplication.html
+-rw-r--r-- 1 alr alr 32765 Jun 28 18:03 Chapter05-JavaPersistenceAndRelationalData.asciidoc
+ ...etc
+drwxr-xr-x 8 alr alr  4096 Jul  6 20:24 code
+drwxr-xr-x 6 alr alr  4096 Jun 26 03:20 images
+-rw-r--r-- 1 alr alr  2733 Jul  7 16:19 README.asciidoc
+----
+
+This will pull the current upstream version of the application into your local disk.  If, for instance, you'd like to work against one of the authoritative repository's tags, you may:
+
+* Create a +remote+ reference to the authoritative repo: +git remote add upstream https://github.com/arquillian/continuous-enterprise-development.git+
+* +fetch+ all the tags from the remote repo: +git fetch -t upstream+
+* +checkout+ the tag as a local branch: +git checkout -b remotes/upstream/1.0.0+ (For instance checks out tag +1.0.0+)
+* Work on your new branch, based off the tag you've specified: +git branch+
+
+===== Building and Testing GeekSeek
+
+We'll be using the Maven software management tool to handle our build, test, and packaging needs.  The Java 7 JDK is a prerequisite we'll assume is installed on your system and available on the system +PATH+; Maven may be simply downloaded and extracted on your drive to _MAVEN_HOME_ from http://maven.apache.org/download.cgi[http://maven.apache.org/download.cgi].  Ensure that _MAVEN_HOME/bin_ is on your +PATH+, and you'll be good to go:
+
+----
+$> mvn -version
+Apache Maven 3.0.5 (r01de14724cdef164cd33c7c8c2fe155faf9602da; 2013-02-19 08:51:28-0500)
+Maven home: /home/alr/opt/apache/maven/apache-maven-3.0.5
+Java version: 1.7.0_25, vendor: Oracle Corporation
+Java home: /home/alr/opt/oracle/java/jdk1.7.0_25/jre
+Default locale: en_US, platform encoding: UTF-8
+OS name: "linux", version: "3.8.0-19-generic", arch: "amd64", family: "unix"
+----
+
+Building and testing GeekSeek is done by invoking the +package+ phase of Maven on the +pom.xml+ file located in +code/application+:
+
+----
+application $> mvn package
+  ...lots of output
+[INFO] BUILD SUCCESS
+----
+
+The first run is likely to take some time as Maven will resolve all dependencies of the project (including the application servers in which it will run), and download them onto your local disk.  Subsequent runs will not require this initial "downloading the internet" step and will execute much faster.  
+
+The +test+ phase will instruct Maven to fire up the application servers and run all tests to ensure that everything is working as expected.  If you'd like to save some time and simply fetch the dependencies, build the sources, and package the application, execute +mvn package -DskipTests=true+.  For a full list of the Maven lifecycles, consult:  http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html[http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html].
+
+Packaging the full application will result in a WAR (Web Archive) file located at +application/target/geekseek-(version).war+.  It's this file which may be deployed into an application server to run GeekSeek locally; by default we'll be using _WildFly_ from the JBoss Community.
+
+===== Running GeekSeek
+
+While we've configured the build to obtain and use WildFly for use in testing GeekSeek automatically as part of the build, you may prefer to have an installation on your local disk to use manually.  This is useful for testing with remote containers (as covered later in the "Assembly and Deployment" Chapter) as well as poking around the running application locally.
+
+WildFly is available for free download at http://www.wildfly.org/download/[http://www.wildfly.org/download/], and should be extracted to a location we'll call _JBOSS_HOME_.  By executing +JBOSS_HOME/bin/standalone.sh+, the server will start:
+
+----
+wildfly-8.0.0.Alpha2 $> JBOSS_HOME=`pwd`
+wildfly-8.0.0.Alpha2 $> cd bin/
+bin $> ./standalone.sh 
+=========================================================================
+  JBoss Bootstrap Environment
+  JBOSS_HOME: /home/alr/business/oreilly/git/continuous-enterprise-development/code/application/target/wildfly-8.0.0.Alpha2
+  JAVA: /home/alr/opt/oracle/java/jdk7/bin/java
+  JAVA_OPTS:  -server -XX:+UseCompressedOops -Xms64m -Xmx512m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
+
+=========================================================================
+
+18:08:42,477 INFO  [org.jboss.modules] (main) JBoss Modules version 1.2.2.Final
+18:08:43,290 INFO  [org.jboss.msc] (main) JBoss MSC version 1.2.0.Beta1
+   ...trimm output
+JBAS015874: WildFly 8.0.0.Alpha2 "WildFly" started in 8624ms - Started 153 of 189 services (56 services are lazy, passive or on-demand)
+----
+
+Copying the +application/target/geekseek-(version).war+ file into +$JBOSS_HOME/standalone/deployments+ will trigger deployment of the GeekSeek application:
+
+----
+$> cp code/application/application/target/geekseek-1.0.0-alpha-1-SNAPSHOT.war code/application/target/wildfly-8.0.0.Alpha2/standalone/deployments/ -v
+‘code/application/application/target/geekseek-1.0.0-alpha-1-SNAPSHOT.war’ -> ‘code/application/target/wildfly-8.0.0.Alpha2/standalone/deployments/geekseek-1.0.0-alpha-1-SNAPSHOT.war’
+----
+
+This will trigger something similar to the following on the server console:
+
+----
+18:11:46,839 INFO  [org.jboss.as.server] (DeploymentScanner-threads - 2) JBAS018559: Deployed "geekseek-1.0.0-alpha-1-SNAPSHOT.war" (runtime-name : "geekseek-1.0.0-alpha-1-SNAPSHOT.war")
+----
+
+Once deployed, you'll be able to launch your web browser of choice, point it to +http://localhost:8080/geekseek-(version)+ (for instance +http://localhost:8080/geekseek-1.0.0+), and add explore the screens powering the featureset we've covered above.
 
 === Use Cases and Chapter Guide
 
