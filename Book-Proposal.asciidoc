@@ -31,7 +31,7 @@ Most documentation resources in the EE space concern themselves with the mechani
 
 === Why Us?:
 
-Bolstered by our recent experience gained by presenting these solutions and soliciting feedback from audiences the world over, we believe we're well-positioned to explain Java EE development from creation all the way through full-system runtime testing.  But more importantly, this subject has long been a work of passion that's driven the projects we create.  Andrew has enjoyed his experience with O’Reilly and Mike Loukides on the 6th Editiion of the Enterprise JavaBeans book, Dan has published the popular “Seam in Action” with Manning, and Aslak has been successfully heading the technical direction of the Arquillian project since its inception.
+Bolstered by our recent experience gained by presenting these solutions and soliciting feedback from audiences the world over, we believe we're well-positioned to explain Java EE development from creation all the way through full-system runtime testing.  But more importantly, this subject has long been a work of passion that's driven the projects we create.  Andrew has enjoyed his experience with O’Reilly and Mike Loukides on the 6th Editiion of the Enterprise JavaBeans book and Aslak has been successfully heading the technical direction of the Arquillian project since its inception.
 
 === Market:
 
