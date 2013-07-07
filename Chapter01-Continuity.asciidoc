@@ -343,6 +343,16 @@ These general rules are applicable in most any modern language, are tool-agnosti
 
 So why the _Continuous Development_ title of this book?
 
-In addition to the successful ideology and theory espoused by the Agile community, we'll be looking at concrete tools and projects both within and extending the Java Enterprise Platform to best address the real-world concerns of an Enterprise Java Developer.  Starting with the next chapter, each theoretical question will be answered in at least one manner using freely-available open-source technologies.
+In addition to the successful ideology and theory espoused by the Agile community, we'll be looking at concrete tools and projects both within and extending the Java Enterprise Platform to best address the real-world concerns of an Enterprise Java Developer.
+
+The authoritative Git repository containing the book and example application source for this text is hosted by our friends at http://www.github.com[GitHub] at https://github.com/arquillian/continuous-enterprise-development[https://github.com/arquillian/continuous-enterprise-development].  The accompanying book site is located at http://continuousdev.org[http://continuousdev.org], and the official Twitter channel is http://twitter.com/ContinuousDev[@ContinuousDev].  The authors may be reached at authors@continuousdev.org.
+
+All contents of the book's repository are licensed under http://creativecommons.org/licenses/by-sa/2.0/['Creative Commons Attribution-ShareAlike 2.0 Generic'], and we invite the community at large to contribute work including feature requests, typographical error corrections, and enhancements via our https://github.com/arquillian/continuous-enterprise-development/issues[GitHub Issue Tracker].
+
+The print release of the book and its example is set to be given the Git tag of +1.0.0+ in the authoritative repository, and development will continue thereafter in the +master+ branch to correct errata and add supplmentary material including new chapters and use cases.  The community is welcome to suggest or request topics for additional coverage.
+
+The example application accompanying the use cases raised in this book is called GeekSeek, and is publicly-available at http://geekseek.continuousdev.org[http://geekseek.continuousdev.org].  The source is located in this repository under +code/application+, and instructions for building, testing, and running locally are detailed in https://github.com/arquillian/continuous-enterprise-development/blob/master/Chapter04-RequirementsAndExampleApplication.asciidoc[Chapter 4].
+
+We welcome your contributions and hope you find the material covered here to be of interest and benefit to your work and career in testable enterprise development.
 
 The first step is to meet some of the key players who will become thematic in this text.
