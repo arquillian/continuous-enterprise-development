@@ -7,7 +7,7 @@
 | Aslak Knutsen | +aslak@continuousdev.org+ | http://twitter.com/aslakknutsen['@aslakknutsen']
 |==========================================================================================
 
-This repository contains the book and example application source for "Continuous Enterprise Development in Java" by Andrew Lee Rubinger and Aslak Knutsen, published by O'Reilly Media.  The accompanying book site for this text is located at http://continuousdev.org[http://continuousdev.org], and the official Twitter channel is http://twitter.com/ContinuousDev[@ContinuousDev].  The authors may be reached at authors@continuousdev.org.
+The authoritative Git repository containing the book and example application source for "Continuous Enterprise Development in Java" by Andrew Lee Rubinger and Aslak Knutsen, published by O'Reilly Media, is hosted by our friends at http://www.github.com[GitHub] at https://github.com/arquillian/continuous-enterprise-development[https://github.com/arquillian/continuous-enterprise-development].  The accompanying book site for this text is located at http://continuousdev.org[http://continuousdev.org], and the official Twitter channel is http://twitter.com/ContinuousDev[@ContinuousDev].  The authors may be reached at authors@continuousdev.org.
 
 All contents of this repository licensed under http://creativecommons.org/licenses/by-sa/2.0/['Creative Commons Attribution-ShareAlike 2.0 Generic'], and we invite the community at large to contribute work including feature requests, typographical error corrections, and enhancements via our https://github.com/arquillian/continuous-enterprise-development/issues[GitHub Issue Tracker].
 
