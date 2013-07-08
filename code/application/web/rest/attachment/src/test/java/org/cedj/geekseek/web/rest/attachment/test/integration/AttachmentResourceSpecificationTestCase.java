@@ -2,13 +2,14 @@ package org.cedj.geekseek.web.rest.attachment.test.integration;
 
 import static org.hamcrest.Matchers.equalTo;
 
+import java.io.File;
+
 import org.cedj.geekseek.domain.attachment.model.Attachment;
 import org.cedj.geekseek.web.rest.attachment.test.model.AttachmentType;
 import org.cedj.geekseek.web.rest.core.test.integration.resource.BaseRepositoryResourceSpecification;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.warp.WarpTest;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.runner.RunWith;
 
@@ -22,7 +23,7 @@ public class AttachmentResourceSpecificationTestCase extends BaseRepositoryResou
     public static WebArchive deploy() {
         return AttachmentRestDeployments.attachment()
                 .addPackage(BaseRepositoryResourceSpecification.class.getPackage())
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsWebInfResource(new File("src/test/resources/beans.xml"));
     }
 
     public AttachmentResourceSpecificationTestCase() {
