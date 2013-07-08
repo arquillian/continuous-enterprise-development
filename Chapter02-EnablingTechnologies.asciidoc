@@ -528,7 +528,6 @@ Maven.resolver().resolve("G:A:war:V").withTransitivity().asFile();
 Packaging can be of any type; the most common are listed in following table.
 +
 .Packaging types
-[width=80%]
 |====
 | jar | war | ear | ejb | rar | par | pom | test-jar | maven-plugin
 |====
