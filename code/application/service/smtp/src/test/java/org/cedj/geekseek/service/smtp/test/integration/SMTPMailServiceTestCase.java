@@ -21,7 +21,9 @@ import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.as.controller.client.MessageSeverity;
 import org.jboss.as.controller.client.ModelControllerClient;
+import org.jboss.as.controller.client.OperationMessageHandler;
 import org.jboss.dmr.ModelNode;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -163,6 +165,12 @@ public class SMTPMailServiceTestCase {
         smtpAddress.add("subsystem", "mail");
         smtpAddress.add("mail-session", SMTPMailServiceConstants.JNDI_BIND_NAME_MAIL_SESSION);
         System.out.println("REMOVE MAIL" + client.execute(removeMailServiceOperation));
+
+        final ModelNode reloadOperation = new ModelNode();
+        reloadOperation.get("operation").set("reload");
+        System.out.println("Reload config:" + client.execute(reloadOperation));
+        Thread.sleep(3000); // Because the operation returns but then server reload continues in the BG
+                    // Find from the WildFly team a better notification mechanism upon which to wait
 
         client.close();
     }
