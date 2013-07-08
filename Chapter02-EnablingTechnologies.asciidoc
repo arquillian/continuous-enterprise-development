@@ -558,8 +558,8 @@ It's the responsibility of caller to close the returned +InputStream+.
 +
 [source,java]
 ----
-MavenResolvedArtifact artifact = Maven.resolver().resolve("G:A:war:V").withoutTransitivity()
-  .asSingle(MavenResolvedArtifact.class);
+MavenResolvedArtifact artifact = Maven.resolver().resolve("G:A:war:V")
+  .withoutTransitivity().asSingle(MavenResolvedArtifact.class);
 
 MavenCoordinate coordinates = artifact.getCoordinate();
 MavenArtifactInfo[] dependencies = artifact.getDependencies();
@@ -588,7 +588,8 @@ Maven.resolver()
 +
 [source,java]
 ----
-Maven.resolver().resolve("G:A:V").using(new RejectDependenciesStrategy(false, "G:B")).asFile();
+Maven.resolver().resolve("G:A:V").using(
+  new RejectDependenciesStrategy(false, "G:B")).asFile();
 ----
 +
 [NOTE]
@@ -625,9 +626,12 @@ Acceps all dependencies of artifacts. Equals +AcceptAllStrategy+.
 +
 [source,java]
 ----
-Maven.resolver().resolve("G:A:V").withClassPathResolution(false).withTransitivity().asFile();
-Maven.resolver().resolve("G:A:V").withMavenCentralRepo(false).withTransitivity().asFile();
-Maven.resolver().offline().resolve("G:A:V").withTransitivity().asFile();
+Maven.resolver().resolve("G:A:V").withClassPathResolution(false)
+  .withTransitivity().asFile();
+Maven.resolver().resolve("G:A:V").withMavenCentralRepo(false)
+  .withTransitivity().asFile();
+Maven.resolver().offline().resolve("G:A:V")
+  .withTransitivity().asFile();
 ----
 + 
 While classpath resolution is handy for testing SNAPSHOT artifacts that are not yet installed in any of the Maven repository, making ShrinkWrap Resolvers offline avoids accessing any repositories but local cache.
@@ -645,7 +649,7 @@ Maven.configureResolver().fromClassloaderResource("path/to/settings.xml")
 +
 [WARNING]
 ====
-ShrinkWrap Resolvers will not consume settings.xml you specified on command line (+-s settings.xml+) or in the IDE. It reads settings.xml files at their standard locations, which are +~/.m2/settings.xml+ and +$M2_HOME/conf/settings.xml+ unless overridden in the API or via a System Property.
+ShrinkWrap Resolvers will not consume settings.xml specified on command line (+-s settings.xml+) or in the IDE. It reads settings.xml files at their standard locations, which are +~/.m2/settings.xml+ and +$M2_HOME/conf/settings.xml+ unless overridden in the API or via a System Property.
 ====
 
 ===== Resolution of Artifacts Defined in POM Files
@@ -658,10 +662,11 @@ ShrinkWrap Resolvers constructs so called effective POM model (simplified, that 
 +
 [source,java]
 ----
-Maven.resolver().loadPomFromFile("/path/to/pom.xml").resolve("G:A").withTransitivity().asFile();
+Maven.resolver().loadPomFromFile("/path/to/pom.xml")
+  .resolve("G:A").withTransitivity().asFile();
 
-Maven.resolver().loadPomFromClassLoaderResource("/path/to/pom.xml").resolve("G:A:P:?")
-  .withTransitivity().asFile();
+Maven.resolver().loadPomFromClassLoaderResource("/path/to/pom.xml")
+  .resolve("G:A:P:?").withTransitivity().asFile();
 ----
 
 2. Resolving artifacts defined in effective POM. ShrinkWrap Resolvers allows you to artifacts defined with specific scope into list of artifacts to be resolved. This way, you don't need to alter your tests if you change dependencies of your application. You can either use +importDependencies(ScopeType...)+ or convenience methods, that cover the most frequent usages (+importRuntimeDependencies()+, +importTestDependencies()+ and +importRuntimeAndTestDependencies()+:
@@ -685,8 +690,9 @@ Maven.resolver().loadPomFromFile("/path/to/pom.xml").importRuntimeDependencies()
 +
 [source,java]
 ----
-Maven.resolver().loadPomFromFile("/path/to/pom.xml", "activate-profile-1", "!disable-profile-2")
-        .importRuntimeAndTestDependencies().resolve().withTransitivity().asFile();
+Maven.resolver().loadPomFromFile(
+  "/path/to/pom.xml", "activate-profile-1", "!disable-profile-2")
+  .importRuntimeAndTestDependencies().resolve().withTransitivity().asFile();
 ----
 
 ===== System Properties
@@ -717,7 +723,7 @@ Path to local repository with cached artifacts. Overrides value defined in any o
 
 [WARNING]
 ====
-The following features are in their early development stages. However, they should work for the most common use cases. Feel free to report a bug in https://issues.jboss.org/browse/SHRINKRES[SHRINKRES] project if that not your case.
+The following features are in their early development stages. However, they should work for the most common use cases. Feel free to report a bug in https://issues.jboss.org/browse/SHRINKRES[SHRINKRES] project if that is not your case.
 ====
 
 ===== ShrinkWrap Resolver Maven Plugin
