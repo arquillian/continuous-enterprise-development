@@ -9,8 +9,6 @@ import java.util.concurrent.TimeoutException;
 
 import javax.inject.Inject;
 
-import junit.framework.AssertionFailedError;
-
 import org.cedj.geekseek.service.smtp.MailMessageBuilder;
 import org.cedj.geekseek.service.smtp.SMTPMailService;
 import org.cedj.geekseek.service.smtp.SMTPMailServiceConstants;
@@ -21,9 +19,7 @@ import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.as.controller.client.MessageSeverity;
 import org.jboss.as.controller.client.ModelControllerClient;
-import org.jboss.as.controller.client.OperationMessageHandler;
 import org.jboss.dmr.ModelNode;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -196,7 +192,7 @@ public class SMTPMailServiceTestCase {
         // Set a handler which will ensure the body was received properly
         smtpServerService.setHandler(new SMTPServerService.TestReceiveHandler() {
             @Override
-            public void handle(final String contents) throws AssertionFailedError {
+            public void handle(final String contents) throws AssertionError {
                 try {
 
                     // Perform assertion

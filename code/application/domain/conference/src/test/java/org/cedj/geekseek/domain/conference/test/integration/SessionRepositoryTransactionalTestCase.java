@@ -4,8 +4,6 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-import junit.framework.Assert;
-
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.conference.model.Session;
 import org.cedj.geekseek.domain.conference.test.TestUtils;
@@ -17,6 +15,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Assert;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)

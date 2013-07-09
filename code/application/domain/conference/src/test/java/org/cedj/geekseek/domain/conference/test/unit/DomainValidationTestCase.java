@@ -20,10 +20,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
-import junit.framework.Assert;
-
 import org.cedj.geekseek.domain.conference.model.Conference;
 import org.cedj.geekseek.domain.conference.model.Duration;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

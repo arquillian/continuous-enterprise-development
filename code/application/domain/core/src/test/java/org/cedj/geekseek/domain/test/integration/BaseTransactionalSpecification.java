@@ -5,13 +5,12 @@ import java.util.concurrent.Callable;
 import javax.inject.Inject;
 import javax.transaction.UserTransaction;
 
-import junit.framework.Assert;
-
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.domain.model.Timestampable;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
+import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
 

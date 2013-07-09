@@ -15,8 +15,6 @@ import javax.ejb.Startup;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
-import junit.framework.AssertionFailedError;
-
 import org.subethamail.smtp.helper.SimpleMessageListener;
 import org.subethamail.smtp.helper.SimpleMessageListenerAdapter;
 import org.subethamail.smtp.server.SMTPServer;
@@ -112,7 +110,7 @@ public class SMTPServerService {
      * and pass an instance of this type in tests
      */
     interface TestReceiveHandler {
-        void handle(String data) throws AssertionFailedError;
+        void handle(String data) throws AssertionError;
     }
 
     /**

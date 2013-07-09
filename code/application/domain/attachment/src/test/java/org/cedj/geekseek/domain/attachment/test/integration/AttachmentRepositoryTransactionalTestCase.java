@@ -5,8 +5,6 @@ import java.net.URL;
 
 import javax.inject.Inject;
 
-import junit.framework.Assert;
-
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.attachment.model.Attachment;
 import org.cedj.geekseek.domain.test.integration.BaseTransactionalSpecification;
@@ -16,6 +14,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Assert;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
