@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.cedj.geekseek</groupId>
+    <artifactId>geekseek-web-rest-parent</artifactId>
+    <version>1.0.0-alpha-1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>geekseek-web-rest-user</artifactId>
+  <name>CEDJ Example App: GeekSeek Web REST: User</name>
+  <description></description>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-web-rest-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-domain-user</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-domain-user</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-web-rest-core</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-domain-core</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

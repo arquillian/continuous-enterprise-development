@@ -9,6 +9,7 @@
     <!-- Figure out dynamic scan of multiple modules -->
     <class>org.cedj.geekseek.domain.conference.model.Conference</class>
     <class>org.cedj.geekseek.domain.conference.model.Session</class>
+    <class>org.cedj.geekseek.domain.user.model.User</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
     <properties>

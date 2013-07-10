@@ -63,6 +63,7 @@
     <module>core</module>
     <module>conference</module>
     <module>attachment</module>
+    <module>user</module>
     <module>relation</module>
   </modules>
 
