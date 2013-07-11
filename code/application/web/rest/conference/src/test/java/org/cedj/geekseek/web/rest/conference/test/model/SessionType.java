@@ -4,8 +4,8 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(namespace = "urn:ced:session")
-public class Session {
+@XmlRootElement(namespace = "urn:ced:session", name = "session")
+public class SessionType {
 
     private String title;
     private String outline;
@@ -13,14 +13,14 @@ public class Session {
     private Date start;
     private Date end;
 
-    public Session() {
+    public SessionType() {
     }
 
     public String getTitle() {
         return title;
     }
 
-    public Session setTitle(String title) {
+    public SessionType setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -29,7 +29,7 @@ public class Session {
         return outline;
     }
 
-    public Session setOutline(String outline) {
+    public SessionType setOutline(String outline) {
         this.outline = outline;
         return this;
     }
@@ -38,7 +38,7 @@ public class Session {
         return start;
     }
 
-    public Session setStart(Date start) {
+    public SessionType setStart(Date start) {
         this.start = start;
         return this;
     }
@@ -47,7 +47,7 @@ public class Session {
         return end;
     }
 
-    public Session setEnd(Date end) {
+    public SessionType setEnd(Date end) {
         this.end = end;
         return this;
     }

@@ -4,8 +4,8 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(namespace = "urn:ced:conference")
-public class Conference {
+@XmlRootElement(namespace = "urn:ced:conference", name = "conference")
+public class ConferenceType {
 
     private String name;
     private String tagLine;
@@ -13,14 +13,14 @@ public class Conference {
     private Date start;
     private Date end;
 
-    public Conference() {
+    public ConferenceType() {
     }
 
     public String getName() {
         return name;
     }
 
-    public Conference setName(String name) {
+    public ConferenceType setName(String name) {
         this.name = name;
         return this;
     }
@@ -29,7 +29,7 @@ public class Conference {
         return tagLine;
     }
 
-    public Conference setTagLine(String tagLine) {
+    public ConferenceType setTagLine(String tagLine) {
         this.tagLine = tagLine;
         return this;
     }
@@ -38,7 +38,7 @@ public class Conference {
         return start;
     }
 
-    public Conference setStart(Date start) {
+    public ConferenceType setStart(Date start) {
         this.start = start;
         return this;
     }
@@ -47,7 +47,7 @@ public class Conference {
         return end;
     }
 
-    public Conference setEnd(Date end) {
+    public ConferenceType setEnd(Date end) {
         this.end = end;
         return this;
     }

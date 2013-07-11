@@ -5,6 +5,6 @@
          http://jboss.org/schema/weld/beans http://jboss.org/schema/weld/beans_1_1.xsd">
 
     <weld:scan>
-        <weld:exclude pattern="^(.*)TestCase(.*)$" />
+        <weld:exclude pattern="^(.*)(TestCase|Behavior)(.*)$" />
     </weld:scan>
 </beans>

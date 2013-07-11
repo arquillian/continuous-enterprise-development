@@ -12,8 +12,8 @@ import java.util.Date;
 
 import javax.ws.rs.core.Response.Status;
 
-import org.cedj.geekseek.web.rest.conference.test.model.Conference;
-import org.cedj.geekseek.web.rest.conference.test.model.Session;
+import org.cedj.geekseek.web.rest.conference.test.model.ConferenceType;
+import org.cedj.geekseek.web.rest.conference.test.model.SessionType;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -67,7 +67,7 @@ public class CreateConferenceAndSessionStory {
     public void shouldBeAbleToCreateConference() throws Exception {
         assertNotNull("Previous step failed", uri_conference);
 
-        Conference conf = getCreateConference();
+        ConferenceType conf = getCreateConference();
 
         uri_conferenceInstance =
               given().
@@ -106,7 +106,7 @@ public class CreateConferenceAndSessionStory {
     public void shouldBeAbleToUpdateConference() throws Exception {
         assertNotNull("Previous step failed", uri_conferenceInstance);
 
-        Conference conf = getUpdateConference();
+        ConferenceType conf = getUpdateConference();
 
         given().
             contentType(CONFERENCE_MEDIA_TYPE).
@@ -121,7 +121,7 @@ public class CreateConferenceAndSessionStory {
     public void verifyUpdatedConference() throws Exception {
         assertNotNull("Previous step failed", uri_conferenceInstance);
 
-        Conference conf = getUpdateConference();
+        ConferenceType conf = getUpdateConference();
 
         given().
         then().
@@ -140,7 +140,7 @@ public class CreateConferenceAndSessionStory {
     public void shouldBeAbleToCreateSession() throws Exception {
         assertNotNull("Previous step failed", uri_session);
 
-        Session session = getCreateSession();
+        SessionType session = getCreateSession();
 
         uri_sessionInstance =
               given().
@@ -178,7 +178,7 @@ public class CreateConferenceAndSessionStory {
         assertNotNull("Previous step failed", uri_sessionInstance);
 
         // TODO: require merge of models. merge == PATCH. PUT == full replacement
-        Session session = getUpdateSession();
+        SessionType session = getUpdateSession();
 
         given().
            contentType(SESSION_MEDIA_TYPE).
@@ -193,7 +193,7 @@ public class CreateConferenceAndSessionStory {
     public void verifyUpdatedSession() throws Exception {
         assertNotNull("Previous step failed", uri_sessionInstance);
 
-        Session session = getUpdateSession();
+        SessionType session = getUpdateSession();
 
         given().
         then().
@@ -256,8 +256,8 @@ public class CreateConferenceAndSessionStory {
            get(uri_conferenceInstance);
     }
 
-    private Conference getCreateConference() {
-        Conference conf = new Conference()
+    private ConferenceType getCreateConference() {
+        ConferenceType conf = new ConferenceType()
                                 .setName("Test")
                                 .setTagLine("Tagline")
                                 .setStart(new Date())
@@ -265,8 +265,8 @@ public class CreateConferenceAndSessionStory {
         return conf;
     }
 
-    private Conference getUpdateConference() {
-        Conference conf = new Conference()
+    private ConferenceType getUpdateConference() {
+        ConferenceType conf = new ConferenceType()
                                 .setName("Test 2")
                                 .setTagLine("Tagline 2")
                                 .setStart(new Date())
@@ -274,8 +274,8 @@ public class CreateConferenceAndSessionStory {
         return conf;
     }
 
-    private Session getCreateSession() {
-        Session session = new Session()
+    private SessionType getCreateSession() {
+        SessionType session = new SessionType()
                             .setTitle("Title")
                             .setOutline("Outline")
                             .setStart(new Date())
@@ -283,8 +283,8 @@ public class CreateConferenceAndSessionStory {
         return session;
     }
 
-    private Session getUpdateSession() {
-        Session session = new Session()
+    private SessionType getUpdateSession() {
+        SessionType session = new SessionType()
                             .setTitle("Title 2")
                             .setOutline("Outline 2")
                             .setStart(new Date())

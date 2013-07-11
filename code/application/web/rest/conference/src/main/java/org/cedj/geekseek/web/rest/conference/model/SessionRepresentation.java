@@ -87,7 +87,7 @@ public class SessionRepresentation extends LinkableRepresenatation<Session> {
                         .segment("{id}")
                         .build(session.getId())));
             }
-            if(doesNotContainRel("parent")) {
+            if(doesNotContainRel("parent") && session.getConference() != null) {
                 links.add(
                     new ResourceLink(
                         "parent",

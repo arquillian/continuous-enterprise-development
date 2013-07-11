@@ -10,7 +10,7 @@ import java.net.URL;
 
 import javax.ws.rs.core.Response.Status;
 
-import org.cedj.geekseek.web.rest.attachment.test.model.Attachment;
+import org.cedj.geekseek.web.rest.attachment.test.model.AttachmentType;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -60,7 +60,7 @@ public class CreateAttachmentStory {
         // Attachment is not a top level resource, so in the test we hardcode the known location
         uri_attachment = new URL(base, "api/attachment").toExternalForm();
 
-        Attachment conf = getCreateAttachment();
+        AttachmentType conf = getCreateAttachment();
 
         uri_attachmentInstance =
               given().
@@ -95,7 +95,7 @@ public class CreateAttachmentStory {
     public void shouldBeAbleToUpdateAttachment() throws Exception {
         assertNotNull("Previous step failed", uri_attachmentInstance);
 
-        Attachment conf = getUpdateAttachment();
+        AttachmentType conf = getUpdateAttachment();
 
         given().
             contentType(ATTACHMENT_MEDIA_TYPE).
@@ -110,7 +110,7 @@ public class CreateAttachmentStory {
     public void verifyUpdatedAttachment() throws Exception {
         assertNotNull("Previous step failed", uri_attachmentInstance);
 
-        Attachment conf = getUpdateAttachment();
+        AttachmentType conf = getUpdateAttachment();
 
         given().
         then().
@@ -149,16 +149,16 @@ public class CreateAttachmentStory {
            get(uri_attachmentInstance);
     }
 
-    private Attachment getCreateAttachment() throws Exception {
-        Attachment attachment = new Attachment()
+    private AttachmentType getCreateAttachment() throws Exception {
+        AttachmentType attachment = new AttachmentType()
                                 .setTitle("Test")
                                 .setMimeType("text/plain")
                                 .setUrl(new URL("http://geekseek.org"));
         return attachment;
     }
 
-    private Attachment getUpdateAttachment() throws Exception {
-        Attachment attachment = new Attachment()
+    private AttachmentType getUpdateAttachment() throws Exception {
+        AttachmentType attachment = new AttachmentType()
                                 .setTitle("Test 2")
                                 .setMimeType("text/html")
                                 .setUrl(new URL("http://geekseek2.org"));

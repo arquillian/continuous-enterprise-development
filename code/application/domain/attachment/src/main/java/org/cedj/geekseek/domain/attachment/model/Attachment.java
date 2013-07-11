@@ -51,27 +51,30 @@ public class Attachment implements Identifiable, Timestampable, Serializable {
         return title;
     }
 
-    public void setTitle(String title) {
+    public Attachment setTitle(String title) {
         this.title = title;
         updated();
+        return this;
     }
 
     public String getMimeType() {
         return mimeType;
     }
 
-    public void setMimeType(String mimeType) {
+    public Attachment setMimeType(String mimeType) {
         this.mimeType = mimeType;
         updated();
+        return this;
     }
 
     public URL getUrl() {
         return url;
     }
 
-    public void setUrl(URL url) {
+    public Attachment setUrl(URL url) {
         this.url = url;
         updated();
+        return this;
     }
 
     public void updated() {
