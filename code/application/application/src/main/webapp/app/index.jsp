@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>Continuous Enterprise Development</title>
-    <base href="/geekseek/app/index.html" />
+    <base href="<%=request.getAttribute("BASE_ROOT")%>" />
     <meta name="fragment" content="!" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <style type="text/css">

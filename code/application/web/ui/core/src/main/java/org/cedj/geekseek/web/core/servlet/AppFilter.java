@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AppFilter implements Filter {
 
     private static String APP = "/app/";
-    private static String APP_INDEX = APP + "index.html";
+    private static String APP_INDEX = APP + "index.jsp";
 
     private static Pattern letThroughExpression;
 
@@ -49,6 +49,8 @@ public class AppFilter implements Filter {
 
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException,
         ServletException {
+
+        request.setAttribute("BASE_ROOT", request.getContextPath() + APP_INDEX);
 
         String requestPath = getResourceRequestPath(request);
 
