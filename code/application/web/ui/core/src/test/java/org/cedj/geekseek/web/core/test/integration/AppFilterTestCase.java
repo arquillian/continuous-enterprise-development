@@ -29,7 +29,7 @@ public class AppFilterTestCase {
     public static WebArchive deploy() {
         return ShrinkWrap.create(WebArchive.class)
             .addClass(AppFilter.class)
-            .addAsWebResource(new StringAsset(APP_INDEX_CONTENT), "app/index.html")
+            .addAsWebResource(new StringAsset(APP_INDEX_CONTENT), "app/index.jsp")
             .addAsResource(new StringAsset(APP_RESOURCE_CONTENT), "summary.html")
             .addAsWebResource(new StringAsset(APP_IMAGE_CONTENT), "images/test.png")
             .addAsWebResource(new StringAsset(APP_SCRIPT_CONTENT), "scripts/test.js")
