@@ -5,10 +5,11 @@
 
     <defaultProtocol type="Servlet 3.0" />
 
+<!--
     <engine>
         <property name="deploymentExportPath">target/</property>
     </engine>
-
+-->
     <container qualifier="wildfly" default="true">
         <configuration>
             <property name="serverConfig">standalone-full.xml</property>
