@@ -129,6 +129,9 @@ public class SMTPMailServiceTestCase {
         reloadOperation.get("operation").set("reload");
         System.out.println("Reload config:" + client.execute(reloadOperation));
 
+        Thread.sleep(3000); // Because the operation returns but then server reload continues in the BG
+        // Find from the WildFly team a better notification mechanism upon which to wait
+        // https://github.com/arquillian/continuous-enterprise-development/issues/66
         client.close();
 
         /*
