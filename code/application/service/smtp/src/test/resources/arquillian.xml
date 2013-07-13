@@ -10,7 +10,7 @@
         <property name="deploymentExportPath">target/</property>
     </engine>
 -->
-    <container qualifier="wildfly" default="true">
+    <container qualifier="default" default="true">
         <configuration>
             <property name="serverConfig">standalone-full.xml</property>
         </configuration>
