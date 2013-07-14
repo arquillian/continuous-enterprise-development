@@ -158,6 +158,18 @@
       </dependency>
       <dependency>
         <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-domain-persistence</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-domain-persistence</artifactId>
+        <version>${project.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.cedj.geekseek</groupId>
         <artifactId>geekseek-domain-conference</artifactId>
         <version>${project.version}</version>
       </dependency>

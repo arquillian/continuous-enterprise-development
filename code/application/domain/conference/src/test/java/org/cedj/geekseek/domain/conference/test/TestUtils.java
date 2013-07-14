@@ -13,8 +13,6 @@
  */
 package org.cedj.geekseek.domain.conference.test;
 
-import static org.cedj.geekseek.domain.conference.test.TestUtils.toDate;
-
 import java.util.Calendar;
 import java.util.Date;
 

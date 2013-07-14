@@ -23,7 +23,7 @@ import org.cedj.geekseek.domain.Removed;
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.conference.model.Session;
 import org.cedj.geekseek.domain.conference.test.TestUtils;
-import org.cedj.geekseek.domain.test.integration.CoreDeployments;
+import org.cedj.geekseek.domain.persistence.test.integration.PersistenceDeployments;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
@@ -51,7 +51,7 @@ public class SessionTestCase {
             .addAsLibraries(
                 ConferenceDeployments.conference().addClasses(SessionTestCase.class, TestUtils.class)
                     .addAsManifestResource(new StringAsset(
-                        CoreDeployments.persistence().exportAsString()), "persistence.xml")
+                        PersistenceDeployments.descriptor().exportAsString()), "persistence.xml")
                     .addAsManifestResource(new File("src/main/resources/META-INF/beans.xml")))
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }

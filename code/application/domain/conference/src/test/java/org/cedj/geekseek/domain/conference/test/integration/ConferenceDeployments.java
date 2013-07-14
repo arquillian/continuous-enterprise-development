@@ -16,6 +16,7 @@ package org.cedj.geekseek.domain.conference.test.integration;
 import org.cedj.geekseek.domain.conference.ConferenceRepository;
 import org.cedj.geekseek.domain.conference.model.Conference;
 import org.cedj.geekseek.domain.persistence.PersistenceRepository;
+import org.cedj.geekseek.domain.persistence.model.BaseEntity;
 import org.cedj.geekseek.domain.test.integration.CoreDeployments;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
@@ -28,7 +29,9 @@ public class ConferenceDeployments {
     }
 
     public static JavaArchive domain() {
-        return CoreDeployments.core().addPackage(Conference.class.getPackage());
+        return CoreDeployments.core()
+            .addPackage(Conference.class.getPackage())
+            .addPackage(BaseEntity.class.getPackage());
     }
 
     public static JavaArchive repository() {

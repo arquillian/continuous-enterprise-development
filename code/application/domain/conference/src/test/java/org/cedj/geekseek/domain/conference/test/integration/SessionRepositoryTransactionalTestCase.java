@@ -7,8 +7,8 @@ import javax.inject.Inject;
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.conference.model.Session;
 import org.cedj.geekseek.domain.conference.test.TestUtils;
+import org.cedj.geekseek.domain.persistence.test.integration.PersistenceDeployments;
 import org.cedj.geekseek.domain.test.integration.BaseTransactionalSpecification;
-import org.cedj.geekseek.domain.test.integration.CoreDeployments;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -35,7 +35,7 @@ public class SessionRepositoryTransactionalTestCase extends
             .addAsLibraries(
                 ConferenceDeployments.conference().addClasses(ConferenceTestCase.class, TestUtils.class)
                     .addAsManifestResource(new StringAsset(
-                        CoreDeployments.persistence().exportAsString()), "persistence.xml")
+                        PersistenceDeployments.descriptor().exportAsString()), "persistence.xml")
                     .addAsManifestResource(new File("src/main/resources/META-INF/beans.xml")))
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
             .addClass(BaseTransactionalSpecification.class);

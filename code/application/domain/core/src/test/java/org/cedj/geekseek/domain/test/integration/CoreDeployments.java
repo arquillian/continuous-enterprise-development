@@ -15,35 +15,16 @@ package org.cedj.geekseek.domain.test.integration;
 
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.model.Identifiable;
-import org.cedj.geekseek.domain.persistence.model.BaseEntity;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.shrinkwrap.descriptor.api.Descriptors;
-import org.jboss.shrinkwrap.descriptor.api.persistence10.PersistenceDescriptor;
 
 public class CoreDeployments {
     public static JavaArchive core() {
         return ShrinkWrap.create(JavaArchive.class)
             .addPackages(false,
                 Identifiable.class.getPackage(),
-                Repository.class.getPackage(),
-                BaseEntity.class.getPackage())
+                Repository.class.getPackage())
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-    }
-
-    public static PersistenceDescriptor persistence() {
-        return Descriptors.create(PersistenceDescriptor.class)
-                .createPersistenceUnit()
-                    .name("test")
-                    .getOrCreateProperties()
-                        .createProperty()
-                            .name("hibernate.hbm2ddl.auto")
-                            .value("create-drop").up()
-                        .createProperty()
-                            .name("hibernate.show_sql")
-                            .value("true").up().up()
-                    .jtaDataSource("java:jboss/datasources/ExampleDS").up();
-                    //.jtaDataSource("ExampleDS").up();
     }
 }

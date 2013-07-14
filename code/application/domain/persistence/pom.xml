@@ -3,7 +3,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <!-- Parent -->
   <parent>
     <groupId>org.cedj.geekseek</groupId>
     <artifactId>geekseek-domain-parent</artifactId>
@@ -11,13 +10,11 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <!-- Model Version -->
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- Artifact Configuration -->
-  <artifactId>geekseek-domain-user</artifactId>
+  <artifactId>geekseek-domain-persistence</artifactId>
   <packaging>jar</packaging>
-  <name>CEDJ Example App: GeekSeek Domain: User</name>
+  <name>CEDJ Example App: GeekSeek Domain: Persistence</name>
 
   <dependencies>
     <dependency>
@@ -26,18 +23,13 @@
     </dependency>
     <dependency>
       <groupId>org.cedj.geekseek</groupId>
-      <artifactId>geekseek-domain-persistence</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.cedj.geekseek</groupId>
       <artifactId>geekseek-domain-core</artifactId>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.cedj.geekseek</groupId>
-      <artifactId>geekseek-domain-persistence</artifactId>
-      <type>test-jar</type>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

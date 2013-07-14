@@ -14,6 +14,7 @@
 package org.cedj.geekseek.domain.user.test.integration;
 
 import org.cedj.geekseek.domain.persistence.PersistenceRepository;
+import org.cedj.geekseek.domain.persistence.model.BaseEntity;
 import org.cedj.geekseek.domain.test.integration.CoreDeployments;
 import org.cedj.geekseek.domain.user.UserRepository;
 import org.cedj.geekseek.domain.user.model.User;
@@ -28,7 +29,9 @@ public class UserDeployments {
     }
 
     public static JavaArchive domain() {
-        return CoreDeployments.core().addPackage(User.class.getPackage());
+        return CoreDeployments.core()
+                .addPackage(User.class.getPackage())
+                .addPackage(BaseEntity.class.getPackage());
     }
 
     public static JavaArchive repository() {

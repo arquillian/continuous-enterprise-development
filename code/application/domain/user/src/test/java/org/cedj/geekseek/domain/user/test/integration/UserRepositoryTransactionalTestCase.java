@@ -6,8 +6,8 @@ import java.util.UUID;
 import javax.inject.Inject;
 
 import org.cedj.geekseek.domain.Repository;
+import org.cedj.geekseek.domain.persistence.test.integration.PersistenceDeployments;
 import org.cedj.geekseek.domain.test.integration.BaseTransactionalSpecification;
-import org.cedj.geekseek.domain.test.integration.CoreDeployments;
 import org.cedj.geekseek.domain.user.model.User;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -35,7 +35,7 @@ public class UserRepositoryTransactionalTestCase extends
             .addAsLibraries(
                 UserDeployments.user()
                     .addAsManifestResource(new StringAsset(
-                        CoreDeployments.persistence().exportAsString()), "persistence.xml")
+                        PersistenceDeployments.descriptor().exportAsString()), "persistence.xml")
                     .addAsManifestResource(new File("src/main/resources/META-INF/beans.xml")))
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
             .addClass(BaseTransactionalSpecification.class);
