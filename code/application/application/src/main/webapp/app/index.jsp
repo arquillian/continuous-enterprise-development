@@ -18,6 +18,7 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     
     <link href="styles/base.css" rel="stylesheet" type="text/css" />
+    <link href="styles/bootstrap-timepicker-min.css" rel="stylesheet" type="text/css" />
 
     <!--[if lt IE 9]>
       <script src='//html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
@@ -65,9 +66,9 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.1/jquery.js" type="text/javascript"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.js" type="text/javascript"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.js" type="text/javascript"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.7.4/angular-strap.js" type="text/javascript"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.0.2/js/bootstrap-datepicker.js" type="text/javascript"></script>
   <script src="scripts/bootstrap-timepicker.min.js" type="text/javascript"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.7.4/angular-strap.js" type="text/javascript"></script>
   <script src="scripts/graph.js" type="text/javascript"></script>
   <script src="scripts/geekseek.js" type="text/javascript"></script>
 
