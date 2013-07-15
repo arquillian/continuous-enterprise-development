@@ -16,7 +16,14 @@ public class ConferenceRepresentationConverter extends RepresentationConverter.B
 
     @Override
     public ConferenceRepresentation from(UriInfo uriInfo, Conference source) {
-        return new ConferenceRepresentation(source, uriInfo);
+        ConferenceRepresentation rep = new ConferenceRepresentation(source.getId(), uriInfo);
+        rep.setName(source.getName());
+        rep.setTagLine(source.getTagLine());
+        if(source.getDuration() != null) {
+            rep.setStart(source.getDuration().getStart());
+            rep.setEnd(source.getDuration().getEnd());
+        }
+        return rep;
     }
 
     @Override

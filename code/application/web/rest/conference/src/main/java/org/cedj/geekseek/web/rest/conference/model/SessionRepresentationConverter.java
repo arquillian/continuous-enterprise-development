@@ -14,7 +14,19 @@ public class SessionRepresentationConverter extends RepresentationConverter.Base
 
     @Override
     public SessionRepresentation from(UriInfo uriInfo, Session source) {
-        return new SessionRepresentation(source, uriInfo);
+        String id = source.getId();
+        String parentId = null;
+        if(source.getConference() != null) {
+            parentId = source.getConference().getId();
+        }
+        SessionRepresentation rep = new SessionRepresentation(id, parentId, uriInfo);
+        rep.setTitle(source.getTitle());
+        rep.setOutline(source.getOutline());
+        if(source.getDuration() != null) {
+            rep.setStart(source.getDuration().getStart());
+            rep.setEnd(source.getDuration().getEnd());
+        }
+        return rep;
     }
 
     @Override

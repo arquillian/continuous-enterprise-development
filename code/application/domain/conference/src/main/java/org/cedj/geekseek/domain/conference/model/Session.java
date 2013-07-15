@@ -20,8 +20,6 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.PreRemove;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 import org.cedj.geekseek.domain.persistence.model.BaseEntity;
 
@@ -31,11 +29,8 @@ public class Session extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Embedded
-    @NotNull
-    @Valid
     private Duration duration;
 
-    @NotNull
     private String title;
 
     @Lob

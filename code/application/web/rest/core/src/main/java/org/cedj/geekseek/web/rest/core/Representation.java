@@ -5,6 +5,4 @@ public interface Representation<X> {
     Class<X> getSourceType();
 
     String getRepresentationType();
-
-    X to();
 }

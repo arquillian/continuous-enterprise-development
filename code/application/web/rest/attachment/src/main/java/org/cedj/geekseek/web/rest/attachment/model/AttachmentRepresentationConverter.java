@@ -15,7 +15,11 @@ public class AttachmentRepresentationConverter extends RepresentationConverter.B
 
     @Override
     public AttachmentRepresentation from(UriInfo uriInfo, Attachment source) {
-        return new AttachmentRepresentation(source, uriInfo);
+        AttachmentRepresentation rep = new AttachmentRepresentation(source.getId(), uriInfo);
+        rep.setTitle(source.getTitle());
+        rep.setMimeType(source.getMimeType());
+        rep.setUrl(source.getUrl());
+        return rep;
     }
 
     @Override

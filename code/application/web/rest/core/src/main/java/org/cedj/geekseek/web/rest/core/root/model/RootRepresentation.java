@@ -15,9 +15,4 @@ public class RootRepresentation extends LinkableRepresenatation<ResourceLink> {
     public RootRepresentation(String representationType, UriInfo uriInfo) {
         super(ResourceLink.class, representationType, uriInfo);
     }
-
-    @Override
-    public ResourceLink to() {
-        return null;
-    }
 }

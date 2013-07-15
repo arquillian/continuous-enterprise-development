@@ -28,7 +28,6 @@
 
     <version.jboss_spec>3.0.1.Final</version.jboss_spec>
 
-    <version.junit>4.8.1</version.junit>
     <version.arquillian_core>1.1.0.Final</version.arquillian_core>
     <version.arquillian_persistence>1.0.0.Alpha6</version.arquillian_persistence>
     <version.arquillian_drone>1.1.1.Final</version.arquillian_drone>

@@ -1,24 +1,36 @@
 package org.cedj.geekseek.web.rest.user.model;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.domain.user.model.User;
 import org.cedj.geekseek.web.rest.core.LinkableRepresenatation;
 
 @XmlRootElement(name = "user", namespace = "urn:ced:user")
-public class UserRepresentation extends LinkableRepresenatation<User> {
+public class UserRepresentation extends LinkableRepresenatation<User> implements Identifiable {
 
+    @NotNull
     private String handle;
+    @NotNull
     private String name;
+    @NotNull
     private String bio;
 
     public UserRepresentation() {
+        this(null);
     }
 
     public UserRepresentation(UriInfo uriInfo) {
         super(User.class, "user", uriInfo);
+    }
+
+    @Override @XmlTransient
+    public String getId() {
+        return handle;
     }
 
     @XmlElement
@@ -46,10 +58,5 @@ public class UserRepresentation extends LinkableRepresenatation<User> {
 
     public void setBio(String bio) {
         this.bio = bio;
-    }
-
-
-    public User to() {
-        return new User(handle).setName(name).setBio(bio);
     }
 }

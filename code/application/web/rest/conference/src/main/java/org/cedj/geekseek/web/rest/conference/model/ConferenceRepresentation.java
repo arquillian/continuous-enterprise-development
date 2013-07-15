@@ -3,88 +3,94 @@ package org.cedj.geekseek.web.rest.conference.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.cedj.geekseek.domain.conference.model.Conference;
-import org.cedj.geekseek.domain.conference.model.Duration;
+import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.web.rest.conference.ConferenceResource;
 import org.cedj.geekseek.web.rest.core.LinkableRepresenatation;
 import org.cedj.geekseek.web.rest.core.ResourceLink;
+import org.cedj.geekseek.web.rest.core.annotation.StartBeforeEnd;
 
+@StartBeforeEnd
 @XmlRootElement(name = "conference", namespace = "urn:ced:conference")
-public class ConferenceRepresentation extends LinkableRepresenatation<Conference> {
+public class ConferenceRepresentation extends LinkableRepresenatation<Conference> implements Identifiable {
 
-    private Conference conference;
-
+    private String id;
+    @NotNull
+    private String name;
+    @NotNull
+    private String tagLine;
+    @NotNull
     private Date start;
+    @NotNull
     private Date end;
 
     public ConferenceRepresentation() {
-        this(new Conference(), null);
+        this(null, null);
     }
 
-    public ConferenceRepresentation(Conference conference, UriInfo uriInfo) {
+    public ConferenceRepresentation(String id, UriInfo uriInfo) {
         super(Conference.class, "conference", uriInfo);
-        this.conference = conference;
+        this.id = id;
+    }
+
+    @Override @XmlTransient
+    public String getId() {
+        return id;
     }
 
     @XmlElement
     public String getName() {
-        return conference.getName();
+        return name;
     }
 
     public void setName(String name) {
-        conference.setName(name);
+        this.name = name;
     }
 
     @XmlElement
     public String getTagLine() {
-        return conference.getTagLine();
+        return tagLine;
     }
 
     public void setTagLine(String tagLine) {
-        conference.setTagLine(tagLine);
+        this.tagLine = tagLine;
     }
 
     @XmlElement
     public Date getStart() {
-        return conference.getDuration().getStart();
+        return start;
     }
 
     public void setStart(Date date) {
         start = date;
-        setDurationIfBothDatesSet();
     }
 
     @XmlElement
     public Date getEnd() {
-        return conference.getDuration().getEnd();
+        return end;
     }
 
     public void setEnd(Date date) {
         end = date;
-        setDurationIfBothDatesSet();
-    }
-
-    private void setDurationIfBothDatesSet() {
-        if (start != null && end != null) {
-            conference.setDuration(new Duration(start, end));
-        }
     }
 
     public List<ResourceLink> getLinks() {
         List<ResourceLink> links = super.getLinks();
         if (getUriInfo() != null) {
-            if(doesNotContainRel("self")) {
+            if(doesNotContainRel("self") && id != null) {
                 links.add(
                     new ResourceLink(
                         "self",
                         getUriInfo().getBaseUriBuilder().clone()
                             .path(ConferenceResource.class)
                             .segment("{id}")
-                            .build(conference.getId())));
+                            .build(id)));
             }
             if(doesNotContainRel("session")) {
                 links.add(
@@ -96,9 +102,5 @@ public class ConferenceRepresentation extends LinkableRepresenatation<Conference
             }
         }
         return links;
-    }
-
-    public Conference to() {
-        return conference;
     }
 }

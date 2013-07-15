@@ -24,6 +24,7 @@ public class UserRepresentationConverter extends RepresentationConverter.Base<Us
 
     @Override
     public User to(UriInfo uriInfo, UserRepresentation representation) {
+        // TODO: figure out difference between /{id} and handle in representation
         return update(uriInfo, representation, new User(representation.getHandle()));
     }
 

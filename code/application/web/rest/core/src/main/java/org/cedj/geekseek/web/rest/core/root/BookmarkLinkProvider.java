@@ -26,13 +26,15 @@ public class BookmarkLinkProvider implements LinkProvider {
             return;
         }
 
-        if(represenatation.to() instanceof Identifiable) {
-            Identifiable sourceObject = (Identifiable)represenatation.to();
-            represenatation.addLink(
-                generateResourceLink(
-                    source,
-                    sourceObject,
-                    represenatation.getUriInfo()));
+        if(represenatation instanceof Identifiable) {
+            Identifiable sourceObject = (Identifiable)represenatation;
+            if(sourceObject.getId() != null) {
+                represenatation.addLink(
+                    generateResourceLink(
+                        source,
+                        sourceObject.getId(),
+                        represenatation.getUriInfo()));
+            }
         }
     }
 
@@ -45,12 +47,12 @@ public class BookmarkLinkProvider implements LinkProvider {
         return null;
     }
 
-    private ResourceLink generateResourceLink(Resource source, Identifiable sourceObject, UriInfo uriInfo) {
+    private ResourceLink generateResourceLink(Resource source, String id, UriInfo uriInfo) {
         UriBuilder builder = uriInfo.getBaseUriBuilder();
 
         URI uri = builder.path(BookmarkResource.class)
             .path(getResourceTypeName(source))
-            .path(sourceObject.getId())
+            .path(id)
             .build();
 
         return new ResourceLink("bookmark", uri, source.getResourceMediaType());

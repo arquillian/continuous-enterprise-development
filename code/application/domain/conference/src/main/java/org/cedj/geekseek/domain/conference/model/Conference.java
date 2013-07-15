@@ -23,8 +23,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 import org.cedj.geekseek.domain.persistence.model.BaseEntity;
 
@@ -33,18 +31,14 @@ public class Conference extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     private String name;
 
     private String tagLine;
 
     @Embedded
-    @Valid
-    @NotNull
     private Duration duration;
 
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "conference", cascade = CascadeType.ALL)
-    @Valid
     private Set<Session> sessions;
 
     public Conference() {

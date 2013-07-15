@@ -16,16 +16,12 @@ package org.cedj.geekseek.domain.conference.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-
 public class Duration implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     private Date start;
 
-    @NotNull
     private Date end;
 
     // hidden constructor for Persistence

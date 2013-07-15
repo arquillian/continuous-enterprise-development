@@ -3,11 +3,13 @@ package org.cedj.geekseek.web.rest.core.test.integration;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.web.rest.core.LinkableRepresenatation;
 
 @XmlRootElement(name = "test")
-public class TestRepresentation extends LinkableRepresenatation<TestObject> {
+public class TestRepresentation extends LinkableRepresenatation<TestObject> implements Identifiable {
 
     private TestObject object;
 
@@ -21,9 +23,9 @@ public class TestRepresentation extends LinkableRepresenatation<TestObject> {
         this.object = object;
     }
 
-    @Override
-    public TestObject to() {
-        return object;
+    @Override @XmlTransient
+    public String getId() {
+        return object.getId();
     }
 
     @XmlElement
