@@ -13,6 +13,8 @@
  */
 package org.cedj.geekseek.domain.conference.model;
 
+import static org.cedj.geekseek.domain.util.Validate.requireNonNull;
+
 import java.util.UUID;
 
 import javax.persistence.Embedded;
@@ -39,8 +41,17 @@ public class Session extends BaseEntity {
     @ManyToOne
     private Conference conference;
 
-    public Session() {
+    // JPA
+    protected Session() {}
+
+    public Session(String title, String outline, Duration duration) {
         super(UUID.randomUUID().toString());
+        requireNonNull(title, "Title must be specified");
+        requireNonNull(outline, "Outline must be specified");
+        requireNonNull(duration, "Duration must be specified");
+        this.title = title;
+        this.outline = outline;
+        this.duration = duration;
     }
 
     public Duration getDuration() {
@@ -48,6 +59,7 @@ public class Session extends BaseEntity {
     }
 
     public Session setDuration(Duration duration) {
+        requireNonNull(duration, "Duration must be specified");
         this.duration = duration;
         return this;
     }
@@ -57,6 +69,7 @@ public class Session extends BaseEntity {
     }
 
     public Session setTitle(String title) {
+        requireNonNull(title, "Title must be specified");
         this.title = title;
         return this;
     }
@@ -66,6 +79,7 @@ public class Session extends BaseEntity {
     }
 
     public Session setOutline(String outline) {
+        requireNonNull(outline, "Outline must be specified");
         this.outline = outline;
         return this;
     }

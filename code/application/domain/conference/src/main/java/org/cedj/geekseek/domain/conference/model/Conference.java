@@ -13,6 +13,8 @@
  */
 package org.cedj.geekseek.domain.conference.model;
 
+import static org.cedj.geekseek.domain.util.Validate.requireNonNull;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,8 +43,17 @@ public class Conference extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "conference", cascade = CascadeType.ALL)
     private Set<Session> sessions;
 
-    public Conference() {
+    // JPA
+    protected Conference() {}
+
+    public Conference(String name, String tagLine, Duration duration) {
         super(UUID.randomUUID().toString());
+        requireNonNull(name, "Name must be specified)");
+        requireNonNull(tagLine, "TagLine must be specified");
+        requireNonNull(duration, "Duration must be specified");
+        this.name = name;
+        this.tagLine = tagLine;
+        this.duration = duration;
     }
 
     public String getName() {
@@ -50,6 +61,7 @@ public class Conference extends BaseEntity {
     }
 
     public Conference setName(String name) {
+        requireNonNull(name, "Name must be specified)");
         this.name = name;
         return this;
     }
@@ -59,11 +71,13 @@ public class Conference extends BaseEntity {
     }
 
     public Conference setTagLine(String tagLine) {
+        requireNonNull(tagLine, "TagLine must be specified");
         this.tagLine = tagLine;
         return this;
     }
 
     public Conference setDuration(Duration duration) {
+        requireNonNull(duration, "Duration must be specified");
         this.duration = duration;
         return this;
     }
@@ -80,17 +94,19 @@ public class Conference extends BaseEntity {
     }
 
     public Conference addSession(Session session) {
+        requireNonNull(session, "Session must be specified");
         if (sessions == null) {
             this.sessions = new HashSet<Session>();
         }
-        if (!sessions.contains(session)) {
-            sessions.add(session);
-            session.setConference(this);
-        }
+        sessions.add(session);
+        session.setConference(this);
         return this;
     }
 
     public void removeSession(Session session) {
+        if(session == null) {
+            return;
+        }
         if (sessions.remove(session)) {
             session.setConference(null);
         }

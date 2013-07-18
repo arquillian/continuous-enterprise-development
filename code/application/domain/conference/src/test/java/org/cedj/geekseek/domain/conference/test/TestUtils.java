@@ -41,19 +41,18 @@ public final class TestUtils {
     }
 
     public static Conference createConference() {
-        Conference conference = new Conference();
-        conference.setName("Devoxx Belgium 2013");
-        conference.setTagLine("We Code In Peace");
-        conference.setDuration(new Duration(toDate(2013, 11, 11), toDate(2013, 11, 15)));
+        Conference conference = new Conference(
+            "Devoxx Belgium 2013",
+            "We Code In Peace",
+            new Duration(toDate(2013, 11, 11), toDate(2013, 11, 15)));
         return conference;
     }
 
     public static Session createSession() {
-        Session session = new Session();
-        session.setTitle("Testing the Enterprise layers - The A, B, C’s of integration testing");
-        session
-            .setOutline("For years we’ve been exploring how to layer and separate our code to test in isolation on the unit level. We’ve kept integration and functional testing as a big ball of mud; jumping straight from unit to full system testing. But can we apply some of the same lessons learned from unit to integration testing?\\n\\nThis session explore the different technologies within the Java Enterprise specification and see how our application can be tested in isolation; layer for layer, module for module and component for component.\\n\\nCan we isolate and stay real at the same time? Does mocks, stubs and test doubles have a place in the world of integration testing? Are there other lessons to be learned?");
-        session.setDuration(new Duration(toDate(2013, 11, 11, 15, 00), toDate(2013, 11, 11, 16, 00)));
+        Session session = new Session(
+            "Testing the Enterprise layers - The A, B, C’s of integration testing",
+            "For years we’ve been exploring how to layer and separate our code to test in isolation on the unit level. We’ve kept integration and functional testing as a big ball of mud; jumping straight from unit to full system testing. But can we apply some of the same lessons learned from unit to integration testing?\\n\\nThis session explore the different technologies within the Java Enterprise specification and see how our application can be tested in isolation; layer for layer, module for module and component for component.\\n\\nCan we isolate and stay real at the same time? Does mocks, stubs and test doubles have a place in the world of integration testing? Are there other lessons to be learned?",
+            new Duration(toDate(2013, 11, 11, 15, 00), toDate(2013, 11, 11, 16, 00)));
         return session;
     }
 }

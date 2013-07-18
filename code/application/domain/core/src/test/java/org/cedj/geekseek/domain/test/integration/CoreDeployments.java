@@ -15,6 +15,7 @@ package org.cedj.geekseek.domain.test.integration;
 
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.model.Identifiable;
+import org.cedj.geekseek.domain.util.Validate;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -24,7 +25,8 @@ public class CoreDeployments {
         return ShrinkWrap.create(JavaArchive.class)
             .addPackages(false,
                 Identifiable.class.getPackage(),
-                Repository.class.getPackage())
+                Repository.class.getPackage(),
+                Validate.class.getPackage())
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 }

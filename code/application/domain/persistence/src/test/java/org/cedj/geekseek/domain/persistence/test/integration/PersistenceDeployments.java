@@ -26,12 +26,12 @@ public class PersistenceDeployments {
             .merge(model())
             .merge(repository());
     }
-    
+
     public static JavaArchive model() {
         return ShrinkWrap.create(JavaArchive.class)
             .addPackage(BaseEntity.class.getPackage());
     }
-    
+
     public static JavaArchive repository() {
         return ShrinkWrap.create(JavaArchive.class)
             .addPackage(PersistenceRepository.class.getPackage());

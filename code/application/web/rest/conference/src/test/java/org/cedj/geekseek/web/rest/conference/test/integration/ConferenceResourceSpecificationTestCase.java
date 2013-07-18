@@ -54,10 +54,7 @@ public class ConferenceResourceSpecificationTestCase extends BaseRepositoryResou
 
     @Override
     protected Conference createDomainObject() {
-        return new Conference()
-            .setName("Name")
-            .setTagLine("TagLine")
-            .setDuration(new Duration(new Date(), new Date()));
+        return new Conference("Name", "TagLine", new Duration(new Date(), new Date()));
     }
 
     @Override

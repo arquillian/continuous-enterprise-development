@@ -28,7 +28,11 @@ public class ConferenceRepresentationConverter extends RepresentationConverter.B
 
     @Override
     public Conference to(UriInfo uriInfo, ConferenceRepresentation representation) {
-        return update(uriInfo, representation, new Conference());
+        Conference conf = new Conference(
+            representation.getName(),
+            representation.getTagLine(),
+            new Duration(representation.getStart(), representation.getEnd()));
+        return conf;
     }
 
     @Override

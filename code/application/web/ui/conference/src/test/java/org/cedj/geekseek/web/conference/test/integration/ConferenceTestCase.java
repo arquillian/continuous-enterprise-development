@@ -15,8 +15,10 @@ package org.cedj.geekseek.web.conference.test.integration;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Date;
 
 import org.cedj.geekseek.domain.conference.model.Conference;
+import org.cedj.geekseek.domain.conference.model.Duration;
 import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.domain.persistence.model.BaseEntity;
 import org.cedj.geekseek.web.conference.test.model.ConferenceView;
@@ -29,7 +31,6 @@ import org.jboss.arquillian.warp.Activity;
 import org.jboss.arquillian.warp.Inspection;
 import org.jboss.arquillian.warp.Warp;
 import org.jboss.arquillian.warp.WarpTest;
-import org.jboss.arquillian.warp.servlet.BeforeServlet;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
@@ -70,7 +71,7 @@ public class ConferenceTestCase {
 
     @Test
     public void shouldBeAbleToRenderFragment() throws Exception {
-        Conference conference = new Conference().setName("Test Conference").setTagLine("Tag");
+        Conference conference = new Conference("Test Conference", "Tag", new Duration(new Date(), new Date()));
         execute(conference);
 
         Assert.assertEquals(conference.getName(), conferenceView.getName());
@@ -79,7 +80,7 @@ public class ConferenceTestCase {
 
     @Test
     public void shouldBeAbleToRenderFragment2() throws Exception {
-        Conference conference = new Conference().setName("Test Conference 2").setTagLine("Tag 2");
+        Conference conference = new Conference("Test Conference 2", "Tag 2", new Duration(new Date(), new Date()));
 
         execute(conference);
 

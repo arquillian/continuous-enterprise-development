@@ -13,6 +13,8 @@
  */
 package org.cedj.geekseek.domain.conference.model;
 
+import static org.cedj.geekseek.domain.util.Validate.requireNonNull;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -29,17 +31,13 @@ public class Duration implements Serializable {
     }
 
     public Duration(Date start, Date end) {
-        if (start == null) {
-            throw new IllegalArgumentException("Start must be provided");
-        }
-        if (end == null) {
-            throw new IllegalArgumentException("End must be provided");
-        }
+        requireNonNull(start, "Start must be specified");
+        requireNonNull(end, "End must be specified");
         if (end.before(start)) {
             throw new IllegalArgumentException("End can not be before Start");
         }
-        this.start = start;
-        this.end = end;
+        this.start = (Date)start.clone();
+        this.end = (Date)end.clone();
     }
 
     public Date getEnd() {

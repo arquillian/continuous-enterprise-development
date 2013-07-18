@@ -31,7 +31,11 @@ public class SessionRepresentationConverter extends RepresentationConverter.Base
 
     @Override
     public Session to(UriInfo uriInfo, SessionRepresentation representation) {
-        return update(uriInfo, representation, new Session());
+        Session session = new Session(
+            representation.getTitle(),
+            representation.getOutline(),
+            new Duration(representation.getStart(), representation.getEnd()));
+        return session;
     }
 
     @Override

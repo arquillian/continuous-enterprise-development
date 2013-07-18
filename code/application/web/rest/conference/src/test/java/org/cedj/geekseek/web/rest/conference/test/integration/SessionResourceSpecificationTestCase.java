@@ -49,10 +49,7 @@ public class SessionResourceSpecificationTestCase extends BaseRepositoryResource
 
     @Override
     protected Session createDomainObject() {
-        return new Session()
-            .setTitle("Title")
-            .setOutline("Outline")
-            .setDuration(new Duration(new Date(), new Date()));
+        return new Session("Title", "Outline", new Duration(new Date(), new Date()));
     }
 
     @Override
