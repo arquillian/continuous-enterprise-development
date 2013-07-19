@@ -1,6 +1,8 @@
 package org.cedj.geekseek.domain.attachment;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.Date;
@@ -81,7 +83,7 @@ public class AttachmentRepository implements Repository<Attachment> {
     }
 
     private Attachment deserialize(Map<String, String> values) throws Exception {
-        Attachment attachment = new Attachment();
+        Attachment attachment = createNewInstance();
 
         for(Map.Entry<String, String> entry : values.entrySet()) {
             Field f =  Attachment.class.getDeclaredField(entry.getKey());
@@ -98,6 +100,14 @@ public class AttachmentRepository implements Repository<Attachment> {
                 f.set(attachment, new URL(entry.getValue()));
             }
         }
+        return attachment;
+    }
+
+    private Attachment createNewInstance() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+        InvocationTargetException {
+        Constructor<Attachment> constructor = Attachment.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        Attachment attachment = constructor.newInstance();
         return attachment;
     }
 }

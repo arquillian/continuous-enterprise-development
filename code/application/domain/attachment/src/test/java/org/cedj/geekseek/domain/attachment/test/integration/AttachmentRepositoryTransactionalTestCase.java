@@ -1,12 +1,12 @@
 package org.cedj.geekseek.domain.attachment.test.integration;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import static org.cedj.geekseek.domain.attachment.test.TestUtils.createAttachment;
 
 import javax.inject.Inject;
 
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.attachment.model.Attachment;
+import org.cedj.geekseek.domain.attachment.test.TestUtils;
 import org.cedj.geekseek.domain.test.integration.BaseTransactionalSpecification;
 import org.cedj.geekseek.domain.test.integration.CoreDeployments;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -35,7 +35,7 @@ public class AttachmentRepositoryTransactionalTestCase extends
                 CoreDeployments.core(),
                 AttachmentDeployments.attachmentWithCache())
             .addAsLibraries(AttachmentDeployments.resolveDependencies())
-            .addClass(BaseTransactionalSpecification.class)
+            .addClasses(BaseTransactionalSpecification.class, TestUtils.class)
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -60,18 +60,5 @@ public class AttachmentRepositoryTransactionalTestCase extends
     @Override
     protected Repository<Attachment> getRepository() {
         return repository;
-    }
-
-    private Attachment createAttachment() {
-        try {
-            Attachment attachment  = new Attachment();
-            attachment.setTitle("Test Attachment");
-            attachment.setUrl(new URL("http://geekseek.org"));
-            attachment.setMimeType("text/plain");
-            return attachment;
-
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

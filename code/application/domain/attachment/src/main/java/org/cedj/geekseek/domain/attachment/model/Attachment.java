@@ -13,6 +13,8 @@
  */
 package org.cedj.geekseek.domain.attachment.model;
 
+import static org.cedj.geekseek.domain.util.Validate.requireNonNull;
+
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Date;
@@ -37,9 +39,19 @@ public class Attachment implements Identifiable, Timestampable, Serializable {
 
     private Date updated;
 
-    public Attachment() {
+    protected Attachment() {
         this.id = UUID.randomUUID().toString();
         this.created = new Date();
+    }
+
+    public Attachment(String title, String mimeType, URL url) {
+        this();
+        requireNonNull(title, "Title must be specified)");
+        requireNonNull(mimeType, "MimeType must be specified)");
+        requireNonNull(url, "Url must be specified)");
+        this.title = title;
+        this.mimeType = mimeType;
+        this.url = url;
     }
 
     @Override
@@ -52,6 +64,7 @@ public class Attachment implements Identifiable, Timestampable, Serializable {
     }
 
     public Attachment setTitle(String title) {
+        requireNonNull(title, "Title must be specified)");
         this.title = title;
         updated();
         return this;
@@ -62,6 +75,7 @@ public class Attachment implements Identifiable, Timestampable, Serializable {
     }
 
     public Attachment setMimeType(String mimeType) {
+        requireNonNull(mimeType, "MimeType must be specified)");
         this.mimeType = mimeType;
         updated();
         return this;
@@ -72,13 +86,10 @@ public class Attachment implements Identifiable, Timestampable, Serializable {
     }
 
     public Attachment setUrl(URL url) {
+        requireNonNull(url, "Url must be specified)");
         this.url = url;
         updated();
         return this;
-    }
-
-    public void updated() {
-        this.updated = new Date();
     }
 
     public Date getLastUpdated() {
@@ -93,5 +104,9 @@ public class Attachment implements Identifiable, Timestampable, Serializable {
     @Override
     public Date getLastModified() {
         return getLastUpdated() == null ? getCreated():getLastUpdated();
+    }
+
+    private void updated() {
+        this.updated = new Date();
     }
 }

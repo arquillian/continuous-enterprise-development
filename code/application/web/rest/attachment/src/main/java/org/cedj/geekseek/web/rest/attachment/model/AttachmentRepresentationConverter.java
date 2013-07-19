@@ -24,7 +24,11 @@ public class AttachmentRepresentationConverter extends RepresentationConverter.B
 
     @Override
     public Attachment to(UriInfo uriInfo, AttachmentRepresentation representation) {
-        return update(uriInfo, representation, new Attachment());
+        Attachment attachment = new Attachment(
+            representation.getTitle(),
+            representation.getMimeType(),
+            representation.getUrl());
+        return attachment;
     }
 
     @Override

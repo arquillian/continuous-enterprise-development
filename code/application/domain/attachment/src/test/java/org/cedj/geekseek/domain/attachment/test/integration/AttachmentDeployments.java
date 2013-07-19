@@ -25,7 +25,9 @@ public class AttachmentDeployments {
     }
 
     public static File[] resolveDependencies() {
-        return Maven.resolver().loadPomFromFile("pom.xml")
+        return Maven.resolver()
+            .offline()
+            .loadPomFromFile("pom.xml")
             .resolve(
                 "org.infinispan:infinispan-core")
             .withTransitivity()

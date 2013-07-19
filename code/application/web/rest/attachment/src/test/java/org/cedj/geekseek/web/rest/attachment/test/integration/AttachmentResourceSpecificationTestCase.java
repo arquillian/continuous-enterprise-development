@@ -1,10 +1,12 @@
 package org.cedj.geekseek.web.rest.attachment.test.integration;
 
+import static org.cedj.geekseek.domain.attachment.test.TestUtils.createAttachment;
 import static org.hamcrest.Matchers.equalTo;
 
 import java.io.File;
 
 import org.cedj.geekseek.domain.attachment.model.Attachment;
+import org.cedj.geekseek.domain.attachment.test.TestUtils;
 import org.cedj.geekseek.web.rest.attachment.test.model.AttachmentType;
 import org.cedj.geekseek.web.rest.core.test.integration.resource.BaseRepositoryResourceSpecification;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -23,6 +25,7 @@ public class AttachmentResourceSpecificationTestCase extends BaseRepositoryResou
     public static WebArchive deploy() {
         return AttachmentRestDeployments.attachment()
                 .addPackage(BaseRepositoryResourceSpecification.class.getPackage())
+                .addClass(TestUtils.class)
                 .addAsWebInfResource(new File("src/test/resources/beans.xml"));
     }
 
@@ -47,10 +50,8 @@ public class AttachmentResourceSpecificationTestCase extends BaseRepositoryResou
 
     @Override
     protected Attachment createDomainObject() {
-        return new Attachment()
-            .setTitle("Title")
-            .setMimeType("application/test")
-            .setUrl(getBaseURL());
+        return createAttachment()
+                .setUrl(getBaseURL());
     }
 
     @Override

@@ -1,11 +1,12 @@
 package org.cedj.geekseek.domain.attachment.test.integration;
 
-import java.net.URL;
+import static org.cedj.geekseek.domain.attachment.test.TestUtils.createAttachment;
 
 import javax.inject.Inject;
 
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.attachment.model.Attachment;
+import org.cedj.geekseek.domain.attachment.test.TestUtils;
 import org.cedj.geekseek.domain.test.integration.CoreDeployments;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -30,6 +31,7 @@ public class AttachmentRepositoryTestCase {
                 CoreDeployments.core(),
                 AttachmentDeployments.attachmentWithCache())
             .addAsLibraries(AttachmentDeployments.resolveDependencies())
+            .addClass(TestUtils.class)
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -97,13 +99,5 @@ public class AttachmentRepositoryTestCase {
         Attachment refreshed = repository.get(attachment.getId());
 
         Assert.assertEquals(refreshed.getTitle(), originalTitle);
-    }
-
-    private Attachment createAttachment() throws Exception {
-        Attachment attachment  = new Attachment();
-        attachment.setTitle("Test Attachment");
-        attachment.setUrl(new URL("http://geekseek.org"));
-        attachment.setMimeType("text/plain");
-        return attachment;
     }
 }

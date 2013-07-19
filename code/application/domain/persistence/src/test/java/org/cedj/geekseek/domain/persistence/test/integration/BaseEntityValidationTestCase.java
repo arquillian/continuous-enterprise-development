@@ -6,6 +6,7 @@ import org.cedj.geekseek.domain.persistence.model.BaseEntity;
 import org.junit.Assert;
 import org.junit.Test;
 
+// Timestampable tests
 public class BaseEntityValidationTestCase {
 
     @Test
@@ -40,6 +41,22 @@ public class BaseEntityValidationTestCase {
         date.setTime(100);
 
         Assert.assertNotEquals(date, base.getLastModified());
+    }
+
+    @Test
+    public void shouldUseUpdatedAsModifiedDateIfUpdated() throws Exception {
+        TestBaseEntity base = new TestBaseEntity();
+        base.onCreate();
+        Date created = base.getCreated();
+
+        Date modified = base.getLastModified();
+        Assert.assertEquals(created, modified);
+
+        Thread.sleep(10); // force a tiny sleep to throw the dates off
+        base.onUpdate();
+
+        modified = base.getLastModified();
+        Assert.assertNotEquals(created, modified);
     }
 
     private static class TestBaseEntity extends BaseEntity {
