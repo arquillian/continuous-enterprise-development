@@ -757,7 +757,7 @@ Maven.configureResolverViaPlugin().resolve("G:A").withTransitivity().asFile();
 
 ===== Maven Importer
 
-The +MavenImporter+ is the most advanced feature of ShrinkWrap Resolvers. Instead of the user being resposible for specifying how testing archive should look like, it reuses information defined in your _pom.xml_ in order to construct the archive. So, no matter how your project looks like, you can get a full archive, as you would deploy it into the application server within a single like of code.
+The +MavenImporter+ is the most advanced feature of ShrinkWrap Resolvers. Instead of the user being responsible for specifying how testing archive should look like, it reuses information defined in your _pom.xml_ in order to construct the archive. So, no matter how your project looks like, you can get a full archive, as you would deploy it into the application server within a single like of code.
 
 MavenImporter is able to compile sources, construct _MANIFEST.MF_, fetch the dependencies and construct archive as Maven would do. It does not required any data to be prepared by Maven, however it can profit from those if they exist. 
 
