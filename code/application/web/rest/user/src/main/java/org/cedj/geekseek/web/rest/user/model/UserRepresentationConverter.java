@@ -19,6 +19,7 @@ public class UserRepresentationConverter extends RepresentationConverter.Base<Us
         rep.setHandle(source.getId());
         rep.setName(source.getName());
         rep.setBio(source.getBio());
+        rep.setAvatarUrl(source.getAvatarUrl());
         return rep;
     }
 
@@ -32,6 +33,7 @@ public class UserRepresentationConverter extends RepresentationConverter.Base<Us
     public User update(UriInfo uriInfo, UserRepresentation representation, User target) {
         target.setName(representation.getName());
         target.setBio(representation.getBio());
+        target.setAvatarUrl(representation.getAvatarUrl());
         return target;
     }
 }

@@ -20,6 +20,8 @@ public class UserRepresentation extends LinkableRepresenatation<User> implements
     @NotNull
     private String bio;
 
+    private String avatarUrl;
+
     public UserRepresentation() {
         this(null);
     }
@@ -58,5 +60,14 @@ public class UserRepresentation extends LinkableRepresenatation<User> implements
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    @XmlElement
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }

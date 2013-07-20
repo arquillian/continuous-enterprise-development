@@ -44,7 +44,7 @@
 
           <ul class="nav navbar-nav pull-right">
             <li class="user">
-                <a href="my"><img src="http://www.gravatar.com/avatar/3f27861ec08730fd02c91fe4129d2668?s=24" /> Aslak Knutsen</a>
+                <a href="../auth"><img src="http://www.gravatar.com/avatar/3f27861ec08730fd02c91fe4129d2668?s=24" /> Aslak Knutsen</a>
             </li>
             <li>
               <a href=""><i class="icon-align-justify icon-white"></i></a>
