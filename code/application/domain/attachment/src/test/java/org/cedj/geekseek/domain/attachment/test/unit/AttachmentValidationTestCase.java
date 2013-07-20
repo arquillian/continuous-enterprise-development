@@ -1,16 +1,30 @@
 package org.cedj.geekseek.domain.attachment.test.unit;
 
-import static org.cedj.geekseek.domain.attachment.test.TestUtils.createAttachment;
-
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.Date;
 
 import org.cedj.geekseek.domain.attachment.model.Attachment;
-import org.junit.Assert;
+import org.cedj.geekseek.domain.test.integration.TimestampableSpecification;
 import org.junit.Test;
 
-public class AttachmentValidationTestCase {
+public class AttachmentValidationTestCase extends TimestampableSpecification<Attachment> {
+
+    @Override
+    protected Attachment createInstance() throws Exception {
+        return new Attachment("", "", new URL("http://geekseek.org"));
+    }
+
+    @Override
+    protected void forceCreated(Attachment entity) throws Exception {
+        // date set during object creation
+    }
+
+    @Override
+    protected void forceUpdate(Attachment entity) throws Exception {
+        Method update = Attachment.class.getDeclaredMethod("updated");
+        update.setAccessible(true);
+        update.invoke(entity);
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldNotAllowNullConstructorTitle() throws Exception {
@@ -43,58 +57,5 @@ public class AttachmentValidationTestCase {
     public void shouldNotAllowNullSetterUrl() throws Exception {
         Attachment att = new Attachment("", "", new URL("http://geekseek.org"));
         att.setUrl(null);
-    }
-
-    // Created/Updated/Modified leak test cases / Timestampable
-
-    @Test
-    public void shouldNotLeakCreatedDate() throws Exception {
-        Attachment base = createAttachment();
-
-        Date date = base.getCreated();
-        date.setTime(100);
-
-        Assert.assertNotEquals(date, base.getCreated());
-    }
-
-    @Test
-    public void shouldNotLeakUpdatedDate() throws Exception {
-        Attachment base = createAttachment();
-        forceUpdate(base);
-        Date date = base.getLastUpdated();
-        date.setTime(100);
-
-        Assert.assertNotEquals(date, base.getLastUpdated());
-    }
-
-    @Test
-    public void shouldNotLeakModifiedDate() throws Exception {
-        Attachment base = createAttachment();
-
-        Date date = base.getLastModified();
-        date.setTime(100);
-
-        Assert.assertNotEquals(date, base.getLastModified());
-    }
-
-    @Test
-    public void shouldUseUpdatedAsModifiedDateIfUpdated() throws Exception {
-        Attachment base = createAttachment();
-        Date created = base.getCreated();
-
-        Date modified = base.getLastModified();
-        Assert.assertEquals(created, modified);
-
-        Thread.sleep(10); // force a tiny sleep to throw the dates off
-        forceUpdate(base);
-
-        modified = base.getLastModified();
-        Assert.assertNotEquals(created, modified);
-    }
-
-    private void forceUpdate(Attachment att) throws Exception {
-        Method update = Attachment.class.getDeclaredMethod("updated");
-        update.setAccessible(true);
-        update.invoke(att);
     }
 }
