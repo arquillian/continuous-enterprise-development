@@ -1,4 +1,4 @@
-package org.cedj.geekseek.domain.test.integration;
+package org.cedj.geekseek.domain.test.unit;
 
 import java.util.Date;
 

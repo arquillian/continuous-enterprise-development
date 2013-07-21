@@ -1,10 +1,10 @@
-package org.cedj.geekseek.domain.persistence.test.integration;
+package org.cedj.geekseek.domain.persistence.test.unit;
 
 import java.util.Date;
 
 import org.cedj.geekseek.domain.persistence.model.BaseEntity;
-import org.cedj.geekseek.domain.persistence.test.integration.BaseEntityTimestampableSpecificionTestCase.TestBaseEntity;
-import org.cedj.geekseek.domain.test.integration.TimestampableSpecification;
+import org.cedj.geekseek.domain.persistence.test.unit.BaseEntityTimestampableSpecificionTestCase.TestBaseEntity;
+import org.cedj.geekseek.domain.test.unit.TimestampableSpecification;
 import org.junit.Assert;
 import org.junit.Test;
 

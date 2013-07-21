@@ -3,7 +3,7 @@ package org.cedj.geekseek.domain.user.test.unit;
 import java.lang.reflect.Method;
 
 import org.cedj.geekseek.domain.persistence.model.BaseEntity;
-import org.cedj.geekseek.domain.test.integration.TimestampableSpecification;
+import org.cedj.geekseek.domain.test.unit.TimestampableSpecification;
 import org.cedj.geekseek.domain.user.model.User;
 
 public class UserValidationTestCase extends TimestampableSpecification<User> {

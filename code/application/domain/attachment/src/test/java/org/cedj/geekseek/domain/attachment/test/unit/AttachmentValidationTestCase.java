@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 
 import org.cedj.geekseek.domain.attachment.model.Attachment;
-import org.cedj.geekseek.domain.test.integration.TimestampableSpecification;
+import org.cedj.geekseek.domain.test.unit.TimestampableSpecification;
 import org.junit.Test;
 
 public class AttachmentValidationTestCase extends TimestampableSpecification<Attachment> {

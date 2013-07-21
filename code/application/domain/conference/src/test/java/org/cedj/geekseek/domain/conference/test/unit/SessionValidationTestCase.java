@@ -6,7 +6,7 @@ import java.util.Date;
 import org.cedj.geekseek.domain.conference.model.Duration;
 import org.cedj.geekseek.domain.conference.model.Session;
 import org.cedj.geekseek.domain.persistence.model.BaseEntity;
-import org.cedj.geekseek.domain.test.integration.TimestampableSpecification;
+import org.cedj.geekseek.domain.test.unit.TimestampableSpecification;
 import org.junit.Test;
 
 public class SessionValidationTestCase extends TimestampableSpecification<Session> {
