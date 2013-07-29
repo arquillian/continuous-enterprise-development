@@ -242,7 +242,7 @@ This will pull the current upstream version of the application into your local d
 
 ===== Building and Testing GeekSeek
 
-We'll be using the Maven software management tool to handle our build, test, and packaging needs.  The Java 7 JDK is a prerequisite we'll assume is installed on your system and available on the system +PATH+; Maven may be simply downloaded and extracted on your drive to _MAVEN_HOME_ from http://maven.apache.org/download.cgi[http://maven.apache.org/download.cgi].  Ensure that _MAVEN_HOME/bin_ is on your +PATH+, and you'll be good to go:
+We'll be using the Maven software management tool to handle our build, test, and packaging needs.  The Java 7 JDK is a prerequisite we'll assume is installed on your system, referenced by the environment variable +JAVA_HOME+, and the executables in +$JAVA_HOME/bin+ available on the system +PATH+; Maven may be simply downloaded and extracted on your drive to _MAVEN_HOME_ from http://maven.apache.org/download.cgi[http://maven.apache.org/download.cgi].  Ensure that _MAVEN_HOME/bin_ is on your +PATH+, and you'll be good to go:
 
 ----
 $> mvn -version
