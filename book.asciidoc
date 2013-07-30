@@ -14,4 +14,6 @@ include::Chapter05-JavaPersistenceAndRelationalData.asciidoc[]
 
 include::Chapter07-BusinessLogicServicesLayer.asciidoc[]
 
+include::Chapter08-RESTAddressableServices.asciidoc[]
+
 include::Chapter11-AssemblyAndDeployment.asciidoc[]

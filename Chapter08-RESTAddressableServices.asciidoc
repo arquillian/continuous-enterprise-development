@@ -1,0 +1,939 @@
+== REST and Addressable Services
+
+_"Rest and be thankful." - Inscription at Rest Stop Along Scotland's Highway A83_
+
+The concepts guiding the makeup of the modern web could be considered a happy accident, or at least an implementation of ideas that had general applicability far beyond their initial design criteria.  In the late 1980s we had the hardware and software necessary for networking; low-level tools for transmitting data from one computer to another.  We even had some payload protocols and application layers available including IRC for chat, POP for email, and USENET for general discussions.  We were communicating, albeit over relatively constrained channels.
+
+Out of necessity for his own research, Tim Berners-Lee of the European Organization for Nuclear Research (CERN) concocted a small receipe for publishing documents in a manner that would make his findings more accessible between departments and encourage updates over time.  Called the "WorldWideWeb" (WWW), this project http://cdsweb.cern.ch/record/1405411/files/ARCH-WWW-4-010.pdf[proposed] a series of simple constructs:
+
+* Addressable resources: a unique key or address assigned to each document
+* Hypertext: A unidirectional pointer to an addressable resource
+* Browser: A client program capable of reading hypertext-enabled documents
+
+We take these concepts lightly now, but it's worthwhile considering the paradigm shift this evoked in the early 1990s; in only ten years' time, most of the world's university students and many homes were connected to a web that contained a marketing presense for an overwhelming majority of the Fortune 500.  These ideas ushered innovation and communication at a rate never before seen in the history of mankind.  This was instant, global publishing, and it was free.
+
+Central to the makeup of the WWW was the introduction of the _Uniform Resource Identifier_, or URI.  The URI defined by http://tools.ietf.org/html/rfc3986[RFC 3986] forms the basis of an addressable resource, and has the following makeup:
+
++scheme ":" hierarchical-part ["?" query] ["#" fragment]+
+
+Examples from the RFC include:
+
++foo://example.com:8042/over/there?name=ferret#nose+
+
+and
+
++urn:example:animal:ferret:nose+
+
+In short time, Berners-Lee introduced the first version of the _HyperText Markup Language_ (HTML), aimed at providing a more concise vernacular for incorporating links into a common markup that browsers could format for viewing.  The WWW was built as a mechanism for _document exchange_, sharing of published material over a commonly-understood protocol and payload format (commonly HTML).  
+
+In 2000, University of California at Irvine's Roy Fielding published his dissertation http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm["Architectural Styles and the Design of Network-based Software Architectures"], which expanded the notion of addressing documents to include _services_ among the data exchanged on the web, and defined a system of _REpresentational State Transfer_ (REST).  
+
+By addressing services and applying a set of conventions to these URIs, we're able to compose a wide array of operations upon services with the following key benefits:
+
+* Loose coupling
+* Interoperability
+* Encapsulation
+* Distributed programming
+* Modularization
+
+[NOTE]
+====
+Clearly the study of REST is worthy of its own text, and we'll recommend http://restinpractice.com/book/[_REST in Practice_] by Webber/Parastatidis/Robinson from O'Reilly Media to those looking to explore in greater depth.
+====
+
+REST is certainly not the first distributed architecture; _Remote Procedure Call_ (RPC) varients have been used in various forms (ie. SOAP, XML-RPC) for a long while.  In recent years, the trend towards REST has been largely attributed to its ease-of-use and slim profile when coupled with the _HyperText Transfer Protocol_ (HTTP), an established communication protocol providing for _methods_ , _headers_, and _return status codes_ that map well to the objectives of the caller.  In practice, the success of the WWW is inherently linked to HTTP, though this is only one protocol (scheme) that may be applied to the general guidelines of the web.  Due to its widespread usage and versatility, we'll be employing HTTP throughout this chapter.
+
+Because of its success, REST has become an abused buzzword in some circles.  It's helpful for us to clarify the stages of compliance with a truly RESTful system, and a maturity model developed by http://www.crummy.com/self/[Leonard Richardson] presents four rungs of evolution.  Martin Fowler ably sums these up in his http://martinfowler.com/articles/richardsonMaturityModel.html[blog post], and we'll outline them here.
+
+|====
+|Stage 0|Using HTTP as a transport system for arbitrary payloads; typically used in plain RPC where a caller may wish to invoke upon a server over a network.
+|Stage 1|Addressable Resources; each domain object may be assigned to an address, and client requests contain all the necessary metadata needed to carry out the invocation.
+|Stage 2|HTTP Verbs; in addition to assigning each domain object or service an address, we use the conventions of the HTTP methods to differentiate between a "Create", "Update," "Delete", or other actions.
+|Stage 3|_HATEOAS_, or "Hypermedia As The Engine Of Application State", whereas requests upon a root may return a list of links to the client in order to proceed to the next available actions.  For instance, after "creating a user", the client may be given a success confirmation and shown links to "view the user", "edit the user", "view all users".  This guides the client through the workflow of the application without the client needing to know any of the addresses for these actions ahead of time.
+|====
+
+A RESTful system is always Stage 3, though this is an often-misunderstood and neglected understanding of the REST architecture, particularly for newcomers.
+
+It's important to consider that REST is an _architectural style_, agnostic of any particular programming model or language.  At its core, REST is most simply explained as an API for accessing services and domain objects over the web.
+
+As the Java community has come to understand the REST principles, it has provided a mapping layer between requests and backend services: _JAX-RS_.
+
+=== REST in Enterprise Java: The JAX-RS Specification
+
+The _Java API for RESTful Web Services_, or JAX-RS, is a specification under the direction of the Java Community Process, defined by http://jcp.org/aboutJava/communityprocess/final/jsr339/index.html[JSR-339] in its latest 2.0 version.  From the specification document, its goals are to be/have:
+
+____
+* *POJO-based*: The API will provide a set of annotations and associated classes/interfaces that may be used
+with POJOs in order to expose them as Web resources. The specification will define object lifecycle
+and scope.
+* *HTTP-centric*: The specification will assume HTTP is the underlying network protocol and will pro-
+vide a clear mapping between HTTP and URI elements and the corresponding API classes and
+annotations. The API will provide high level support for common HTTP usage patterns and will be
+sufficiently flexible to support a variety of HTTP applications including WebDAV and the Atom
+Publishing Protocol.
+* *Format independence*: The API will be applicable to a wide variety of HTTP entity body content types. It
+will provide the necessary pluggability to allow additional types to be added by an application in a
+standard manner.
+* *Container independence*: Artifacts using the API will be deployable in a variety of Web-tier containers.
+The specification will define how artifacts are deployed in a Servlet container and as a JAX-WS Provider.
+* *Inclusion in Java EE*: The specification will define the environment for a Web resource class hosted in a
+Java EE container and will specify how to use Java EE features and components within a Web resource
+class.
+____
+
+[NOTE]
+====
+As it's not our aim to provide a comprehensive overview of JAX-RS, we recommend http://shop.oreilly.com/product/9780596158057.do[_RESTful Java with JAX-RS_] by Bill Burke, member of the JSR-339 Expert Group and lead of the JBoss Community's http://www.jboss.org/resteasy[RESTEasy] implementation, from O'Reilly Media.  The second revision of the book, covering the latest 2.0 version of the specification, is now http://shop.oreilly.com/product/0636920028925.do[on sale] for pre-order.
+====
+
+The http://docs.oracle.com/javaee/7/api/javax/ws/rs/package-summary.html[JAX-RS Specification API] provides a set of annotations helpful to developers seeking to map incoming HTTP-based requests to backend services.  From the docs, these include:
+
+|====
+|+ApplicationPath+|Identifies the application path that serves as the base URI for all resource URIs provided by Path.
+|+BeanParam+|The annotation that may be used to inject custom JAX-RS "parameter aggregator" value object into a resource class field, property or resource method parameter.
+|+ConstrainedTo+|Indicates the run-time context in which an annotated JAX-RS provider is applicable.
+|+Consumes+|Defines the media types that the methods of a resource class or MessageBodyReader can accept.
+|+CookieParam+|Binds the value of a HTTP cookie to a resource method parameter, resource class field, or resource class bean property.
+|+DefaultValue+|Defines the default value of request meta-data that is bound using one of the following annotations: PathParam, QueryParam, MatrixParam, CookieParam, FormParam, or HeaderParam.
+|+DELETE+|Indicates that the annotated method responds to HTTP DELETE requests.
+|+Encoded+|Disables automatic decoding of parameter values bound using QueryParam, PathParam, FormParam or MatrixParam.
+|+FormParam+|Binds the value(s) of a form parameter contained within a request entity body to a resource method parameter.
+|+GET+|Indicates that the annotated method responds to HTTP GET requests.
+|+HEAD+|Indicates that the annotated method responds to HTTP HEAD requests.
+|+HeaderParam+|Binds the value(s) of a HTTP header to a resource method parameter, resource class field, or resource class bean property.
+|+HttpMethod+|Associates the name of a HTTP method with an annotation.
+|+MatrixParam+|Binds the value(s) of a URI matrix parameter to a resource method parameter, resource class field, or resource class bean property.
+|+NameBinding+|Meta-annotation used to create name binding annotations for filters and interceptors.
+|+OPTIONS+|Indicates that the annotated method responds to HTTP OPTIONS requests.
+|+Path+|Identifies the URI path that a resource class or class method will serve requests for.
+|+PathParam+|Binds the value of a URI template parameter or a path segment containing the template parameter to a resource method parameter, resource class field, or resource class bean property.
+|+POST+|Indicates that the annotated method responds to HTTP POST requests.
+|+Produces+|Defines the media type(s) that the methods of a resource class or MessageBodyWriter can produce.
+|+PUT+|Indicates that the annotated method responds to HTTP PUT requests.
+|+QueryParam+|Binds the value(s) of a HTTP query parameter to a resource method parameter, resource class field, or resource class bean property.
+|====
+
+These may be composed together to define the mapping between a business object's methods and the requests it will service, as shown in the API documentation:
+
+[source,java]
+----
+@Path("widgets/{widgetid}")
+@Consumes("application/widgets+xml")
+@Produces("application/widgets+xml")
+public class WidgetResource {
+
+    @GET
+    public String getWidget(@PathParam("widgetid") String id) {
+        return getWidgetAsXml(id);
+    }
+
+    @PUT
+    public void updateWidget(@PathParam("widgetid") String id,Source update) {
+        updateWidgetFromXml(id, update);
+    }
+    ...
+ }
+----
+
+The above defines an example of a business object which will receive requests to +$applicationRoot/widgets/$widgetid+, where +$widgetid+ is the identifier of the domain object to be acted upon.  HTTP +GET+ requests will be serviced by the +getWidget+ method, which will receive the +$widgetid+ as a method parameter; HTTP +PUT+ requests will be handled by the +updateWidget+ method.  The class-level +@Consumes+ and +@Produces+ annotations designate that all business methods of the class will expect and return a media type of "+application/widgets+xml+".
+
+As the specification supplies only a contract by which JAX-RS implementations must behave, the runtime will vary between application server vendors.  For instance the Reference Implementation, http://jersey.java.net/[Jersey], can be found in the http://glassfish.java.net/[GlassFish Application Server], while http://www.wildfly.org/[WildFly] from the JBoss Community uses http://www.jboss.org/resteasy[RESTEasy].
+
+=== Use Case: Provide Access to Interact with Domain State
+
+Thus far, we've visited and described the internal mechanisms with which we interact with data.  Now we're able to work on building an API for clients to access the domain state in a self-describing fashion, and RESTful design coupled with JAX-RS affords us the tools to expose our application's capabilities in a commonly-understood way.
+
+We'd like to encourage 3rd-party integrators - clients about whom we may not have any up-front knowledge - to view, update, and create domain objects within the GeekSeek application.  Therefore, our use case requirements will be simply summed up as:
+
+____
+* As a 3rd-party integrator, I should be able to perform CRUD operations upon:
+** A Conference
+** Sessions within Conferences
+** Attachments within Sessions
+** Attachments within Conferences
+** A Venue (and associate with a Conference and/or Session)
+____
+
+Additionally, we want to lay out a map of the application as the client navigates through state changes.  For instance, at the root, a client should know what operations it's capable of performing.  Once that operation is complete, a series of possible next steps should be made available to the client such that it may continue execution.  This guide is known as the _Domain Application Protocol_ (DAP), and it acts as a slimming agent atop the wide array of possible HTTP operations in order to show the valid business processes that are available to a client as it progresses through the application's various state changes.  It's this DAP layer which grants us the final HATEOAS step of the Richardson Maturity Model.  Our DAP will define a series of addressable resources coupled with valid HTTP methods and media types to determine what actions are taken, and what links are to come next in the business process.
+
+____
+** +/ application/vnd.ced+xml;type=root+
+*** +GET+ -> Links
+*** Link -> +/conference application/vnd.ced+xml;type=conference+
+*** Link -> +/venue application/vnd.ced+xml;type=venue+
+** +/conference application/vnd.ced+xml;type=conference+
+*** +GET+ -> List
+*** +POST+ -> Add
+** +/conference/[c_id] application/vnd.ced+xml;type=conference+
+*** +GET+ -> Single
+*** +PUT+ -> Update
+*** +DELETE+ -> Remove
+*** Link -> +/conference/[c_id]/session application/vnd.ced+xml;type=session+
+*** Link -> +/venue/[v_id] application/vnd.ced+xml;type=venue+
+*** Link -> +/attachment/[a_id] application/vnd.ced+xml;type=attachment+
+** +/conference/[c_id]/session application/vnd.ced+xml;type=session+
+*** +GET+ -> List
+*** +POST+ -> Add
+** +/conference/[c_id]/session/[s_id] application/vnd.ced+xml;type=session+
+*** +GET+ -> Single
+*** +PUT+ -> Update
+*** +DELETE+ -> Remove
+*** Link -> +/venue/[v_id]/room/[r_id] application/vnd.ced+xml;type=room+
+*** Link -> +/attachment/[a_id] application/vnd.ced+xml;type=attachment+
+** +/venue application/vnd.ced+xml;type=venue+
+*** +GET+ -> List
+*** +POST+ -> Add
+** +/venue/[v_id] application/vnd.ced+xml;type=venue+
+*** +GET+ -> Single
+*** +PUT+ -> Update
+*** +DELETE+ -> Remove
+*** Link -> +/venue/[v_id]/room application/vnd.ced+xml;type=room+
+** +/venue/[v_id]/room application/vnd.ced+xml;type=room+
+*** +GET+ -> List
+*** +POST+ -> Add
+*** Link -> +/attachment/[a_id] application/vnd.ced+xml;type=attachment+
+** +/venue/[v_id]/room/[r_id] application/vnd.ced+xml;type=room+
+*** +GET+ -> Single
+*** +PUT+ -> Update
+*** +DELETE+ -> Remove
+*** Link -> +/attachment/[a_id] application/vnd.ced+xml;type=attachment+
+** +/attachment application/vnd.ced+xml;type=attachment+
+*** +GET+ -> List 
+*** +POST+ -> Add
+** +/attachment/[a_id] application/vnd.ced+xml;type=attachment+
+*** +GET+ -> List
+*** +POST+ -> Add
+____
+
+The DAP above can be conceptually understood as a site map for services, and it defines the API for users of the system.  By designing to the DAP, we provide clients with a robust mechanism by which the details of attaining each resource or invoking the application's services can be read as the client navigates from state to state.
+
+=== The Implementation
+
+With our requirements defined, we're free to start implementation.  Remember that our primary goal here is to create HTTP endpoints at the locations defined by our DAP, and we want to ensure that they perform the appropriate action and return the contracted response.  By using JAX-RS we'll be making business objects and defining the mapping between the path, query parameters, and media types of the request before taking action and supplying the correct response.
+
+The first step is to let the container know that we have a JAX-RS component in our application; this is done by defining a +javax.ws.rs.ApplicationPath+ annotation atop a subclass of +javax.ws.rs.core.Application+.  Here we provide this in +org.geekseek.rest.GeekSeekApplication+:
+
+[source,java]
+----
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
+
+@ApplicationPath("api")
+public class GeekSeekApplication extends Application {
+
+}
+----
+
+This will be picked up by the container and signal that requests to paths under the +$applicationRoot/api+ pattern will be serviced by JAX-RS.
+
+==== Repository Resources
+
+Looking over our requirements, we see that all paths in our DAP are capable of performing CRUD operations.  Therefore, it makes sense for us to define a base upon which individual resources can build, while giving persistence capabilities to create, read, update, and delete.  In GeekSeek, we'll handle this by making a generic +RepositoryResource+ base to give us a hook into the +Repository+ abstractions detailed in Chapter 5.  Let's walk through +org.cedj.geekseek.web.rest.core.RepositoryResource+:
+
+[source,java]
+----
+public abstract class RepositoryResource<
+  DOMAIN extends Identifiable&Timestampable, 
+  REP extends Representation<DOMAIN>>
+    implements Resource {
+----
+
+Simple enough; an abstract class notes we'll be extending this later for more specific resources that interact with a +Respository+.  Let's define the base media types our application will be using.  Remember; media types are a key part of the maturity model in handling the types of responses to be returned given the input from the request.  For example, a JSON request should yield a JSON response in our known format.
+
+[source,java]
+----
+protected static final String BASE_XML_MEDIA_TYPE = "application/vnd.ced+xml";
+protected static final String BASE_JSON_MEDIA_TYPE = "application/vnd.ced+json";
+----
+
+Next up, some fields which will be set later by subclasses; this composes our abstraction point which will need specialization later.
+
+[source,java]
+----
+private Class<? extends Resource> resourceClass;
+private Class<DOMAIN> domainClass;
+private Class<REP> representationClass;
+----
+
+We'll also use some instance members to be injected by either the CDI (+@Inject+) or JAX-RS (+@Context+) containers:
+
+[source,java]
+----
+@Context
+private UriInfo uriInfo;
+
+@Context
+private HttpHeaders headers;
+
+@Inject
+private Repository<DOMAIN> repository;
+
+@Inject
+private RepresentationConverter<REP, DOMAIN> converter;
+----
+
+The +@Context+ annotation will help us gain access into the context of the request in-flight; information about the URI or HTTP headers.  The +Repository+ is how we'll access the persistence layer, and the +RepresentationConverter+ will be responsible for mapping between the client payload and our own entity object model.
+
+Now let's make sure that subclasses set our extension fields properly:
+
+[source,java]
+----
+public RepositoryResource(Class<? extends Resource> resourceClass, 
+  Class<DOMAIN> domainClass, 
+  Class<REP> representationClass) {
+        this.resourceClass = resourceClass;
+        this.domainClass = domainClass;
+        this.representationClass = representationClass;
+    }
+----
+
+That should do it for the fields needed by our +RepositoryResource+.  Time to do something interesting; we want to map HTTP +POST+ requests of our JSON and XML media types defined above to create a new entity.  With a couple of annotations and a few lines of logic in a business method, JAX-RS can handle that for us:
+
+[source,java]
+----
+@POST
+@Consumes({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
+public Response create(REP representation) {
+    DOMAIN entity = getConverter().to(
+      uriInfo,representation);
+    getRepository().store(entity);
+    return Response.created(
+            UriBuilder.fromResource(getResourceClass()).segment("{id}").build(entity.getId())).build();
+}
+----
+
+The +@POST+ annotation defines that this method will service HTTP +POST+ requests, and the +@Consumes+ annotation designates the valid media types.  The JAX-RS container will then map requests meeting those criteria to this +create+ method, passing along the +Representation+ of our +Domain+ object.  From there we may get a hook to the +Repository+, store the entity, and issue an HTTP +Response+ to the client.  Of importance is that we let the client know the ID of the entity which was created as part of the response.
+
+We'll handle the other CRUD operations in similar fashion:
+
+[source,java]
+----
+@DELETE
+@Path("/{id}")
+public Response delete(@PathParam("id") String id) {
+    DOMAIN entity = getRepository().get(id);
+    if (entity == null) {
+        return Response.status(Status.NOT_FOUND).build();
+    }
+    getRepository().remove(entity);
+    return Response.noContent().build();
+}
+
+@GET
+@Path("/{id}")
+@Produces({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
+public Response get(@PathParam("id") String id) {
+    DOMAIN entity = getRepository().get(id);
+    if (entity == null) {
+        return Response.status(Status.NOT_FOUND).type(
+            getMediaType()).build();
+    }
+
+    return Response.ok(
+      getConverter().from(uriInfo, entity))
+          .type(getMediaType())
+          .lastModified(entity.getLastModified())
+          .build();
+}
+
+@PUT
+@Path("/{id}")
+@Consumes({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
+public Response update(@PathParam("id") String id, 
+    REP representation) {
+    DOMAIN entity = getRepository().get(id);
+    if (entity == null) {
+        return Response.status(Status.BAD_REQUEST)
+          .build();
+    }
+
+    getConverter().update(
+        uriInfo, representation, entity);
+    getRepository().store(entity);
+
+    return Response.noContent().build();
+}
+----
+
+Note that for +GET+, +PUT+, and +DELETE+ operations we must know which entity to work with, so we use the +@Path+ annotation to define a path parameter as part of the request, and pass this along as a +PathParam+ to the method when it's invoked.  We also are sure to use the correct HTTP response codes when the situation warrants:
+
+* NotFound(404)
+* Created(201) with Hedader: Location On
+* NoContent(204) On DELETE or successful update
+* BadRequest(400) On attemped PUT of a missing resource
+
+With this base class in place, we have effectively made a nice mapping between the DAP API as part of our requirements and the backend +Repository+ and JPA.  Incoming client requests to are mapped to business methods, which in turn delegate the appropriate action to the persistence layer and supply a response.
+
+Let's have a look at a concrete implementation of the +RepositoryResource+, one that handles interaction with +User+ domain objects.  We've aptly named this the +org.cedj.geekseek.web.rest.user.UserResource+:
+
+[source,java]
+----
+@ResourceModel
+@Path("/user")
+public class UserResource 
+    extends RepositoryResource<User, UserRepresentation> {
+
+    private static final String USER_XML_MEDIA_TYPE =
+        BASE_XML_MEDIA_TYPE + "; type=user";
+    private static final String USER_JSON_MEDIA_TYPE = 
+        BASE_JSON_MEDIA_TYPE + "; type=user";
+
+    public UserResource() {
+        super(UserResource.class, User.class, UserRepresentation.class);
+    }
+
+    @Override
+    public String getResourceMediaType() {
+        return USER_XML_MEDIA_TYPE;
+    }
+
+    @Override
+    protected String[] getMediaTypes() {
+        return new String[]{USER_XML_MEDIA_TYPE, USER_JSON_MEDIA_TYPE};
+    }
+}
+----
+
+Because we inherit all of the support to interact with JPA from the parent +RepositoryResource+, this class needs to do little more than:
+
+* Note that we are an +@ResourceModel+, a custom type which is a CDI Stereotype to add interceptors.  We explain this in greater depth below.
+* Define a path for the resource, in this case, "/user" under the JAX-RS application root.
+* Supply the custom media types for user representations.
+* Set the resource type, the domain object type, and the representation type in the constructor.
+
+Now we can handle CRUD operations for +User+ domain objects; similar implementations to this are also in place for +Conference+, +Session+, etc.
+
+==== The Representation Converter
+
+We've seen that the underlying domain model implemented in JPA is not the same as the REST model we're exposing to clients. While EE allows us to annotate JPA models with JAX-B bindings etc, we likely would like to keep the two models separate as the REST model may:
+
+* Contain less data
+* Combine JPA models into one unified view
+* Link resources
+* Render itself in multiple different representations and formats
+
+Additionally, some resources act as proxy resources and has no representation on their own.  To allow these resources to operate in a modular fashion we need a way to describe conversion, for example: the relation resource links users to a conference (attendees, speakers). The relation it self knows nothing about the source or target types, but it knows how to get a converter that supports converting between these types.  To handle this, we supply the +org.cedj.geekseek.web.rest.core.RepresentationConverter+:
+
+[source,java]
+----
+public interface RepresentationConverter<REST, SOURCE> {
+
+    Class<REST> getRepresentationClass();
+
+    Class<SOURCE> getSourceClass();
+
+    REST from(UriInfo uriInfo, SOURCE source);
+
+    Collection<REST> from(UriInfo uriInfo, Collection<SOURCE> sources);
+
+    SOURCE to(UriInfo uriInfo, REST representation);
+
+    SOURCE update(UriInfo uriInfo, REST representation, SOURCE target);
+
+    Collection<SOURCE> to(UriInfo uriInfo, Collection<REST> representations);
+----
+
+Inside the above interface is also a base implementation to handle the conversion, +RepresentationConverter.Base+:
+
+[source,java]
+----
+public abstract static class Base<REST, SOURCE>
+    implements RepresentationConverter<REST, SOURCE> {
+
+    private Class<REST> representationClass;
+    private Class<SOURCE> sourceClass;
+
+    protected Base() {}
+
+    public Base(Class<REST> representationClass, 
+        Class<SOURCE> sourceClass) {
+        this.representationClass = representationClass;
+        this.sourceClass = sourceClass;
+    }
+
+    @Override
+    public Collection<REST> from(UriInfo uriInfo, 
+        Collection<SOURCE> ins) {
+        Collection<REST> out = new ArrayList<REST>();
+        for(SOURCE in : ins) {
+            out.add(from(uriInfo, in));
+        }
+        return out;
+    }
+
+    @Override
+    public Collection<SOURCE> to(UriInfo uriInfo,
+        Collection<REST> ins) {
+        Collection<SOURCE> out = new ArrayList<SOURCE>();
+        for(REST in : ins) {
+             out.add(to(uriInfo, in));
+        }
+            return out;
+    }
+
+    ...
+}
+----
+
+CDI will dutifully inject the appropriate instance of this converter where required, for instance in this field of the +org.cedj.geekseek.web.rest.conference.ConferenceResource+:
+
+[source,java]
+----
+@Inject
+private RepresentationConverter<SessionRepresentation,
+    Session> sessionConverter;
+----
+
+Through these converters we may easily delegate the messy business of parsing the media type payload formats to and from our own interal domain objects.
+
+==== The +@ResourceModel+
+
+As JAX-RS 1.x does not define an interceptor model, we need to apply these on our own in order to activate cross-cutting concerns such as security, validation, and resource linking to our JAX-RS endpoints.  This is easily enough accomplished by using the stereotype feature of CDI, where we may create our own annotation type (which itself has annotations); wherever our custom type is applied, the metadata we specify upon the stereotype will propagate.  So we may create an annotation to apply all of the features we'd like upon a +RepositoryResource+, and we call it +org.cedj.geekseek.web.rest.core.annotation.ResourceModel+:
+
+[source,java]
+----
+@Secured
+@Linked
+@Validated
+@RequestScoped
+@Stereotype
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface ResourceModel {
+
+}
+----
+
+By placing this +@ResourceModel+ annotation atop, for instance, +UserResource+ as we've done above, this JAX-RS resource will now be +@Secured+, +@Linked+, +@Validated+, and +@RequestScoped+.  This is a nice shortcut provided by CDI to compose behaviours together in one definition.
+
+==== +LinkableRepresentation+
+
+As you may have noticed from our DAP, we have a series of paths which accept a source media type and return another media type representing the data in question.  These are modeled by our +org.cedj.geekseek.web.rest.core.Representation+:
+
+
+[source,java]
+----
+public interface Representation<X> {
+
+    Class<X> getSourceType();
+
+    String getRepresentationType();
+}
+----
+
+Some paths are linkable; they contain pointers to resources that aren't in the domain model itself.  For example, a +Session+ in a +Conference+ is in the +Conference+ domain, because a +Conference+ contains N +Session+ entities.  A +Conference+ may have a tracker (+User+), someone "following" the +Conference+ for updates; this further links into the +User+ domain via a +Relation+ domain.  While each domain entity is separate, once we start to draw relationships between them, it's helpful to consider a mechanism to link together these bonds.
+
+So while domain model links are handled directly by JPA, the +Representation+ and a +RepresentationConverter+ into the target formats, the relationships need to be addressed slightly differently.
+
+For this we may introduce the notion of a +org.cedj.geekseek.web.rest.core.LinkableRepresentation+; a +Representation+ type capable of coupling a source type with a series of links:
+
+[source,java]
+----
+public abstract class LinkableRepresenatation<X> implements Representation<X> {
+
+    private List<ResourceLink> links;
+    private Class<X> sourceType;
+    private String representationType;
+    private UriInfo uriInfo;
+
+    protected LinkableRepresenatation() {}
+
+    public LinkableRepresenatation(Class<X> sourceType, String representationType, UriInfo uriInfo) {
+        this.sourceType = sourceType;
+        this.representationType = representationType;
+        this.uriInfo = uriInfo;
+    }
+
+    @XmlElement(name = "link", namespace = "urn:ced:link")
+    public List<ResourceLink> getLinks() {
+        if (this.links == null) {
+            this.links = new ArrayList<ResourceLink>();
+        }
+        return links;
+    }
+
+    public void addLink(ResourceLink link) {
+        getLinks().add(link);
+    }
+
+    public boolean doesNotContainRel(String rel) {
+        return !containRel(rel);
+    }
+
+    public boolean containRel(String rel) {
+        if(links == null || links.size() == 0) {
+            return false;
+        }
+        for(ResourceLink link : links) {
+            if(rel.equals(link.getRel())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override @XmlTransient
+    public Class<X> getSourceType() {
+        return sourceType;
+    }
+
+    @Override @XmlTransient
+    public String getRepresentationType() {
+        return representationType;
+    }
+
+    @XmlTransient
+    public UriInfo getUriInfo() {
+        return uriInfo;
+    }
+}
+----
+
+In the previous section above, we see that our +@ResourceModel+ stereotype is +org.cedj.geekseek.web.rest.core.annotation.Linked+, a custom annotation of our own:
+
+[source,java]
+----
+@InterceptorBinding
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Linked {
+
+}
+----
+
+This indicates that we'll apply an interceptor called +org.cedj.geekseek.web.rest.core.interceptor.LinkedInterceptor+ to anything with this annotation.  +LinkedInterceptor+ has the responsibility to determine if the invocation has a linkable representation, and if so, link all of the +LinkableRepresentation+ view together.  Anything with the +@Linked+ annotation will run this interceptor, including our +@ResourceModel+.
+
+The reasoning behind this approach is: some +Representation+ objects are linkable.  Via the +@ResourceModel+ (which contains +@Linked+), a link provider may link a given resource to some other resource.  This way, we may draw relationships between resources (entities) that are not described in the by JPA.  The interceptor is implemented like so:
+
+[source,java]
+----
+@Linked
+@Interceptor
+public class LinkedInterceptor {
+
+    @Inject
+    private Instance<LinkProvider> linkProviers;
+
+    @AroundInvoke
+    public Object link(InvocationContext ic) throws Exception {
+        Object obj = ic.proceed();
+        if(hasLinkableRepresentations(obj)) {
+            linkAllRepresentations(obj);
+        }
+        return obj;
+    }
+
+    private boolean hasLinkableRepresentations(Object obj) {
+        return locateLinkableRepresenatation(obj) != null;
+    }
+
+    private LinkableRepresenatation<?> locateLinkableRepresenatation(Object obj) {
+        if(obj instanceof Response) {
+            Object entity = ((Response)obj).getEntity();
+            if(entity instanceof LinkableRepresenatation) {
+                return (LinkableRepresenatation<?>)entity;
+            }
+        }
+        return null;
+    }
+
+    private void linkAllRepresentations(Object obj) {
+        LinkableRepresenatation<?> linkable = locateLinkableRepresenatation(obj);
+        for(LinkProvider linker : linkProviers) {
+            linker.appendLinks(linkable);
+        }
+    }
+}
+----
+
+==== +ResourceLink+
+
+Recall from our DAP that many requests are to return a link to other resources as the client makes its way through state changes in the application.  A link is really a value object to encapsulate a media type, href (link), and relation.  We provide this in +org.cedj.geekseek.web.rest.core.ResourceLink+:
+
+[source,java]
+----
+public class ResourceLink {
+
+    private String rel;
+    private URI href;
+    private String type;
+
+    public ResourceLink(String rel, URI href, String media) {
+        this.rel = rel;
+        this.href = href;
+        this.type = media;
+    }
+
+    @XmlAttribute
+    public String getHref() {
+        if (href == null) {
+            return null;
+        }
+        return href.toASCIIString();
+    }
+
+    @XmlAttribute
+    public String getRel() {
+        return rel;
+    }
+
+    @XmlAttribute
+    public String getMediaType() {
+        return type;
+    }
+
+    public void setHref(String href) {
+        this.href = URI.create(href);
+    }
+
+    public void setRel(String rel) {
+        this.rel = rel;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+}
+----
+
++LinkableRepresentation+ will use this value object in particular to handle its linking strategy between disparate entities that are not related in the JPA model.
+
+=== Requirement Test Scenarios
+
+With our implementation in place leveraging JAX-RS to map our DAP to business methods, we're set to test our endpoints.  As by definition this will involve a lot of client-side requests and parsing of server responses, it'll be helpful for us to avoid writing a lot of custom code to negotiate the mapping.  The core areas we want to test are the expected responses from requests to:
+
+* +PUT+ data
+* +GET+ data
+* +POST+ data
+* +DELETE+ data
+* Obtain the appropriate links
+
+For these tasks, we introduce an extension to Arquillian which is aimed at making this type of testing easier.
+
+==== Arquillian Warp
+
+Arquillian Warp fills the void between client- and server-side testing.
+
+Using Warp, we may initiate an HTTP request using a client-side testing tool such as WebDriver and, in the same request cycle, execute in-container server-side tests. This powerful combination lets us cover integration across client and server.
+
+Warp effectively removes the need for mocking and opens new possibilities for debugging.  It also allows us to know as little or as much of the application under test as you want.
+
+===== Gray-Box Testing
+
+Initially, Warp can be used from any black-box testing tool (like HttpClient, REST client, Selenium WebDriver, etc.). But it allows us to hook into the server request lifecycle and verify what happens inside the box (referred to as white-box testing). Thus, we identify Warp as a hybrid "gray-box" testing framework.
+
+===== Integration Testing
+
+No matter the granularity of our tests, Warp fits the best integration level of testing with an overlap to functional testing. You may either test components, application API or functional behavior.
+
+===== Technology Independence
+
+Whatever client-side tools we use for emiting an HTTP request, Warp allows us to assert and verify logic on a most appropriate place of client-server request lifecycle.
+
+===== Use Cases
+
+Warp can:
+
+* Send a payload to a server
+* Verify an incoming request
+* Assert the state of a server context
+* Verify that a given event was fired during request processing
+* Verify a completed response
+* Send a payload to a client
+
+===== Deploying Warp
+
+Thanks to an ability to bring an arbitrary payload to a server and hook into server-lifecycle, we can use Warp in partially-implemented projects. We do not require the database layer to be implemented in order to test UI logic. This is especially useful for projects based on loosely-coupled components (e.g. CDI).
+
+===== Supported Tools and Frameworks
+
+====== Cross-protocol
+
+Warp currently supports only the HTTP protocol, but conceptually it can be used with any protocol where we are able to intercept client-to-server communication on both, the client and the server.
+
+====== Client-Side Testing Tools
+
+Warp supports any client-side tools if you are using them in a way that requests can be intercepted (in a case of HTTP protocol, you need to communicate through a proxy instead of direct communication with a server).
+
+Examples of such libraries/frameworks:
+
+* +URL#getResourceAsStream()+
+* Apache HTTP Client
+* Selenium WebDriver
+
+[NOTE]
+====
+In order to use Warp, you should inject an @ArquillianResource URL into the test case, which points to the proxy automatically.
+====
+
+===== Frameworks
+
+Warp currently focuses on frameworks based on the Servlets API, but it provides special hooks and additional support for:
+
+* JSF
+* JAX-RS (REST)
+* Spring MVC
+
+For more information about Warp, visit arquillian.org[arquillian.org].
+
+==== Test Harness Setup
+
+We'll start by enabling the Arquillian Warp in the POM's +dependencyManagement+ section:
+
+[source]
+----
+<dependency>
+    <groupId>org.jboss.arquillian.extension</groupId>
+    <artifactId>arquillian-warp-bom</artifactId>
+    <version>${version.arquillian_warp}</version>
+    <scope>import</scope>
+    <type>pom</type>
+</dependency>
+----
+
+The above will lock down the versions correctly such that all Warp modules are of the expected version.  A +dependency+ declaration in the +dependencies+ section will make Warp available for our use:
+
+[source]
+----
+<dependency>
+    <groupId>org.jboss.arquillian.extension</groupId>
+    <artifactId>arquillian-warp-impl</artifactId>
+    <scope>test</scope>
+</dependency>
+---- 
+
+==== A Black-Box Test
+
+The general flow of our first test will be to model a user's actions as she navigates through the site.  To accomplish execution of the test methods in sequence, we'll use Arquilian's +@InSequence+ annotation to signal the order of test execution.  This will follow the normal REST client flow from point A to B to C and so on.  We're going to execute requests to:
+
+* +GET+ The Root resource 
+* Locate the +Conference+ link
+* +POST+ to create a new +Conference+
+* +GET+ to read the created +Conference+
+* Locate the +Session+ link
+* +POST+ to create a new +Session+
+* +GET+ to read the created +Session+
+* +PUT+ to update the +Session+
+* +DELETE+ to delete the +Session+
+* +PUT+ to update the +Conference+
+* +DELETE+ to delete the +Conference+
+
+This will be a pure client-side test; it requires _something_ deployed which will talk to the REST APIs.  We have provided this logic in +org.cedj.geekseek.web.rest.conference.test.integration.story.CreateConferenceAndSessionStory+:
+
+[source,java]
+----
+@RunWith(Arquillian.class)
+public class CreateConferenceAndSessionStory {
+
+    private static String uri_conference = null;
+    private static String uri_conferenceInstance = null;
+    private static String uri_session = null;
+    private static String uri_sessionInstance = null;
+
+    @ArquillianResource
+    private URL base;
+
+    @BeforeClass
+    public static void setup() {
+        RestAssured.filters(
+                ResponseLoggingFilter.responseLogger(),
+                new RequestLoggingFilter());
+    }
+----
+
+The +@RunWith+ annotation above should be familiar by now; Arquillian will be handling the test lifecycle for us.  As noted above, it's good practice to allow Arquillian to inject the base URL of the application by using +@ArquillianResource_.  And because we're not bound to any frameworks in particular, we may also use the https://code.google.com/p/rest-assured/[REST-assured] project to provide us with a clean DSL to validate our REST services.
+
+Notably missing from this declaration is the +@Deployment+ method, which we supply in +CreateConferenceAndSessionStoryTestCase+ so we may decouple the test scenario from the test deployment logic; this encourages re-use for running the same tests with different deployments so we may further integrate other layers later.  The deployment method for our purposes here looks like:
+
+[source,java]
+----
+@Deployment(testable = false)
+public static WebArchive deploy() {
+    return ConferenceRestDeployments.conference()
+      .addAsWebInfResource(new File("src/main/resources/META-INF/beans.xml"));
+}
+----
+
+Because this is a black-box test, we set +testable+ to +false+ to tell Arquillian not to equip the deployment with any additional test runners; we don't want to test in-container here, but rather run requests from the outside of the server and analyze the response.  The test should verify a behavior; sharing of objects might be easier to code and update, but could also sneak in unexpected client changes which should have been caught by the tests.  We're interested only in testing the contract between the client and the server, which is specified by our DAP.  Thus, black-box testing is an appropriate solution in this case.
+
+In this deployment, we'll also use "fake" implementations for the Repository / JPA layer; these are provided by the +TestConferenceRepository+ and +TestConferenceRepository+ test classes which simulate the JPA layer for testing purposes; we won't be hitting the database for the tests at this level of integration.  Later on, when we fully-integrate the application, we'll bring JPA back into the picture.
+
+[source,java]
+----
+@ApplicationScoped
+public abstract class TestRepository<
+  T extends Identifiable> implements Repository<T> { .. }
+
+public class TestConferenceRepository extends
+  TestRepository<Conference> { .. }
+----
+
+On to the tests:
+
+[source,java]
+----
+// Story: As a 3rd party Integrator I should be able locate the Conference root Resource
+@Test @InSequence(0)
+public void shouldBeAbleToLocateConferenceRoot() throws Exception {
+        //uri_conference = new URL(base, "api/conference").toExternalForm();
+        uri_conference =
+              given().
+              then().
+                  contentType(BASE_MEDIA_TYPE).
+                  statusCode(Status.OK.getStatusCode()).
+                  root("root").
+                      body("link.find {it.@rel == 'conference'}.size()", equalTo(1)).
+              when().
+                  get(new URL(base, "api/").toExternalForm()).
+              body().
+                  path("root.link.find {it.@rel == 'conference'}.@href");
+    }
+----
+
+Our first test is charged with locating the conference root at the base URL + "api" (as we'd implemented using the +@ApplicationPath+ annotation in our application).  We set the media type and expect to have our links for the conference returned to the client matching the +@Path+ annotation we have sitting atop our +ConferenceResource+ class (baseURL + "api" + "conference").  The +@InSequence+ annotation set to value of +0+ will ensure that this test is run first.
+
+Assuming that's successful, we may move on to our next test, creating a conference:
+
+[source,java]
+----
+// Story: As a 3rd party Integrator I should be able create a Conference
+@Test @InSequence(1)
+public void shouldBeAbleToCreateConference() throws Exception { .. }
+...
+----
+
+The rest of the test class contains test logic to fulfill our test requirements above.
+  
+==== Validating the HTTP Contracts with Warp
+
+Now we'd like to test details of the REST service behavior; we'll use Warp to allow easy control over permutations of data.  Again, we'll be swapping out alternate +Repository+ implementations to  bypass JPA and real peristence; we're just interested in the HTTP request/response interactions at this stage.
+
+What we'd like to do in this test is create +Conference+ domain objects on the client side and transfer them to the server.  Warp will allow us to control which data to fetch through the JAX-RS layer.  For instance, from the abstract base of the +ConferenceResourceSpecificationTestCase+, which is annotated with +@WarpTest+ to activate Warp:
+
+[source,java]
+----
+@Test
+public void shouldReturnOKOnGETResource() throws Exception {
+    final DOMAIN domain = createDomainObject();
+
+    Warp.initiate(new Activity() {
+        @Override
+        public void perform() {
+            responseValidation(
+                given().
+                then().
+                    contentType(getTypedMediaType())
+            , domain).
+            when().
+                get(createRootURL() + "/{id}", 
+                    domain.getId()).body();
+        }
+    }).inspect(
+        new SetupRepository<DOMAIN>(
+            getDomainClass(), domain));
+}
+----
+
+Here we use Warp to produce the data we want the REST layer to receive, and validate that we obtain the correct HTTP response for a valid +GET+ request.
+
+There are plenty of other detailed Warp examples throughout the tests of the REST modules in the GeekSeek application code; we advise readers to peruse the source for additional ideas in using this very powerful tool for white-box testing of the request/response model.

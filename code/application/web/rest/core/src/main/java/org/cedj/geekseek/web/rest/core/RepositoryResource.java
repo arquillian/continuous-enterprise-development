@@ -79,8 +79,8 @@ public abstract class RepositoryResource<DOMAIN extends Identifiable&Timestampab
 
     @POST
     @Consumes({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
-    public Response create(REP representtion) {
-        DOMAIN entity = getConverter().to(uriInfo, representtion);
+    public Response create(REP representation) {
+        DOMAIN entity = getConverter().to(uriInfo, representation);
 
         getRepository().store(entity);
         return Response.created(
