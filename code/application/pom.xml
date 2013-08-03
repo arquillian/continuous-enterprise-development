@@ -26,6 +26,14 @@
     <version.jackson_jaxrs>2.2.2</version.jackson_jaxrs>
     <version.infinispan>5.3.0.Final</version.infinispan>
 
+    <version.webjars_locator>0.5</version.webjars_locator>
+    <version.webjars_jquery>2.0.3</version.webjars_jquery>
+    <version.webjars_angularjs>1.1.5-1</version.webjars_angularjs>
+    <version.webjars_angular_ui_utils>47ff7ef35c</version.webjars_angular_ui_utils>
+    <version.webjars_boostrap>3.0.0-rc1</version.webjars_boostrap>
+    <version.webjars_boostrap_datetime>6aa746736d</version.webjars_boostrap_datetime>
+    <version.webjars_font_awesome>3.2.1</version.webjars_font_awesome>
+
     <version.jboss_spec>3.0.1.Final</version.jboss_spec>
 
     <version.arquillian_core>1.1.0.Final</version.arquillian_core>
@@ -81,6 +89,42 @@
             <groupId>org.jboss.spec.javax.transaction</groupId>
           </exclusion>
         </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>webjars-locator</artifactId>
+        <version>${version.webjars_locator}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>jquery</artifactId>
+        <version>${version.webjars_jquery}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>angularjs</artifactId>
+        <version>${version.webjars_angularjs}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>angular-ui-utils</artifactId>
+        <version>${version.webjars_angular_ui_utils}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>bootstrap</artifactId>
+        <version>${version.webjars_boostrap}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>bootstrap-datetimepicker</artifactId>
+        <version>${version.webjars_boostrap_datetime}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>font-awesome</artifactId>
+        <version>${version.webjars_font_awesome}</version>
       </dependency>
 
       <!-- External Test Modules -->

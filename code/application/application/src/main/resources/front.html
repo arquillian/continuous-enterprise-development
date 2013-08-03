@@ -1,11 +1,11 @@
-<div class="row-fluid">
-	<div class="span12">
+<div class="row">
+	<div class="col-12">
 
-		<div class="span10">
-			<div class="content offset1">
+		<div class="col-10">
+			<div class="col-offset-1">
 				<ul class="breadcrumb">
 				    <li data-ng-repeat="level in parents">
-				  		<a data-ng-click="get(level)">{{level.meta.rel}}</a> <span class="divider">/</span>
+				        <a data-ng-click="get(level)">{{level.meta.rel}}</a>
 				    </li>
 				</ul>
 				<div data-ng-include="template"></div>

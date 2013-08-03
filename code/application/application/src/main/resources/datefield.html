@@ -1,0 +1,11 @@
+<div class="col-4 form-group" data-ng-class="{'has-error':error}">
+   <label class="control-label" for="{{id}}">{{name}}</label>
+   <div class="input-group date" data-ng-model="field" >
+      <input class="form-control" type="text" id="{{id}}" required readonly>
+      <span class="add-on input-group-addon"><i class="icon-calendar"></i></span>
+   </div>
+   <div class="help-block">
+      {{help}}
+      <div class="has-error" data-ng-show="error">{{error}}</div>
+   </div>
+</div>

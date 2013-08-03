@@ -44,6 +44,29 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- JavaScript UI -->
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>angularjs</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>angular-ui-utils</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>bootstrap</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>bootstrap-datetimepicker</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>font-awesome</artifactId>
+    </dependency>
+
+
     <!-- Test Resources -->
     <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>
@@ -90,10 +113,8 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <skipTests>true</skipTests>
-          <!--
-            Override so we don't include everything from unit/integration profile
-            setup in parent.
-          -->
+          <!-- Override so we don't include everything from unit/integration profile
+            setup in parent. -->
           <includes combine.self="override">
           </includes>
         </configuration>
@@ -125,10 +146,8 @@
 
   <profiles>
     <profile>
-      <!--
-        Need an empty profile named unit just to not activate integration profile
-        when -Punit is used on command line
-      -->
+      <!-- Need an empty profile named unit just to not activate integration profile
+        when -Punit is used on command line -->
       <id>unit</id>
       <build>
         <plugins>

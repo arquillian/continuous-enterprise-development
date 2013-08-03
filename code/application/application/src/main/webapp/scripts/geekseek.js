@@ -176,7 +176,7 @@ MainCtrl.resolve = {
 	}
 };
 
-angular.module('geekseek', ['restgraph','$strap.directives'], function() {
+angular.module('geekseek', ['restgraph', 'ui.jq'], function() {
 })
 .filter('navigation', function() {
 	return function(child) {
@@ -186,6 +186,77 @@ angular.module('geekseek', ['restgraph','$strap.directives'], function() {
 			}
 		}
 		return null;
+	};
+})
+.directive('textfield', function() {
+	return {
+		templateUrl: 'textfield.html',
+		replace: true,
+		transclude: false,
+		scope: {
+			id:'@',
+			name:'@',
+			field:'=',
+			error:'=',
+			help:'@'
+		},
+		restrict: 'E'
+	};
+})
+.directive('textareafield', function() {
+	return {
+		templateUrl: 'textareafield.html',
+		replace: true,
+		transclude: false,
+		scope: {
+			id:'@',
+			name:'@',
+			field:'=',
+			error:'=',
+			help:'@'
+		},
+		restrict: 'E'
+	};
+})
+.directive('datefield', function() {
+	return {
+		templateUrl: 'datefield.html',
+		replace: true,
+		transclude: false,
+		scope: {
+			id:'@',
+			name:'@',
+			field:'=',
+			error:'=',
+			help:'@'
+		},
+		restrict: 'E'
+	};
+})
+.directive('date', function() {
+	return {
+		replace: false,
+		transclude: false,
+		scope: false,
+		restrict: 'C',
+		scope: {
+			model:'=ngModel'
+		},
+		link: function(scope, elem, attrs) {
+				elem.datetimepicker({
+					format: 'mm-dd-yyyy hh:ii',
+					autoclose: true,
+					weekStart: 1,
+					initialDate: angular.isDefined(scope.model) ? new Date(scope.model):new Date()
+				}).on('changeDate', function(ev){
+					scope.$apply(function() {
+						scope.model = ev.date.getTime();
+					});
+				});
+				if(angular.isDefined(scope.model)) {
+					elem.datetimepicker('setValue');
+				}
+		}
 	};
 })
 .config(function($routeProvider, $httpProvider, $locationProvider, RestGraphProvider){

@@ -29,12 +29,18 @@ public class AppFilter implements Filter {
     private static String APP_INDEX = APP + "index.jsp";
 
     private static Pattern letThroughExpression;
+    private static Pattern webJarExpression;
+
+    //private WebJarAssetLocator webJarLocator = null;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        webJarExpression = Pattern.compile("/?(webjars/.*)");
+
         String patternExp = filterConfig.getInitParameter("pattern");
         letThroughExpression = Pattern.compile(patternExp);
         System.out.println("AppFitlerPattern: " + letThroughExpression.pattern());
+
     }
 
     @Override
@@ -49,6 +55,12 @@ public class AppFilter implements Filter {
 
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException,
         ServletException {
+// Does not work on JBossAS/Wildfly https://github.com/webjars/webjars-locator/pull/19
+//        if(webJarLocator == null) {
+//            webJarLocator = new WebJarAssetLocator(
+//                WebJarAssetLocator.getFullPathIndex(Pattern.compile(".*"),
+//                    Thread.currentThread().getContextClassLoader()));
+//        }
 
         request.setAttribute("BASE_ROOT", request.getContextPath() + APP_INDEX);
 
@@ -60,9 +72,16 @@ public class AppFilter implements Filter {
         String[] paths = requestPath.split("/");
         URL resourceURL = cl.getResource(paths[paths.length-1]);
 
-        Matcher matcher = letThroughExpression.matcher(requestPath);
-        if(matcher.matches()) {
-            String redirected = "/" + matcher.group(1);
+        Matcher letThrough = letThroughExpression.matcher(requestPath);
+        Matcher webJar = webJarExpression.matcher(requestPath);
+
+        if (webJar.matches()) {
+            //String redirected = webJarLocator.getFullPath(webJar.group(1));
+            String redirected = "/" + webJar.group(1);
+            System.out.println("Forwarding to: " + redirected);
+            request.getRequestDispatcher(redirected).forward(request, response);
+        } else if (letThrough.matches()) {
+            String redirected = "/" + letThrough.group(1);
             //System.out.println("Forwarding to: " + redirected);
             request.getRequestDispatcher(redirected).forward(request, response);
         } else if(resourceURL != null && !requestPath.isEmpty()) {

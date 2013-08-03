@@ -4,8 +4,6 @@ import static org.cedj.geekseek.web.core.test.integration.TestUtils.asString;
 
 import java.net.URL;
 
-import junit.framework.Assert;
-
 import org.cedj.geekseek.web.core.servlet.AppFilter;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -13,6 +11,7 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
