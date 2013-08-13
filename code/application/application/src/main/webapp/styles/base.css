@@ -1,3 +1,7 @@
+body {
+	font-size: 16px;
+}
+
 #sidebar {
 	margin-right:10px;
 }
@@ -11,6 +15,48 @@
 	padding: 1px;
 }
 
+
+## conference
+
+.conference .date {
+	font-size: 1.5em;
+}
+
+.conference .date .sep {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.conference .date .sep, .conference .date .start .day, .conference .date .end .day {
+	float:left;
+	font-size: 2.5em;
+	font-weight: bold;
+	position: relative;
+	top: -0.2em;
+}
+
+.conference .date .end .day {
+	padding-right: 10px;
+}
+
+.conference .date .start .day, .conference .date .end .day,
+.conference .date .end .month, .conference .date .end .year {
+	display: block;
+}
+
+.conference .date .end .month {
+	text-transform: uppercase;
+}
+
+## session
+
+.session .date {
+	font-weight: bold;
+}
+
+.session .outline {
+	margin-top: 1em;
+}
 
 ## Forms
 

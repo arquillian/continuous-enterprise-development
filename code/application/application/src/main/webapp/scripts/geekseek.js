@@ -233,7 +233,7 @@ angular.module('geekseek', ['restgraph', 'ui.jq'], function() {
 		restrict: 'E'
 	};
 })
-.directive('date', function() {
+.directive('dateTimeWidget', function() {
 	return {
 		replace: false,
 		transclude: false,
@@ -257,6 +257,11 @@ angular.module('geekseek', ['restgraph', 'ui.jq'], function() {
 					elem.datetimepicker('setValue');
 				}
 		}
+	};
+})
+.filter('htmlify', function() {
+	return function(input) {
+		return input.replace(/\n/g, '<br/>');
 	};
 })
 .config(function($routeProvider, $httpProvider, $locationProvider, RestGraphProvider){

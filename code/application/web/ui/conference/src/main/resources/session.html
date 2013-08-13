@@ -1,60 +1,57 @@
-<div class="row">
+<div class="content session" data-ng-switch="getViewType()">
+   <div data-ng-switch-when="form">
 
-   <div class="content" data-ng-switch="getViewType()">
-      <div data-ng-switch-when="form">
+      <form data-ng-submit="submit()">
+         <fieldset>
+            <legend>
+               <span data-ng-show="isCreateMode()">Add</span><span data-ng-show="isEditMode()">Edit</span> Session
+            </legend>
 
-         <form data-ng-submit="submit()">
-            <fieldset>
-               <legend>
-                  <span data-ng-show="isCreateMode()">Add</span><span data-ng-show="isEditMode()">Edit</span> Session
-               </legend>
-
-               <div class="row">
-                  <textfield name="Title" id="title" field="form.title" error="formval.title" help="The tile of the session" />
-                  <textareafield name="Outline/Abstract" id="outline" field="form.outline" error="formval.outline" help="The outline or abstract for this session." />
-               </div>
-               <div class="row">
-                  <datefield name="Start time" id="start" field="form.start" error="formval.start" help="When does the session begin?" />
-                  <datefield name="End time" id="end" field="form.end" error="formval.end" help="When does the session end?" />
-               </div>
-               <div class="row">
-                  <hr />
-                  <div class="form-group">
-                     <button type="submit" class="btn btn-primary" data-ng-show="isEditMode()">Update session</button>
-                     <button type="submit" class="btn btn-primary" data-ng-show="isCreateMode()">Add session</button>
-                  </div>
-               </div>
-            </fieldset>
-
-         </form>
-
-      </div>
-      <div data-ng-switch-when="display">
-         <div data-ng-switch="isList()">
-            <div class="well" data-ng-switch-when="false">
-               <div class="pull-right">
-                  <a data-ng-show="resource.canUpdate()" data-ng-click="edit()">
-                  <i class="icon-edit-sign"></i></a> <a data-ng-show="resource.canRemove()" data-ng-click="remove()">
-                  <i class="icon-remove-sign"></i></a>
-               </div>
-
-               <h2>{{resource.data.title}}</h2>
-
-               {{resource.data.outline}}
-               <br />
-               {{resource.data.start|date:fullDate}} {{resource.data.start|date:shortTime}}-{{resource.data.end|date:shortTime}}
+            <div class="row">
+               <textfield name="Title" id="title" field="form.title" error="formval.title" help="The tile of the session" />
+               <textareafield name="Outline/Abstract" id="outline" field="form.outline" error="formval.outline" help="The outline or abstract for this session." />
             </div>
-            <div data-ng-switch-when="true">
-               <div class="well" data-ng-repeat="child in resource.data">
-                  <h2>{{child.title}}</h2>
-
-                  {{child.outline}}
-                  <br />
-                  {{child.start|date:fullDate}} {{child.start|date:shortTime}}-{{child.end|date:shortTime}}
+            <div class="row">
+               <datefield name="Start time" id="start" field="form.start" error="formval.start" help="When does the session begin?" />
+               <datefield name="End time" id="end" field="form.end" error="formval.end" help="When does the session end?" />
+            </div>
+            <div class="row">
+               <div class="form-group col-12">
+                  <hr />
+                  <button type="submit" class="btn btn-primary" data-ng-show="isEditMode()">Update session</button>
+                  <button type="submit" class="btn btn-primary" data-ng-show="isCreateMode()">Add session</button>
                </div>
+            </div>
+         </fieldset>
+
+      </form>
+
+   </div>
+   <div data-ng-switch-when="display">
+      <div data-ng-switch="isList()">
+         <div class="well" data-ng-switch-when="false">
+            <div class="pull-right">
+               <a data-ng-show="resource.canUpdate()" data-ng-click="edit()">
+               <i class="icon-edit-sign"></i></a> <a data-ng-show="resource.canRemove()" data-ng-click="remove()">
+               <i class="icon-remove-sign"></i></a>
+            </div>
+
+            <h1>{{resource.data.title}}</h1>
+
+            <abbr class="date">
+               {{resource.data.start|date:'EEEE d, yyyy'}} - {{resource.data.start|date:'hh:mm'}} to {{resource.data.end|date:'hh:mm'}}
+            </abbr>
+            <p class="outline" data-ng-bind-html-unsafe="resource.data.outline|htmlify" />
+         </div>
+         <div data-ng-switch-when="true">
+            <div class="well" data-ng-repeat="child in resource.data">
+               <h2>{{child.title}}</h2>
+
+               <abbr class="item-time">
+                  {{child.start|date:'EEEE d, yyyy'}} - {{child.start|date:'hh:mm'}} to {{child.end|date:'hh:mm'}}
+               </span>
             </div>
          </div>
       </div>
    </div>
-
 </div>
