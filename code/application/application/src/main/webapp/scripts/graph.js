@@ -91,7 +91,7 @@ module.provider('RestGraph', function() {
 	};
 	
 	Node.prototype.getLink = function(name) {
-		for(var i = 0; i < this.links; i++) {
+		for(var i = 0; i < this.links.length; i++) {
 			var link = this.links[i];
 			if(link.rel === name) {
 				return link;
@@ -127,6 +127,8 @@ module.provider('RestGraph', function() {
 			self._data = data.data;
 			self._children = discoverChildren({data: self._data, parent:self, $q: self.$q, $http: self.$http});  
 			d.resolve(self);
+		}, function(data){
+			d.reject(data);
 		});
 		return d.promise;
 	};
@@ -146,6 +148,8 @@ module.provider('RestGraph', function() {
 		this.$http['delete'](this._startURL).then(function(data) {
 			self._data = {};
 			d.resolve(self.parent);
+		}, function(data) {
+			d.reject(data);
 		});
 		return d.promise;
 	};

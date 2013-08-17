@@ -10,9 +10,11 @@ body {
 	
 }
 
-.user  img {
+.user img {
 	border: 1px solid #aaa;
 	padding: 1px;
+	height: 25px;
+	width: 25px;
 }
 
 
@@ -60,3 +62,10 @@ body {
 
 ## Forms
 
+
+
+## Angular
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}

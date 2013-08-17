@@ -1,4 +1,29 @@
 
+function UserCtrl($q, $rootScope, $scope) {
+	$scope.rendered = false;
+	$scope.authorized = false;
+
+	$rootScope.$watch('root', function(newvalue, oldvalue) {
+		if(angular.isUndefined(newvalue)) {
+			return;
+		}
+		$q.when(newvalue).then(function(root) {
+			$q.when(root.links).then(function(links){
+				angular.forEach(links, function(link) {
+					if(link.meta.rel === 'whoami') {
+						link.get().then(function(res) {
+							$scope.resource = res;
+							$scope.authorized = true;
+							$scope.rendered = true;
+						}, function() {
+							$scope.rendered = true;
+						});
+					}
+				});
+			});
+		});
+	});
+}
 function MainCtrl($q, $rootScope, $scope, $location, graph) {
 
 	var MODE_EDIT = "edit";

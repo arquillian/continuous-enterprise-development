@@ -42,17 +42,17 @@
           </li>
          </ul>
 
-          <ul class="nav navbar-nav pull-right">
-            <li class="user">
-                <a href="../auth"><img src="http://www.gravatar.com/avatar/3f27861ec08730fd02c91fe4129d2668?s=24" /> Aslak Knutsen</a>
+         <ul class="nav navbar-nav pull-right" data-ng-controller="UserCtrl" data-ng-show="rendered">
+	        <li class="user" data-ng-show="authorized">
+                <a href=""><img data-ng-src="{{resource.data.avatarUrl}}" /> {{resource.data.name}}</a>
             </li>
-            <li>
-              <a href=""><i class="icon-align-justify icon-white"></i></a>
-            </li>    
-          </ul>
+            <li class="user" data-ng-hide="authorized">
+               <a href="../auth" class="btn">Login</a>
+            </li>
+	     </ul>
        </div>
     </div>
-    <div class="container content" data-ng-view="">
+    <div class="container content" data-ng-view="" data-ng-cloak>
 
 
     </div>
