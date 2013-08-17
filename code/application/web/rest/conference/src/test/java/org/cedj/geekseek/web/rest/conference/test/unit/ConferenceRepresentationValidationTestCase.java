@@ -31,8 +31,8 @@ public class ConferenceRepresentationValidationTestCase extends NotNullValidatio
         ConferenceRepresentation rep = new ConferenceRepresentation();
         rep.setName("Name");
         rep.setTagLine("TagLine");
-        rep.setStart(new Date());
         rep.setEnd(new Date(System.currentTimeMillis()-3000));
+        rep.setStart(new Date());
 
         assertValidationConstraint(rep, "EndBeforeStart", "end");
     }
