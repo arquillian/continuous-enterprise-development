@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.cedj.geekseek.service.security.picketlink.HttpResponseHolder;
+import org.cedj.geekseek.service.security.picketlink.HttpObjectHolder;
 import org.picketlink.Identity;
 import org.picketlink.Identity.AuthenticationResult;
 import org.picketlink.authentication.AuthenticationException;
@@ -27,7 +27,7 @@ public class AuthServlet extends HttpServlet {
     private static final String LOCATION = "Location";
 
     @Inject // need to produce a Response so it can be used by the Authenticator
-    private HttpResponseHolder holder;
+    private HttpObjectHolder holder;
 
     @Inject
     private Identity identity;
@@ -39,7 +39,7 @@ public class AuthServlet extends HttpServlet {
         HttpServletRequest request = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)resp;
         HttpSession session = request.getSession();
-        holder.setup(response);
+        holder.setup(request, response);
 
         if(!identity.isLoggedIn()) {
             if(session.getAttribute(SESSION_REDIRECT) == null) {
@@ -63,6 +63,7 @@ public class AuthServlet extends HttpServlet {
             } catch(AuthenticationException e) {
                 response.setStatus(400);
                 response.getWriter().append(e.getMessage());
+                e.printStackTrace();
             }
         }
         else {

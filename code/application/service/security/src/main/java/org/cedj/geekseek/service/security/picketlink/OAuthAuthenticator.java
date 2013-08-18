@@ -25,10 +25,10 @@ public class OAuthAuthenticator extends BaseAuthenticator {
     private static final String AUTH_COOKIE_NAME = "auth";
     private static final String LOCATION = "Location";
 
-    @Inject
+    @Inject @PicketLink
     private Instance<HttpServletRequest> requestInst;
 
-    @Inject
+    @Inject @PicketLink
     private Instance<HttpServletResponse> responseInst;
 
     @Inject

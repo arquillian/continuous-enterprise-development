@@ -6,7 +6,7 @@ import java.net.URL;
 import javax.inject.Inject;
 
 import org.cedj.geekseek.service.security.oauth.AuthServlet;
-import org.cedj.geekseek.service.security.picketlink.HttpResponseHolder;
+import org.cedj.geekseek.service.security.picketlink.HttpObjectHolder;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -34,7 +34,7 @@ public class AuthServletTestCase {
     @Deployment
     public static WebArchive deploy() {
         return ShrinkWrap.create(WebArchive.class)
-            .addClasses(AuthServlet.class, HttpResponseHolder.class, ControllableAuthenticator.class)
+            .addClasses(AuthServlet.class, HttpObjectHolder.class, ControllableAuthenticator.class)
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
             .addAsLibraries(
                 Maven.resolver()
