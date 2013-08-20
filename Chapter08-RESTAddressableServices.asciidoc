@@ -780,7 +780,7 @@ For more information about Warp, visit arquillian.org[arquillian.org].
 
 We'll start by enabling the Arquillian Warp in the POM's +dependencyManagement+ section:
 
-[source]
+[source,xml]
 ----
 <dependency>
     <groupId>org.jboss.arquillian.extension</groupId>
@@ -793,7 +793,7 @@ We'll start by enabling the Arquillian Warp in the POM's +dependencyManagement+ 
 
 The above will lock down the versions correctly such that all Warp modules are of the expected version.  A +dependency+ declaration in the +dependencies+ section will make Warp available for our use:
 
-[source]
+[source,xml]
 ----
 <dependency>
     <groupId>org.jboss.arquillian.extension</groupId>
