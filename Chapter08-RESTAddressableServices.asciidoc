@@ -303,7 +303,7 @@ public Response create(REP representation) {
 }
 ----
 
-The +@POST+ annotation defines that this method will service HTTP +POST+ requests, and the +@Consumes+ annotation designates the valid media types.  The JAX-RS container will then map requests meeting those criteria to this +create+ method, passing along the +Representation+ of our +Domain+ object.  From there we may get a hook to the +Repository+, store the entity, and issue an HTTP +Response+ to the client.  Of importance is that we let the client know the ID of the entity which was created as part of the response.
+The +@POST+ annotation defines that this method will service HTTP +POST+ requests, and the +@Consumes+ annotation designates the valid media types.  The JAX-RS container will then map requests meeting those criteria to this +create+ method, passing along the +Representation+ of our +Domain+ object.  From there we may get a hook to the +Repository+, store the entity, and issue an HTTP +Response+ to the client.  Of importance is that we let the client know the ID of the entity which was created as part of the response; in this case, the ID is the URI to the newly-created resource which may take form similar to +Response: 201 Location: resource-uri+.
 
 We'll handle the other CRUD operations in similar fashion:
 
