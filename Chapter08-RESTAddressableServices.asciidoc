@@ -711,7 +711,7 @@ With our implementation in place leveraging JAX-RS to map our DAP to business me
 
 ==== A Black-Box Test
 
-The general flow of our first test will be to model a user's actions as she navigates through the site.  To accomplish execution of the test methods in sequence, we'll use Arquilian's +@InSequence+ annotation to signal the order of test execution.  This will follow the normal REST client flow from point A to B to C and so on.  We're going to execute requests to:
+The general flow of our first test will be to model a user's actions as she navigates through the site.  To accomplish execution of the test methods in sequence, we'll use Arquilian's +@InSequence+ annotation to signal the order of test execution.  This will really position the test class as more of a "test scenario", with each test method acting as the separate tests which must maintain a proper order.  In this fashion, we will follow the normal REST client flow from point A to B to C and so on.  We're going to execute requests to:
 
 * +GET+ The Root resource 
 * Locate the +Conference+ link
