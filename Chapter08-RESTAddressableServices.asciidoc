@@ -939,4 +939,49 @@ public void shouldReturnOKOnGETResource() throws Exception {
 
 Here we use Warp to produce the data we want the REST layer to receive, and validate that we obtain the correct HTTP response for a valid +GET+ request.
 
+Running this test locally, we'll see that Warp constructs an HTTP +GET+ request for us:
+
+----
+GET /9676980f-2fc9-4103-ae28-fd0261d1d7c3/api/conference/ac5390ad-5483-4239-850c-62efaeee7bf1 HTTP/1.1[\r][\n]
+Accept: application/vnd.ced+xml; type=conference[\r][\n]
+Host: 127.0.1.1:18080[\r][\n]
+Connection: Keep-Alive[\r][\n]
+Accept-Encoding: gzip,deflate[\r][\n]
+----
+
+Because we've coded our JAX-RS endpoints and backing business objects correctly, we'll receive the expected reply (an HTTP +200 OK+ status):
+
+----
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns3:conference xmlns:ns2="urn:ced:link" xmlns:ns3="urn:ced:conference"><ns2:link href="http://127.0.1.1:18080/9676980f-2fc9-4103-ae28-fd0261d1d7c3/api/conference/ac5390ad-5483-4239-850c-62efaeee7bf1" rel="self"/><ns2:link href="http://127.0.1.1:18080/9676980f-2fc9-4103-ae28-fd0261d1d7c3/api/conference/ac5390ad-5483-4239-850c-62efaeee7bf1/session" rel="session"/><end>2013-08-21T00:14:44.159-04:00</end><name>Name</name><start>2013-08-21T00:14:44.159-04:00</start><tagLine>TagLine</tagLine></ns3:conference>"
+HTTP/1.1 200 OK
+X-Arq-Enrichment-Response=3778738317992283532
+Last-Modified=Wed, 21 Aug 2013 04:14:44 GMT
+Content-Type=application/vnd.ced+xml; type=conference
+Content-Length=564
+Via=1.1.overdrive.home
+
+<ns3:conference xmlns:ns3="urn:ced:conference">
+  <ns2:link xmlns:ns2="urn:ced:link" 
+    href="http://127.0.1.1:18080/9676980f-2fc9-4103-ae28-fd0261d1d7c3/api/conference/ac5390ad-5483-4239-850c-62efaeee7bf1" 
+    rel="self"/>
+  <ns2:link xmlns:ns2="urn:ced:link" 
+    href="http://127.0.1.1:18080/9676980f-2fc9-4103-ae28-fd0261d1d7c3/api/conference/ac5390ad-5483-4239-850c-62efaeee7bf1/session" 
+    rel="session"/>
+  <end>
+    2013-08-21T00:14:44.159-04:00
+  </end>
+  <name>
+    Name
+  </name>
+  <start>
+    2013-08-21T00:14:44.159-04:00
+  </start>
+  <tagLine>
+    TagLine
+  </tagLine>
+</ns3:conference>
+----
+
+The response will contain our links to related resources, as well as information about the requested +Conference+ object in the XML +xmlns:ns3="urn:ced:conference"+ format.  Using Warp we may interact with and perform validations upon these types of payloads with ease.
+
 There are plenty of other detailed Warp examples throughout the tests of the REST modules in the GeekSeek application code; we advise readers to peruse the source for additional ideas in using this very powerful tool for white-box testing of the request/response model.
