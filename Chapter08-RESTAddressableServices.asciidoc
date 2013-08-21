@@ -763,7 +763,7 @@ public static WebArchive deploy() {
 
 Because this is a black-box test, we set +testable+ to +false+ to tell Arquillian not to equip the deployment with any additional test runners; we don't want to test in-container here, but rather run requests from the outside of the server and analyze the response.  The test should verify a behavior; sharing of objects might be easier to code and update, but could also sneak in unexpected client changes which should have been caught by the tests.  We're interested only in testing the contract between the client and the server, which is specified by our DAP.  Thus, black-box testing is an appropriate solution in this case.
 
-In this deployment, we'll also use "fake" implementations for the Repository / JPA layer; these are provided by the +TestConferenceRepository+ and +TestConferenceRepository+ test classes which simulate the JPA layer for testing purposes; we won't be hitting the database for the tests at this level of integration.  Later on, when we fully-integrate the application, we'll bring JPA back into the picture.
+In this deployment, we'll also use "fake" implementations for the Repository / JPA layer; these are provided by the +TestConferenceRepository+ and +TestSessionRepository+ test classes which simulate the JPA layer for testing purposes; we won't be hitting the database for the tests at this level of integration.  Later on, when we fully-integrate the application, we'll bring JPA back into the picture.
 
 [source,java]
 ----
