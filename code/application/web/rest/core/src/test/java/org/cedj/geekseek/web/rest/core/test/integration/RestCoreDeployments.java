@@ -4,9 +4,8 @@ import java.io.File;
 
 import org.cedj.geekseek.web.rest.core.Resource;
 import org.cedj.geekseek.web.rest.core.annotation.ResourceModel;
-import org.cedj.geekseek.web.rest.core.annotation.StartBeforeEnd;
 import org.cedj.geekseek.web.rest.core.exception.CatchAllExceptionMapper;
-import org.cedj.geekseek.web.rest.core.interceptor.ValidatedInterceptor;
+import org.cedj.geekseek.web.rest.core.interceptor.RESTInterceptorEnabler;
 import org.cedj.geekseek.web.rest.core.provider.JSONMappingExceptionHandler;
 import org.cedj.geekseek.web.rest.core.provider.JSONProvider;
 import org.cedj.geekseek.web.rest.core.root.RootResource;
@@ -34,7 +33,7 @@ public class RestCoreDeployments {
             .addPackages(false,
                 Resource.class.getPackage(),
                 ResourceModel.class.getPackage(),
-                ValidatedInterceptor.class.getPackage(),
+                RESTInterceptorEnabler.class.getPackage(),
                 CatchAllExceptionMapper.class.getPackage(),
                 StartBeforeEndValidator.class.getPackage())
             .addPackages(true,
@@ -60,7 +59,7 @@ public class RestCoreDeployments {
         return new StringAsset("<?xml version=\"1.0\"?>" +
                 "<beans>" +
                   "<interceptors>" +
-                    "<class>org.cedj.geekseek.web.rest.core.interceptor.LinkedInterceptor</class>" +
+                    "<class>org.cedj.geekseek.web.rest.core.interceptor.RESTInterceptorEnabler</class>" +
                   "</interceptors>" +
                 "</beans>");
     }

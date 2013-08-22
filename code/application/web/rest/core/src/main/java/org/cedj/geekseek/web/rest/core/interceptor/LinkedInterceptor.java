@@ -2,24 +2,24 @@ package org.cedj.geekseek.web.rest.core.interceptor;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import javax.ws.rs.core.Response;
 
 import org.cedj.geekseek.web.rest.core.LinkProvider;
 import org.cedj.geekseek.web.rest.core.LinkableRepresenatation;
-import org.cedj.geekseek.web.rest.core.annotation.Linked;
 
-@Linked
-@Interceptor
-public class LinkedInterceptor {
+public class LinkedInterceptor implements RESTInterceptor {
 
     @Inject
     private Instance<LinkProvider> linkProviers;
 
-    @AroundInvoke
-    public Object link(InvocationContext ic) throws Exception {
+    @Override
+    public int getPriority() {
+        return -10;
+    }
+
+    @Override
+    public Object invoke(InvocationContext ic) throws Exception {
         Object obj = ic.proceed();
         if(hasLinkableRepresentations(obj)) {
             linkAllRepresentations(obj);

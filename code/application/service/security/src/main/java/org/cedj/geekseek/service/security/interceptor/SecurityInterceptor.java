@@ -3,8 +3,6 @@ package org.cedj.geekseek.service.security.interceptor;
 import java.lang.reflect.Method;
 
 import javax.inject.Inject;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
@@ -14,17 +12,20 @@ import javax.ws.rs.core.Response.Status;
 
 import org.cedj.geekseek.domain.Current;
 import org.cedj.geekseek.domain.user.model.User;
-import org.cedj.geekseek.web.rest.core.annotation.Secured;
+import org.cedj.geekseek.web.rest.core.interceptor.RESTInterceptor;
 
-@Secured
-@Interceptor
-public class SecurityInterceptor {
+public class SecurityInterceptor implements RESTInterceptor {
 
     @Inject @Current
     private User user;
 
-    @AroundInvoke
-    public Object verify(InvocationContext ic) throws Exception {
+    @Override
+    public int getPriority() {
+        return 0;
+    }
+
+    @Override
+    public Object invoke(InvocationContext ic) throws Exception {
 
         Method target = ic.getMethod();
         if(isStateChangingMethod(target)) {

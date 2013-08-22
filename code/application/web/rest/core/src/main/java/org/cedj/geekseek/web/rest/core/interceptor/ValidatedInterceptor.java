@@ -4,8 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.inject.Inject;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -14,17 +12,18 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 
 import org.cedj.geekseek.web.rest.core.Representation;
-import org.cedj.geekseek.web.rest.core.annotation.Validated;
 
-@Validated
-@Interceptor
-public class ValidatedInterceptor {
+public class ValidatedInterceptor implements RESTInterceptor {
 
     @Inject
     private Validator validator;
 
-    @AroundInvoke
-    public Object validate(InvocationContext ic) throws Exception {
+    @Override
+    public int getPriority() {
+        return 50;
+    }
+
+    public Object invoke(InvocationContext ic) throws Exception {
         if(isIncomingDataRequest(ic)) {
             validateAllRepresentations(ic);
         }

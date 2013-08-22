@@ -10,6 +10,6 @@ import javax.interceptor.InterceptorBinding;
 @InterceptorBinding
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Validated {
+public @interface REST {
 
 }

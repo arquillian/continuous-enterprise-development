@@ -8,9 +8,7 @@ import java.lang.annotation.Target;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Stereotype;
 
-@Secured
-@Linked
-@Validated
+@REST
 @RequestScoped
 @Stereotype
 @Retention(RetentionPolicy.RUNTIME)
