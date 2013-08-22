@@ -28,6 +28,7 @@
     <version.agorava>0.6.1</version.agorava>
     <version.agorava_twitter>0.6.0</version.agorava_twitter>
     <version.picketlink>2.5.0.CR1</version.picketlink>
+    <version.resteasy>2.3.6.Final</version.resteasy>
 
     <version.webjars_locator>0.5</version.webjars_locator>
     <version.webjars_jquery>2.0.3</version.webjars_jquery>
@@ -113,6 +114,12 @@
         <artifactId>picketlink-impl</artifactId>
         <version>${version.picketlink}</version>
         <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.resteasy</groupId>
+        <artifactId>resteasy-jaxrs</artifactId>
+        <version>${version.resteasy}</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.webjars</groupId>
