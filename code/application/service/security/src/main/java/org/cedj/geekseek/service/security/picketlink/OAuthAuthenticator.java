@@ -1,6 +1,7 @@
 package org.cedj.geekseek.service.security.picketlink;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Event;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
@@ -15,6 +16,7 @@ import org.agorava.core.cdi.Current;
 import org.agorava.twitter.model.TwitterProfile;
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.user.model.User;
+import org.cedj.geekseek.service.security.oauth.SuccessfulAuthentication;
 import org.picketlink.annotations.PicketLink;
 import org.picketlink.authentication.BaseAuthenticator;
 
@@ -40,6 +42,8 @@ public class OAuthAuthenticator extends BaseAuthenticator {
     @Inject @Twitter @Current
     private OAuthSession session;
 
+    @Inject
+    private Event<SuccessfulAuthentication> successfull;
 
     @Override
     public void authenticate() {
@@ -66,6 +70,9 @@ public class OAuthAuthenticator extends BaseAuthenticator {
                 if(verifier != null) {
                     session.setVerifier(verifier);
                     service.initAccessToken();
+
+                    // https://issues.jboss.org/browse/AGOVA-53
+                    successfull.fire(new SuccessfulAuthentication(service.getSession().getUserProfile(), service.getAccessToken()));
 
                     String screenName = ((TwitterProfile)service.getSession().getUserProfile()).getScreenName();
                     User user = repository.get(screenName);

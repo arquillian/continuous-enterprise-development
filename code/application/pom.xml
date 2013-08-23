@@ -40,10 +40,10 @@
 
     <version.jboss_spec>3.0.1.Final</version.jboss_spec>
 
-    <version.arquillian_core>1.1.0.Final</version.arquillian_core>
+    <version.arquillian_core>1.1.1.Final</version.arquillian_core>
     <version.arquillian_persistence>1.0.0.Alpha6</version.arquillian_persistence>
-    <version.arquillian_drone>1.1.1.Final</version.arquillian_drone>
-    <version.arquillian_graphene>2.0.0.Alpha3</version.arquillian_graphene>
+    <version.arquillian_drone>1.2.0.Alpha3</version.arquillian_drone>
+    <version.arquillian_graphene>2.0.0.Alpha4</version.arquillian_graphene>
     <version.arquillian_warp>1.0.0.Alpha3</version.arquillian_warp>
     <version.arquillian_warp_rest>1.0.0.Final-SNAPSHOT</version.arquillian_warp_rest>
     <version.restassured>1.8.0</version.restassured>
@@ -120,6 +120,12 @@
         <artifactId>resteasy-jaxrs</artifactId>
         <version>${version.resteasy}</version>
         <scope>provided</scope>
+        <exclusions>
+          <exclusion>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.webjars</groupId>
@@ -362,6 +368,13 @@
         <groupId>org.cedj.geekseek</groupId>
         <artifactId>geekseek-service-security</artifactId>
         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.cedj.geekseek</groupId>
+        <artifactId>geekseek-service-security</artifactId>
+        <version>${project.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
