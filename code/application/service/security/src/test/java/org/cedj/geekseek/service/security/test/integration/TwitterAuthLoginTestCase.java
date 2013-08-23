@@ -35,7 +35,6 @@ public class TwitterAuthLoginTestCase {
             .addAsLibraries(UserDeployments.user())
             .addAsLibraries(
                 Maven.resolver()
-                    .offline()
                     .loadPomFromFile("pom.xml")
                     .resolve("org.agorava:agorava-twitter-cdi", "org.picketlink:picketlink-impl")
                     .withTransitivity()

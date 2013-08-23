@@ -38,7 +38,6 @@ public class AuthServletTestCase {
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
             .addAsLibraries(
                 Maven.resolver()
-                    .offline()
                     .loadPomFromFile("pom.xml")
                     .resolve("org.picketlink:picketlink-impl")
                         .withTransitivity()
