@@ -1,17 +1,11 @@
 package org.cedj.geekseek.domain.attachment.test.integration;
 
-import static org.cedj.geekseek.domain.attachment.test.TestUtils.createAttachment;
-
-import javax.inject.Inject;
-
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.attachment.model.Attachment;
 import org.cedj.geekseek.domain.attachment.test.TestUtils;
 import org.cedj.geekseek.domain.test.integration.CoreDeployments;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
-import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -19,8 +13,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
+
+import static org.cedj.geekseek.domain.attachment.test.TestUtils.createAttachment;
+
 @RunWith(Arquillian.class)
-@Transactional(value = TransactionMode.COMMIT)
 public class AttachmentRepositoryTestCase {
 
     // Given
@@ -58,7 +55,7 @@ public class AttachmentRepositoryTestCase {
     // Story: As a User I should be able to update an Attachment
 
     @Test
-    public void shouldBeAbleToUpdateAttachmnt() throws Exception {
+    public void shouldBeAbleToUpdateAttachment() throws Exception {
         String updatedTitle = "Test 2";
         Attachment attachment = createAttachment();
         attachment = repository.store(attachment);
@@ -75,7 +72,7 @@ public class AttachmentRepositoryTestCase {
     // Story: As a User I should be able to remove an Attachment
 
     @Test
-    public void shouldBeAbleToRemoveAttachmnt() throws Exception {
+    public void shouldBeAbleToRemoveAttachment() throws Exception {
         Attachment attachment = createAttachment();
         attachment = repository.store(attachment);
 

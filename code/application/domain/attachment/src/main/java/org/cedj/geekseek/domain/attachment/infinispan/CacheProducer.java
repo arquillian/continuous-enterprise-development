@@ -41,11 +41,11 @@ public class CacheProducer {
         return manager.getCache();
     }
 
-    public void destory(@Disposes EmbeddedCacheManager manager) {
+    public void destroy(@Disposes EmbeddedCacheManager manager) {
         manager.stop();
     }
 
-    public void destory(@Disposes Cache<?, ?> cache) {
+    public void destroy(@Disposes Cache<?, ?> cache) {
         cache.stop();
     }
 }

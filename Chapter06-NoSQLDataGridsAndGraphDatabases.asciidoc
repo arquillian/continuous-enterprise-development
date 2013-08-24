@@ -1,0 +1,1244 @@
+== NoSQL: Data Grids and Graph Databases
+
+_"I’m more of an adventurous type than a relationship type.." - Bob Dylan_
+
+Until relatively recently, the RDBMS reigned over data in enterprise applications by a wide margin when contrasted with other approaches.  Commercial offerings from http://www.oracle.com/index.html[Oracle] and established open-source projects like http://www.mysql.com/[MySQL] (reborn https://mariadb.org/[MariaDB]) and http://www.postgresql.org/[PostgreSQL] became defacto choices when it came to storing, querying, archiving, accessing, and obtaining data.  In retrospect, it's shocking that given the varying requirements from those operations, one solution was so heavily lauded for so long.
+
+In the late 2000s, a trend away from the strict _ACID_ transactional properties could be clearly observed given the emergence of data stores that organized information differently from the traditional table model:
+
+* Document-oriented
+* Object-oriented
+* Key/Value stores
+* Graph models
+
+In addition, many programmers were beginning to advocate for a release from strict transactions; in many use cases it appeared that this level of isolation wasn't enough of a priority to warrant the computational expense necessary to provide ACID guarantees.
+
+In 2009, Amazon's Werner Vogels published http://dl.acm.org/citation.cfm?doid=1435417.1435432[Eventually Consistent], an article which advocated for the tolerance of inconsistent data in large, distributed systems.  He argued that this was central to providing a system that could continue to perform effectively under load, and could withstand times when part of a split data model was effectively unavailable for use.  In contrast with the rigid ACID properties, this system could be described as _BASE_ (Basically-Available, Soft state, Eventual consistency).  
+
+The tenants of _eventual consistency_ are as the name implies; in a distributed system, updates to a data item will, over time, be reflected in all nodes.  There is no guarantee when, or that this will happen immediately, so it's possible that disparate nodes in a replicated database may not all be in sync at any given point in time.  Vogels argued that this was a condition to embrace, not fear.
+
+Thus began the rise of the newly-coined _NoSQL_ systems, an umbrella term which encompasses very generally data solutions which do not adhere to the ACID properties or store information in a tabular layout.
+
+It's important to remember that as developers we're not prescribed to any set of solutions before we've fully analyzed the problem.  The overwhelming dominance of RDBMS is a clear sign that as an industry we'd stopped focusing on the operations needed by _our_ data model, and instead were throwing all persistent storage features to solutions that perhaps were not the most efficient at solving a particular storage or querying problem.
+
+Let's have a look at a few scenarios in which an RDBMS might not be the best-suited solution.
+
+=== RDBMS: Bad at Binary Data
+
+An RDBMS is absolutely capable of storing binary data of arbitrary type.  Typically done in a column of type +BLOB+ (Binary Large OBject), +CLOB+ (Character Large OBject), or some related varient, these fields can hold images, PDFs, or anything else we'd like to persist.  There are a few caveats, however.
+
+Most RDBMS engines have mechanisms to ensure that queries are executed quickly.  One device is a _query cache_, a temporary location held in memory which remembers the result of recently- or often-executed queries and holds them until the data changes, invalidating the cached result and evicting the result from the cache.  This space is precious and valuable; it's typically limited by the amount of RAM available and configuration parameters supported by the vendor.  When we add +BLOB+ data into a query and it makes its way into the cache, this very quickly fills up space that's better used for holding references or other small bits of useful data.  When a query is not available in the cache or an index is not available, a full table scan must be performed to attain the result.  It's therefore best to ensure that our large bits of data stay clear of the cache.
+
+The other issue with a traditional RDMBS is that its adherence to the ACID properties is, in most cases, overkill for fetching documents.  It's entirely possible (and probable) in a distributed environment with many database nodes that the user can see data that's not entirely up-to-date.  Consider the case of  http://twitter.com/[Twitter] or http://www.facebook.com[Facebook]; seeing the newest tweets or status updates in your feed is not a request that demands completely up-to-date information.  _Eventually_ you'll want to catch all the posts of your friends, but this doesn't need to be available to you immediately after the update is posted to the server.  To provide complete consistency across the database implies that there is _locking_ and _blocking_ taking place; other writes and reads in this concurrent environment would have to wait until the new update is fully committed.  Before long, we'd have requests queueing up at a rate likely to exceed that which the writes could be committed, and the system could grind to a standstill.  The mark of a functioning concurrent environment is to avoid blocking wherever possible.
+
+==== Data Grids
+
+In an era where _big data_ is coming more and more relevant, we're faced with the problem of _scaling_.  Our systems are continually asked to store and query upon larger and larger data sets, and one machine is unlikely to be able to handle the load for a non-trivial, public application.
+
+Traditional RDBMS implementations typically offer one or two approaches.  First, _replication_ involves a write-only _master_ instance where a single machine is knighted as the authoritative instance.  _Slaves_ then pull data from the master's write operations and replay those writes locally, thus able to serve read requests.  This works well in an application where there is a low write-to-read ratio; the reads will scale out to new slaves while the writes remain centralized on the master.
+
+Second, _clustering_ is an option where a number of database instances keep state current over the network.  This is a generally a preferred approach in a write-heavy environment where scaling out only the read operations is unlikely to provide much performance benefit.  Full clustering has significant overhead, however, so the costs should be weighed carefully.
+
+Data grids work a little bit differently.  They're designed to store pieces of data across available nodes; each node may not contain the entire data set.  Because of this arrangement, they're built to scale out by simply adding more nodes to the network.  Configuration is typically available to control the amount of redundancy; should each piece of data live on two nodes, three, or four?  Should a node go down, the system is built to re-distribute the information contained in the now-offline node.  This makes data grids especially fault-tolerant and _elastic_; nodes may be provisioned at runtime.  The key to a data grid lies in its ability to partition the data and distribute it across nodes on the network.
+
+===== Infinispan
+
+image:images/ch06-nosql/infinispan_logo.png["Infinispan"]
+
+http://www.jboss.org/infinispan/[Infinispan] is an open-source data grid from the JBoss Community.  It's API centers around a +Cache+, a +Map+ structure which provides a mapping between a key and value (this does not actually extend the +java.util.Map+ interface from the Java Collections library).  The full +javax.cache+ API is defined by the Java Community Process in http://jcp.org/en/jsr/detail?id=107[JSR-107], and while Infinispan is not a direct implementor of this specification, it contains many ideas adjacent to and inspiring JSR-107 and the newer Data Grids Specification http://www.jcp.org/en/jsr/detail?id=347[JSR-347].  Infinispan bills itself as a "Transactional in-memory key/value NoSQL datastore & Data Grid".
+
+[NOTE]
+====
+Readers keen on gaining better insight into Infinispan and Data Grids are urged to check out http://www.packtpub.com/infinispan-data-grid-platform/book[_Infinispan Data Grid Platform_] by Francesco Marchioni and Manik Surtani from http://www.packtpub.com/[Packt Publishing].  A guide to the Infinispan User API is located at https://docs.jboss.org/author/display/ISPN/Using+the+Cache+API[https://docs.jboss.org/author/display/ISPN/Using+the+Cache+API].
+====
+
+The general idea behind Infinispan is that it aims to provide unlimited heap to keep all objects available in memory.  For instance, if we have an environment of 50 servers each with 2GB available RAM, the total heap size is 100GB.  When the data set becomes too large for the currently-deployed nodes, new memory can be added in the form of new nodes.  This keeps all data quickly-accessible, though it may be partitioned across nodes.  This is not an issue, as every item remains accessible from every node in the grid, even though the current node may not be the one storing the data.
+
+This makes Infinispan well-suited to holding large objects that may have otherwise been baked into a traditional RDBMS model.  Its implementation is versatile enough to be used in other applications, for instance as a local cache, but for the purposes of our GeekSeek application we'll be leveraging it to handle the storage and retrieval of our binary data.
+
+=== RDBMS: Bad At Relationships
+
+The greatest irony of the _Relational_ Database Management System is that they start to break down when we need to model complex _relationships_.  As we've seen, a traditional RDBMS will associate data types by drawing pointers between tables using foreign-key relationships:
+
+***INSERT IMAGE OF DATA TYPE A WITH A REFERENCE TO DATA TYPE B***
+
+When we go to query for these relationships we often perform an operation called an +_SQL JOIN_+ to return a result of rows from two or more tables.  This process involves resolving any foreign keys to provide a _denormalized_ view; one that combines all relevant data into a form that's useful for us as humans to interpret, but might not be the most efficient for storage or searching purposes.
+
+The problem is that running joins between data types is an inherently expensive operation, and often we need to join more than two tables.  Sometimes we even need to join _results_.  Consider the following example which has now become a commonplace feature among social media:
+
+Andy has a set of friends.  His friends also each have a set of friends.  To find all of the people who are friends with both Andy and his friends, we might do something like:
+
+* Find all of Andy's friends
+* For each of those friends, find their friends (3rd-degree friends)
+* For each of the 3rd-degree friends, determine who is also friends directly with Andy
+
+That amounts to a lot of querying and and joining.  What makes this approach unworkable from a computer science standpoint is the use of the term _for each_, which indicates a loop.  The above example has two of these, creating a computational problem with _geometric complexity_ at best.  As the size of the friend network increases linearly, the time it will take to determine a result increases by factors of magnitude.  Eventually (and it don't take a very large social network size), our system will be unable to perform these calculations in a reasonable amount of time, if at all.
+
+Additionally, the approach outlined in the above example will need to either search entire tables for the correct foreign key relationships or maintain a separate index for each type of query.  Indexing adds some overhead to write operations; whenever a row is updated or added, the index must reflect that.  And working devoid of an index will require the database to do a full table scan.  If the size of the table is large enough that it cannot be contained in-memory (RAM) or the query cannot be held in a cache, now we introduce another serious roadblock as the system must resort to reading from physical disk, a far slower undertaking.
+
+When it comes to complex relationships involving tables of any substantial size, the classic RDBMS approach is simply not the most intelligent way to model these resources.
+
+==== Graph Theory
+
+The problem above illustrates that we're simply using the wrong tool for the job.  RDBMS excels at storage of tabular data, and even does a passable job of drawing simple relationships.  
+
+What we want to do here is easily explore _transitive relationships_ without a geometric complexity problem, so we need to tackle the problem from a different angle.  Students of computer science will remember studying various data structures, their strengths and weaknesses.  In this case, we benefit from turning to the writings of  mathematician Leonhard Euler on the _Seven Bridges of Königsberg_, which in 1735 established the roots of _graph theory_.
+
+Graphs are data structures comprised from _nodes_ and _vertices_; the node may represent our data, while the vertex is the relationship or edge.  Perhaps this is better explained visually:
+
+***INSERT IMAGE OF NODES AND VERTICES***
+
+Using this view of our data points and the relationships between them, we may apply much more efficient algorithms for:
+
+* Calculating the shortest distance between two nodes
+* Determining a path from one node to another
+* Finding subgraphs and intersections based on query criteria
+
+We'll be using a graph database to represent some of the relationships between the data held in our RDBMS; we can think of this as a "relationship layer" atop our pure data storage model.
+
+===== Neo4j
+
+image:images/ch06-nosql/neo4j_logo.jpg["Neo4j"]
+
+Neo4j is is an open source, transactional graph database that *does* adhere to the ACID properties.  Both its user view and its backing storage engine use underlying graph structures, so it achieves the performance we'd expect from applying graph theory to queries it's suited to serve.  Because of this the Neo4j documentation touts performance one thousand times faster than possible by RDBMS for connected data problems.
+
+[NOTE]
+====
+For those looking to understand Graph Databases and Neo4j in greater detail, we recommend http://graphdatabases.com/[Graph Databases] by Robinson/Webber/Eifrem from http://shop.oreilly.com/product/0636920028246.do[O'Reilly Media].
+====
+
+As our GeekSeek application has a social component (who is attending which conferences, who is following speakers and attendees, etc), we'd like to put in place a solution that will enable us to augment the data in our RDBMS to:
+
+* Draw relationships between data unrelated in the RDBMS schema
+* Quickly query recursive relationships
+* Efficiently seek out information relevant to users based on relationship data
+
+=== Use Cases and Requirements
+
+We've already seen the domain model for our GeekSeek application in the previous chapter; this encompasses all of our +Conference+, +Session+, +User+, and +Venue+ entities.  The link between +Conference+ and +Session+ is fairly restricted, so we use an RBDMS relationship to handle this.
+
+We'd also like to be able to introduce the notion of an +Attachment+; this can be any bit of supporting documentation which may be associated with a +Conference+ or +Session+.  Therefore we have the requirement:
+
+----
+As a User I should be able to Add/Change/Delete an Attachment.
+----
+
+Because the +Attachment+ is binary data (perhaps a PDF, +.doc+, or other related material), we'll store these in a data grid backend using Infinispan.
+
+Additionally, we'd like to introduce some relationships atop our existing data model.  
+
+Adding an +Attachment+ is wonderful, but it won't have much utility for us unless we somehow associate this information with the entity it represents.  Therefore, we have the requirement:
+
+----
+As a User I should be able to Add/Delete an Attachment to a Conference
+
+As a User I should be able to Add/Delete an Attachment to a Session
+----
+
+A +User+ may attend or speak at a +Conference+, and it'll be useful to see who might be nearby while we're at the show.  So we also have the general requirement:
+
+----
+As a User I should be able to SPEAK at a Conference
+
+As a User I should be able to ATTEND a Conference
+----
+
+Because this represents a potentially recursive situation ("I want to see all the attendees at conferences in which I'm a speaker"), we'd be smart to use a graph structure to model these ties.
+
+=== Implementation 
+
+==== Attachment
+
+We'll start by introducing the model for our +Attachment+.  Because this will not be stored in our RDBMS engine, we'll create a value object to hold the data describing this entity, and it will not be an +@Entity+ under the management of JPA.  We can accomplish this by making a simple class to hold our fields, +org.cedj.geekseek.domain.attachment.model.Attachment+:
+
+[source,java]
+----
+public class Attachment implements Identifiable, Timestampable, Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private String id;
+    private String title;
+    private String mimeType;
+    private URL url;
+    private Date created;
+    private Date updated;
+----
+
+This class declaration will adhere to the contracts we've seen before in +Identifiable+ and +Timestampable+, and has no JPA annotations or metadata as we'll be delegating the persistent operations of this class to Infinispan.
+
+We should also be sure that these +Attachment+ objects are in valid state, so we'll add some assertion checks and intelligent defaults along the way.
+
+[source,java]
+----
+    protected Attachment() {
+        this.id = UUID.randomUUID().toString();
+        this.created = new Date();
+    }
+
+    public Attachment(String title, String mimeType, URL url) {
+        this();
+        requireNonNull(title, "Title must be specified)");
+        requireNonNull(mimeType, "MimeType must be specified)");
+        requireNonNull(url, "Url must be specified)");
+        this.title = title;
+        this.mimeType = mimeType;
+        this.url = url;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Attachment setTitle(String title) {
+        requireNonNull(title, "Title must be specified)");
+        this.title = title;
+        updated();
+        return this;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public Attachment setMimeType(String mimeType) {
+        requireNonNull(mimeType, "MimeType must be specified)");
+        this.mimeType = mimeType;
+        updated();
+        return this;
+    }
+
+    public URL getUrl() {
+        return url;
+    }
+
+    public Attachment setUrl(URL url) {
+        requireNonNull(url, "Url must be specified)");
+        this.url = url;
+        updated();
+        return this;
+    }
+
+    public Date getLastUpdated() {
+        return updated == null ? null:(Date)updated.clone();
+    }
+
+    @Override
+    public Date getCreated() {
+        return created == null ? null:(Date)created.clone();
+    }
+
+    @Override
+    public Date getLastModified() {
+        return getLastUpdated() == null ? getCreated():getLastUpdated();
+    }
+
+    private void updated() {
+        this.updated = new Date();
+    }
+}
+----
+
+Of note are the calls to our +updated+ method, which will set the timestamp to the current time on any state change operation.
+
+Recall that our persistence layer for objects, whether through JPA or other means, operates through the +Repository+ abstraction; this provides hooks for all CRUD operations.  The last chapter illustrated a +Repository+ backed by JPA and the +EntityManager+, but because we'll be storing +Attachment+ objects in a data grid, we need an implementation which will delegate those operations to Infinispan.  +org.cedj.geekseek.domain.attachment.AttachmentRepository+ handles this for us:
+
+[source,java]
+----
+@Stateless
+@LocalBean
+@Typed(AttachmentRepository.class)
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+public class AttachmentRepository implements Repository<Attachment> {
+----
+
+We're implementing this +AttachmentRepository+ as a Stateless Session EJB, where all business methods are executed inside the context of a transaction.  If a transaction is already in flight, it will be used, else a new one will be started at the onset of the method invocation and committed when complete.
+
+Our storage engine will be accessed via the Infinispan API's +org.infinispan.Cache+, so we'll inject this using CDI:
+
+[source,java]
+----
+@Inject
+private Cache<Object, Map<String, String>> cache;
+----
+
+Armed with a hook to the Infinispan grid, we can then implement the methods of the +Repository+ contract using the Infinispan API:
+
+[source,java]
+----
+    @Override
+    public Class<Attachment> getType() {
+        return Attachment.class;
+    }
+
+    @Override
+    public Attachment store(Attachment entity) {
+        try {
+            cache.put(entity.getId(), serialize(entity));
+        } catch (Exception e) {
+            throw new RuntimeException("Could not store Attachment with id " + entity.getId());
+        }
+        return get(entity.getId());
+    }
+
+    @Override
+    public Attachment get(String id) {
+        try {
+            Map<String, String> value = (Map<String, String>)cache.get(id);
+            if(value == null) {
+                return null;
+            }
+            return deserialize(value);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not retreive Attachment with id " + id, e);
+        }
+    }
+
+    @Override
+    public void remove(Attachment entity) {
+        cache.remove(entity.getId());
+    }
+----
+
+Because the +Cache.put+ and +Cache.get+ operations act on type of +Map<String,String>+, we provide the methods +serialize+ and +deserialize+ to convert our own +Attachment+ into a detyped view:
+
+[source,java]
+----
+    private Map<String, String> serialize(Attachment attachment) throws Exception {
+        Map<String, String> map = new HashMap<String, String>();
+
+        for(Field f : attachment.getClass().getDeclaredFields()) {
+            if(!Modifier.isStatic(f.getModifiers())) {
+                if(!f.isAccessible()) {
+                    f.setAccessible(true);
+                }
+                Object value = f.get(attachment);
+                if(value != null) {
+                    if(f.getType() == Date.class) {
+                        value = ((Date)value).getTime();
+                    }
+                    map.put(f.getName(), String.valueOf(value));
+                }
+            }
+        }
+        return map;
+    }
+
+    private Attachment deserialize(Map<String, String> values) throws Exception {
+        Attachment attachment = createNewInstance();
+
+        for(Map.Entry<String, String> entry : values.entrySet()) {
+            Field f =  Attachment.class.getDeclaredField(entry.getKey());
+            if(!f.isAccessible()) {
+                f.setAccessible(true);
+            }
+            if(f.getType() == String.class) {
+                f.set(attachment, entry.getValue());
+            } else if(f.getType() == Date.class) {
+                Date date = new Date();
+                date.setTime(Long.parseLong(entry.getValue()));
+                f.set(attachment, date);
+            } else if(f.getType() == URL.class) {
+                f.set(attachment, new URL(entry.getValue()));
+            }
+        }
+        return attachment;
+    }
+
+    private Attachment createNewInstance() throws
+        NoSuchMethodException, 
+        InstantiationException, 
+        IllegalAccessException,
+        InvocationTargetException {
+            Constructor<Attachment> constructor =
+               Attachment.class.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            Attachment attachment = constructor.newInstance();
+            return attachment;
+    }
+}
+----
+
+Our +AttachmentRepository+ relies upon an Infinispan +Cache+, so we must make a CDI producer to create the cache instance to be injected.  This is handled by +org.cedj.geekseek.domain.attachment.infinispan.CacheProducer+:
+
+[source,java]
+----
+public class CacheProducer {
+
+    @Produces @ApplicationScoped
+    public EmbeddedCacheManager create() {
+        GlobalConfiguration global = new GlobalConfigurationBuilder()
+            .globalJmxStatistics().cacheManagerName("geekseek")
+            .build();
+
+        Configuration local = new ConfigurationBuilder()
+            .clustering()
+                .cacheMode(CacheMode.LOCAL)
+            .transaction()
+                .transactionMode(TransactionMode.TRANSACTIONAL)
+                .transactionManagerLookup(new GenericTransactionManagerLookup())
+             .autoCommit(false)
+            .build();
+        return new DefaultCacheManager(global, local);
+    }
+
+    public void destroy(@Disposes Cache<?, ?> cache) {
+        cache.stop();
+    }
+
+    ...
+}
+----
+
++CacheProducer+ does the business of creating and configuring the Infinispan +Cache+ instance and makes it a valid injection source by use of CDI's (technically +javax.enterprise.inject+) +@Produces+ annotation.
+
+This should be enough to fulfill our requirements to perform CRUD operations on an +Attachment+, and does so in a way that won't bog our RDBMS with binary data.
+
+==== Relation
+
+With our +Attachment+ now modeled and capable of persistence in the data grid, we can move on to the task of associating it with a +Session+ or +Conference+.  Because we'll handle relationships in a separate layer over the RDBMS, we can do this in a generic fashion which will also grant us the ability to let a +User+ attend or speak at a +Conference+.  The model for a relationship is reflected by +org.cedj.geekseek.domain.relation.model.Relation+:
+
+[source,java]
+----
+public class Relation {
+    private Key key;
+    private Date created;
+----
+
++Relation+ is another standalone class with no additional metadata or dependencies.  It contains a +Date+ of creation and a +Reference.Key+:
+
+[source,java]
+----
+private static class Key implements Serializable {
+
+        private static final long serialVersionUID = 1L;
+        private String sourceId;
+        private String targetId;
+        private String type;
+
+        private Key(String sourceId, String targetId, String type) {
+            this.sourceId = sourceId;
+            this.targetId = targetId;
+            this.type = type;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((sourceId == null) ? 0 : sourceId.hashCode());
+            result = prime * result + ((targetId == null) ? 0 : targetId.hashCode());
+            result = prime * result + ((type == null) ? 0 : type.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            Key other = (Key) obj;
+            if (sourceId == null) {
+                if (other.sourceId != null)
+                    return false;
+            } else if (!sourceId.equals(other.sourceId))
+                return false;
+            if (targetId == null) {
+                if (other.targetId != null)
+                    return false;
+            } else if (!targetId.equals(other.targetId))
+                return false;
+            if (type != other.type)
+                return false;
+            return true;
+        }
+    }
+----
+
+The +Reference.Key+ very simply draws a link between a source primary key and a target primary key, the IDs of the entities it is linking.  Additionally, we assign a +type+ to note what the relationship is reflecting.  Because we want to determine _value equality_ using the +Object.equals+ method, we override the +equals+ and +hashCode+ methods (by +Object+ contract, objects with equal values *must* have equal hashCodes).
+
+The rest of the +Relation+ class is straightforward:
+
+[source,java]
+----
+    public Relation(String sourceId, String targetId, String type) {
+        this.key = new Key(sourceId, targetId, type);
+        this.created = new Date();
+    }
+
+    public String getSourceId() {
+        return key.sourceId;
+    }
+
+    public String getTargetId() {
+        return key.targetId;
+    }
+
+    public String getType() {
+        return key.type;
+    }
+
+    public Date getCreated() {
+        return (Date) created.clone();
+    }
+}
+----
+
+Now we need a mechanism to persist and remove +Relation+ instances.  Our +Repository+ interface used on other objects doesn't really fit the operations we need; relationships are not true entities but instead pointers from one entity to another.  So in +org.cedj.geekseek.domain.relation.RelationRepository+ we'll define a more fitting contract.
+
+[source,java]
+----
+public interface RelationRepository {
+
+    Relation add(Identifiable source, String type, Identifiable target);
+
+    void remove(Identifiable source, String type, Identifiable target);
+
+    <T extends Identifiable> List<T> findTargets(Identifiable source, String type, Class<T> targetType);
+}
+----
+
+The +RelationRepository+ will be used by the services layer, and acts as an abstraction above the datastore provider persisting the relationships (a graph database in this case).
+
+Now we're free to implement +RelationRepository+ with a Neo4j backend in +org.cedj.geekseek.domain.relation.neo.GraphRelationRepository+:
+
+[source,java]
+----
+@ApplicationScoped
+public class GraphRelationRepository implements RelationRepository {
+
+    private static final String PROP_INDEX_NODE = "all_nodes";
+    private static final String PROP_INDEX_REL = "all_relations";
+    private static final String PROP_ID = "id";
+    private static final String PROP_NODE_CLASS = "_classname";
+    private static final String PROP_CREATED = "created";
+    private static final String REL_TYPE_ALL = "all";
+
+    @Inject
+    private GraphDatabaseService graph;
+
+    @Inject
+    private BeanManager manager;
+----
+
++GraphRelationRepository+ is implemented as an application-scoped CDI bean; it contains a few constants, a hook to the backend graph database (Neo4j API's +GraphDatabaseService+), and a reference to the CDI +BeanManager+.
+
+Now we may implement the +RelationRepository+ contract:
+
+[source,java]
+----
+    @Override
+    public Relation add(Identifiable source, final String type, Identifiable target) {
+
+        Transaction tx = graph.beginTx();
+        try {
+            Node root =graph.getNodeById(0);
+            String sourceTypeName = source.getClass().getSimpleName();
+            String targetTypeName = target.getClass().getSimpleName();
+            Node sourceTypeNode = getOrCreateNodeType(sourceTypeName);
+            Node targetTypeNode = getOrCreateNodeType(targetTypeName);
+            getOrCreateRelationship(root, sourceTypeNode, Named.relation(sourceTypeName));
+            getOrCreateRelationship(root, targetTypeNode, Named.relation(targetTypeName));
+
+            Node sourceNode = getOrCreateNode(source, sourceTypeName);
+            getOrCreateRelationship(sourceTypeNode, sourceNode, Named.relation(REL_TYPE_ALL));
+            Node targetNode = getOrCreateNode(target, targetTypeName);
+            getOrCreateRelationship(targetTypeNode, targetNode, Named.relation(REL_TYPE_ALL));
+
+            getOrCreateRelationship(sourceNode, targetNode, Named.relation(type));
+
+            tx.success();
+        } catch(Exception e) {
+            tx.failure();
+            throw new RuntimeException(
+                "Could not add relation of type " + type + " between " + source + " and " + target, e);
+        } finally {
+          tx.finish();
+        }
+        return new Relation(source.getId(), target.getId(), type);
+    }
+
+    @Override
+    public void remove(Identifiable source, String type, Identifiable target) {
+
+        Transaction tx = graph.beginTx();
+        try {
+            Index<Node> nodeIndex = graph.index().forNodes(PROP_INDEX_NODE);
+            Index<Relationship> relationIndex = graph.index().forRelationships(PROP_INDEX_REL);
+
+            Node sourceNode = nodeIndex.get(PROP_ID, source.getId()).getSingle();
+            Node targetNode = nodeIndex.get(PROP_ID, target.getId()).getSingle();
+            for(Relationship rel : sourceNode.getRelationships(Named.relation(type))) {
+                if(rel.getEndNode().equals(targetNode)) {
+                    rel.delete();
+                    relationIndex.remove(rel);
+                }
+            }
+
+            tx.success();
+        } catch(Exception e) {
+            tx.failure();
+            throw new RuntimeException(
+                "Could not add relation of type " + type + " between " + source + " and " + target, e);
+        } finally {
+          tx.finish();
+        }
+    }
+
+    @Override
+    public <T extends Identifiable> List<T> findTargets(Identifiable source, final String type, final Class<T> targetType) {
+
+        Repository<T> repo = locateTargetRepository(targetType);
+        if(repo == null) {
+            throw new RuntimeException("Could not locate a " + Repository.class.getName() + " instance for Type " + targetType.getName());
+        }
+
+        List<T> targets = new ArrayList<T>();
+        Index<Node> index = graph.index().forNodes(PROP_INDEX_NODE);
+        Node node = index.get(PROP_ID, source.getId()).getSingle();
+        if(node == null) {
+            return targets;
+        }
+        Iterable<Relationship> relationships = node.getRelationships(Named.relation(type));
+        List<String> targetIds = new ArrayList<String>();
+        for(Relationship relation : relationships) {
+            targetIds.add(relation.getEndNode().getProperty(PROP_ID).toString());
+        }
+
+        for(String targetId : targetIds) {
+            targets.add(repo.get(targetId));
+        }
+        return targets;
+    }
+----
+
+As shown above, this is a fairly simple undertaking given a little research into proper use of the Neo4j API.  We'll also need a little help to resolve the proper +Repository+ types from the types of the entities between which we're drawing relationships.  So we'll add some internal helper methods to +GraphRelationRepository+ to contain this logic.
+
+[source,java]
+----
+    /**
+     * Helper method that looks in the BeanManager for a Repository that match signature
+     * Repository<T>.
+     *
+     * Used to dynamically find repository to load targets from.
+     *
+     * @param targetType Repository object type to locate
+     * @return Repository<T>
+     */
+    private <T extends Identifiable> Repository<T> locateTargetRepository(final Class<T> targetType) {
+        ParameterizedType paramType = new ParameterizedType() {
+            @Override
+            public Type getRawType() {
+                return Repository.class;
+            }
+            @Override
+            public Type getOwnerType() {
+                return null;
+            }
+            @Override
+            public Type[] getActualTypeArguments() {
+                return new Type[] {targetType};
+            }
+        };
+
+        Set<Bean<?>> beans = manager.getBeans(paramType);
+        Bean<?> bean = manager.resolve(beans);
+        CreationalContext<?> cc = manager.createCreationalContext(null);
+
+        @SuppressWarnings("unchecked")
+        Repository<T> repo = (Repository<T>)manager.getReference(bean, paramType, cc);
+        return repo;
+    }
+
+    private Node getOrCreateNodeType(String type) {
+        UniqueFactory<Node> factory = new UniqueFactory.UniqueNodeFactory(graph, PROP_INDEX_NODE) {
+            @Override
+            protected void initialize(Node created, Map<String, Object> properties) {
+                created.setProperty(PROP_ID, properties.get(PROP_ID));
+            }
+        };
+        return factory.getOrCreate(PROP_ID, type);
+    }
+
+    private Node getOrCreateNode(Identifiable source, final String nodeClassType) {
+        UniqueFactory<Node> factory = new UniqueFactory.UniqueNodeFactory(
+          graph, PROP_INDEX_NODE) {
+            @Override
+            protected void initialize(Node created, Map<String, Object> properties) {
+                created.setProperty(PROP_ID, properties.get(PROP_ID));
+                created.setProperty(PROP_NODE_CLASS, nodeClassType);
+            }
+        };
+        return factory.getOrCreate(PROP_ID, source.getId());
+    }
+
+    private Relationship getOrCreateRelationship(final Node source, final Node target, final RelationshipType type) {
+        final String key = generateKey(source, target, type);
+
+        UniqueFactory<Relationship> factory = 
+          new UniqueFactory.UniqueRelationshipFactory(
+            graph, PROP_INDEX_REL) {
+
+            @Override
+            protected Relationship create(Map<String, Object> properties) {
+                Relationship rel = source.createRelationshipTo(target, type);
+                rel.setProperty(PROP_ID, properties.get(PROP_ID));
+                return rel;
+            }
+
+            @Override
+            protected void initialize(Relationship rel, Map<String, Object> properties) {
+                rel.setProperty(PROP_CREATED, System.currentTimeMillis());
+            }
+        };
+        return factory.getOrCreate(PROP_ID, key);
+    }
+
+    /**
+     * Generate some unique key we can identify a relationship with.
+     */
+    private String generateKey(Node source, Node target, RelationshipType type) {
+        return source.getProperty(PROP_ID, "X") + "-" + type.name() + "-" + target.getProperty(PROP_ID, "X");
+    }
+
+    private static class Named implements RelationshipType {
+
+        public static RelationshipType relation(String name) {
+            return new Named(name);
+        }
+
+        private String name;
+
+        private Named(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String name() {
+            return name;
+        }
+    }
+}
+----
+
+Again, we've made an implementation class that depends upon injection of a backend provider's API.  To enable injection of the Neo4j +GraphDatabaseService+, we'll create another CDI producer in +org.cedj.geekseek.domain.relation.neo.GraphDatabaseProducer+:
+
+[source,java]
+----
+@ApplicationScoped
+public class GraphDatabaseProducer {
+
+    private String DATABASE_PATH_PROPERTY = "neo4j.path";
+
+    private static Logger log = Logger.getLogger(GraphDatabaseProducer.class.getName());
+
+    @Produces
+    public GraphDatabaseService createGraphInstance() throws Exception {
+        String databasePath = getDataBasePath();
+        log.info("Using Neo4j database at " + databasePath);
+        return new GraphDatabaseFactory().newEmbeddedDatabase(databasePath);
+    }
+
+    public void shutdownGraphInstance(@Disposes GraphDatabaseService service) throws Exception {
+        service.shutdown();
+    }
+
+    private String getDataBasePath() {
+        String path = System.clearProperty(DATABASE_PATH_PROPERTY);
+        if(path == null || path.isEmpty()) {
+            try {
+                File tmp = File.createTempFile("neo", "geekseek");
+                File parent = tmp.getParentFile();
+                tmp.delete();
+                parent.mkdirs();
+                path = parent.getAbsolutePath();
+            }catch (IOException e) {
+                throw new RuntimeException(
+                    "Could not create temp location for Nepo4j Database. " +
+                    "Please provide system property " + DATABASE_PATH_PROPERTY + " with a valid path", e);
+            }
+        }
+        return path;
+    }
+}
+----
+
+With this in place we may now inject a +GraphDataBaseService+ instance into our +GraphRelationRepository+.
+
+Our implementation is about complete, though it's our position that nothing truly exists until it's been proven through tests.
+
+=== Requirement Test Scenarios
+
+Given our user requirements and the implementation choices we've made, we have a few areas it's important we assert is working as expected:
+
+* CRUD operations on +Attachment+ objects
+* Transactional integrity of CRUD operations on +Attachment+ objects
+* Create, Delete, and Find relationships between entities
+
+==== +Attachment+ CRUD Tests
+
+First we'll need to ensure that we may Create, Read, Update and Delete +Attachment+ instances using the data grid provided by Infinispan.  To ensure these are working, we'll use +org.cedj.geekseek.domain.attachment.test.integration.AttachmentRepositoryTestCase+:
+
+[source,java]
+----
+@RunWith(Arquillian.class)
+public class AttachmentRepositoryTestCase {
+
+    // Given
+    @Deployment
+    public static WebArchive deploy() {
+        return ShrinkWrap.create(WebArchive.class)
+            .addAsLibraries(
+                CoreDeployments.core(),
+                AttachmentDeployments.attachmentWithCache())
+            .addAsLibraries(AttachmentDeployments.resolveDependencies())
+            .addClass(TestUtils.class)
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+    }
+----
+
+Here we have a simple Arquillian test defined with no additional extensions.  We'll deploy an +attachmentWithCache+, as defined by:
+
+[source,java]
+----
+    public static JavaArchive attachment() {
+        return ShrinkWrap.create(JavaArchive.class)
+            .addPackage(Attachment.class.getPackage())
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+    }
+
+    public static JavaArchive attachmentWithCache() {
+        return attachment()
+            .addPackage(AttachmentRepository.class.getPackage())
+            .addPackage(CacheProducer.class.getPackage());
+    }
+----
+
+This will give us our +Attachment+ domain entity, the +AttachmentRepository+, and the CDI producer to inject hooks to an Infinispan +Cache+ as shown before. Additionally, we'll need to deploy the Infinispan API and implementation as a library, so +AttachmentDeployments.resolveDependencies+ will bring this in for us:
+
+[source,java]
+----
+    public static File[] resolveDependencies() {
+        return Maven.resolver()
+            .offline()
+            .loadPomFromFile("pom.xml")
+            .resolve(
+                "org.infinispan:infinispan-core")
+            .withTransitivity()
+            .asFile();
+    }
+----
+
+This uses the _ShrinkWrap Maven Resolver_ to pull the +groupId:artifactId+ of +org.infinispan:infinispan-core+ and all of its dependencies in from the Maven repository, returning the artifacts as files.  We don't need to define the version explicitly here; that will be configured from the definition contained in the projects +pom.xml+ file because we've told the resolver to +loadPomFromFile("pom.xml")+.
+
+Also as part of the deployment we'll throw in a +TestUtils+ class, which will let us easily create +Attachment+ objects from the tests running inside the container:
+
+[source,java]
+----
+    public static Attachment createAttachment() {
+        try {
+        return new Attachment(
+            "Test Attachment",
+            "text/plain",
+            new URL("http://geekseek.org"));
+        } catch(MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+----
+
+The resulting deployment should have structure looking similar to:
+
+----
+749e9f51-d858-42a6-a06e-3f3d03fc32ad.war:
+/WEB-INF/
+/WEB-INF/lib/
+/WEB-INF/lib/jgroups-3.3.1.Final.jar
+/WEB-INF/lib/43322d61-32c4-444c-9681-079ac34c6e87.jar
+/WEB-INF/lib/staxmapper-1.1.0.Final.jar
+/WEB-INF/lib/jboss-marshalling-river-1.3.15.GA.jar
+/WEB-INF/lib/56201983-371f-4ed5-8705-d4fd6ec8f936.jar
+/WEB-INF/lib/infinispan-core-5.3.0.Final.jar
+/WEB-INF/lib/jboss-marshalling-1.3.15.GA.jar
+/WEB-INF/lib/jboss-logging-3.1.1.GA.jar
+/WEB-INF/beans.xml
+/WEB-INF/classes/
+/WEB-INF/classes/org/
+/WEB-INF/classes/org/cedj/
+/WEB-INF/classes/org/cedj/geekseek/
+/WEB-INF/classes/org/cedj/geekseek/domain/
+/WEB-INF/classes/org/cedj/geekseek/domain/attachment/
+/WEB-INF/classes/org/cedj/geekseek/domain/attachment/test/
+/WEB-INF/classes/org/cedj/geekseek/domain/attachment/test/TestUtils.class
+----
+
+As we can see, Infinispan and all of its dependencies have made their way to +WEB-INF/lib+; our own libraries are not explicitly-named, so they're assigned a UUID filename.
+
+[NOTE]
+====
+It's useful to debug your deployments by simply printing out a listing of your archive; this is easily accomplished by throwing a statement like +System.out.println(archive.toString(true));+ in your +@Deployment+ method before returning the archive.
+====
+
+Now let's give our test a hook to the +Repository+ we'll use to perform CRUD operations on our +Attachment+ objects:
+
+[source,java]
+----
+    @Inject
+    private Repository<Attachment> repository;
+----
+
+With the deployment and injection of the +Repository+ done, we're now free to implement our tests.
+
+[source,java]
+----
+    // Story: As a User I should be able to create an Attachment
+
+    @Test
+    public void shouldBeAbleToCreateAttachment() throws Exception {
+        Attachment attachment = createAttachment();
+        repository.store(attachment);
+
+        Attachment stored = repository.get(attachment.getId());
+        Assert.assertNotNull(stored);
+
+        Assert.assertEquals(attachment.getId(), stored.getId());
+        Assert.assertEquals(attachment.getTitle(), stored.getTitle());
+        Assert.assertEquals(attachment.getUrl(), stored.getUrl());
+        Assert.assertEquals(attachment.getMimeType(), stored.getMimeType());
+        Assert.assertNotNull(stored.getCreated());
+    }
+
+    // Story: As a User I should be able to update an Attachment
+
+    @Test
+    public void shouldBeAbleToUpdateAttachment() throws Exception {
+        String updatedTitle = "Test 2";
+        Attachment attachment = createAttachment();
+        attachment = repository.store(attachment);
+
+        attachment.setTitle(updatedTitle);
+        attachment = repository.store(attachment);
+
+        Attachment updated = repository.get(attachment.getId());
+
+        Assert.assertEquals(updated.getTitle(), updatedTitle);
+        Assert.assertNotNull(attachment.getLastUpdated());
+    }
+
+    // Story: As a User I should be able to remove an Attachment
+
+    @Test
+    public void shouldBeAbleToRemoveAttachment() throws Exception {
+        Attachment attachment = createAttachment();
+        attachment = repository.store(attachment);
+
+        repository.remove(attachment);
+
+        Attachment removed = repository.get(attachment.getId());
+        Assert.assertNull(removed);
+    }
+
+    @Test
+    public void shouldNotReflectNonStoredChanges() throws Exception {
+        String updatedTitle = "Test 2";
+        Attachment attachment = createAttachment();
+        String originalTitle = attachment.getTitle();
+
+        Attachment stored = repository.store(attachment);
+
+        // tile change not stored to repository
+        stored.setTitle(updatedTitle);
+
+        Attachment refreshed = repository.get(attachment.getId());
+
+        Assert.assertEquals(refreshed.getTitle(), originalTitle);
+    }
+}
+----
+
+So here we have our CRUD tests using the injected +Repository+ to perform their persistence operations.  In turn, we've implemented the +Repository+ with an Infinispan backend (which in this case is running in local embedded mode).  We can now be assured that our repository layer is correctly hooked together and persistence to the data grid is working properly.
+
+
+==== Transactional Integrity of +Attachment+ Persistence
+
+While we're confident that the CRUD operations of our +Attachment+ entity are in place, we should ensure that the transactional semantics are upheld if a transaction is in-flight.  This will essentially validate that Infinispan is respectful of the _Java Transactions API_ (JTA), a specification under the direction of the http://jcp.org/en/jsr/detail?id=907[JSR-907] Expert Group.
+
+To accomplish this, we're going to directly interact with JTA's +UserTransaction+ in our test.  In fact, the +Attachment+ entity is not the only one we should be verifying, so we'll code this test in a way that will enable us to extend it to ensure that +Conference+, +Session+, and other entities may be exercised for transactional compliance.
+
+Our goals are to assert that for any entity type +T+:
+
+* +T+ is Stored on commit and can be read from another transaction
+* +T+ is Updated on commit and can be read from another transaction
+* +T+ is Removed on commit and can not be read by another transaction
+* +T+ is not Stored on rollback and can not be read by another transaction
+* +T+ is not Updated on rollback and can not be read by another transaction
+* +T+ is not Removed on rollback and can be read by another transaction
+
+Therefore we'll attempt to centralize these operations in a base test class which will, when provided a +T+ and a +Repository<T>+, verify that +T+ is committed and rolled back as required.  Thus we introduce +org.cedj.geekseek.domain.test.integration.BaseTransactionalSpecification+:
+
+[source,java]
+----
+public abstract class BaseTransactionalSpecification<
+  DOMAIN extends Identifiable, 
+  REPO extends Repository<DOMAIN>> {
+----
+
+We define some generic variables for easy extension; this test will deal with entity objects of type +Identifiable+ and the +Repository+ that interacts with them.  Next we'll gain access to the JTA +UserTransaction+:
+
+[source,java]
+----
+    @Inject
+    private UserTransaction tx;
+----
+
+Because this class is to be extended for each entity type we'd like to test, we'll make a contract for those implementations to supply:
+
+[source,java]
+----
+    /**
+     * Get the Repository instance to use.
+     */
+    protected abstract REPO getRepository();
+
+    /**
+     * Create a new unique instance of the Domain Object
+     */
+    protected abstract DOMAIN createNewDomainObject();
+
+    /**
+     * Update some domain object values
+     */
+    protected abstract void updateDomainObject(
+      DOMAIN domain);
+
+    /**
+     * Validate that the update change has occurred.
+     * Expecting Assert error when validation does not match.
+     */
+    protected abstract void validateUpdatedDomainObject(
+      DOMAIN domain);
+----
+
+And now we're free to write the tests backing the points listed above; we want to validate that objects are either accessible or not based on commit or rollback operations to the transaction in play.  For instance, this test ensures that an object is stored after a commit:
+
+[source,java]
+----
+    @Test
+    public void shouldStoreObjectOnCommit() throws Exception {
+        final DOMAIN domain = createNewDomainObject();
+
+        commit(Void.class, new Store(domain));
+
+        DOMAIN stored = commit(new Get(domain.getId()));
+        Assert.assertNotNull(
+            "Object should be stored when transaction is committed",
+            stored);
+    }
+
+    protected DOMAIN commit(Callable<DOMAIN> callable) throws Exception {
+        return commit(getDomainClass(), callable);
+    }
+
+    protected <T> T commit(Class<T> type, Callable<T> callable) throws Exception {
+        try {
+            tx.begin();
+            return callable.call();
+        } finally {
+            tx.commit();
+        }
+    }
+
+    private class Store implements Callable<Void> {
+        private DOMAIN domain;
+
+        public Store(DOMAIN domain) {
+            this.domain = domain;
+        }
+
+        @Override
+        public Void call() throws Exception {
+            getRepository().store(domain);
+            return null;
+        }
+    }
+
+    private class Get implements Callable<DOMAIN> {
+        private String id;
+
+        public Get(String id) {
+            this.id = id;
+        }
+
+        @Override
+        public DOMAIN call() throws Exception {
+            return getRepository().get(id);
+        }
+    }
+----
+
+Here we see that we manually manipulate the +UserTransaction+ to our liking in the test method; the mechanics of this interaction are handled by the +commit+ method.  
+
+We have similar tests in place to validate the other conditions:
+
+[source,java]
+----
+    @Test public void shouldUpdateObjectOnCommit() throws Exception {...}
+
+    @Test public void shouldRemoveObjectOnCommmit() throws Exception {...}
+
+    @Test public void shouldNotStoreObjectOnRollback() throws Exception {...}
+
+    @Test public void shouldNotUpdateObjectOnRollback() throws Exception {...}
+
+    @Test public void shouldNotRemoveObjectOnRollback() throws Exception {...}
+
+    @Test public void shouldSetCreatedDate() throws Exception {...}
+
+    @Test public void shouldSetUpdatedDate() throws Exception {...}
+----
+
+With our base class containing most of our support for the transactional specification tests, now we can provide a concrete implementation for our +Attachment+ entities.  This is done in +org.cedj.geekseek.domain.attachment.test.integration.AttachmentRepositoryTransactionalTestCase+:
+
+[source,java]
+----
+@RunWith(Arquillian.class)
+public class AttachmentRepositoryTransactionalTestCase 
+    extends
+        BaseTransactionalSpecification<Attachment, Repository<Attachment>> {
+----
+
+We'll extend +BaseTransactionalSpecification+ and close the generic context to be relative to +Attachment+.  By implementing the parent +abstract+ methods of the parent class, we'll then be done and able to run transactional tests on +Attachment+ types:
+
+[source,java]
+----
+    private static final String UPDATED_TITLE = "TEST UPDATED";
+... 
+    @Inject
+    private Repository<Attachment> repository;
+
+    @Override
+    protected Attachment createNewDomainObject() {
+        return createAttachment();
+    }
+
+    @Override
+    protected void updateDomainObject(Attachment domain) {
+        domain.setTitle(UPDATED_TITLE);
+    }
+
+    @Override
+    protected void validateUpdatedDomainObject(Attachment domain) {
+        Assert.assertEquals(UPDATED_TITLE, domain.getTitle());
+    }
+
+    @Override
+    protected Repository<Attachment> getRepository() {
+        return repository;
+    }
+----
+
+With these tests passing, we're now satisfied that our Infinispan backend is complying with the semantics of a backing application transaction.  We therefore have nicely abstracted the data grid from the perspective of the caller; it's just another transactionally-aware persistence engine representing itself as a +Repository+.
+
+==== Validating Relationships
+
+Armed with our Neo4j-backed +RelationRepository+, we're able to draw relationships between entities that are not otherwise related in the schema, or may even be in separate datastores.  Let's construct a test to validate that our +Relation+ edges in the graph are serving us well.  We'll do this in +org.cedj.geekseek.domain.relation.test.integration.RelationTestCase+:
+
+[source,java]
+----
+@RunWith(Arquillian.class)
+public class RelationTestCase {
+----
+
+This will be another relatively-simple Arquillian test case, running inside the container.  We'll again define a deployment, this time including Neo4j as a dependency in place of Infinispan:
+
+[source,java]
+----
+    @Deployment
+    public static WebArchive deploy() {
+        return ShrinkWrap.create(WebArchive.class)
+            .addAsLibraries(
+                RelationDeployments.relationWithNeo(),
+                CoreDeployments.core())
+            .addAsLibraries(RelationDeployments.neo4j())
+            .addPackage(SourceObject.class.getPackage())
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+    }
+----
+
+The above deployment will include our +GraphDatabaseProducer+, so we'll be able to inject a +GraphRelationRepository+ in our test case to create, remove, and find +Relation+ edges.  This we'll obtain easily via injection into the test instance:
+
+[source,java]
+----
+    @Inject
+    private GraphRelationRepository repository;
+----
+
+Now we'll set up some constants and instance members, then populate them before each test runs using a JUnit lifecycle annotation:
+
+[source,java]
+----
+    private static final String SOURCE_ID = "11";
+    private static final String TARGET_ID = "1";
+
+    private SourceObject source;
+    private TargetObject target;
+    private String type;
+
+    @Before
+    public void createTypes() {
+        source = new SourceObject(SOURCE_ID);
+        target = new TargetObject(TARGET_ID);
+        type = "SPEAKING";
+    }
+----
+
++SourceObject+ and +TargetObject+ are test-only objects we've introduced to represent entities.  Again, we only care about _relationships_ here, so there's no sense tying this test to one of our real entities at this level of integration.  At this point we want to test the +Relation+ and its persistence mechanisms in as much isolation as possible, so some test-only entities we'll tie together is appropriate.
+
+Now we'll want to run our tests to:
+
+* Create a relationship
+* Find the created relationship
+* Delete the relationship
+* Only find valid targets remaining
+
+Rather than do this in one large test, we'll make separate tests for each case.  There are dependencies however, as the state of the system will change after each test is run.  Therefore we need to make sure that these tests run in the proper order using Arquillian's +@InSequence+ annotation:
+
+[source,java]
+----
+    @Test @InSequence(0)
+    public void shouldBeAbleToCreateRelation() {
+
+        Relation relation = repository.add(source, type, target);
+
+        Assert.assertEquals("Verify returned object has same source id", 
+          relation.getSourceId(), source.getId());
+        Assert.assertEquals("Verify returned object has same target id", 
+          relation.getTargetId(), target.getId());
+        Assert.assertEquals("Verify returned object has same type", 
+          relation.getType(), type);
+
+        Assert.assertNotNull("Verify created date was set", relation.getCreated());
+    }
+
+    @Test @InSequence(1)
+    public void shouldBeAbleToFindTargetedRelations(
+      Repository<TargetObject> targetRepo, 
+      Repository<SourceObject> sourceRepo) {...}
+
+    @Test @InSequence(2)
+    public void shouldBeAbleToDeleteRelations() {...}
+
+    @Test @InSequence(3)
+    public void shouldOnlyFindGivenRelation() {...}
+----
+
+With these passing, it's now proven that we may perform all the contracted operations of +RelationRepository+ against a real Neo4j graph database backend.
+
+Our GeekSeek application now has many database layers at its disposal: CRUD operations in an RDBMS for most entities, a key/value store to hold onto +Attachment+ objects, and a graph to draw ties among the entities such that their relationships may be explored in an efficient manner.

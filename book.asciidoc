@@ -12,6 +12,8 @@ include::Chapter04-RequirementsAndExampleApplication.asciidoc[]
 
 include::Chapter05-JavaPersistenceAndRelationalData.asciidoc[]
 
+include::Chapter06-NoSQLDataGridsAndGraphDatabases.asciidoc[]
+
 include::Chapter07-BusinessLogicServicesLayer.asciidoc[]
 
 include::Chapter08-RESTAddressableServices.asciidoc[]

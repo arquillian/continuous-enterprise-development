@@ -70,9 +70,9 @@ public class RelationTestCase {
 
         Relation relation = repository.add(source, type, target);
 
-        Assert.assertEquals("Verify retuned object has same source id", relation.getSourceId(), source.getId());
-        Assert.assertEquals("Verify retuned object has same target id", relation.getTargetId(), target.getId());
-        Assert.assertEquals("Verify retuned object has same type", relation.getType(), type);
+        Assert.assertEquals("Verify returned object has same source id", relation.getSourceId(), source.getId());
+        Assert.assertEquals("Verify returned object has same target id", relation.getTargetId(), target.getId());
+        Assert.assertEquals("Verify returned object has same type", relation.getType(), type);
 
         Assert.assertNotNull("Verify created date was set", relation.getCreated());
     }
@@ -82,12 +82,12 @@ public class RelationTestCase {
         targetRepo.store(target);
         sourceRepo.store(source);
 
-        List<TargetObject> tagets = repository.findTargets(source, type, TargetObject.class);
+        List<TargetObject> targets = repository.findTargets(source, type, TargetObject.class);
 
-        Assert.assertNotNull("Verify a non null list returned", tagets);
-        Assert.assertEquals("Verify expected targets count", 1, tagets.size());
+        Assert.assertNotNull("Verify a non null list returned", targets);
+        Assert.assertEquals("Verify expected targets count", 1, targets.size());
 
-        Assert.assertEquals("Verify expected target returned", TARGET_ID, tagets.get(0).getId());
+        Assert.assertEquals("Verify expected target returned", TARGET_ID, targets.get(0).getId());
     }
 
     @Test @InSequence(2)
@@ -95,9 +95,9 @@ public class RelationTestCase {
 
         repository.remove(source, type, target);
 
-        List<TargetObject> tagets = repository.findTargets(source, type, TargetObject.class);
-        Assert.assertNotNull("Verify a non null list returned", tagets);
-        Assert.assertEquals("Verify expected targets count", 0, tagets.size());
+        List<TargetObject> targets = repository.findTargets(source, type, TargetObject.class);
+        Assert.assertNotNull("Verify a non null list returned", targets);
+        Assert.assertEquals("Verify expected targets count", 0, targets.size());
     }
 
     @Test @InSequence(3)
@@ -106,11 +106,11 @@ public class RelationTestCase {
         repository.add(source, type, target);
         repository.add(source, type + "X", target);
 
-        List<TargetObject> tagets = repository.findTargets(source, type, TargetObject.class);
+        List<TargetObject> targets = repository.findTargets(source, type, TargetObject.class);
 
-        Assert.assertNotNull("Verify a non null list returned", tagets);
-        Assert.assertEquals("Verify expected targets count", 1, tagets.size());
+        Assert.assertNotNull("Verify a non null list returned", targets);
+        Assert.assertEquals("Verify expected targets count", 1, targets.size());
 
-        Assert.assertEquals("Verify expected target returned", TARGET_ID, tagets.get(0).getId());
+        Assert.assertEquals("Verify expected target returned", TARGET_ID, targets.get(0).getId());
     }
 }

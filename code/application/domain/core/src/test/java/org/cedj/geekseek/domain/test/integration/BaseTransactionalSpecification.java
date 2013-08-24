@@ -1,20 +1,16 @@
 package org.cedj.geekseek.domain.test.integration;
 
-import java.util.concurrent.Callable;
-
-import javax.inject.Inject;
-import javax.transaction.UserTransaction;
-
 import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.domain.model.Timestampable;
-import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
-import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
 
-@Transactional(value = TransactionMode.DISABLED)
+import javax.inject.Inject;
+import javax.transaction.UserTransaction;
+import java.util.concurrent.Callable;
+
 public abstract class BaseTransactionalSpecification<DOMAIN extends Identifiable, REPO extends Repository<DOMAIN>> {
 
     @Inject
@@ -59,7 +55,7 @@ public abstract class BaseTransactionalSpecification<DOMAIN extends Identifiable
 
         DOMAIN stored = commit(new Get(domain.getId()));
         Assert.assertNotNull(
-            "Object should be stored when transaciton is commited",
+            "Object should be stored when transaction is committed",
             stored);
     }
 
@@ -86,7 +82,7 @@ public abstract class BaseTransactionalSpecification<DOMAIN extends Identifiable
 
         DOMAIN stored = commit(new Get(domain.getId()));
         Assert.assertNull(
-            "Object should be removed when transaciton is committed",
+            "Object should be removed when transaction is committed",
             stored);
     }
 
@@ -98,7 +94,7 @@ public abstract class BaseTransactionalSpecification<DOMAIN extends Identifiable
 
         DOMAIN stored = commit(getDomainClass(), new Get(domain.getId()));
         Assert.assertNull(
-            "Object should not be stored when transaciton is rolledbacked",
+            "Object should not be stored when transaction is rolled back",
             stored);
     }
 
@@ -115,7 +111,7 @@ public abstract class BaseTransactionalSpecification<DOMAIN extends Identifiable
         DOMAIN updated = commit(new Get(domain.getId()));
         try {
             validateUpdatedDomainObject(updated);
-            Assert.fail("Object should not be updated when transaction is rollbacked");
+            Assert.fail("Object should not be updated when transaction is rolled back");
         } catch(AssertionError error) {
             // no-op, the updated object should not validate as a updated one
         }
@@ -130,7 +126,7 @@ public abstract class BaseTransactionalSpecification<DOMAIN extends Identifiable
 
         DOMAIN stored = commit(new Get(domain.getId()));
         Assert.assertNotNull(
-            "Object should not be removed when transaciton is rolledbacked",
+            "Object should not be removed when transaction is rolled back",
             stored);
     }
 
