@@ -862,7 +862,7 @@ Warp supports any client-side tools if you are using them in a way that requests
 
 Examples of such libraries/frameworks:
 
-* +URL#getResourceAsStream()+
+* +URL#openStream()+
 * Apache HTTP Client
 * Selenium WebDriver
 
