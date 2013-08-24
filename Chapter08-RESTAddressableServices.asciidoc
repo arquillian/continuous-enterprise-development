@@ -358,10 +358,11 @@ public Response update(@PathParam("id") String id,
 
 Note that for +GET+, +PUT+, and +DELETE+ operations we must know which entity to work with, so we use the +@Path+ annotation to define a path parameter as part of the request, and pass this along as a +PathParam+ to the method when it's invoked.  We also are sure to use the correct HTTP response codes when the situation warrants:
 
-* NotFound(404)
-* Created(201) with Header: "Location $resourceUri" on successful creation of a new entity
-* NoContent(204) On DELETE or successful update
-* BadRequest(400) On attemped PUT of a missing resource
+* OK(200) on +GET+ of an entity
+* NotFound(404) on +GET+ of an entity with an ID that does not exist
+* Created(201) with Header: "Location $resourceUri" on successful +POST+ and creation of a new entity
+* NoContent(204) On +DELETE+ or successful update
+* BadRequest(400) On attemped +PUT+ of a missing resource
 
 With this base class in place, we have effectively made a nice mapping between the DAP API as part of our requirements and the backend +Repository+ and JPA.  Incoming client requests to are mapped to business methods, which in turn delegate the appropriate action to the persistence layer and supply a response.
 
