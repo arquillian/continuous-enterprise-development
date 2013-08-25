@@ -136,44 +136,12 @@
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <skipTests>true</skipTests>
-          <!-- Override so we don't include everything from unit/integration profile
-            setup in parent. -->
-          <includes combine.self="override">
-          </includes>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test</goal>
-            </goals>
-            <phase>integration-test</phase>
-            <configuration>
-              <systemPropertyVariables>
-                <arquillian.debug>true</arquillian.debug>
-              </systemPropertyVariables>
-              <skipTests>false</skipTests>
-              <includes>
-                <include>**/*Story.java</include>
-              </includes>
-              <dependenciesToScan>
-                <dependency>org.cedj.geekseek:geekseek-web-rest-conference</dependency>
-                <dependency>org.cedj.geekseek:geekseek-web-rest-attachment</dependency>
-                <dependency>org.cedj.geekseek:geekseek-web-rest-user</dependency>
-              </dependenciesToScan>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
   <profiles>
     <profile>
-      <!-- Need an empty profile named unit just to not activate integration profile
+      <!-- Need an empty profile named unit just to not activate integration profile 
         when -Punit is used on command line -->
       <id>unit</id>
       <build>
@@ -191,6 +159,83 @@
                 <phase>integration-test</phase>
                 <configuration>
                   <skipTests>true</skipTests>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>functional</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-enforcer-plugin
+                      </artifactId>
+            <executions>
+              <execution>
+                <id>enforce-maven-environment</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <rules>
+                <requireProperty>
+                  <property>env.AUTH_API_KEY</property>
+                  <message>"AUTH_API_KEY needs to be set to the Twitter Application key to run functional tests"</message>
+                </requireProperty>
+                <requireProperty>
+                  <property>env.AUTH_API_SECRET</property>
+                  <message>"AUTH_API_SECRET needs to be set to the Twitter Application secret to run functional tests"</message>
+                </requireProperty>
+                <requireProperty>
+                  <property>env.TEST_TWITTER_USERID</property>
+                  <message>"TEST_TWITTER_USERID needs to be set to the Twitter User ID to run functional tests"</message>
+                </requireProperty>
+                <requireProperty>
+                  <property>env.TEST_TWITTER_PASSWORD</property>
+                  <message>"TEST_TWITTER_PASSWORD needs to be set to the Twitter User Password to run functional tests"</message>
+                </requireProperty>
+              </rules>
+            </configuration>
+          </plugin>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <skipTests>true</skipTests>
+              <!-- Override so we don't include everything from unit/integration 
+                profile setup in parent. -->
+              <includes combine.self="override">
+              </includes>
+              <systemPropertyVariables combine.children="append">
+                <AUTH_API_KEY>${env.AUTH_API_KEY}</AUTH_API_KEY>
+                <AUTH_API_SECRET>${env.AUTH_API_SECRET}</AUTH_API_SECRET>
+                <TEST_TWITTER_USERID>${env.TEST_TWITTER_USERID}</TEST_TWITTER_USERID>
+                <TEST_TWITTER_PASSWORD>${env.TEST_TWITTER_PASSWORD}</TEST_TWITTER_PASSWORD>
+              </systemPropertyVariables>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <phase>integration-test</phase>
+                <configuration>
+                  <systemPropertyVariables>
+                    <arquillian.debug>true</arquillian.debug>
+                  </systemPropertyVariables>
+                  <skipTests>false</skipTests>
+                  <includes>
+                    <include>**/*Story.java</include>
+                  </includes>
+                  <dependenciesToScan>
+                    <dependency>org.cedj.geekseek:geekseek-web-rest-conference</dependency>
+                    <dependency>org.cedj.geekseek:geekseek-web-rest-attachment</dependency>
+                    <dependency>org.cedj.geekseek:geekseek-web-rest-user</dependency>
+                  </dependenciesToScan>
                 </configuration>
               </execution>
             </executions>

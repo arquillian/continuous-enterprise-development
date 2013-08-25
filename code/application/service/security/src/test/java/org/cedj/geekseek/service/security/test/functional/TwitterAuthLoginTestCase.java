@@ -1,4 +1,4 @@
-package org.cedj.geekseek.service.security.test.integration;
+package org.cedj.geekseek.service.security.test.functional;
 
 import java.net.URL;
 

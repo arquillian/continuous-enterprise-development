@@ -8,18 +8,18 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 public class TwitterLogin {
 
-    private static final String PROP_USER_ID = "test.twitter.userid";
-    private static final String PROP_USER_PASSWORD = "test.twitter.password";
+    private static final String PROP_USER_ID = "TEST_TWITTER_USERID";
+    private static final String PROP_USER_PASSWORD = "TEST_TWITTER_PASSWORD";
 
     private String username;
     private String password;
 
     public TwitterLogin() {
-        this.username = System.getProperty(PROP_USER_ID);
-        this.password = System.getProperty(PROP_USER_PASSWORD);
+        this.username = System.getenv(PROP_USER_ID);
+        this.password = System.getenv(PROP_USER_PASSWORD);
         if(this.username == null || this.password == null) {
             throw new IllegalStateException(
-                "Both " + PROP_USER_ID + " and " + PROP_USER_PASSWORD + " must be set to " +
+                "Both " + PROP_USER_ID + " and " + PROP_USER_PASSWORD + " env variables must be set to " +
                 "perform test logins");
         }
     }

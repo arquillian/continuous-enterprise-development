@@ -10,7 +10,6 @@
 
   <container qualifier="JBoss" default="true">
     <configuration>
-      <property name="javaVmArguments">-Dauth.apikey=x -Dauth.apisecret=x</property>
     </configuration>
   </container>
 </arquillian>

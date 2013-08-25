@@ -18,21 +18,18 @@ public class SettingsProducer implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String PROP_API_KEY = "auth.apikey";
-    private static final String PROP_API_SECRET = "auth.apisecret";
-    private static final String PROP_API_CALLBACK = "auth.callback";
+    private static final String PROP_API_KEY = "AUTH_API_KEY";
+    private static final String PROP_API_SECRET = "AUTH_API_SECRET";
+    private static final String PROP_API_CALLBACK = "AUTH_CALLBACK";
 
-    @Produces @Twitter
+    @Produces @Twitter @ApplicationScoped
     public static OAuthAppSettings createSettings() {
-        String apiKey = System.getProperty(PROP_API_KEY);
-        if(apiKey == null) {
-            throw new IllegalStateException(PROP_API_KEY + " system property must be set");
+        String apiKey = System.getenv(PROP_API_KEY);
+        String apiSecret = System.getenv(PROP_API_SECRET);
+        String apiCallback = System.getenv(PROP_API_CALLBACK);
+        if(apiCallback == null) {
+            apiCallback = "auth";
         }
-        String apiSecret = System.getProperty(PROP_API_SECRET);
-        if(apiSecret == null) {
-            throw new IllegalStateException(PROP_API_SECRET + " system property must be set");
-        }
-        String apiCallback = System.getProperty(PROP_API_CALLBACK, "auth");
 
         SimpleOAuthAppSettingsBuilder builder = new SimpleOAuthAppSettingsBuilder();
         builder.apiKey(apiKey).apiSecret(apiSecret).callback(apiCallback);
@@ -42,13 +39,13 @@ public class SettingsProducer implements Serializable {
 
     @PostConstruct
     public void validateEnvironment() {
-        String apiKey = System.getProperty(PROP_API_KEY);
+        String apiKey = System.getenv(PROP_API_KEY);
         if(apiKey == null) {
-            throw new IllegalStateException(PROP_API_KEY + " system property must be set");
+            throw new IllegalStateException(PROP_API_KEY + " env variable must be set");
         }
-        String apiSecret = System.getProperty(PROP_API_SECRET);
+        String apiSecret = System.getenv(PROP_API_SECRET);
         if(apiSecret == null) {
-            throw new IllegalStateException(PROP_API_SECRET + " system property must be set");
+            throw new IllegalStateException(PROP_API_SECRET + " env variable must be set");
         }
     }
 }

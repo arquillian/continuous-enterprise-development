@@ -442,8 +442,31 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <!-- We append this configuration to the default -->
-              <includes combine.children="append">
+              <includes>
+                <include>**/unit/*TestCase.java</include>
                 <include>**/integration/*TestCase.java</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- Profile only used to activate integration tests by default -->
+      <id>functional</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <!-- We append this configuration to the default -->
+              <includes>
+                <include>**/unit/*TestCase.java</include>
+                <include>**/integration/*TestCase.java</include>
+                <include>**/functional/*TestCase.java</include>
               </includes>
             </configuration>
           </plugin>
