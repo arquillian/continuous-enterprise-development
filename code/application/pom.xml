@@ -423,7 +423,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <includes>
-                <include>**/unit/*TestCase.java</include>
+                <include>%regex[.*/unit/.*TestCase.*]</include>
               </includes>
             </configuration>
           </plugin>
@@ -443,8 +443,8 @@
             <configuration>
               <!-- We append this configuration to the default -->
               <includes>
-                <include>**/unit/*TestCase.java</include>
-                <include>**/integration/*TestCase.java</include>
+                <include>%regex[.*/unit/.*TestCase.*]</include>
+                <include>%regex[.*/integration/.*TestCase.*]</include>
               </includes>
             </configuration>
           </plugin>
@@ -464,9 +464,9 @@
             <configuration>
               <!-- We append this configuration to the default -->
               <includes>
-                <include>**/unit/*TestCase.java</include>
-                <include>**/integration/*TestCase.java</include>
-                <include>**/functional/*TestCase.java</include>
+                <include>%regex[.*/unit/.*TestCase.*]</include>
+                <include>%regex[.*/integration/.*TestCase.*]</include>
+                <include>%regex[.*/functional/.*TestCase.*]</include>
               </includes>
             </configuration>
           </plugin>
