@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.cedj.geekseek.domain.Current;
 import org.cedj.geekseek.domain.user.model.User;
+import org.cedj.geekseek.web.rest.core.PATCH;
 import org.cedj.geekseek.web.rest.core.interceptor.RESTInterceptor;
 
 public class SecurityInterceptor implements RESTInterceptor {
@@ -42,6 +43,7 @@ public class SecurityInterceptor implements RESTInterceptor {
     private boolean isStateChangingMethod(Method target) {
         return target.isAnnotationPresent(PUT.class) ||
             target.isAnnotationPresent(POST.class) ||
-            target.isAnnotationPresent(DELETE.class);
+            target.isAnnotationPresent(DELETE.class) ||
+            target.isAnnotationPresent(PATCH.class);
     }
 }

@@ -72,7 +72,7 @@ module.provider('RestGraph', function() {
 		return this._options.indexOf('DELETE') > -1;
 	};
 	Node.prototype.canUpdate = function() {
-		return this._options.indexOf('PUT') > -1;
+		return this._options.indexOf('PUT') > -1 || this._options.indexOf('PATCH') > -1;
 	};
 	Node.prototype.canCreate = function() {
 		return this._options.indexOf('POST') > -1;

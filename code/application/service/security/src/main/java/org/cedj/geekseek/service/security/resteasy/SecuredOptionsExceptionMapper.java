@@ -40,7 +40,7 @@ public class SecuredOptionsExceptionMapper implements ExceptionMapper<DefaultOpt
 
     private static final String HEADER_ALLOW = "Allow";
     private static List<String> securedMethods = Arrays.asList(new String[]{
-        HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE});
+        HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE, "PATCH"});
 
     @Inject @Current
     private Instance<User> user;

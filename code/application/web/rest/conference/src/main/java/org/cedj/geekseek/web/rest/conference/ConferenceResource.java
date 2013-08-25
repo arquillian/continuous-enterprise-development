@@ -13,15 +13,18 @@ import org.cedj.geekseek.domain.conference.model.Conference;
 import org.cedj.geekseek.domain.conference.model.Session;
 import org.cedj.geekseek.web.rest.conference.model.ConferenceRepresentation;
 import org.cedj.geekseek.web.rest.conference.model.SessionRepresentation;
+import org.cedj.geekseek.web.rest.core.MetadataResource;
 import org.cedj.geekseek.web.rest.core.RepositoryResource;
 import org.cedj.geekseek.web.rest.core.RepresentationConverter;
+import org.cedj.geekseek.web.rest.core.ResourceMetadata;
 import org.cedj.geekseek.web.rest.core.TopLevelResource;
+import org.cedj.geekseek.web.rest.core.ResourceMetadata.NamedRelation;
 import org.cedj.geekseek.web.rest.core.annotation.ResourceModel;
 
 @ResourceModel
 @Path("/conference")
 public class ConferenceResource extends RepositoryResource<Conference, ConferenceRepresentation>
-    implements TopLevelResource {
+    implements TopLevelResource, MetadataResource {
 
     private static final String CONFERENCE_XML_MEDIA_TYPE = BASE_XML_MEDIA_TYPE + "; type=conference";
     private static final String CONFERENCE_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + "; type=conference";
@@ -41,6 +44,15 @@ public class ConferenceResource extends RepositoryResource<Conference, Conferenc
     @Override
     protected String[] getMediaTypes() {
         return new String[]{CONFERENCE_XML_MEDIA_TYPE, CONFERENCE_JSON_MEDIA_TYPE};
+    }
+
+    @Override
+    public ResourceMetadata getResourceMetadata() {
+        return new ResourceMetadata(Conference.class)
+            .outgoing(new NamedRelation("attachments", "attached_to"))
+            .outgoing(new NamedRelation("trackers", "tracked_by"))
+            .outgoing(new NamedRelation("attendees", "attended_by"))
+            .outgoing(new NamedRelation("locations", "located_at"));
     }
 
     @POST

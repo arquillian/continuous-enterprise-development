@@ -8,7 +8,7 @@ public class ResourceLink {
 
     private String rel;
     private URI href;
-    private String type;
+    private String mediaType;
 
     // JAXB Serialization only
     @SuppressWarnings("unused")
@@ -21,10 +21,10 @@ public class ResourceLink {
         this.href = href;
     }
 
-    public ResourceLink(String rel, URI href, String media) {
+    public ResourceLink(String rel, URI href, String mediaType) {
         this.rel = rel;
         this.href = href;
-        this.type = media;
+        this.mediaType = mediaType;
     }
 
     @XmlAttribute
@@ -42,7 +42,7 @@ public class ResourceLink {
 
     @XmlAttribute
     public String getMediaType() {
-        return type;
+        return mediaType;
     }
 
     public void setHref(String href) {
@@ -53,7 +53,7 @@ public class ResourceLink {
         this.rel = rel;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setMediaType(String type) {
+        this.mediaType = type;
     }
 }
