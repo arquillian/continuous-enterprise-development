@@ -121,7 +121,10 @@ So now our tiered data architecture may look something like this:
 
 ***INSERT IMAGE OF APPLICATION ENABLED w/ JPA TALKING TO JDBC, GOING TO DB***
 
-Though a full overview of this technology stack is beyond the scope of this book, we'll be sure to point you to enough resources and explain the basics of interacting with data via JPA that you'll be able to understand our application and test examples.
+[NOTE]
+====
+Though a full overview of this technology stack is beyond the scope of this book, we'll be sure to point you to enough resources and explain the basics of interacting with data via JPA that you'll be able to understand our application and test examples.  For readers interested in gaining better insight into JPA (and its parent, EJB), we recommend http://shop.oreilly.com/product/9780596158033.do[_Enterprise Java Beans 3.1 6th Edition_] by Andrew Lee Rubinger and Bill Burke from O'Reilly Media.
+====
 
 ==== POJO Entities
 
@@ -162,17 +165,13 @@ managedPerson.setName("Just a POJO");  // This state change will *not* be
                                        // propagated to the DB, as we're now unmanaged
 ----
 
-=== The Example Application
+=== Use Cases and Requirements
 
-This is the first chapter we'll be dealing with the companion Example Application for the book; its purpose is to highlight all layers working in concert to fulfill the _user requirements_ dictated by each chapter.  From here out, we'll be pointing to selections from the example application in order to showcase how we wire together the domain, application, view, and test layers in a cohesive, usable project.
+This is the first chapter we'll be dealing with the companion GeekSeek Example Application for the book; its purpose is to highlight all layers working in concert to fulfill the _user requirements_ dictated by each chapter.  From here out, we'll be pointing to selections from the GeekSeek application in order to showcase how we wire together the domain, application, view, and test layers in a cohesive, usable project.
 
-The application's sources may be built via Apache Maven, and are located under the +code/application+ folder of the https://github.com/arquillian/continuous-enterprise-development/[Project Root in SCM].  As we go along, we'll note each file so that you may draw references between the text and the deployable example.  We're firm believers that you best learn by doing (or at least exploring real code), so we invite you to dig in and run the examples as we go along.
+As we proceed, we'll note each file so that you may draw references between the text and the deployable example.  We're firm believers that you best learn by doing (or at least exploring real code), so we invite you to dig in and run the examples as we go along.
 
-Our application will be a simple conference tracker similar in functions to those provided by http://lanyrd.com/[Lanyrd].  We'll make it possible to track software conferences, their sessions and related entities, and in every chapter we'll lay out a new set of user requirements which we'll seek to satisfy using Java EE standards and extensions.  Testing is a first-class citizen in verifying that our development is done correctly, so for instance in this chapter we'll be focusing on interactions with persistent data.
-
-=== Requirements Gathering and Definition
-
-Before we can hope to arrive at any solutions, it's important to clearly identify the problem domain.  Each chapter will first outline the goals we're looking to address.
+Testing is a first-class citizen in verifying that our development is done correctly, so for instance in this chapter we'll be focusing on interactions with persistent data.  Before we can hope to arrive at any solutions, it's important to clearly identify the problem domain.  Each chapter will first outline the goals we're looking to address.
 
 ==== User Perspective
 
@@ -210,9 +209,9 @@ As noted in the introduction, the issue of data persistence is not trivial.  We 
 
 These constraints upon the environment will help to inform our implementation choices.  Again, explicitly stating these issues may seem obvious, but our experience teaches that sometimes we get so comfortable with an implementation choice that we may not first stop to think if it's even appropriate!  For instance, a news or blogging site which has a high read to write ratio may not even need to worry about concurrency if the application can support stale data safely.  In that case, we might not even need transactions, and bypassing that implementation choice can lead to great gains in performance.
 
-In our Example Application, however, we'll want to ensure that users are seeing up-to-date information that's consistent, and that implies a properly synchronized data source guarded by transactions.
+In GeekSeek, however, we'll want to ensure that users are seeing up-to-date information that's consistent, and that implies a properly synchronized data source guarded by transactions.
 
-=== Implementation Technologies
+=== Implementation
 
 Given our user and technical concerns, the Java EE stack using JPA described above will do a satisfactory job towards meeting our requirements.  And there's an added benefit: by using frameworks designed to relieve the application developer of complicated programming, we'll end up writing a lot less code.  This will help us to reduce the _conceptual weight_ of our code and ease maintenance over the long run.  The slices of Java EE that we'll use specifically include: 
 
@@ -233,9 +232,373 @@ Enterprise JavaBeans, or EJBs, enjoy close integration with JTA, so we won't hav
 
 Persistence is a case that's well-understood by and lives at the heart of most Java EE applications, and these standards have been built specifically with our kind of use case in mind.  What's left for us is to sanely tie the pieces together, but not before we consider that the runtime is not the only thing with which we should be concerned.
 
+==== Entity Objects
+
+There are a few common fields we'll want from each of our entities and ultimately the tables they represent.  All will have a primary key (ID), a created and last modified +Date+.  To avoid duplication of code, we'll create a base class from which our entities may extend; this is provided by +org.cedj.geekseek.domain.persistence.model.BaseEntity+:
+
+[source,java]
+----
+@MappedSuperclass
+public abstract class BaseEntity 
+  implements Identifiable, Timestampable, Serializable {
+----
+
+The +@javax.persistence.MappedSuperclass+ annotation signals that there will be no separate table strategy for this class; its fields will be reflected directly in the tables defined by its subclasses.
+
+We'll also want to fulfill the contract of +org.cedj.app.domain.model.Identifiable+, which mandates we provide:
+
+[source,java]
+----
+/**
+ * @return The primary key, or ID, of this entity
+ */
+String getId();
+----
+
+Objects of type +Identifiable+ simply have an ID, a primary key.
+
+Simmilarly, we'll be +org.cedj.geekseek.domain.model.Timestampable+, which notes that we provide support for the following timestamps:
+
+[source,java]
+----
+/**
+ * @return the Date when this Entity was created
+ */
+Date getCreated();
+
+/**
+ * Returns the LastUpdated, or the Created Date
+ * if this Entity has never been updated.
+ *
+ * @return the Date when this Entity was last modified
+ */
+Date getLastModified();
+----
+
++BaseEntity+ will therefore contain fields and JPA metadata to reflect these contracts:
+
+[source,java]
+----
+@Id
+private String id;
+
+@Temporal(TemporalType.TIMESTAMP)
+private Date created = new Date();
+
+@Temporal(TemporalType.TIMESTAMP)
+private Date updated;
+----
+
+You'll notice a few interesting bits in play here.
+
+We denote the +id+ field as our primary key by use of the +@javax.persistence.Id+ annotation.
+
++@javax.persistence.Temporal+ is required by JPA upon +Date+ and +Calendar+ fields which are persistent.
+
+We're primarily concerned with the introduction of our +Conference+ and +Session+ entities; a +Conference+ may have many +Session+ objects associated with it.  So +org.cedj.app.domain.conference.model.Conference+ looks a bit like this:
+
+[source,java]
+----
+@Entity
+public class Conference extends BaseEntity {
+----
+
+Our class definition indicates that we'll be a JPA entity through use of the +@javax.persistence.Entity+ annotation.  We'll extend the +Timestampable+ and +Identifiable+ support from our +BaseEntity+.
+
+Next we can put in place the fields holding the state for +Conference+:
+
+[source,java]
+----
+    private static final long serialVersionUID = 1L;
+
+    private String name;
+
+    private String tagLine;
+
+    @Embedded
+    private Duration duration;
+
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "conference", cascade = CascadeType.ALL)
+    private Set<Session> sessions;
+
+    public Conference() {
+        this.id = UUID.randomUUID().toString();
+    }
+----
+
+The +duration+ field is +@javax.persistence.Embedded+, used to signal a complex object type which will decompose into further fields (columns) when mapped to relational persistence.  +org.cedj.app.domain.conference.model.Duration+ looks like:
+
+[source,java]
+----
+public class Duration implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private Date start;
+
+    private Date end;
+
+    // hidden constructor for Persistence
+    Duration() {
+    }
+
+    public Duration(Date start, Date end) {
+        requireNonNull(start, "Start must be specified");
+        requireNonNull(end, "End must be specified");
+        if (end.before(start)) {
+            throw new IllegalArgumentException("End can not be before Start");
+        }
+        this.start = (Date)start.clone();
+        this.end = (Date)end.clone();
+    }
+
+    public Date getEnd() {
+        return (Date) end.clone();
+    }
+
+    public Date getStart() {
+        return (Date) start.clone();
+    }
+
+    public Integer getNumberOfDays() {
+        return -1;
+    }
+
+    public Integer getNumberOfHours() {
+        return -1;
+    }
+}
+----
+
++Conference+ also has a relationship with +Session+ as denoted by the +@OneToMany+ annotation.  This is a bi-directional relationship; we perform the object association in both the +Conference+ and +Session+ classes.
+
+Let's define the constructors which will be used to create new instances:
+
+[source,java]
+----
+    // JPA
+    protected Conference() {}
+
+    public Conference(String name, String tagLine, Duration duration) {
+        super(UUID.randomUUID().toString());
+        requireNonNull(name, "Name must be specified)");
+        requireNonNull(tagLine, "TagLine must be specified");
+        requireNonNull(duration, "Duration must be specified");
+        this.name = name;
+        this.tagLine = tagLine;
+        this.duration = duration;
+    }
+----
+
+A no-argument constructor is required by JPA, so we'll provide one, albeit with +protected+ visibility so we won't encourage users to call upon it.  
+
+Now we may flush out the accessors/mutators of this POJO entity, applying some intelligent defaults along the way:
+
+[source,java]
+----
+    public String getName() {
+        return name;
+    }
+
+    public Conference setName(String name) {
+        requireNonNull(name, "Name must be specified)");
+        this.name = name;
+        return this;
+    }
+
+    public String getTagLine() {
+        return tagLine;
+    }
+
+    public Conference setTagLine(String tagLine) {
+        requireNonNull(tagLine, "TagLine must be specified");
+        this.tagLine = tagLine;
+        return this;
+    }
+
+    public Conference setDuration(Duration duration) {
+        requireNonNull(duration, "Duration must be specified");
+        this.duration = duration;
+        return this;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public Set<Session> getSessions() {
+        if (sessions == null) {
+            this.sessions = new HashSet<Session>();
+        }
+        return Collections.unmodifiableSet(sessions);
+    }
+
+    public Conference addSession(Session session) {
+        requireNonNull(session, "Session must be specified");
+        if (sessions == null) {
+            this.sessions = new HashSet<Session>();
+        }
+        sessions.add(session);
+        session.setConference(this);
+        return this;
+    }
+
+    public void removeSession(Session session) {
+        if(session == null) {
+            return;
+        }
+        if (sessions.remove(session)) {
+            session.setConference(null);
+        }
+    }
+}
+----
+
+Similar in form to the +Conference+ entity, +org.cedj.app.domain.conference.model.Session+ looks like:
+
+[source,java]
+----
+@Entity
+public class Session extends BaseEntity {
+
+    @Lob
+    private String outline;
+
+    @ManyToOne
+    private Conference conference;
+
+    // ... redundant bits omitted
+
+    @PreRemove
+    public void removeConferenceRef() {
+        if(conference != null) {
+            conference.removeSession(this);
+        }
+    }
+}
+----
+
+We'll allow an outline for the session of arbitrary size, permitted by the +@Lob+ annotation.  
+
+At this end of the relationship between +Session+ and +Conference+, you'll see that a +Session+ is associated with a +Conference+ via the +ManyToOne+ annotation.
+
+We've also introduced a _callback handler_ to ensure that before a +Session+ entity is removed, we also remove the association it has with a +Conference+ so that we aren't left with _orphan_ references.
+
+
+==== Repository EJBs
+
+The "Repository" EJBs are where we'll define the operations that may be taken by the user with respect to our entities.  Strictly speaking, they define the verbs: "Store", "Get" and "Remove".
+
+Because we want to completely decouple these persistent actions from JPA, we'll define an interface to abstract out the verbs from the implementations.  Later on, we'll want to provide mechanisms which fulfill these responsibilities in both RDBMS and other NoSQL varients.  Our contract is in +org.cedj.geekseek.domain.Repository+:
+
+[source,java]
+----
+public interface Repository<T extends Identifiable> {
+
+    Class<T> getType();
+
+    T store(T entity);
+
+    T get(String id);
+
+    void remove(T entity);
+}
+----
+
+This means that for any +Identifiable+ type, we'll be able to obtain the concrete class type, store the entity, get and remove it from the database.  In JPA, this is done via an +EntityManager+, so we can write a base class to support these operations for all JPA entities.  From +org.cedj.geekseek.domain.persistence.PersistenceRepository+:
+
+[source,java]
+----
+public abstract class PersistenceRepository<T extends Identifiable> 
+    implements Repository<T> {
+
+    @PersistenceContext
+    private EntityManager manager;
+
+    private Class<T> type;
+
+    public PersistenceRepository(Class<T> type) {
+        this.type = type;
+    }
+
+    @Override
+    public Class<T> getType() {
+        return type;
+    }
+
+    @Override
+    public T store(T entity) {
+        T merged = merge(entity);
+        manager.persist(merged);
+        return merged;
+    }
+
+    @Override
+    public T get(String id) {
+        return manager.find(type, id);
+    }
+
+    @Override
+    public void remove(T entity) {
+        manager.remove(merge(entity));
+    }
+
+    private T merge(T entity) {
+        return manager.merge(entity);
+    }
+
+    protected EntityManager getManager() {
+        return manager;
+    }
+}
+----
+
+An instance member of this class is our +EntityManager+, which is injected via the +@PersistenceContext+ annotation and will be used to carry out the public business methods +store+ (Create), +remove+ (Delete), and +get+ (Read).  Update is handled by simply reading in an entity, then making any changes to that object's state.  The application server will propagate these state changes to persistent storage when the transaction commits (ie. a transactional business method invocation completes successfully).
+
+We can now extend this behavior with a concrete class and supply the requisite EJB annotations easily, for instance +org.cedj.geekseek.domain.conference.ConferenceRepository+:
+
+[source,java]
+----
+@Stateless
+@LocalBean
+@Typed(ConferenceRepository.class)
+@TransactionAttribute(TransactionAttributeType.REQUIRED)
+public class ConferenceRepository extends PersistenceRepository<Conference> {
+
+    public ConferenceRepository() {
+        super(Conference.class);
+    }
+}
+----
+
+Despite the small amount of code here, there's a lot of utility going on.
+
+The +Stateless+ annotation defines this class as an EJB, a Stateless Session Bean, meaning that the application server may create and destroy instances at will, and a client should not count on ever receiving any particular instance.  +@LocalBean+ indicates that this EJB has no _business interface_; clients may call upon +ConferenceRepository+ methods directly.
+
+The +TransactionAttribute+ annotation and its +REQUIRED+ value on the class level notes that every method invocation upon one of the business methods exposed by the EJB will run in a transaction.  That means that if a transaction does not exist one will be created, while if there's currently a transaction in flight, it will be used.
+
+The +@Typed+ annotation from CDI is explained best by the +ConferenceRepository+ JavaDocs:
+
+[source,java]
+----
+/**
+ * This EJB is @Typed to a specific type to avoid being picked up by
+ * CDI under Repository<Conference> due to limitations/error in the CDI EJB
+ * interactions. A EJB Beans is always resolved as Repository<T>, which means
+ * two EJBs that implements the Repository interface both respond to
+ * the InjectionPoint @Inject Repository<X> and making the InjectionPoint
+ * ambiguous.
+ *
+ * As a WorkAround we wrap the EJB that has Transactional properties in CDI bean
+ * that can be used by the Type system. The EJB is to be considered a internal
+ * implementation detail. The CDI Type provided by the ConferenceCDIDelegateRepository
+ * is the real Repository api.
+ */
+----
+
 === Requirement Test Scenarios
 
-Of course the runtime will be the user-facing code of our application.  However, the theme of this book is in _testable development_, and we'll be focusing on proof through automated test.  To that end, every user and technical requirement we identify will be matched to an test which will ensure that functions are producing the correct results during the development cycle.  A nice rule of thumb is to abide by the motto: "If it's not tested, it doesn't exist."  
+Of course the runtime will be the executable code of our application.  However, the theme of this book is in _testable development_, and we'll be focusing on proof through automated test.  To that end, every user and technical requirement we identify will be matched to an test which will ensure that functions are producing the correct results during the development cycle.
 
 In this case, we need to create coverage to ensure that we may:
 
@@ -245,7 +608,7 @@ In this case, we need to create coverage to ensure that we may:
 ** Commits should result in entity object state flushed to persistent storage
 ** Rollbacks (when a commit fails) result in no changes to persistent storage
 
-=== Test Setup
+==== Test Setup
 
 Our tests will be taking advantage of the https://docs.jboss.org/author/display/ARQ/Persistence[_Arquillian Persistence Extension_], which is created to aid in writing tests where the persistence layer is involved.  It supports the following features:
 
@@ -266,6 +629,7 @@ Adding transactional support to these tests is fairly straightforward.  If that'
 We'll start by defining the Arquillian Persistence Extension in the +dependencyManagement+ section of our parent POM:
 
 +code/application/pom.xml+:
+[source,xml]
 ----
   <properties>
     <version.arquillian_persistence>1.0.0.Alpha6</version.arquillian_persistence>
@@ -290,6 +654,7 @@ We'll start by defining the Arquillian Persistence Extension in the +dependencyM
 And we'll also enable this in the +dependencies+ section of the POMs of the projects in which we'll be using the extension:
 
 +code/application/domain/pom.xml+:
+[source,xml]
 ----
   <dependencies>
     <dependency>
@@ -301,392 +666,201 @@ And we'll also enable this in the +dependencies+ section of the POMs of the proj
   </dependencies>
 ----
 
-Database configuration for tests powered by the Persistence Extension is done via the same mechanism as is used for the runtime: the +persistence.xml+ configuration file.
+Database configuration for tests powered by the Persistence Extension is done via the same mechanism as is used for the runtime: the +persistence.xml+ configuration file.  For instance, we supply a persistence descriptor in +org.cedj.geekseek.domain.persistence.test.integration.PersistenceDeployments+:
 
-***UPDATE THIS TO REFLECT WHAT WE'LL USE WHEN THE APP IS DONE***
-+code/application/domain/core/src/test/java/org/cedj/app/domain/CoreDeployments.java+:
 [source,java]
 ----
-public static PersistenceDescriptor persistence() {
-        return Descriptors.create(PersistenceDescriptor.class).createPersistenceUnit().name("test")
-            .getOrCreateProperties().createProperty().name("hibernate.hbm2ddl.auto").value("create-drop").up()
-            .createProperty().name("hibernate.show_sql").value("true").up().up()
-            .jtaDataSource("java:jboss/datasources/ExampleDS").up();
+public static PersistenceDescriptor descriptor() {
+        return Descriptors.create(PersistenceDescriptor.class)
+                .createPersistenceUnit()
+                    .name("test")
+                    .getOrCreateProperties()
+                        .createProperty()
+                            .name("hibernate.hbm2ddl.auto")
+                            .value("create-drop").up()
+                        .createProperty()
+                            .name("hibernate.show_sql")
+                            .value("true").up().up()
+                    .jtaDataSource("java:jboss/datasources/ExampleDS").up();
     }
 ----
 
-=== Runtime Components
+==== CRUD Tests
 
-With our understanding of how we'll go about testing our entities, let's delve into the runtime code.  We'll start with a look at the entity definitions themselves.
+With our setup and objectives clearly in place, we'd like to assert that the CRUD operations against our +Repository+ implementations hold up.  For instance, the +org.cedj.geekseek.domain.conference.test.integration.ConferenceTestCase+ contains a series of tests which aim to do just that, and are backed by the Arquillian Persistence Extension.  
 
-==== Entity Objects
+First, the test class definition:
 
-We're primarily concerned with the introduction of our +Conference+ and +Session+ entities; a +Conference+ may have many +Session+s associated with it.  So +Conference+ looks a bit like this:
-
-+code/application/domain/conference/src/main/java/org/cedj/app/domain/conference/model/Conference.java+:
 [source,java]
 ----
-package org.cedj.app.domain.conference.model;
+@Transactional(TransactionMode.COMMIT)
+@RunWith(Arquillian.class)
+public class ConferenceTestCase {
+----
 
-import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+This is a plain class with no parent, and will be executed by Arquillian by using the JUnit +@RunWith+ annotation, passing along +Arquillian.class+ as the test runner.
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+The +@Transactional+ annotation from the Arquillian Transaction Extension (a dependency of the Persistence extension) notes that we'll be running each test method in a transaction, and committing the result upon completion.
 
-import org.cedj.app.domain.model.Identifiable;
+Next we'll define a ShrinkWrap +@Deployment+ which will be deployed onto the backing server as our application under test:
 
-@Entity
-public class Conference implements Identifiable, Serializable {
+[source,java]
+----
+    @Deployment
+    public static WebArchive deploy() {
+        return ShrinkWrap.create(WebArchive.class)
+            .addAsLibraries(
+                ConferenceDeployments.conference().addClasses(
+                  ConferenceTestCase.class, 
+                  TestUtils.class)
+                    .addAsManifestResource(new StringAsset(
+                        PersistenceDeployments.descriptor().exportAsString()), 
+                          "persistence.xml")
+                    .addAsManifestResource(
+                      new File("src/main/resources/META-INF/beans.xml")))
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+    }
+----
 
-    private static final long serialVersionUID = 1L;
+This will create a WAR of a structure similar to:
 
-    @Id
-    private String id;
+----
+a23508c0-974e-4ae3-a609-cc532828e6c4.war:
+/WEB-INF/
+/WEB-INF/lib/
+/WEB-INF/lib/c2c1eaf4-4f80-49ce-875b-5090cc6dcc7c.jar
+/WEB-INF/beans.xml
+----
 
-    @NotNull
-    private String name;
+The nested JAR in +WEB-INF/lib+ are our own libraries under test, which include the core deployments, the +ConferenceRepository+, and their dependencies.
 
-    private String tagLine;
+We'll now be able to use Arquillian to inject the +ConferenceRepository+ right into the test instance, which will be executed inside the deployment on the server.  This makes it a local reference to the runtime code.
 
-    @Embedded
-    @Valid
-    @NotNull
-    private Duration duration;
+[source,java]
+----
+    @Inject
+    private Repository<Conference> repository;
+----
 
-    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "conference", cascade = CascadeType.ALL)
-    @Valid
-    private Set<Session> sessions;
+Our tests will use this repository to interact with persistent storage.
 
-    public Conference() {
-        this.id = UUID.randomUUID().toString();
+We may also set a few flags to note whether our create and remove JPA events are fired:
+
+[source,java]
+----
+    // these fields are static because Events observed by this TestClass are not
+    // are not observed on the same TestClass instance as @Test is running.
+    private static boolean createdEventFired = false;
+    private static boolean removedEventFired = false;
+----
+
+And we'll put some methods in place to observe the JPA create events and set the flags.  Because our test is _itself_ a CDI bean, we may use the CDI +@Observes+ annotation to listen in:
+
+[source,java]
+----
+    public void createdEventFired(@Observes @Created Conference conference) {
+        createdEventFired = true;
     }
 
-    public String getId() {
-        return id;
+    public void removedEventFired(@Observes @Removed Conference conference) {
+        removedEventFired = true;
     }
+----
 
-    public String getName() {
-        return name;
-    }
++@Created+ and +@Removed+ our our own CDI qualifiers, defined like so:
 
-    public Conference setName(String name) {
-        this.name = name;
-        return this;
-    }
+[source,java]
+----
+@Qualifier
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Created {
 
-    public String getTagLine() {
-        return tagLine;
-    }
-
-    public Conference setTagLine(String tagLine) {
-        this.tagLine = tagLine;
-        return this;
-    }
-
-    public Conference setDuration(Duration duration) {
-        this.duration = duration;
-        return this;
-    }
-
-    public Duration getDuration() {
-        return duration;
-    }
-
-    public Set<Session> getSessions() {
-        if (sessions == null) {
-            this.sessions = new HashSet<Session>();
-        }
-        return Collections.unmodifiableSet(sessions);
-    }
-
-    public Conference addSession(Session session) {
-        if (sessions == null) {
-            this.sessions = new HashSet<Session>();
-        }
-        if (!sessions.contains(session)) {
-            sessions.add(session);
-            session.setConference(this);
-        }
-        return this;
-    }
-
-    public void removeSession(Session session) {
-        if (sessions.remove(session)) {
-            session.setConference(null);
-        }
+    public static class Literal extends AnnotationLiteral<Created> {
+        private static final long serialVersionUID = 1L;
     }
 }
 ----
 
-You'll notice a few interesting bits in play here.  
+Now we're set to run some tests.  The first one will ensure we may create a conference.
 
-The +Id+ annotation denotes our primary key.
-
-The +javax.validation.*+ annotations allow us to impose validation constraints to ensure the data supplied to these methods is in the correct and expected form.  
-
-Also, +Conference+ has a relationship with +Session+ as denoted by the +@OneToMany+ annotation.  This is a bi-directional relationship; we perform the object association in both the +Conference+ and +Session+ classes.  Here's the definition of +Session+:
-
-+code/application/domain/conference/src/main/java/org/cedj/app/domain/conference/model/Session.java+:
 [source,java]
 ----
-package org.cedj.app.domain.conference.model;
 
-import java.io.Serializable;
-import java.util.UUID;
+    // Story: As a User I should be able to create a Conference
+    @Test
+    @ShouldMatchDataSet(value = { "conference.yml" }, excludeColumns = { "*id" })
+    public void shouldBeAbleToCreateConference() {
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+        Conference conference = createConference();
 
-@Entity
-public class Session implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    private String id;
-
-    @Embedded
-    @NotNull
-    @Valid
-    private Duration duration;
-
-    @NotNull
-    private String title;
-
-    @Lob
-    private String outline;
-
-    @ManyToOne
-    private Conference conference;
-
-    public Session() {
-        this.id = UUID.randomUUID().toString();
+        repository.store(conference);
+        Assert.assertTrue(createdEventFired);
     }
 
-    public String getId() {
-        return id;
+    public static Conference createConference() {
+        Conference conference = new Conference(
+            "Devoxx Belgium 2013",
+            "We Code In Peace",
+            new Duration(toDate(2013, 11, 11), toDate(2013, 11, 15)));
+        return conference;
     }
-
-    public Duration getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Duration duration) {
-        this.duration = duration;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getOutline() {
-        return outline;
-    }
-
-    public void setOutline(String outline) {
-        this.outline = outline;
-    }
-
-    void setConference(Conference conference) {
-        this.conference = conference;
-    }
-}
 ----
 
-At this end of the relationship between +Session+ and +Conference+, you'll see that a +Session+ is associated with a +Conference+ via the +ManyToOne+ annotation.
+Because we'll check that the flag was set based upon the CDI +@Observes+ support, we can be sure that the conference was in fact created.  Additionally, we use the +@ShouldMatchDataSet+ annotation from the Arquillian Persistence Extension to check that the values in the DB are in the expected form, given the contents of the +conference.yml+ file, which looks like:
 
-Finally, we make use of the +Embedded+ annotation to note that we'd like to store a field as a complex object, in this case, the +Duration+:
+----
+conference:
+  - id: CA
+    name: Devoxx Belgium 2013
+    tagLine: We Code In Peace
+    start: 2013-11-11 00:00:00.0
+    end: 2013-11-15 00:00:00.0
+----
 
-+code/application/domain/conference/src/main/java/org/cedj/app/domain/conference/model/Duration.java+:
+In this manner, we can more easily check that data is making its way to and from the persistence layer intact, with an easier syntax to define the values we'll expect to find.  This also frees us from writing a lot of assertions on each individual field of every entry in the DB, and makes for much easier automated checking of large datasets.
+
+Our test class has similar methods to enforce related behaviors mandated by our requirements:
+
 [source,java]
 ----
-package org.cedj.app.domain.conference.model;
+    // Story: As a User I should be able to create a Conference with a Session
+    @Test
+    @ShouldMatchDataSet(value = { "conference.yml", "session.yml" }, excludeColumns = { "*id" })
+    public void shouldBeAbleToCreateConferenceWithSession(){...}
 
-import java.util.Date;
 
-import javax.validation.constraints.NotNull;
+    // Story: As a User I should be able to add a Session to a existing Conference
+    @Test
+    @UsingDataSet("conference.yml")
+    @ShouldMatchDataSet(value = { "conference.yml", "session.yml" }, excludeColumns = { "*id" })
+    public void shouldBeAbleToAddSessionToConference() {...}
 
-public class Duration {
+    // Story: As a User I should be able to remove a Conference
+    @Test
+    @UsingDataSet("conference.yml")
+    @ShouldMatchDataSet("conference_empty.yml")
+    public void shouldBeAbleToRemoveConference() {...}
 
-    @NotNull
-    private Date start;
 
-    @NotNull
-    private Date end;
+    // Story: As a User I should be able to remove a Session from a Conference
+    @Test
+    @UsingDataSet({ "conference.yml", "session.yml" })
+    @ShouldMatchDataSet({ "conference.yml", "session_empty.yml" })
+    public void shouldBeAbleToRemoveConferenceWithSession(){...}
 
-    // hidden constructor for Persistence
-    Duration() {
-    }
+    // Story: As a User I should be able to change a Conference
+    @Test
+    @UsingDataSet("conference.yml")
+    @ShouldMatchDataSet(value = { "conference_updated.yml" })
+    public void shouldBeAbleToChangeConference() {...}
 
-    public Duration(Date start, Date end) {
-        if (start == null) {
-            throw new IllegalArgumentException("Start must be provided");
-        }
-        if (end == null) {
-            throw new IllegalArgumentException("End must be provided");
-        }
-        if (end.before(start)) {
-            throw new IllegalArgumentException("End cannot be before Start");
-        }
-        this.start = start;
-        this.end = end;
-    }
 
-    public Date getEnd() {
-        return (Date) end.clone();
-    }
-
-    public Date getStart() {
-        return (Date) start.clone();
-    }
-
-    public Integer getNumberOfDays() {
-        return -1;
-    }
-
-    public Integer getNumberOfHours() {
-        return -1;
-    }
-}
+    // Story: As a User I should be able to change a Session
+    @Test
+    @UsingDataSet({ "conference.yml", "session.yml" })
+    @ShouldMatchDataSet(value = { "conference.yml", "session_updated.yml" })
+    public void shouldBeAbleToChangeSession() {...}
 ----
 
-==== Repository EJBs
-
-The "Repository" EJBs are where we'll define the actions that may be taken by the user with respect to our entities.  Strictly speaking, they define the verbs: "Create" and "Read".
-
-We can place most of the logic supporting these operations in an abstract, genericized base class:
-
-+code/application/domain/core/src/main/java/org/cedj/app/domain/Repository.java+:
-[source,java]
-----
-package org.cedj.app.domain;
-
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.cedj.app.domain.model.Identifiable;
-
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-public class Repository<T extends Identifiable> {
-
-    @PersistenceContext
-    private EntityManager manager;
-
-    private Class<T> type;
-
-    public Repository(Class<T> type) {
-        this.type = type;
-    }
-
-    public T store(T entity) {
-        T merged = merge(entity);
-        manager.persist(merged);
-        return merged;
-    }
-
-    public T get(String id) {
-        return manager.find(type, id);
-    }
-
-    public void remove(T entity) {
-        manager.remove(merge(entity));
-    }
-
-    private T merge(T entity) {
-        return manager.merge(entity);
-    }
-
-    protected EntityManager getManager() {
-        return manager;
-    }
-}
-----
-
-Despite the small amount of code here, there's a lot of utility going on.
-
-The +TransactionAttribute+ annotation and its +REQUIRES_NEW+ value on the class level notes that every method invocation upon one of the business methods exposed by the EJB will run in its own transaction.  That means that if a transaction does not exist one will be created.  If there's currently a transaction in flight, it will be _suspended_ (ie. dis-associated with the running +Thread+) and a new one put in place.  The suspended transaction will resume when the business method invocation exits.
-
-An instance member of this class is our +EntityManager+, which will be used to carry out the public business methods +store+ (Create) and +get+ (Read).  Update is handled by simply reading in an entity, then making any changes to that object's state.  The application server will propagate these state changes to persistent storage when the transaction commits (ie. a transactional business method invocation completes successfully).
-
-We can now extend this behavior with a concrete class and supply the requisite EJB annotations easily:
-
-+code/application/domain/conference/src/main/java/org/cedj/app/domain/conference/ConferenceRepository.java+:
-[source,java]
-----
-package org.cedj.app.domain.conference;
-
-import javax.ejb.Stateless;
-
-import org.cedj.app.domain.Repository;
-import org.cedj.app.domain.conference.model.Conference;
-
-@Stateless
-public class ConferenceRepository extends Repository<Conference> {
-
-    public ConferenceRepository() {
-        super(Conference.class);
-    }
-}
-----
-
-The +Stateless+ annotation defines this class as an EJB, a Stateless Session Bean, meaning that the application server may create and destroy instances at will, and a client should not count on ever receiving any particular instance.
-
-==== FROM HERE OUT, JUST UPDATE W/ NEW TEST CODE
-
-===== Store
-
-* Setup dataset
-* Setup expected output
-* Create Conference Domain Model
-* Create Conference Repository 'create'
-
-===== Update
-
-* Setup dataset
-* Setup expected output
-* Create Conference Repository 'update'
-
-===== Remove
-
-
-* Setup dataset
-* Setup expected output
-* Create Conference Repository 'delete'
-
-==== Domain User
-
-* Not explained, only code
-* See Conference
-
-==== Domain Venue
-
-* Not explained, only code.
-* See Conference
-
-==== Domain Attachment
-
-* Not explained, only code.
-* See Conference
-
-
+By using Arquillian's injection facilities along with the additional transactions and data-checking support offered by the Persistence Extension, we can, with very little test logic, perform powerful assertions that validate our data is making its way to the real persistence layer without the use of mock objects.
