@@ -31,9 +31,10 @@ It'd be much better to delegate the task of persistent storage to another compon
 The role of a DBMS is very generally to store and provide access to data.  They come in a variety of flavors which are differentiated in terms of how they internally organize information:
 
 |============
-|Relational (RDBMS)|Like data is grouped into tables where columns represent data types and rows represent records.  Most often employs a protocol language called _Structured Query Language_ (SQL) for interaction.
-|Graph|Stores objects with relationships in a graph structure; ideal for traversing nodes.
-|Key/Value|Nested Map or document-oriented structure, becoming very popular in recent years.
+|Relational (RDBMS)|Like data is grouped into tables where columns represent data types and rows represent records.  Most often employs a protocol language called _Structured Query Language_ (SQL) for interaction.  Examples: http://www.mysql.com/[MySQL], http://www.postgresql.org/[PostgreSQL].
+|Graph|Stores objects with relationships in a graph structure; ideal for traversing nodes.  Example: http://www.neo4j.org/[Neo4j]
+|Key/Value|Nested Map or document-oriented structure, becoming very popular in recent years.  Examples: http://www.jboss.org/infinispan/[Infinispan], http://www.mongodb.org/[MongoDB]
+|Column-oriented|Stores data in columns, as opposed to the RDBMS where the records are kept in rows.  Best-suited for very large tables.  Examples: http://hbase.apache.org/[Apache HBase], http://cassandra.apache.org/[Apache Cassandra].
 |============
 
 This chapter will focus on today's most commonly-used relational model (NoSQL will be covered next in Chapter 6).
