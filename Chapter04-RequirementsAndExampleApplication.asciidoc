@@ -52,7 +52,7 @@ Here we speak at a very coarse level of granularity, and we seek to define from 
 
 ===== User
 |==========
-|Name|Type
+|Name|String
 |Twitter ID|String, unique among all users
 |Bio|String
 |==========
