@@ -5,11 +5,18 @@ import org.cedj.geekseek.web.rest.core.test.integration.RestCoreDeployments;
 import org.cedj.geekseek.web.rest.user.UserResource;
 import org.cedj.geekseek.web.rest.user.model.UserRepresentation;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 public class UserRestDeployments {
 
     private UserRestDeployments() {
+    }
+
+    public static JavaArchive module() {
+        return ShrinkWrap.create(JavaArchive.class)
+            .addPackage(UserResource.class.getPackage())
+            .addPackage(UserRepresentation.class.getPackage());
     }
 
     public static WebArchive user() {

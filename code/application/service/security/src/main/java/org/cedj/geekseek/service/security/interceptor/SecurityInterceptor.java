@@ -2,6 +2,7 @@ package org.cedj.geekseek.service.security.interceptor;
 
 import java.lang.reflect.Method;
 
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.interceptor.InvocationContext;
 import javax.ws.rs.DELETE;
@@ -18,7 +19,7 @@ import org.cedj.geekseek.web.rest.core.interceptor.RESTInterceptor;
 public class SecurityInterceptor implements RESTInterceptor {
 
     @Inject @Current
-    private User user;
+    private Instance<User> user;
 
     @Override
     public int getPriority() {
@@ -30,7 +31,7 @@ public class SecurityInterceptor implements RESTInterceptor {
 
         Method target = ic.getMethod();
         if(isStateChangingMethod(target)) {
-            if(user != null) {
+            if(user.get() != null) {
                 return ic.proceed();
             }
             else {

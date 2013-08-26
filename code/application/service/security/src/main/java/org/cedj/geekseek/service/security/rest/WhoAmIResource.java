@@ -1,6 +1,6 @@
 package org.cedj.geekseek.service.security.rest;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -16,7 +16,6 @@ import org.cedj.geekseek.web.rest.core.TopLevelResource;
 import org.cedj.geekseek.web.rest.core.annotation.ResourceModel;
 import org.cedj.geekseek.web.rest.user.UserResource;
 
-@RequestScoped
 @ResourceModel
 @Path("/security/whoami")
 public class WhoAmIResource implements TopLevelResource {
@@ -28,7 +27,7 @@ public class WhoAmIResource implements TopLevelResource {
     private static final String USER_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + "; type=user";
 
     @Inject @Current
-    private User user;
+    private Instance<User> user;
 
     @Override
     public Class<? extends Resource> getResourceClass() {
@@ -43,10 +42,11 @@ public class WhoAmIResource implements TopLevelResource {
     @GET
     @Produces({BASE_XML_MEDIA_TYPE, BASE_JSON_MEDIA_TYPE})
     public Response whoami() {
-        if(user == null) {
+        User currentUser = user.get();
+        if(currentUser == null) {
             return Response.status(Status.UNAUTHORIZED).build();
         }
-        String userId = user.getId();
+        String userId = currentUser.getId();
         return Response.seeOther(
                 UriBuilder.fromResource(UserResource.class).segment(userId).build())
             .build();

@@ -74,6 +74,18 @@
 
     <dependency>
       <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-web-rest-core</artifactId>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.cedj.geekseek</groupId>
+      <artifactId>geekseek-web-rest-user</artifactId>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.cedj.geekseek</groupId>
       <artifactId>geekseek-domain-core</artifactId>
       <scope>test</scope>
       <type>test-jar</type>
