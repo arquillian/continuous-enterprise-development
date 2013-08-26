@@ -353,6 +353,10 @@ Chapter 10 will involve OAuth authentication using security and identify managem
 
 Once we've abided by proper modular design principles, it's time to bring everything together and do some full-scale integration testing upon the final deployable archive.  Chapter 11 will combine our application and set up some test configurations to flex all layers of GeekSeek working in tandem.
 
+////
+
+Commented out until these are put in place in the production version - ALR
+
 ==== Chapter 12 - Efficiency and Quality During Development
 
 Orthogonal to the task of creating our example application, there are a series of techniques we may employ to help us to code more quickly and confidently.  These include:
@@ -371,5 +375,7 @@ Throughout the text we'll be covering a series of "Containers" and "Extensions" 
 However, the Arquillian Community can't possibly foresee all testing use cases, and new integration points are emerging all of the time.  For this reason, we provide the Arquillian _Service Provider Interface_ (SPI), a set of hooks which allow you as a user of Arquillian to extend its behavior.
 
 Chapter 13 will cover the SPI and explain the construction of your own Arquillian extension points.
+
+////
 
 With our birds-eye view of the GeekSeek example application complete, it's time to dig into some code.
