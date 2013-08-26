@@ -339,22 +339,15 @@ Our use case will explore the testable development of an SMTP service and intera
 
 REST (_Re_ presentational _S_ tate _T_ ransfer) is an architecture of patterns that reveal services as resources in a fashion consistent with the guiding concepts behind the web itself.  Chapter 7 will introduce the exposition of enterprise services using REST guidelines, and will be implemented with Java EE's JAX-RS framework.  Additionally, we'll test our endpoints using _Arquillian Warp_ and the http://code.google.com/p/rest-assured/[REST-assured] project.
 
-==== Chapter 8 - User Interfaces
-
-With our services made available via an addressable resource due to our REST layer, we can begin to create a client of our application which allows users to interact.  This will compose our user interface.
-
-===== JavaScript / REST client
-===== Angular.js ?
-
-==== Chapter 9 - Transactions
-
-===== Tx Testing Plan
-
-==== Chapter 10 - Security
+==== Chapter 9 - Security
 
 Our feature set requirements clearly couple user registration with an existing Twitter account, so we'll need plenty of implementation and testing to ensure that the integrity of our users is not compromised.
 
 Chapter 10 will involve OAuth authentication using security and identify management from the http://www.jboss.org/picketlink[PicketLink] project.  We'll again look to REST-assured to help us with our client testing strategy.
+
+==== Chapter 10 - UI
+
+***TODO***
 
 ==== Chapter 11 - Assembly and Deployment
 
