@@ -1,0 +1,813 @@
+== Security
+
+_"There is no real security except for whatever you build inside yourself." - Gilda Radner_
+
+In a Utopian society, we'd leave our homes in the morning unlocked.  We'd park our cars at the office with the windows open, and after dark we'd be free to walk unlit alleyways without concern.
+
+Unfortunately, the small percentage of those looking to take advantage of others necessitates taking some measures to protect ourselves.  We look after our belongings and each other.  In the digital arena, our vulnerable currency is _data_ - not everyone is entitled to see or edit everything.  While our systems are built to support a large number of users, we cannot simply allow anyone to take any action they please.  In software and life, security amounts to controlling access.
+
+The process by which we grant or restrict access is reflected in our _security model_; this defines the criteria by which we judge access attempts.  If someone is asking to enter the office, should we ensure they're an employee?  Is it after business hours, and how does that affect our decision?  Access may be permitted or denied based upon _contextual_ information, and the way we value those contexts is what comprises our security model.
+
+When we permit access to a resource, this is the process of _authorization_.  A commonly-employed approach involves _role-based security_, where functions and actions on the system are linked to a _role_.  For instance, the task of unlocking an office's front doors may be permitted by someone with the "janitor" role.  A staffer, Jim, may in turn be assigned to the "janitor" role; thus Jim will have permission to unlock the office's front doors.  Role-based security decouples the _user_ from the _task_; if Jim leaves the company and no longer is noted as the janitor, then the permissions he'd had when assigned to that role would disappear as well.  
+
+Coupled with authorization, the act of granting or denying access, is ensuring that the requesting party is who they say they are.  Surely the CEO of a company is privy to all sorts of details that wouldn't be available to the general public; if anyone could claim to be CEO, they'd be permitted to browse the whole system!  The process of validating identity is called _authentication_.
+
+=== Use Case / Requirements
+
+As GeekSeek is intended to communicate its users' conference schedules publicly, we're not concerned with locking down read operations.  However, it's still important that writes are done by authorized users, so our requirements will generally state "limit unauthorized users' access to create or change data":
+____
+* As a 3rd-party integrator, I should not be able to:
+** Add/Change/Delete a Conference without being authorized
+** Add/Change/Delete a Session of a Conference without being authorized
+** Add/Change/Delete an Attachment to Sessions and Conferences without being authorized
+** Add/Change/Delete a Venue (and associate with a Conference and Session) without being authorized
+____
+
+In practice, this means we'll need to lock down the resources for these actions with a layer to inspect incoming requests, analyze the calling user and other contextual information, and determine whether we allow the invocation to proceed or not.
+
+=== Implementation
+
+==== Supporting Software
+
+It likely doesn't benefit us much to build bespoke solutions for generalized and important layers such as security, so we'll be relying on integration with a few frameworks to help us fulfill our requirements.
+
+===== PicketLink - Application-level Security
+
+image:images/ch09-security/picketlink.png["PicketLink"]
+
+http://www.picketlink.org[/PicketLink] is an umbrella project for security and identity management for Java Applications.  It provides the backbone of security for a variety of JBoss products, but also may be used standalone, as we'll do with GeekSeek.  There are PicketLink components to support:
+
+* http://www.jboss.org/picketlink/IDM.html[IDM]; universal identity management with pluggable backends like LDAP or RDBMS
+* http://www.jboss.org/picketlink/Fed[Federation]; Federated Identity and Single-Sign-On (SSO)
+* http://www.jboss.org/picketlink/XACML.html[XACML]; Oasis XACML v2.0 compliant access control engine
+
+We'll be leveraging PicketLink in GeekSeek to supply us with an _identity manager_ which we may use for authentication.  This comes in the form of the PicketLink API's +org.picketlink.Identity+, which has operations to support checking the current login state, logging in, logging out, and checking access permission:
+
+[source,java]
+----
+public interface Identity extends Serializable
+{
+    public enum AuthenticationResult {
+        SUCCESS, FAILED
+    }
+
+    boolean isLoggedIn();
+
+    Account getAccount();
+
+    AuthenticationResult login() throws AuthenticationException;
+
+    void logout();
+
+    boolean hasPermission(Object resource, String operation);
+
+    boolean hasPermission(Class<?> resourceClass, Serializable identifier, 
+      String operation);
+}
+----
+
+We may use the +Identity+ API to lock down all requests to a URL pattern +/auth+ via our +org.cedj.geekseek.service.security.oauth.AuthServlet+:
+
+[source,java]
+----
+@WebServlet(urlPatterns={"/auth"})
+public class AuthServlet extends HttpServlet {
+----
+
+The +@WebServlet+ annotation and +urlPatterns+ attribute assign this servlet to handle all requests to context paths matching the +/auth+ pattern.
+
+[source,java]
+----
+    private static final long serialVersionUID = 1L;
+
+    private static final String SESSION_REDIRECT = "auth_redirect";
+    private static final String REFERER = "Referer";
+    private static final String LOCATION = "Location";
+
+    @Inject
+    private HttpObjectHolder holder;
+
+    @Inject
+    private Identity identity;
+----
+
+Here we define some constants and inject the PicketLink +@Identity+.  We may then use these in our servlet's +service+ method, called by the contained on incoming client requests:
+
+[source,java]
+----
+    @Override
+    public void service(ServletRequest req, ServletResponse resp) throws IOException,
+        ServletException {
+
+        HttpServletRequest request = (HttpServletRequest)req;
+        HttpServletResponse response = (HttpServletResponse)resp;
+        HttpSession session = request.getSession();
+        holder.setup(request, response);
+
+        if(!identity.isLoggedIn()) {
+            if(session.getAttribute(SESSION_REDIRECT) == null) {
+                session.setAttribute(SESSION_REDIRECT, request.getHeader(REFERER));
+            }
+
+            try {
+                AuthenticationResult status = identity.login();
+                if(status == AuthenticationResult.FAILED) {
+                    if(response.getStatus() == 302) { // Authenticator is requesting a redirect
+                        return;
+                    }
+                    response.setStatus(400);
+                    response.getWriter().append("FAILED");
+                } else {
+                    String url = String.valueOf(request.getSession().getAttribute(SESSION_REDIRECT));
+                    response.setStatus(302);
+                    response.setHeader(LOCATION, url);
+                    request.getSession().removeAttribute(SESSION_REDIRECT);
+                }
+            } catch(AuthenticationException e) {
+                response.setStatus(400);
+                response.getWriter().append(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        else {
+            response.setStatus(302);
+            response.setHeader("Location", request.getHeader("Referer"));
+            response.getWriter().append("ALREADY_LOGGED_IN");
+        }
+    }
+}
+----
+
+By using the operations permitted by the +Identity+ API to check the login state and perform a login if necessary, we may set the appropriate HTTP status codes and authentication redirect attributes.
+
+CDI beans will also be interested in knowing the current +User+ we have logged-in.  A PicketLink +Identity+ is associated with an implementation of +org.picketlink.idm.model.Account+, and we link an +Identity+ to a +User+ via our +org.cedj.geekseek.service.security.picketlink.UserAccount+.
+
+[source,java]
+----
+public class UserAccount implements Account {
+
+    private User user;
+
+    public UserAccount(User user) {
+        Validate.requireNonNull(user, "User must be specified");
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+    ...
+----
+
+With the line between an +Identity+ and our own +User+ object now drawn, we may make the current +User+ available as an injection target by supplying a CDI producer method, scoped to the current request.  This is handled by +org.cedj.geekseek.service.security.CurrentUserProducer+:
+
+[source,java]
+----
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+
+import org.cedj.geekseek.domain.Current;
+import org.cedj.geekseek.domain.user.model.User;
+import org.cedj.geekseek.service.security.picketlink.UserAccount;
+import org.picketlink.Identity;
+
+@RequestScoped
+public class CurrentUserProducer {
+
+    @Inject
+    private Identity identity;
+
+    @Produces @Current
+    public User getCurrentUser() {
+        if(identity.isLoggedIn()) {
+            return ((UserAccount)identity.getAccount()).getUser();
+        }
+        return null;
+    }
+}
+----
+
+The class above will supply a +User+ to fields annotated with +@Current+, or null if no one is logged in.  As we've seen, our +UserAccount+ implementation will allow us to call +getUser()+ on the current +Identity+.
+
+Here we've shown the use of PicketLink as a handy security abstraction, but we haven't done any real authentication or authorization yet.  For that, we'll need to implement a provider which will power the IDM requirements we have to enable social login via Twitter.
+
+===== Agorava and Social Authentication
+
+image:images/ch09-security/agorava.png["Agorava"]
+
+http://agorava.org/[Agorava] is a library consisting of CDI beans and extensions for interaction with the predominant social networks.  Its featureset touts:
+
+* A generic and portable REST client API
+* A generic API to work with OAuth 1.0a and 2.0 services
+* A generic API to interact with JSON serialization and de-serialization
+* A generic identification API to retrieve basic user information from a Social Service
+* Specific APIs for Twitter, Facebook and LinkedIn
+
+In short, we'll be using Agorava to handle our _authentication_ process and do the behind-the-scenes interaction with Twitter, powering our sign-in integration.
+
+Because the Twitter authentication mechanism is via OAuth, it'll benefit us to produce an Agorava +OAuthSession+ to represent the current user.  Again, we turn to a CDI producer method to handle the details in +org.cedj.geekseek.service.security.oauth.SessionProducer+:
+
+[source,java]
+----
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Default;
+import javax.enterprise.inject.Produces;
+
+import org.agorava.Twitter;
+import org.agorava.core.api.oauth.OAuthSession;
+import org.agorava.core.cdi.Current;
+
+public class SessionProducer implements Serializable {
+    @SessionScoped
+    @Produces
+    @Twitter
+    @Current
+    public OAuthSession produceOauthSession(@Twitter @Default OAuthSession session) {
+        return session;
+    }
+}
+----
+
+The +@Twitter+ annotation from Agorava supplies us with an injection point to map the +OAuthSession+ into the +@Produces+ method.
+
+We also need a mechanism to initialize Agorava's settings for the OAuth application, so we have +org.cedj.geekseek.service.security.oauth.SettingsProducer+ to provide these.
+
+[source,java]
+----
+import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+
+import org.agorava.Twitter;
+import org.agorava.core.api.oauth.OAuthAppSettings;
+import org.agorava.core.oauth.SimpleOAuthAppSettingsBuilder;
+
+@ApplicationScoped
+@Startup @Singleton
+public class SettingsProducer implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private static final String PROP_API_KEY = "AUTH_API_KEY";
+    private static final String PROP_API_SECRET = "AUTH_API_SECRET";
+    private static final String PROP_API_CALLBACK = "AUTH_CALLBACK";
+
+    @Produces @Twitter @ApplicationScoped
+    public static OAuthAppSettings createSettings() {
+        String apiKey = System.getenv(PROP_API_KEY);
+        String apiSecret = System.getenv(PROP_API_SECRET);
+        String apiCallback = System.getenv(PROP_API_CALLBACK);
+        if(apiCallback == null) {
+            apiCallback = "auth";
+        }
+
+        SimpleOAuthAppSettingsBuilder builder = new SimpleOAuthAppSettingsBuilder();
+        builder.apiKey(apiKey).apiSecret(apiSecret).callback(apiCallback);
+
+        return builder.build();
+    }
+
+    @PostConstruct
+    public void validateEnvironment() {
+        String apiKey = System.getenv(PROP_API_KEY);
+        if(apiKey == null) {
+            throw new IllegalStateException(PROP_API_KEY + " env variable must be set");
+        }
+        String apiSecret = System.getenv(PROP_API_SECRET);
+        if(apiSecret == null) {
+            throw new IllegalStateException(PROP_API_SECRET + " env variable must be set");
+        }
+    }
+}
+----
+
+This +@Singleton+ EJB is scoped application-wide and available to all sessions needing configuration to create OAuth sessions.  We store the config data in environment variables to not couple secrets into our application, and allow our various deployment targets (local dev, staging, production, etc) to have independent configurations.
+
+Now we can move to the business of authenticating a user via the Twitter OAuth service via Agorava.  We may extend PicketLink's +BaseAuthenticator+ to provide the necessary logic in our +org.cedj.geekseek.service.security.picketlink.OAuthAuthenticator+:
+
+[source,java]
+----
+@ApplicationScoped
+@PicketLink
+public class OAuthAuthenticator extends BaseAuthenticator {
+
+    private static final String AUTH_COOKIE_NAME = "auth";
+    private static final String LOCATION = "Location";
+
+    @Inject @PicketLink
+    private Instance<HttpServletRequest> requestInst;
+
+    @Inject @PicketLink
+    private Instance<HttpServletResponse> responseInst;
+
+    @Inject
+    private Repository<User> repository;
+
+    @Inject
+    private OAuthService service;
+
+    @Inject @Twitter @Current
+    private OAuthSession session;
+
+    @Inject
+    private Event<SuccessfulAuthentication> successful;
+
+    @Override
+    public void authenticate() {
+        HttpServletRequest request = requestInst.get();
+        HttpServletResponse response = responseInst.get();
+
+        if(request == null || response == null) {
+            setStatus(AuthenticationStatus.FAILURE);
+        } else {
+            if(session.isConnected()) { // already got a active session going
+                OAuthSession session = service.getSession();
+                UserProfile userProfile = session.getUserProfile();
+
+                User user = repository.get(userProfile.getId());
+                if(user == null) {  // can't find a matching account, shouldn't really happen
+                    setStatus(AuthenticationStatus.FAILURE);
+                } else {
+                    setAccount(new UserAccount(user));
+                    setStatus(AuthenticationStatus.SUCCESS);
+                }
+            } else {
+                // Callback
+                String verifier = request.getParameter(service.getVerifierParamName());
+                if(verifier != null) {
+                    session.setVerifier(verifier);
+                    service.initAccessToken();
+
+                    // https://issues.jboss.org/browse/AGOVA-53
+                    successful.fire(new SuccessfulAuthentication(service.getSession().getUserProfile(), service.getAccessToken()));
+
+                    String screenName = ((TwitterProfile)service.getSession().getUserProfile()).getScreenName();
+                    User user = repository.get(screenName);
+                    if(user == null) { // can't find a matching account
+                        setStatus(AuthenticationStatus.FAILURE);
+                    } else {
+                        setAccount(new UserAccount(user));
+                        setStatus(AuthenticationStatus.SUCCESS);
+                        response.addCookie(new Cookie(AUTH_COOKIE_NAME, user.getApiToken()));
+                    }
+
+                } else {
+                    // initiate redirect request to 3. party
+                    String redirectUrl = service.getAuthorizationUrl();
+
+                    response.setStatus(302);
+                    response.setHeader(LOCATION, redirectUrl);
+                    setStatus(AuthenticationStatus.DEFERRED);
+                }
+            }
+        }
+    }
+}
+----
+
+By annotating the +OAuthAuthenticator+ with +@PicketLink+, this denotes that this is the authenticator instance to be used by PicketLink.
+
+The +authenticate+ method above uses the current (injected) +OAuthSession+ to determine whether or not we have a logged-in user, and further may extract profile information from there.  If the session is not yet connected, we may issue the redirect to the provider for access.
+
+Upon a +SuccessfulAuthentication+ event, we may take further action to store this user's information from Twitter in our datastore by observing the event in +org.cedj.geekseek.service.security.user.UserRegistration+:
+
+[source,java]
+----
+import javax.enterprise.event.Observes;
+import javax.inject.Inject;
+
+import org.agorava.core.api.oauth.OAuthToken;
+import org.agorava.twitter.model.TwitterProfile;
+import org.cedj.geekseek.domain.Repository;
+import org.cedj.geekseek.domain.user.model.User;
+import org.cedj.geekseek.service.security.oauth.SuccessfulAuthentication;
+
+public class UserRegistration {
+
+    @Inject
+    private Repository<User> repository;
+
+    public void registerUser(@Observes SuccessfulAuthentication event) {
+        TwitterProfile profile = (TwitterProfile)event.getProfile();
+
+        User user = repository.get(profile.getScreenName());
+        if(user == null) {
+            user = new User(profile.getScreenName());
+        }
+        user.setName(profile.getFullName());
+        user.setBio(profile.getDescription());
+        user.setAvatarUrl(profile.getProfileImageUrl());
+        OAuthToken token = event.getToken();
+        user.setAccessToken(token.getSecret() + "|" + token.getToken());
+        if(user.getApiToken() == null) {
+            user.setApiToken(UUID.randomUUID().toString());
+        }
+
+        repository.store(user);
+    }
+}
+----
+
+When the +SuccessfulAuthentication+ event is fired from the +OAuthAuthenticator+, our +UserRegistration+ bean will set the appropriate fields in our own data model, then persist via the injected +Repository+.
+
+=== Requirement Test Scenarios
+
+With our resources secured by URL patterns, it's time to ensure that the barriers we've put in place are protecting us as we'd expect.  
+
+==== Overview
+
+We must validate that for each of the operations we invoke upon secured resources, we're getting back the appropriate response.  As we've seen before in the REST chapter, this will pertain to:
+
+* +PUT+ data
+* +GET+ data
+* +POST+ data
+* +PATCH+ data
+* +DELETE+ data
+* +OPTIONS+ filtered
+* Login
+** Handling exceptional cases
+
+==== Setup
+
+By making use of CDI's producers, we can swap in some test-only implementations to provide our tests with a logged in +User+; this will mimic the true +@CurrentUser+ behavior we'll see in production.  For instance, +org.cedj.geekseek.service.security.test.model.TestCurrentUser+ contains:
+
+[source,java]
+----
+public class TestCurrentUserProducer {
+
+    @Produces @Current
+    private static User current;
+
+    public void setCurrent(User current) {
+        TestCurrentUserProducer.current = current;
+    }
+}
+----
+
+This +setCurrent+ method is invoked by Warp during our test execution via a class called +org.cedj.geekseek.service.security.test.model.SetupAuth+:
+
+[source,java]
+----
+public class SetupAuth extends Inspection {
+
+    private User user;
+
+    public SetupAuth(User user) {
+        this.user = user;
+    }
+
+    @BeforeServlet
+    public void setup(TestCurrentUserProducer producer) {
+        producer.setCurrent(this.user);
+    }
+}
+----
+
+==== Security Tests
+
+===== Secured Options
+
+The whole picture comes together in +org.cedj.geekseek.service.security.test.integration.SecuredOptionsTestCase+.  This will test that the +Allow+ HTTP header is not returned for unauthorized users issuing state-changing requests upon a protected URL.  Additionally, it'll ensure that if a user *is* logged-in, the state-changing methods will be allowed and the +Allow+ header will be present.  
+
+[source,java]
+----
+@RunAsClient
+@WarpTest
+@RunWith(Arquillian.class)
+public class SecuredOptionsTestCase {
+
+    @Deployment
+    public static WebArchive deploy() {
+        return ShrinkWrap.create(WebArchive.class)
+            .addClasses(
+                SecuredOptionsExceptionMapper.class,
+                SecuredOptionsTestCase.class,
+                SetupAuth.class,
+                TestResource.class,
+                TestApplication.class,
+                TestCurrentUserProducer.class)
+            .addAsLibraries(RestCoreDeployments.root())
+            .addAsLibraries(UserDeployments.domain())
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+    }
+
+    @ArquillianResource
+    private URL baseURL;
+----
+
+We start by defining a +@WarpTest+ to run from the client-side (as denoted by +@RunAsClient+), and provide an +@Deployment+ with test-double elements like our +TestCurrentUserProducer+ as explained above.  Arquillian will inject the +baseURL+ of our deployment as we've annotated it with +@ArquillianResource+.
+
+[source,java]
+----
+    @Test
+    public void shouldNotContainStateChangingMethodsForUnauthorizedAccess() throws Exception {
+        final URL testURL = createTestURL();
+        Warp.initiate(new Activity() {
+            @Override
+            public void perform() {
+                    given().
+                    then().
+                        statusCode(Status.OK.getStatusCode()).
+                        header("Allow", allOf(
+                            not(containsString("POST")),
+                            not(containsString("PUT")),
+                            not(containsString("DELETE")),
+                            not(containsString("PATCH")))).
+                when().
+                    options(testURL.toExternalForm());
+            }
+        }).inspect(new SetupAuth(null));
+    }
+----
+
+Warp's fluent syntax allows us to construct a test to ensure that the +Allow+ header is not returned for the state-changing HTTP requests +POST+, +PUT+, +DELETE+, and +PATCH+.  The use of a +null+ user in +SetupAuth+ is where we set no current user.  
+
+Conversely, we can ensure that we do obtain the +Allow+ header for all methods when we +are+ logged-in:
+
+[source,java]
+----
+    @Test
+    public void shouldContainStateChangingMethodsForAuthorizedAccess() throws Exception {
+        final URL testURL = createTestURL();
+        Warp.initiate(new Activity() {
+            @Override
+            public void perform() {
+                    given().
+                    then().
+                        statusCode(Status.OK.getStatusCode()).
+                        header("Allow", allOf(
+                            containsString("GET"),
+                            containsString("OPTIONS"),
+                            containsString("POST"),
+                            containsString("PUT"),
+                            containsString("DELETE"),
+                            containsString("PATCH"))).
+                when().
+                    options(testURL.toExternalForm());
+            }
+        }).inspect(new SetupAuth(new User("testuser")));
+    }
+}
+----
+
+Here we use +SetupAuth+ to set ourselves a +testuser+ for use in this test.
+
+We may take a similar approach to validating that we receive an HTTP "Unauthorized"+" +401+ status response when attempting to +POST+, +PUT+, +PATCH+ or +DELETE+ a resource if we're not an authorized user; this is done in +org.cedj.geekseek.service.security.test.integration.SecuredMethodsTestCase+:
+
+[source,java]
+----
+    @Test
+    public void shouldNotAllowPUTForUnauthorizedAccess() throws Exception {
+        final URL testURL = createTestURL();
+        Warp.initiate(new Activity() {
+            @Override
+            public void perform() {
+                    given().
+                    then().
+                        statusCode(Status.UNAUTHORIZED.getStatusCode()).
+                when().
+                    put(testURL.toExternalForm());
+            }
+        }).inspect(new SetupAuth(null));
+    }
+
+    @Test
+    public void shouldAllowPUTForAuuthorizedAccess() throws Exception {
+        final URL testURL = createTestURL();
+        Warp.initiate(new Activity() {
+            @Override
+            public void perform() {
+                    given().
+                    then().
+                        statusCode(Status.OK.getStatusCode()).
+                when().
+                    put(testURL.toExternalForm());
+            }
+        }).inspect(new SetupAuth(new User("testuser")));
+    }
+...
+----
+
+We accomplish the requirements to lock down access to unauthorized users via our own +org.cedj.geekseek.service.security.interceptor.SecurityInterceptor+:
+
+[source,java]
+----
+public class SecurityInterceptor implements RESTInterceptor {
+
+    @Inject @Current
+    private Instance<User> user;
+
+    @Override
+    public int getPriority() {
+        return 0;
+    }
+
+    @Override
+    public Object invoke(InvocationContext ic) throws Exception {
+
+        Method target = ic.getMethod();
+        if(isStateChangingMethod(target)) {
+            if(user.get() != null) {
+                return ic.proceed();
+            }
+            else {
+                return Response.status(Status.UNAUTHORIZED).build();
+            }
+        }
+        return ic.proceed();
+    }
+
+    private boolean isStateChangingMethod(Method target) {
+        return target.isAnnotationPresent(PUT.class) ||
+            target.isAnnotationPresent(POST.class) ||
+            target.isAnnotationPresent(DELETE.class) ||
+            target.isAnnotationPresent(PATCH.class);
+    }
+}
+----
+
+This interceptor prohibits accesses and returns an HTTP +401+ if the request is for a state-changing method and there is no currently logged-in user.
+
+===== Testing the Current User
+
+Our user interface will be using the +WhoAmIResource+ to determine the login information; it issues an HTTP 302 redirect to a +User+ resource if authorized and an HTTP 401 "Unauthorized" response if not.  The +org.cedj.geekseek.service.security.test.integration.WhoAmIResourceTestCase+ asserts this behaviour, with test methods:
+
+[source,java]
+----
+    @Test
+    public void shouldReponseWithNotAuthorizedWhenNoUserFound() throws Exception {
+        final URL whoAmIURL = createTestURL();
+        Warp.initiate(new Activity() {
+            @Override
+            public void perform() {
+                    given().
+                    then().
+                        statusCode(Status.UNAUTHORIZED.getStatusCode()).
+                when().
+                    get(whoAmIURL.toExternalForm());
+            }
+        }).inspect(new SetupAuth(null));
+    }
+
+    @Test
+    public void shouldReponseSeeOtherWhenUserFound() throws Exception {
+        final URL whoAmIURL = createTestURL();
+        Warp.initiate(new Activity() {
+            @Override
+            public void perform() {
+                    given().
+                        redirects().
+                            follow(false).
+                    then().
+                        statusCode(Status.SEE_OTHER.getStatusCode()).
+                when().
+                    get(whoAmIURL.toExternalForm());
+            }
+        }).inspect(new SetupAuth(new User("testuser")));
+    }
+
+    private URL createTestURL() throws MalformedURLException {
+        return new URL(baseURL, "api/security/whoami");
+    }
+----
+
+Again we use Warp in the +shouldReponseWithNotAuthorizedWhenNoUserFound+ and +shouldReponseSeeOtherWhenUserFound+ test methods to execute a request and ensure that the response fits our requirements.
+
+===== OAuth
+
+Assuming a successful OAuth login we should redirect back to the user's initial entry point.  Additionally, we must handle exceptional cases and authorization responses from our PicketLink +Authenticator+ implementation.
+
+Our test case will use a custom +Authenticator+ to control the various scenarios; we implement these in +org.cedj.geekseek.service.security.test.integration.ControllableAuthenticator+:
+
+[source,java]
+----
+@RequestScoped
+@PicketLink
+public class ControllableAuthenticator extends BaseAuthenticator {
+
+    private boolean wasCalled = false;
+    private boolean shouldFailAuth = false;
+
+    @Override
+    public void authenticate() {
+        wasCalled = true;
+        if(shouldFailAuth) {
+            setStatus(AuthenticationStatus.FAILURE);
+        } else {
+            setStatus(AuthenticationStatus.SUCCESS);
+            setAccount(new User());
+        }
+    }
+
+    public boolean wasCalled() {
+        return wasCalled;
+    }
+
+    public void setShouldFailAuth(boolean fail) {
+        this.shouldFailAuth = fail;
+    }
+
+}
+----
+
+This gives a a hook to programatically control whether or not this +Authenticator+ type will permit success via a call to the +setShouldFailAuth+ method.
+
+Our +org.cedj.geekseek.service.security.test.integration.AuthServletTestCase+ may then use this +ControllableAuthenticator+ in testing to ensure our _handling_ of various authentication outcomes is correct, independently of the authentication process itself.
+
+[source,java]
+----
+@RunAsClient
+@WarpTest
+@RunWith(Arquillian.class)
+public class AuthServletTestCase {
+
+    @Deployment
+    public static WebArchive deploy() {
+        return ShrinkWrap.create(WebArchive.class)
+            .addClasses(AuthServlet.class, HttpObjectHolder.class, ControllableAuthenticator.class)
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsLibraries(
+                Maven.resolver()
+                    .loadPomFromFile("pom.xml")
+                    .resolve("org.picketlink:picketlink-impl")
+                        .withTransitivity()
+                        .asFile());
+    }
+
+    @ArquillianResource
+    private URL baseURL;
+
+    @Test
+    public void shouldRedirectToRefererOnAuthSuccess() throws Exception {
+        Warp.initiate(new Activity() {
+
+            @Override
+            public void perform() {
+                try {
+                    final HttpURLConnection conn = (HttpURLConnection)new URL(baseURL, "auth").openConnection();
+                    conn.setRequestProperty("Referer", "http:/geekseek.com");
+                    conn.setInstanceFollowRedirects(false);
+                    Assert.assertEquals(302, conn.getResponseCode());
+                    Assert.assertEquals(conn.getHeaderField("Location"), "http:/geekseek.com");
+                } catch(Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).inspect(new Inspection() {
+            private static final long serialVersionUID = 1L;
+
+            @Inject @PicketLink
+            private ControllableAuthenticator auth;
+
+            @BeforeServlet
+            public void setup() {
+                auth.setShouldFailAuth(false);
+            }
+
+            @AfterServlet
+            public void validate() {
+                Assert.assertTrue(auth.wasCalled());
+            }
+        });
+    }
+
+    @Test
+    public void shouldReturnUnAuthorizedOnAuthFailure() throws Exception {
+        Warp.initiate(new Activity() {
+
+            @Override
+            public void perform() {
+                try {
+                    final HttpURLConnection conn = (HttpURLConnection)new URL(baseURL, "auth").openConnection();
+                    conn.setInstanceFollowRedirects(false);
+                    Assert.assertEquals(400, conn.getResponseCode());
+                } catch(Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).inspect(new Inspection() {
+            private static final long serialVersionUID = 1L;
+
+            @Inject @PicketLink
+            private ControllableAuthenticator auth;
+
+            @BeforeServlet
+            public void setup() {
+                auth.setShouldFailAuth(true);
+            }
+
+            @AfterServlet
+            public void validate() {
+                Assert.assertTrue(auth.wasCalled());
+            }
+        });
+    }
+}
+----
+
+Above we have two test methods, +shouldRedirectToRefererOnAuthSuccess+ and +shouldReturnUnAuthorizedOnAuthFailure+, which issue plain HTTP requests and assert that the response code returned is correct depending upon how we've configured the +ControllableAuthenticator+.
+
+While it's thematic that this text does not promote the usage of mocks in situations where real runtime components may be used, these test fixtures give us a hook into the greater runtime and allow how tests to control backend responses normally out of their reach.  In this case, we advocate on behalf of their utility.

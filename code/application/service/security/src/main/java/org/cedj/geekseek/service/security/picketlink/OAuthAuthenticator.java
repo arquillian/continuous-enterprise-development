@@ -43,7 +43,7 @@ public class OAuthAuthenticator extends BaseAuthenticator {
     private OAuthSession session;
 
     @Inject
-    private Event<SuccessfulAuthentication> successfull;
+    private Event<SuccessfulAuthentication> successful;
 
     @Override
     public void authenticate() {
@@ -72,7 +72,7 @@ public class OAuthAuthenticator extends BaseAuthenticator {
                     service.initAccessToken();
 
                     // https://issues.jboss.org/browse/AGOVA-53
-                    successfull.fire(new SuccessfulAuthentication(service.getSession().getUserProfile(), service.getAccessToken()));
+                    successful.fire(new SuccessfulAuthentication(service.getSession().getUserProfile(), service.getAccessToken()));
 
                     String screenName = ((TwitterProfile)service.getSession().getUserProfile()).getScreenName();
                     User user = repository.get(screenName);
