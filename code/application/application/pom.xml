@@ -185,19 +185,23 @@
               <rules>
                 <requireProperty>
                   <property>env.AUTH_API_KEY</property>
-                  <message>"AUTH_API_KEY needs to be set to the Twitter Application key to run functional tests"</message>
+                  <message>"AUTH_API_KEY needs to be set to the Twitter
+                    Application key to run functional tests"</message>
                 </requireProperty>
                 <requireProperty>
                   <property>env.AUTH_API_SECRET</property>
-                  <message>"AUTH_API_SECRET needs to be set to the Twitter Application secret to run functional tests"</message>
+                  <message>"AUTH_API_SECRET needs to be set to the Twitter
+                    Application secret to run functional tests"</message>
                 </requireProperty>
                 <requireProperty>
                   <property>env.TEST_TWITTER_USERID</property>
-                  <message>"TEST_TWITTER_USERID needs to be set to the Twitter User ID to run functional tests"</message>
+                  <message>"TEST_TWITTER_USERID needs to be set to the Twitter
+                    User ID to run functional tests"</message>
                 </requireProperty>
                 <requireProperty>
                   <property>env.TEST_TWITTER_PASSWORD</property>
-                  <message>"TEST_TWITTER_PASSWORD needs to be set to the Twitter User Password to run functional tests"</message>
+                  <message>"TEST_TWITTER_PASSWORD needs to be set to the Twitter
+                    User Password to run functional tests"</message>
                 </requireProperty>
               </rules>
             </configuration>

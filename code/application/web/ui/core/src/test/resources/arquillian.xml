@@ -8,4 +8,11 @@
         <property name="deploymentExportPath">target</property>
     </engine>
 -->
+
+<!--
+  <extension qualifier="webdriver">
+    <property name="browserCapabilities">chrome</property>
+    <property name="chromeDriverBinary">/home/aslak/dev/tools/chromedriver</property>
+  </extension>
+-->
 </arquillian>

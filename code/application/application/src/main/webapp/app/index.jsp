@@ -14,7 +14,7 @@
         }
       /*]]>*/
     </style>
-    <link href="webjars/bootstrap/3.0.0-rc1/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="webjars/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="webjars/bootstrap-datetimepicker/6aa746736d/css/datetimepicker.css" rel="stylesheet" type="text/css">
     <link href="webjars/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     
@@ -28,14 +28,14 @@
 
     <!-- Navigation -->
 
-    <div class="navbar navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
        <div class="container">
           <a class="navbar-brand" href="#"><img src="images/logo.png" height="25" width="25"/></a>
           <a href="" class="navbar-brand">GeekSeek</a>
 
           <ul class="nav navbar-nav">
             <li>
-             <form class="navbar-form pull-left">
+             <form class="navbar-form navbar-left" role="search">
                <input type="text" name="search" class="form-control" style="width:200px;"/>
                <i class="icon-search icon-white"></i>
              </form>
@@ -51,7 +51,7 @@
             </li>
 	     </ul>
        </div>
-    </div>
+    </nav>
     <div class="container content" data-ng-view="" data-ng-cloak>
 
 
@@ -59,11 +59,13 @@
 
   </body>
   <script src="webjars/jquery/2.0.3/jquery.min.js" type="text/javascript"></script>
-  <script src="webjars/angularjs/1.1.5/angular.min.js" type="text/javascript"></script>
+  <script src="webjars/angularjs/1.2.0rc1/angular.js" type="text/javascript"></script>
+  <script src="webjars/angularjs/1.2.0rc1/angular-route.js" type="text/javascript"></script>
+  <script src="webjars/angularjs/1.2.0rc1/angular-sanitize.js" type="text/javascript"></script>
   <script src="webjars/angular-ui-utils/47ff7ef35c/ui-utils.min.js" type="text/javascript"></script>
-  <script src="webjars/bootstrap/3.0.0-rc1/js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="webjars/bootstrap/3.0.0/js/bootstrap.min.js" type="text/javascript"></script>
   <script src="webjars/bootstrap-datetimepicker/6aa746736d/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-  <script src="scripts/graph.js" type="text/javascript"></script>
-  <script src="scripts/geekseek.js" type="text/javascript"></script>
+  <script src="webjars/core/graph.js" type="text/javascript"></script>
+  <script src="webjars/core/geekseek.js" type="text/javascript"></script>
 
 </html>

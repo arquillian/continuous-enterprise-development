@@ -32,9 +32,9 @@
 
     <version.webjars_locator>0.5</version.webjars_locator>
     <version.webjars_jquery>2.0.3</version.webjars_jquery>
-    <version.webjars_angularjs>1.1.5-1</version.webjars_angularjs>
+    <version.webjars_angularjs>1.2.0rc1</version.webjars_angularjs>
     <version.webjars_angular_ui_utils>47ff7ef35c</version.webjars_angular_ui_utils>
-    <version.webjars_boostrap>3.0.0-rc1</version.webjars_boostrap>
+    <version.webjars_boostrap>3.0.0</version.webjars_boostrap>
     <version.webjars_boostrap_datetime>6aa746736d</version.webjars_boostrap_datetime>
     <version.webjars_font_awesome>3.2.1</version.webjars_font_awesome>
 
@@ -46,6 +46,7 @@
     <version.arquillian_graphene>2.0.0.Alpha4</version.arquillian_graphene>
     <version.arquillian_warp>1.0.0.Alpha3</version.arquillian_warp>
     <version.arquillian_warp_rest>1.0.0.Final-SNAPSHOT</version.arquillian_warp_rest>
+    <version.arquillian_qunit>1.0.0.Alpha1</version.arquillian_qunit>
     <version.restassured>1.8.0</version.restassured>
     <version.wildfly>8.0.0.Alpha4</version.wildfly>
     <version.jboss_as>7.1.1.Final</version.jboss_as>
@@ -196,6 +197,12 @@
         <groupId>org.jboss.arquillian.extension</groupId>
         <artifactId>arquillian-persistence-impl</artifactId>
         <version>${version.arquillian_persistence}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.arquillian.extension</groupId>
+        <artifactId>arquillian-qunit</artifactId>
+        <version>${version.arquillian_qunit}</version>
         <scope>test</scope>
       </dependency>
       <!-- Warp JaxRs currently not used, disable <dependency> <groupId>org.jboss.arquillian.extension</groupId> 

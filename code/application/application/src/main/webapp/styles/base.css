@@ -18,7 +18,7 @@ body {
 }
 
 
-## conference
+/* conference */
 
 .conference .date {
 	font-size: 1.5em;
@@ -50,7 +50,7 @@ body {
 	text-transform: uppercase;
 }
 
-## session
+/* session */
 
 .session .date {
 	font-weight: bold;
@@ -60,11 +60,11 @@ body {
 	margin-top: 1em;
 }
 
-## Forms
+/* Forms */
 
 
 
-## Angular
+/* Angular */
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;

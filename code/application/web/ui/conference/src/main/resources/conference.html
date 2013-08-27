@@ -16,7 +16,7 @@
                <datefield name="End date" id="end" field="form.end" error="formval.end" help="What's the last day of the conference?" />
             </div>
             <div class="row">
-               <div class="form-group col-12">
+               <div class="form-group col-md-12">
                   <hr />
                   <button type="submit" class="btn btn-primary" data-ng-show="isEditMode()">Update conference</button>
                   <button type="submit" class="btn btn-primary" data-ng-show="isCreateMode()">Add conference</button>
@@ -49,5 +49,7 @@
             </abbr>
          </p>
       </div>
+
+      <subresource parent="resource" link="session" />
    </div>
 </div>
