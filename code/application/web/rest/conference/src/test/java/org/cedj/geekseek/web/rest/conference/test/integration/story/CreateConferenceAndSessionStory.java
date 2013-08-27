@@ -153,9 +153,25 @@ public class CreateConferenceAndSessionStory {
               header("Location");
     }
 
-    // Story: As a 3. party Integrator I should be able get a Session
+    // Story: As a 3. party Integrator I should be able get the Sessions for a Conference
 
     @Test @InSequence(6)
+    public void shouldBeAbleToGetSessionsForAConference() throws Exception {
+        assertNotNull("Previous step failed", uri_session);
+
+        given().
+        then().
+            contentType(SESSION_MEDIA_TYPE).
+            statusCode(Status.OK.getStatusCode()).
+            root("collection").
+                body("session.size()", equalTo(1)).
+        when().
+            get(uri_session);
+    }
+
+    // Story: As a 3. party Integrator I should be able get a Session
+
+    @Test @InSequence(7)
     public void shouldBeAbleToGetSession() throws Exception {
         assertNotNull("Previous step failed", uri_sessionInstance);
 
@@ -173,7 +189,7 @@ public class CreateConferenceAndSessionStory {
 
     // Story: As a 3. party Integrator I should be able update a Session
 
-    @Test @InSequence(7)
+    @Test @InSequence(8)
     public void shouldBeAbleToUpdateSession() throws Exception {
         assertNotNull("Previous step failed", uri_sessionInstance);
 
@@ -189,7 +205,7 @@ public class CreateConferenceAndSessionStory {
            put(uri_sessionInstance);
     }
 
-    @Test @InSequence(8)
+    @Test @InSequence(9)
     public void verifyUpdatedSession() throws Exception {
         assertNotNull("Previous step failed", uri_sessionInstance);
 
@@ -208,7 +224,7 @@ public class CreateConferenceAndSessionStory {
 
     // Story: As a 3. party Integrator I should be able remove a Session from a Conference
 
-    @Test @InSequence(9)
+    @Test @InSequence(10)
     public void shouldBeAbleToDeleteSession() throws Exception {
         assertNotNull("Previous step failed", uri_sessionInstance);
 
@@ -219,7 +235,7 @@ public class CreateConferenceAndSessionStory {
            delete(uri_sessionInstance);
     }
 
-    @Test @InSequence(10)
+    @Test @InSequence(11)
     public void verifyNotFoundForDeletedSession() throws Exception {
         assertNotNull("Previous step failed", uri_sessionInstance);
 
@@ -232,7 +248,7 @@ public class CreateConferenceAndSessionStory {
 
     // Story: As a 3. party Integrator I should be able remove a Conference
 
-    @Test @InSequence(11)
+    @Test @InSequence(12)
     public void shouldBeAbleToDeleteConference() throws Exception {
         assertNotNull("Previous step failed", uri_conferenceInstance);
 
@@ -243,7 +259,7 @@ public class CreateConferenceAndSessionStory {
            delete(uri_conferenceInstance);
     }
 
-    @Test @InSequence(12)
+    @Test @InSequence(13)
     public void verifyNotFoundForDeletedConference() throws Exception {
         assertNotNull("Previous step failed", uri_conferenceInstance);
 

@@ -15,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
@@ -76,7 +77,7 @@ public class RelationResource {
         }
         // Strange JVM Bug? Needs to cast to Collection for it to select the from(y, Collection<X>) method
         // Using/casting to generic Collection<X> cause it to select the from(y, X) method.
-        return Response.ok(converter.from(uriInfo, (Collection)targets)).build();
+        return Response.ok(new GenericEntity<Collection<Object>>(converter.from(uriInfo, (Collection)targets)){}).build();
     }
 
     @PATCH
