@@ -494,9 +494,7 @@ As JAX-RS 1.x does not define an interceptor model, we need to apply these on ou
 
 [source,java]
 ----
-@Secured
-@Linked
-@Validated
+@REST
 @RequestScoped
 @Stereotype
 @Retention(RetentionPolicy.RUNTIME)
@@ -506,7 +504,47 @@ public @interface ResourceModel {
 }
 ----
 
-By placing this +@ResourceModel+ annotation atop, for instance, +UserResource+ as we've done above, this JAX-RS resource will now be +@Secured+, +@Linked+, +@Validated+, and +@RequestScoped+.  This is a nice shortcut provided by CDI to compose behaviours together in one definition.
+By placing this +@ResourceModel+ annotation atop, for instance, +UserResource+ as we've done above, this JAX-RS resource will now be marked as +@REST+, and a CDI +@Stereotype+.  This is a nice shortcut provided by CDI to compose behaviours together in one definition.
+
+The +@org.cedj.geekseek.web.rest.core.annotation.REST+ annotation is defined as a CDI +@InterceptorBinding+:
+
+[source,java]
+----
+@InterceptorBinding
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface REST {
+
+}
+----
+
+In order to avoid having to define the entire interceptor chain for the REST layer in piecemeal fashion for each module that wishes to use it, we centralize the chain definition in +org.cedj.geekseek.web.rest.core.interceptor.RESTInterceptorEnabler+:
+
+[source,java]
+----
+@REST
+@Interceptor
+public class RESTInterceptorEnabler {
+
+    @Inject
+    private Instance<RESTInterceptor> instances;
+
+    @AroundInvoke
+    public Object intercept(final InvocationContext context) throws Exception {
+        final List<RESTInterceptor> interceptors = sort(instances);
+        InvocationContext wraped = new InvocationContext() {
+            // Omitted for brevity
+         }
+        return wraped.proceed();
+
+    }
+...
+}
+----
+
+Marking the +RESTInterceptorEnabler+ with +@REST+ defines the interceptor binding; then we may inject all valid +RESTInterceptor+ instances and invoke them according to a sorted order in the +intercept+ method annotated with +@AroundInvoke+.  With our custom chain we can rely on CDI to provide an +Instance<X>+ of our desired interceptor type dynamically based on what is deployed rather then what is configured.
+
+In practice, this means that our +SecurityInterceptor+, +LinkedInterceptor+, and +ValidatedInterceptor+ (our implementations of type +RESTInterceptor+) will all be invoked for business methods on classes marked +@ResourceModel+.
 
 ==== +LinkableRepresentation+
 
@@ -531,16 +569,17 @@ For this we may introduce the notion of a +org.cedj.geekseek.web.rest.core.Linka
 
 [source,java]
 ----
-public abstract class LinkableRepresenatation<X> implements Representation<X> {
+public abstract class LinkableRepresentation<X> 
+  implements Representation<X> {
 
     private List<ResourceLink> links;
     private Class<X> sourceType;
     private String representationType;
     private UriInfo uriInfo;
 
-    protected LinkableRepresenatation() {}
+    protected LinkableRepresentation() {}
 
-    public LinkableRepresenatation(Class<X> sourceType, String representationType, UriInfo uriInfo) {
+    public LinkableRepresentation(Class<X> sourceType, String representationType, UriInfo uriInfo) {
         this.sourceType = sourceType;
         this.representationType = representationType;
         this.uriInfo = uriInfo;
@@ -591,33 +630,24 @@ public abstract class LinkableRepresenatation<X> implements Representation<X> {
 }
 ----
 
-In the previous section above, we see that our +@ResourceModel+ stereotype is +org.cedj.geekseek.web.rest.core.annotation.Linked+, a custom annotation of our own:
+In the previous section above, we see that our +@ResourceModel+ stereotype is marked with +@REST+.  This indicates that we'll apply an interceptor called +org.cedj.geekseek.web.rest.core.interceptor.LinkedInterceptor+ to anything with this annotation.  +LinkedInterceptor+ has the responsibility to determine if the invocation has a linkable representation, and if so, link all of the +LinkableRepresentation+ views together, as demonstrated in the above code sample.  Anything with the +@REST+ annotation will run this interceptor, including our +@ResourceModel+.
+
+The reasoning behind this approach is: some +Representation+ objects are linkable.  Via the +@ResourceModel+ (which contains +@REST+), a link provider may link a given resource to some other resource.  This way, we may draw relationships between resources (entities) that are not described in the by JPA.  The interceptor is implemented like so:
 
 [source,java]
 ----
-@InterceptorBinding
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Linked {
-
-}
-----
-
-This indicates that we'll apply an interceptor called +org.cedj.geekseek.web.rest.core.interceptor.LinkedInterceptor+ to anything with this annotation.  +LinkedInterceptor+ has the responsibility to determine if the invocation has a linkable representation, and if so, link all of the +LinkableRepresentation+ view together.  Anything with the +@Linked+ annotation will run this interceptor, including our +@ResourceModel+.
-
-The reasoning behind this approach is: some +Representation+ objects are linkable.  Via the +@ResourceModel+ (which contains +@Linked+), a link provider may link a given resource to some other resource.  This way, we may draw relationships between resources (entities) that are not described in the by JPA.  The interceptor is implemented like so:
-
-[source,java]
-----
-@Linked
-@Interceptor
-public class LinkedInterceptor {
+public class LinkedInterceptor implements RESTInterceptor {
 
     @Inject
     private Instance<LinkProvider> linkProviers;
 
-    @AroundInvoke
-    public Object link(InvocationContext ic) throws Exception {
+    @Override
+    public int getPriority() {
+        return -10;
+    }
+
+    @Override
+    public Object invoke(InvocationContext ic) throws Exception {
         Object obj = ic.proceed();
         if(hasLinkableRepresentations(obj)) {
             linkAllRepresentations(obj);

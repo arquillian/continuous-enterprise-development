@@ -10,10 +10,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.cedj.geekseek.domain.attachment.model.Attachment;
 import org.cedj.geekseek.domain.model.Identifiable;
-import org.cedj.geekseek.web.rest.core.LinkableRepresenatation;
+import org.cedj.geekseek.web.rest.core.LinkableRepresentation;
 
 @XmlRootElement(name = "attachment", namespace = "urn:ced:attachment")
-public class AttachmentRepresentation extends LinkableRepresenatation<Attachment> implements Identifiable {
+public class AttachmentRepresentation extends LinkableRepresentation<Attachment> implements Identifiable {
 
     private String id;
 

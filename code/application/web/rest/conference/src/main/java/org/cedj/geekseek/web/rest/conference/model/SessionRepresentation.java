@@ -13,13 +13,13 @@ import org.cedj.geekseek.domain.conference.model.Session;
 import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.web.rest.conference.ConferenceResource;
 import org.cedj.geekseek.web.rest.conference.SessionResource;
-import org.cedj.geekseek.web.rest.core.LinkableRepresenatation;
+import org.cedj.geekseek.web.rest.core.LinkableRepresentation;
 import org.cedj.geekseek.web.rest.core.ResourceLink;
 import org.cedj.geekseek.web.rest.core.annotation.StartBeforeEnd;
 
 @StartBeforeEnd
 @XmlRootElement(name = "session", namespace = "urn:ced:session")
-public class SessionRepresentation extends LinkableRepresenatation<Session> implements Identifiable {
+public class SessionRepresentation extends LinkableRepresentation<Session> implements Identifiable {
 
     private String id;
     private String parentId;

@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.cedj.geekseek.domain.conference.model.Conference;
 import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.web.rest.conference.ConferenceResource;
-import org.cedj.geekseek.web.rest.core.LinkableRepresenatation;
+import org.cedj.geekseek.web.rest.core.LinkableRepresentation;
 import org.cedj.geekseek.web.rest.core.ResourceLink;
 import org.cedj.geekseek.web.rest.core.annotation.StartBeforeEnd;
 
 @StartBeforeEnd
 @XmlRootElement(name = "conference", namespace = "urn:ced:conference")
-public class ConferenceRepresentation extends LinkableRepresenatation<Conference> implements Identifiable {
+public class ConferenceRepresentation extends LinkableRepresentation<Conference> implements Identifiable {
 
     private String id;
     @NotNull

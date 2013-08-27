@@ -10,7 +10,7 @@ import javax.ws.rs.core.UriInfo;
 
 import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.web.rest.core.LinkProvider;
-import org.cedj.geekseek.web.rest.core.LinkableRepresenatation;
+import org.cedj.geekseek.web.rest.core.LinkableRepresentation;
 import org.cedj.geekseek.web.rest.core.Resource;
 import org.cedj.geekseek.web.rest.core.ResourceLink;
 
@@ -20,7 +20,7 @@ public class BookmarkLinkProvider implements LinkProvider {
     private Instance<Resource> resources;
 
     @Override
-    public void appendLinks(LinkableRepresenatation<?> represenatation) {
+    public void appendLinks(LinkableRepresentation<?> represenatation) {
         Resource source = getResource(represenatation);
         if(source == null) {
             return;
@@ -38,7 +38,7 @@ public class BookmarkLinkProvider implements LinkProvider {
         }
     }
 
-    private Resource getResource(LinkableRepresenatation<?> represenatation) {
+    private Resource getResource(LinkableRepresentation<?> represenatation) {
         for(Resource resource: resources) {
             if(represenatation.getRepresentationType().equals(getResourceTypeName(resource))) {
                 return resource;

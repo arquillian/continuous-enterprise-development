@@ -7,7 +7,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.web.rest.core.LinkProvider;
-import org.cedj.geekseek.web.rest.core.LinkableRepresenatation;
+import org.cedj.geekseek.web.rest.core.LinkableRepresentation;
 import org.cedj.geekseek.web.rest.core.ResourceLink;
 import org.cedj.geekseek.web.rest.relation.RelationalService.RelationMatch;
 
@@ -17,7 +17,7 @@ public class RelationLinkProvider implements LinkProvider {
     private RelationalService service;
 
     @Override
-    public void appendLinks(LinkableRepresenatation<?> represenatation) {
+    public void appendLinks(LinkableRepresentation<?> represenatation) {
         if(!(represenatation instanceof Identifiable)) {
             return;
         }

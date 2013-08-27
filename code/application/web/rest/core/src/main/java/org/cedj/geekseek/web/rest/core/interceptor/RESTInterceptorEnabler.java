@@ -40,7 +40,7 @@ public class RESTInterceptorEnabler {
     @AroundInvoke
     public Object intercept(final InvocationContext context) throws Exception {
         final List<RESTInterceptor> interceptors = sort(instances);
-        InvocationContext wraped = new InvocationContext() {
+        InvocationContext wrapped = new InvocationContext() {
             // we start by incrementing in the loop, so start with -1
             final AtomicInteger current = new AtomicInteger(-1);
 
@@ -85,7 +85,7 @@ public class RESTInterceptorEnabler {
             }
 
         };
-        return wraped.proceed();
+        return wrapped.proceed();
 
     }
 

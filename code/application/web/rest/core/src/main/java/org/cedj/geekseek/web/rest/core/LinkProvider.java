@@ -2,5 +2,5 @@ package org.cedj.geekseek.web.rest.core;
 
 public interface LinkProvider {
 
-    void appendLinks(LinkableRepresenatation<?> represenatation);
+    void appendLinks(LinkableRepresentation<?> represenatation);
 }

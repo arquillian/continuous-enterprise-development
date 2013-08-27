@@ -6,10 +6,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.domain.relation.test.model.TargetObject;
-import org.cedj.geekseek.web.rest.core.LinkableRepresenatation;
+import org.cedj.geekseek.web.rest.core.LinkableRepresentation;
 
 @XmlRootElement(name = "target")
-public class TargetRepresentation extends LinkableRepresenatation<TargetObject> implements Identifiable {
+public class TargetRepresentation extends LinkableRepresentation<TargetObject> implements Identifiable {
 
     private String id;
 

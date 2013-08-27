@@ -8,10 +8,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.domain.user.model.User;
-import org.cedj.geekseek.web.rest.core.LinkableRepresenatation;
+import org.cedj.geekseek.web.rest.core.LinkableRepresentation;
 
 @XmlRootElement(name = "user", namespace = "urn:ced:user")
-public class UserRepresentation extends LinkableRepresenatation<User> implements Identifiable {
+public class UserRepresentation extends LinkableRepresentation<User> implements Identifiable {
 
     @NotNull
     private String handle;

@@ -7,16 +7,16 @@ import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-public abstract class LinkableRepresenatation<X> implements Representation<X> {
+public abstract class LinkableRepresentation<X> implements Representation<X> {
 
     private List<ResourceLink> links;
     private Class<X> sourceType;
     private String representationType;
     private UriInfo uriInfo;
 
-    protected LinkableRepresenatation() {}
+    protected LinkableRepresentation() {}
 
-    public LinkableRepresenatation(Class<X> sourceType, String representationType, UriInfo uriInfo) {
+    public LinkableRepresentation(Class<X> sourceType, String representationType, UriInfo uriInfo) {
         this.sourceType = sourceType;
         this.representationType = representationType;
         this.uriInfo = uriInfo;
