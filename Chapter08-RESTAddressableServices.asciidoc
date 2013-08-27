@@ -579,7 +579,9 @@ public abstract class LinkableRepresentation<X>
 
     protected LinkableRepresentation() {}
 
-    public LinkableRepresentation(Class<X> sourceType, String representationType, UriInfo uriInfo) {
+    public LinkableRepresentation(Class<X> sourceType,
+      String representationType, 
+      UriInfo uriInfo) {
         this.sourceType = sourceType;
         this.representationType = representationType;
         this.uriInfo = uriInfo;
@@ -656,21 +658,21 @@ public class LinkedInterceptor implements RESTInterceptor {
     }
 
     private boolean hasLinkableRepresentations(Object obj) {
-        return locateLinkableRepresenatation(obj) != null;
+        return locateLinkableRepresentations(obj) != null;
     }
 
-    private LinkableRepresenatation<?> locateLinkableRepresenatation(Object obj) {
+    private LinkableRepresentation<?> locateLinkableRepresentations(Object obj) {
         if(obj instanceof Response) {
             Object entity = ((Response)obj).getEntity();
-            if(entity instanceof LinkableRepresenatation) {
-                return (LinkableRepresenatation<?>)entity;
+            if(entity instanceof LinkableRepresentation) {
+                return (LinkableRepresentation<?>)entity;
             }
         }
         return null;
     }
 
     private void linkAllRepresentations(Object obj) {
-        LinkableRepresenatation<?> linkable = locateLinkableRepresenatation(obj);
+        LinkableRepresentation<?> linkable = locateLinkableRepresentations(obj);
         for(LinkProvider linker : linkProviers) {
             linker.appendLinks(linkable);
         }

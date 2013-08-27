@@ -20,27 +20,27 @@ public class BookmarkLinkProvider implements LinkProvider {
     private Instance<Resource> resources;
 
     @Override
-    public void appendLinks(LinkableRepresentation<?> represenatation) {
-        Resource source = getResource(represenatation);
+    public void appendLinks(LinkableRepresentation<?> representation) {
+        Resource source = getResource(representation);
         if(source == null) {
             return;
         }
 
-        if(represenatation instanceof Identifiable) {
-            Identifiable sourceObject = (Identifiable)represenatation;
+        if(representation instanceof Identifiable) {
+            Identifiable sourceObject = (Identifiable)representation;
             if(sourceObject.getId() != null) {
-                represenatation.addLink(
+                representation.addLink(
                     generateResourceLink(
                         source,
                         sourceObject.getId(),
-                        represenatation.getUriInfo()));
+                        representation.getUriInfo()));
             }
         }
     }
 
-    private Resource getResource(LinkableRepresentation<?> represenatation) {
+    private Resource getResource(LinkableRepresentation<?> representation) {
         for(Resource resource: resources) {
-            if(represenatation.getRepresentationType().equals(getResourceTypeName(resource))) {
+            if(representation.getRepresentationType().equals(getResourceTypeName(resource))) {
                 return resource;
             }
         }

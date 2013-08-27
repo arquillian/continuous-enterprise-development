@@ -17,16 +17,16 @@ public class RelationLinkProvider implements LinkProvider {
     private RelationalService service;
 
     @Override
-    public void appendLinks(LinkableRepresentation<?> represenatation) {
-        if(!(represenatation instanceof Identifiable)) {
+    public void appendLinks(LinkableRepresentation<?> representation) {
+        if(!(representation instanceof Identifiable)) {
             return;
         }
-        Identifiable sourceIdentifiable = (Identifiable)represenatation; // TODO: Remove need for cast
+        Identifiable sourceIdentifiable = (Identifiable)representation; // TODO: Remove need for cast
 
-        Collection<RelationMatch> matches = service.getMatchingRelations(represenatation.getSourceType());
+        Collection<RelationMatch> matches = service.getMatchingRelations(representation.getSourceType());
 
         for(RelationMatch target: matches) {
-            UriBuilder buidler = represenatation.getUriInfo().getBaseUriBuilder().segment(
+            UriBuilder buidler = representation.getUriInfo().getBaseUriBuilder().segment(
                                             "rel",
                                             getTypeName(target.getSourceModel()),
                                             sourceIdentifiable.getId(),
@@ -34,7 +34,7 @@ public class RelationLinkProvider implements LinkProvider {
                                             getTypeName(target.getTargetModel()));
 
             // TODO: Dynamically lookup MediaType
-            represenatation.addLink(
+            representation.addLink(
                 new ResourceLink(
                     target.getSource().getName(),
                     buidler.build(),

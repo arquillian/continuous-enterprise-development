@@ -28,10 +28,10 @@ public class LinkedInterceptor implements RESTInterceptor {
     }
 
     private boolean hasLinkableRepresentations(Object obj) {
-        return locateLinkableRepresenatation(obj) != null;
+        return locateLinkableRepresentations(obj) != null;
     }
 
-    private LinkableRepresentation<?> locateLinkableRepresenatation(Object obj) {
+    private LinkableRepresentation<?> locateLinkableRepresentations(Object obj) {
         if(obj instanceof Response) {
             Object entity = ((Response)obj).getEntity();
             if(entity instanceof LinkableRepresentation) {
@@ -42,7 +42,7 @@ public class LinkedInterceptor implements RESTInterceptor {
     }
 
     private void linkAllRepresentations(Object obj) {
-        LinkableRepresentation<?> linkable = locateLinkableRepresenatation(obj);
+        LinkableRepresentation<?> linkable = locateLinkableRepresentations(obj);
         for(LinkProvider linker : linkProviers) {
             linker.appendLinks(linkable);
         }
