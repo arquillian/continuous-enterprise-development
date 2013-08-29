@@ -13,13 +13,21 @@
  */
 package org.cedj.geekseek.domain.conference;
 
+import java.util.Collection;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.enterprise.inject.Typed;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Root;
 
+import org.cedj.geekseek.domain.SearchableRepository;
 import org.cedj.geekseek.domain.conference.model.Conference;
+import org.cedj.geekseek.domain.conference.model.ConferenceCriteria;
 import org.cedj.geekseek.domain.persistence.PersistenceRepository;
 
 /**
@@ -39,9 +47,26 @@ import org.cedj.geekseek.domain.persistence.PersistenceRepository;
 @LocalBean
 @Typed(ConferenceRepository.class)
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
-public class ConferenceRepository extends PersistenceRepository<Conference> {
+public class ConferenceRepository extends PersistenceRepository<Conference>
+    implements SearchableRepository<Conference, ConferenceCriteria> {
 
     public ConferenceRepository() {
         super(Conference.class);
+    }
+
+    @Override
+    public Collection<Conference> search(ConferenceCriteria criteria) {
+        CriteriaBuilder cb = getManager().getCriteriaBuilder();
+        CriteriaQuery<Conference> cq = cb.createQuery(Conference.class);
+        Root<Conference> root = cq.from(Conference.class);
+
+        Path<String> name = root.get("name");
+
+        if(criteria.getName() != null) {
+            cq.where(cb.like(name, "*" + criteria.getName() + "*"));
+        }
+        return getManager().createQuery(cq)
+            .setFirstResult(criteria.getFirstResult())
+            .setMaxResults(criteria.getMaxResult()).getResultList();
     }
 }
