@@ -37,7 +37,7 @@ public class BookmarkResource {
                 .path(resource.getResourceClass())
                 .path(id)
                 .build();
-        return Response.seeOther(uri).build();
+        return Response.temporaryRedirect(uri).build();
     }
 
     private Resource locateResource(String type) {

@@ -52,7 +52,7 @@ public class BookmarkResourceTestCase {
             redirects().
                 follow(false).
         then().
-            statusCode(Response.Status.SEE_OTHER.getStatusCode()).
+            statusCode(Response.Status.TEMPORARY_REDIRECT.getStatusCode()).
             header("Location", new URL(baseURL, "api/test/200").toExternalForm()).
         when().
             get(baseURL + "api/bookmark/test/200");
@@ -78,5 +78,19 @@ public class BookmarkResourceTestCase {
             body("test.link.@href", equalTo(new URL(baseURL, "api/bookmark/test/200").toExternalForm())).
         when().
             get(baseURL + "api/test/200");
+    }
+
+    @Test
+    public void shouldProvideBookmarkLinkToCollectionResource() throws Exception {
+        given().
+            contentType(TEST_MEDIA_TYPE).
+        then().
+            contentType(TEST_MEDIA_TYPE).
+            statusCode(Response.Status.OK.getStatusCode()).
+            root("collection").
+                body("test[0].link.find {it.@rel == 'bookmark'}.size()", equalTo(1)).
+                body("test[1].link.find {it.@rel == 'bookmark'}.size()", equalTo(1)).
+        when().
+            get(baseURL + "api/test/all");
     }
 }
