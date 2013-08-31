@@ -1,0 +1,28 @@
+<div class="content users" data-ng-switch="getViewType()">
+
+   <div data-ng-switch-when="display">
+
+      <div class="single" data-ng-if="isSingle">
+         <div class="well">
+            <div class="pull-right">
+               <img data-ng-src="{{resource.data.avatarUrl}}" />
+            </div>
+
+            <h1>{{resource.data.name}}</h1>
+
+            <p class="bio">{{resource.data.bio}}</p>
+         </div>
+         <subresource parent="resource" link="sessions" />
+      </div>
+
+      <ul class="list" data-ng-if="isList">
+         <li data-ng-repeat="child in resource.data">
+            <a data-ng-click="view(child)">
+               <img title="{{child.data.name}}" data-ng-src="{{child.data.avatarUrl}}" />
+            </a>
+         </li>
+      </ul>
+
+   </div>
+
+</div>

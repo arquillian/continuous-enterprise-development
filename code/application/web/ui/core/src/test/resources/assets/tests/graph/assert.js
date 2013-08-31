@@ -83,3 +83,26 @@ asyncTest("discover children", 2, function() {
     })
     this.$http.flush();
 })
+asyncTest("handle arrays as nodes", 3, function() {
+    var linkURLOne = this.$requestURL + 'one';
+    var linkURLTwo = this.$requestURL + 'two';
+    this.$http.when('OPTIONS', this.$requestURL).respond({}, {'Allow':'GET'})
+    this.$http.when('GET', this.$requestURL).respond([
+          {name:'One', link:[{href:linkURLOne, rel:'self', mediaType:'test'}]},
+          {name:'Two', link:[{href:linkURLTwo, rel:'self', mediaType:'test'}]}
+    ], {});
+    this.$http.when('OPTIONS', linkURLOne).respond({}, {'Allow':'GET'})
+    this.$http.when('OPTIONS', linkURLTwo).respond({}, {'Allow':'GET'})
+
+    this.$graph(this.$requestURL).init().then(function(node) {
+        node.get().then(function(node) {
+            ok(node.isArray())
+            node.data.then(function(data) {
+                ok(data[0].canGet(), "Sub node should be gettable");
+                ok(data[1].canGet(), "Sub node should be gettable");
+                start();
+            })
+        })
+    })
+    this.$http.flush();
+})

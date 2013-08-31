@@ -42,18 +42,17 @@
           </li>
          </ul>
 
-         <ul class="nav navbar-nav pull-right" data-ng-controller="UserCtrl" data-ng-show="rendered">
-	        <li class="user" data-ng-show="authorized">
-                <a href=""><img data-ng-src="{{resource.data.avatarUrl}}" /> {{resource.data.name}}</a>
+         <ul class="nav navbar-nav pull-right" data-ng-controller="UserCtrl" data-ng-show="current.knownstate">
+	        <li class="user" data-ng-show="current.authenticated">
+                <a href=""><img data-ng-src="{{current.user.data.avatarUrl}}" /> {{current.user.data.name}}</a>
             </li>
-            <li class="user" data-ng-hide="authorized">
+            <li class="user" data-ng-hide="current.authenticated">
                <a href="../auth" class="btn">Login</a>
             </li>
 	     </ul>
        </div>
     </nav>
-    <div class="container content" data-ng-view="" data-ng-cloak>
-
+    <div class="container content" data-ng-include="'front.html'" data-ng-cloak data-ng-controller="MainCtrl">
 
     </div>
 

@@ -28,12 +28,14 @@
 
    </div>
    <div data-ng-switch-when="display">
-      <div data-ng-switch="isList()">
-         <div class="well" data-ng-switch-when="false">
+
+      <div class="single" data-ng-if="isSingle">
+         <div class="well">
             <div class="pull-right">
                <a data-ng-show="resource.canUpdate()" data-ng-click="edit()">
-               <i class="icon-edit-sign"></i></a> <a data-ng-show="resource.canRemove()" data-ng-click="remove()">
-               <i class="icon-remove-sign"></i></a>
+                  <i class="icon-edit-sign"></i></a>
+               <a data-ng-show="resource.canRemove()" data-ng-click="remove()">
+                  <i class="icon-remove-sign"></i></a>
             </div>
 
             <h1>{{resource.data.title}}</h1>
@@ -42,16 +44,29 @@
                {{resource.data.start|date:'EEEE d, yyyy'}} - {{resource.data.start|date:'hh:mm'}} to {{resource.data.end|date:'hh:mm'}}
             </abbr>
             <p class="outline" data-ng-bind-html="resource.data.outline|htmlify" />
-         </div>
-         <div data-ng-switch-when="true">
-            <div class="well" data-ng-repeat="child in resource.data">
-               <h2 data-ng-click="view(child)">{{child.title}}</h2>
 
-               <abbr class="item-time">
-                  {{child.start|date:'EEEE d, yyyy'}} - {{child.start|date:'hh:mm'}} to {{child.end|date:'hh:mm'}}
-               </abbr>
+            <div class="speakers pull-right">
+               <subresource parent="resource" link="speakers" />
             </div>
          </div>
+         <div class="attendees">
+            <subresource parent="resource" link="attendees" />
+         </div>
       </div>
+
+      <div class="list" data-ng-if="isList">
+         <div class="well" data-ng-repeat="child in resource.data">
+            <div class="pull-right">
+               <a data-ng-show="child.canUpdate()" data-ng-click="edit(child)">
+                  <i class="icon-edit-sign"></i></a>
+            </div>
+            <h2><a data-ng-click="view(child)">{{child.data.title}}</a></h2>
+
+            <abbr class="item-time">
+               {{child.data.start|date:'EEEE d, yyyy'}} - {{child.data.start|date:'hh:mm'}} to {{child.data.end|date:'hh:mm'}}
+            </abbr>
+         </div>
+      </div>
+
    </div>
 </div>

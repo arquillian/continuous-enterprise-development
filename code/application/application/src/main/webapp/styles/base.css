@@ -2,6 +2,10 @@ body {
 	font-size: 16px;
 }
 
+.well {
+	overflow: auto;
+}
+
 #sidebar {
 	margin-right:10px;
 }
@@ -60,8 +64,43 @@ body {
 	margin-top: 1em;
 }
 
+.content .session .list div { /* rule to break inline set by .users .list */
+	display: block !important;
+}
+
+
+/* Attendees, Trackers, Speakers */
+
+.content .users .list div {
+	display: inline;
+}
+
+.content .users .list li {
+	list-style-type: none;
+}
+
+.content .users .list img {
+	height: 30px;
+	width: auto;
+	border: 1px solid #000;
+	padding: 1px;
+}
+
 /* Forms */
 
+/* Sidebar */
+
+#sidebar #action-links {
+	margin-bottom: 3em;
+}
+
+#sidebar ul li {
+	list-style-type: none;
+}
+
+#sidebar button {
+	width: 9.5em;
+}
 
 
 /* Angular */

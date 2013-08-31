@@ -1,29 +1,9 @@
-function UserCtrl($q, $rootScope, $scope) {
-    $scope.rendered = false;
-    $scope.authorized = false;
+function UserCtrl($scope, UserService) {
 
-    $rootScope.$watch('root', function(newvalue, oldvalue) {
-        if (angular.isUndefined(newvalue)) {
-            return;
-        }
-        $q.when(newvalue).then(function(root) {
-            $q.when(root.links).then(function(links) {
-                angular.forEach(links, function(link) {
-                    if (link.meta.rel === 'whoami') {
-                        link.get().then(function(res) {
-                            $scope.resource = res;
-                            $scope.authorized = true;
-                            $scope.rendered = true;
-                        }, function() {
-                            $scope.rendered = true;
-                        });
-                    }
-                });
-            });
-        });
-    });
+    $scope.current = UserService.current();
+
 }
-function MainCtrl($q, $rootScope, $scope, $location, graph) {
+function MainCtrl($q, $rootScope, $scope, $location, RestGraph, UserService) {
 
     var MODE_EDIT = "edit";
     var MODE_CREATE = "create";
@@ -32,39 +12,92 @@ function MainCtrl($q, $rootScope, $scope, $location, graph) {
     $scope.mode = MODE_SHOW;
     $scope.form = {};
     $scope.parents = [];
-    $scope.actionlinks = [];
+    $scope.actionLinks = [];
+    $scope.userActionLinks = [];
+
+    var resetFormState = function() {
+        $scope.form = {};
+        $scope.formval = {}
+    }
 
     if (angular.isUndefined($rootScope.root)) {
-        $rootScope.root = graph;
-        $rootScope.resource = graph;
+        $rootScope.root = MainCtrl.resolve.graph(RestGraph, $location);
     }
 
-    // Setup the template for the resource
-    $rootScope.$watch('resource', function(newvalue, oldvalue) {
-        if (angular.isDefined(newvalue)) {
-            $q.when(newvalue).then(function(value) {
-                if ("meta" in value) {
-                    if ("rel" in value.meta) {
-                        $scope.template = value.meta.rel + ".html";
-                        $scope.$bookmark(value);
-                    }
-                }
-                $scope.parents = $scope.$calcParents(value);
-                $scope.actionlinks = $scope.$calcUserActionLinks(value);
-            });
-        }
-    });
-    $scope.$watch('mode', function(newvalue, oldvalue) {
-        $scope.$bookmark($rootScope.resource);
-    });
-
-    if (!($location.path() === '/')) {
+    if (!($location.path() === '/') && angular.isUndefined($rootScope.resource)) {
         var paths = $location.path().split('/');
         if (paths.length == 4) {
-            $rootScope.resource = $rootScope.root.bookmark(paths[1], paths[2]);
-            $scope.mode = paths[3];
+            $q.when($rootScope.root).then(function(root) {
+                $scope.resource = root.bookmark(paths[1], paths[2]);
+                $scope.mode = paths[3];
+            })
         }
     }
+    $q.when($rootScope.root).then(function(root){
+        if(angular.isUndefined($scope.resource)) {
+            $scope.resource = root;
+        }
+    })
+
+    var setupResource = function(resource) {
+        if (angular.isDefined(resource)) {
+            $q.when(resource).then(function(value) {
+                if ('meta' in value) {
+                    $scope.template = value.meta.$type() + '.html';
+                    $scope.$bookmark(value);
+                }
+                $scope.parents = $scope.$calcParents(value);
+                $scope.userActionLinks = $scope.$calcUserActionLinks(value);
+                $scope.actionLinks = $scope.$calcActionLinks(value);
+                $scope.isList = $scope.$isListWithData()
+                $scope.isSingle = $scope.$isSingleWithData()
+            });
+        }
+    }
+
+    $scope.$on('RootResource.Show', function(event, resource) {
+        resetFormState()
+        $scope.resource = resource;
+        $scope.mode = MODE_SHOW;
+        event.stopPropagation();
+    })
+
+    $scope.$on('RootResource.Edit', function(event, resource) {
+        $q.when(resource, function(resource) {
+            resetFormState()
+            $scope.resource = resource;
+            $scope.mode = MODE_EDIT;
+            $scope.form = $scope.resource.data
+        })
+        event.stopPropagation();
+    })
+
+    $scope.$on('RootResource.Create', function(event, resource) {
+        resetFormState()
+        $scope.resource = resource;
+        $scope.mode = MODE_CREATE;
+        event.stopPropagation();
+    })
+
+    $scope.$on('RootResource.Refresh', function(event) {
+        $q.when($scope.resource).then(function(resource) {
+            resetFormState()
+            $scope.resource = resource.get();
+            $scope.mode = MODE_SHOW;
+        });
+        event.stopPropagation();
+    })
+
+    // Setup the template for the resource
+    var resourceWatcher = $scope.$watch('resource', function(newvalue, oldvalue) {
+        setupResource(newvalue);
+    });
+
+    $scope.$watch('mode', function(newvalue, oldvalue) {
+        if(angular.isDefined($scope.resource)) {
+            $scope.$bookmark($scope.resource);
+        }
+    });
 
     $scope.$bookmark = function(rel) {
         $q.when(rel).then(function(rel) {
@@ -78,12 +111,15 @@ function MainCtrl($q, $rootScope, $scope, $location, graph) {
                 });
             }
             if (angular.isUndefined(q.b)) {
-                q.b = rel.meta.rel;
+                q.b = rel.meta.$type();
             }
             if (angular.isDefined($scope.mode)) {
                 q.m = $scope.mode;
             }
-            $location.path(q.b + "/" + q.m);
+            //console.log($location.path() + " : " + q.b + "/" + q.m)
+            if(!($location.path() === q.b + "/" + q.m)) {
+                $location.path(q.b + "/" + q.m);
+            }
         });
     };
 
@@ -91,7 +127,7 @@ function MainCtrl($q, $rootScope, $scope, $location, graph) {
         var res = [];
         var curr = resource;
         while (angular.isDefined(curr)) {
-            if (curr.canGet()) {
+            if (curr.canGet() && !curr.isArray()) {
                 res.push(curr);
             }
             curr = curr.parent;
@@ -99,14 +135,14 @@ function MainCtrl($q, $rootScope, $scope, $location, graph) {
         return res.reverse();
     };
 
-    $scope.$calcUserActionLinks = function(resource) {
+    $scope.$calcActionLinks = function(resource) {
         var res = [];
         if (angular.isDefined(resource.data)) {
             if (angular.isDefined(resource.links)) {
                 $q.when(resource.links).then(function(links) {
                     angular.forEach(links, function(link) {
-                        if ('_bookmark_self_parent_whoami_'.indexOf("_"
-                                + link.meta.rel + "_") == -1) {
+                        if ('_session_attachments_conference_'.indexOf("_"
+                                + link.meta.rel + "_") != -1) {
                             res.push(link);
                         }
                     });
@@ -116,8 +152,59 @@ function MainCtrl($q, $rootScope, $scope, $location, graph) {
         return res;
     };
 
-    $scope.isList = function() {
-        return angular.isArray($rootScope.resource.data);
+    $scope.$calcUserActionLinks = function(resource) {
+        var res = [];
+        if (angular.isDefined(resource.data)) {
+            if (angular.isDefined(resource.links)) {
+                $q.when(resource.links).then(function(links) {
+                    angular.forEach(links, function(link) {
+                        if ('_trackers_speakers_attendees_'.indexOf("_"
+                                + link.meta.rel + "_") != -1) {
+                            res.push(link);
+                        }
+                    });
+                });
+            }
+        }
+        return res;
+    };
+
+    $scope.$isListWithData = function() {
+        var d = $q.defer();
+        $q.when($scope.resource).then(function(res) {
+            $q.when(res.data).then(function(data) {
+                if(angular.isDefined(res)) {
+                    d.resolve(res.isArray() && data.length > 0);
+                } else {
+                    d.resolve(false);
+                }
+            });
+        });
+        return d.promise;
+    };
+
+    $scope.$isSingleWithData = function() {
+        var d = $q.defer();
+        $q.when($scope.isList).then(function(res) {
+            if(res) {
+                d.resolve(false);
+            }
+            else {
+                $q.when($scope.resource).then(function(res) {
+                    $q.when(res.data).then(function(data) {
+                        var hasData = false;
+                        for(var prop in data) {
+                            if (data.hasOwnProperty(prop)) {
+                                hasData = true;
+                                break;
+                            }
+                        }
+                        d.resolve(hasData);
+                    });
+                });
+            }
+        });
+        return d.promise;
     };
 
     $scope.isEditMode = function() {
@@ -136,47 +223,64 @@ function MainCtrl($q, $rootScope, $scope, $location, graph) {
     };
 
     $scope.create = function(link) {
-        $scope.mode = MODE_CREATE;
-        $rootScope.resource = link;
+        $scope.$emit("RootResource.Create", link)
     };
 
     $scope.get = function(link) {
         $scope.mode = MODE_SHOW;
         link.get().then(function(res) {
-            $rootScope.resource = res;
+            $scope.resource = res;
+        });
+    };
+
+    $scope.addUserTo = function(userAction) {
+        $q.when(UserService.current()).then(function(auth) {
+            auth.user.getLink('self', function(link) {
+                userAction.add(link.meta);
+                $scope.$emit("RootResource.Refresh")
+            });
         });
     };
 
     $scope.submit = function() {
         var update = function(res) {
             res.get().then(function(resp) {
-                $rootScope.resource = resp;
+                $scope.resource = resp;
                 $scope.mode = MODE_SHOW;
             });
-            $scope.formval = {};
-            $scope.form = {};
         };
         var error = function(res) {
             $scope.formval = res.data;
         };
         if ($scope.mode === MODE_EDIT) {
-            $rootScope.resource.update($scope.form).then(update, error);
+            $scope.resource.update($scope.form).then(update, error);
         } else if ($scope.mode === MODE_CREATE) {
-            $rootScope.resource.create($scope.form).then(update, error);
+            $scope.resource.create($scope.form).then(update, error);
         }
     };
 
-    $scope.edit = function() {
-        $scope.mode = MODE_EDIT;
-        $scope.form = $rootScope.resource.data;
+    $scope.edit = function(node) {
+        var res = node;
+        if(angular.isUndefined(res)) {
+            res = $scope.resource
+        }
+        $scope.$emit("RootResource.Edit", res)
     };
 
     $scope.remove = function() {
-        $rootScope.resource.remove().then(function(resp) {
+        $scope.resource.remove().then(function(resp) {
             $scope.mode = MODE_SHOW;
             $scope.form = {};
             // TODO: cheating, parent == the collection
-            $rootScope.resource = $rootScope.resource.parent.parent;
+            $scope.resource = $scope.resource.parent.parent;
+        });
+    };
+
+    $scope.view = function(node) {
+        node.getLink('self', function(self){
+          self.get().then(function(node) {
+              $scope.$emit("RootResource.Show", node)
+          })
         });
     };
 }
@@ -186,19 +290,68 @@ function SubCtrl($q, $scope) {
     var MODE_EDIT = "edit";
     var MODE_CREATE = "create";
     var MODE_SHOW = "show";
+    var MODE_NONE = "none";
 
-    $scope.mode = MODE_SHOW;
+    $scope.mode = MODE_NONE;
     $scope.template = "";
     $scope.form = {};
     $scope.parents = [];
     $scope.actionlinks = [];
 
-    $scope.isList = function() {
-        return angular.isArray($scope.resource.data);
+    $scope.$watch('resource', function(newvalue, oldvalue) {
+        if(angular.isDefined(newvalue)) {
+            $scope.isList = $scope.$isListWithData()
+            $scope.isSingle = $scope.$isSingleWithData()
+            $scope.mode = MODE_SHOW;
+        } else {
+            $scope.mode = MODE_NONE;
+        }
+    });
+
+    $scope.$isListWithData = function() {
+        var d = $q.defer();
+        $q.when($scope.resource).then(function(res) {
+            $q.when(res.data).then(function(data) {
+                if(angular.isDefined(res)) {
+                    d.resolve(res.isArray() && data.length > 0);
+                } else {
+                    d.resolve(false);
+                }
+            });
+        });
+        return d.promise;
+    };
+
+    $scope.$isSingleWithData = function() {
+        var d = $q.defer();
+        $q.when($scope.isList).then(function(res) {
+            if(res) {
+                d.resolve(false);
+            }
+            else {
+                $q.when($scope.resource).then(function(res) {
+                    $q.when(res.data).then(function(data) {
+                        var hasData = false;
+                        for(var prop in data) {
+                            if (data.hasOwnProperty(prop)) {
+                                hasData = true;
+                                break;
+                            }
+                        }
+                        d.resolve(hasData);
+                    });
+                });
+            }
+        });
+        return d.promise;
     };
 
     $scope.isEditMode = function() {
         return $scope.mode === MODE_EDIT;
+    };
+
+    $scope.isNoneMode = function() {
+        return $scope.mode === MODE_NONE;
     };
 
     $scope.isCreateMode = function() {
@@ -209,12 +362,14 @@ function SubCtrl($q, $scope) {
         if ($scope.isEditMode() || $scope.isCreateMode()) {
             return "form";
         }
+        else if ($scope.isNoneMode()) {
+            return "none";
+        }
         return "display";
     };
 
     $scope.create = function(link) {
-        $scope.mode = MODE_CREATE;
-        $scope.resource = link;
+        $scope.$emit("RootResource.Create", link)
     };
 
     $scope.get = function(link) {
@@ -230,8 +385,6 @@ function SubCtrl($q, $scope) {
                 $scope.resource = resp;
                 $scope.mode = MODE_SHOW;
             });
-            $scope.formval = {};
-            $scope.form = {};
         };
         var error = function(res) {
             $scope.formval = res.data;
@@ -243,9 +396,12 @@ function SubCtrl($q, $scope) {
         }
     };
 
-    $scope.edit = function() {
-        $scope.mode = MODE_EDIT;
-        $scope.form = $scope.resource.data;
+    $scope.edit = function(node) {
+        var res = node;
+        if(angular.isUndefined(res)) {
+            res = $scope.resource
+        }
+        $scope.$emit("RootResource.Edit", res)
     };
 
     $scope.remove = function() {
@@ -257,11 +413,12 @@ function SubCtrl($q, $scope) {
         });
     };
 
-    $scope.view = function(index) {
-        $scope.resource.data[index].getLink('self').get().then(function(node) {
-            $scope.parent.mode = MODE_SHOW;
-            $scope.parent.resource = node;
-        });
+    $scope.view = function(node) {
+//        node.getLink('self', function(self){
+          node.get().then(function(node) {
+              $scope.$emit("RootResource.Show", node)
+          })
+//        });
     };
 }
 
@@ -289,7 +446,7 @@ gs.filter(
         function() {
             return function(child) {
                 if (angular.isDefined(child) && angular.isDefined(child.meta)) {
-                    if (!(child.meta.rel === 'bookmark' || child.meta.rel === 'self')) {
+                    if (!(child.meta.rel === 'bookmark' && child.meta.rel === 'self')) {
                         return child;
                     }
                 }
@@ -384,12 +541,14 @@ gs.directive(
             };
 
             var linker = function($scope, $element, $attrs) {
+                var d = $q.defer();
+                $scope.resource = d.promise;
                 $q.when($scope.parent.links).then(function(links) {
                     angular.forEach(links, function(link) {
                         if (link.meta.rel === $scope.link) {
                             link.get().then(function(res) {
-                                $scope.resource = res;
-                                $scope.template = $scope.resource.meta.rel + ".html";
+                                d.resolve(res);
+                                $scope.template = res.meta.$type() + '.html';;
 
                                 var loader = getTemplate($scope.template);
                                 loader.success(function(html) {
@@ -422,15 +581,43 @@ gs.filter(
                 return $sce.trustAsHtml($sanitize(input).replace(/\n/g, '<br/>'));
             };
         });
-gs.config(
-        function($routeProvider, $httpProvider, $locationProvider, RestGraphProvider) {
+gs.service(
+        'UserService',
+        function($q, $rootScope) {
+            var state = $q.defer();
 
-            $routeProvider.otherwise({
-                templateUrl : 'front.html',
-                controller : MainCtrl,
-                resolve : MainCtrl.resolve,
-                reloadOnSearch : false
+            this.current = function() {
+                return state.promise;
+            }
+
+            $rootScope.$watch('root', function(newvalue, oldvalue) {
+                if (angular.isUndefined(newvalue)) {
+                    return;
+                }
+                $q.when(newvalue).then(function(root) {
+                    $q.when(root.links).then(function(links) {
+                        angular.forEach(links, function(link) {
+                            if (link.meta.rel === 'whoami') {
+                                link.get().then(function(res) {
+                                    state.resolve({
+                                        user: res,
+                                        authenticated: true,
+                                        knownstate: true
+                                    });
+                                }, function() {
+                                    state.resolve({
+                                        authenticated: false,
+                                        knownstate: true
+                                    });
+                                });
+                            }
+                        });
+                    });
+                });
             });
+        });
+gs.config(
+        function($httpProvider, $locationProvider) {
 
             $locationProvider.html5Mode(true);
             $locationProvider.hashPrefix = '!';
