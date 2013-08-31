@@ -12,8 +12,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.fasterxml.jackson.jaxrs.json.JsonEndpointConfig;
 
 /**
  * Provide a MessageBodyReader/Writer with a more specific MediaType then
@@ -39,6 +43,12 @@ public class JSONProvider extends JacksonJaxbJsonProvider {
 
     public JSONProvider() {
         super();
+    }
+
+    @Override
+    protected JsonEndpointConfig _configForWriting(ObjectMapper mapper, Annotation[] annotations) {
+        mapper.setSerializationInclusion(Include.NON_NULL);
+        return super._configForWriting(mapper, annotations);
     }
 
     @Override
