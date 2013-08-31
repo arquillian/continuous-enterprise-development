@@ -15,8 +15,8 @@ import org.cedj.geekseek.web.rest.user.model.UserRepresentation;
 @Path("/user")
 public class UserResource extends RepositoryResource<User, UserRepresentation> implements MetadataResource {
 
-    private static final String USER_XML_MEDIA_TYPE = BASE_XML_MEDIA_TYPE + "; type=user";
-    private static final String USER_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + "; type=user";
+    public static final String USER_XML_MEDIA_TYPE = BASE_XML_MEDIA_TYPE + "; type=user";
+    public static final String USER_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + "; type=user";
 
     public UserResource() {
         super(UserResource.class, User.class, UserRepresentation.class);
@@ -38,6 +38,7 @@ public class UserResource extends RepositoryResource<User, UserRepresentation> i
             .incoming(new Relation("presented_by"))
             .incoming(new Relation("tracked_by"))
             .incoming(new Relation("attended_by"))
-            .outgoing(new NamedRelation("attachments", "attached_to"));
+            .outgoing(new NamedRelation("attachments", "attached_to"))
+            .outgoing(new NamedRelation("sessions", "presented_by"));
     }
 }

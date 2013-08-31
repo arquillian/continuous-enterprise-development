@@ -8,6 +8,7 @@ import org.cedj.geekseek.web.rest.core.MetadataResource;
 import org.cedj.geekseek.web.rest.core.RepositoryResource;
 import org.cedj.geekseek.web.rest.core.ResourceMetadata;
 import org.cedj.geekseek.web.rest.core.ResourceMetadata.NamedRelation;
+import org.cedj.geekseek.web.rest.core.ResourceMetadata.Relation;
 import org.cedj.geekseek.web.rest.core.annotation.ResourceModel;
 
 @ResourceModel
@@ -35,6 +36,7 @@ public class SessionResource extends RepositoryResource<Session, SessionRepresen
     @Override
     public ResourceMetadata getResourceMetadata() {
         return new ResourceMetadata(Session.class)
+            .incoming(new Relation("presented_by"))
             .outgoing(new NamedRelation("attachments", "attached_to"))
             .outgoing(new NamedRelation("speakers", "presented_by"))
             .outgoing(new NamedRelation("attendees", "attended_by"))
