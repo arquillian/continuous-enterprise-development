@@ -2,6 +2,7 @@ package org.cedj.geekseek.web.core.test.integration;
 
 import static org.cedj.geekseek.web.core.test.integration.TestUtils.asString;
 
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.cedj.geekseek.web.core.servlet.AppFilter;
@@ -68,4 +69,12 @@ public class AppFilterTestCase {
         Assert.assertEquals(APP_IMAGE_CONTENT, content);
     }
 
+    @Test
+    public void shouldAllow404ReturnCodeOnAcceptHeaderRequests() throws Exception {
+        HttpURLConnection con = (HttpURLConnection)new URL(base, "app/MISSING_RESOURCES").openConnection();
+        con.setRequestProperty("Accept", "application/vnd.ced+json");
+        int response = con.getResponseCode();
+        con.disconnect();
+        Assert.assertEquals(404, response);
+    }
 }

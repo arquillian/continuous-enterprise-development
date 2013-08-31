@@ -94,6 +94,8 @@ public class AppFilter implements Filter {
             }
             output.close();
             input.close();
+        } else if (request.getHeader("Accept").contains("application/vnd.ced+json")){
+            response.setStatus(404);
         } else {
             //System.out.println("Forwarding to: " + APP_INDEX);
             request.getRequestDispatcher(APP_INDEX).forward(request, response);
