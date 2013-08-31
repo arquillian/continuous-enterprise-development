@@ -30,6 +30,7 @@ import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.domain.relation.RelationRepository;
 import org.cedj.geekseek.domain.relation.model.Relation;
+import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
@@ -132,14 +133,30 @@ public class GraphRelationRepository implements RelationRepository {
         if(node == null) {
             return targets;
         }
-        Iterable<Relationship> relationships = node.getRelationships(Named.relation(type));
-        List<String> targetIds = new ArrayList<String>();
-        for(Relationship relation : relationships) {
-            targetIds.add(relation.getEndNode().getProperty(PROP_ID).toString());
-        }
+        Transaction tx = graph.beginTx();
 
-        for(String targetId : targetIds) {
-            targets.add(repo.get(targetId));
+        try {
+            Iterable<Relationship> relationships = node.getRelationships(Named.relation(type));
+            for(Relationship relation : relationships) {
+                String targetId = relation.getOtherNode(node).getProperty(PROP_ID).toString();
+                T target = repo.get(targetId);
+                if(target == null) {
+                    // Do some auto clean up if target node not found in Target repo
+                    relation.getOtherNode(node).delete();
+                    for(Relationship other : relation.getOtherNode(node).getRelationships()) {
+                        other.delete();
+                    }
+                } else {
+                    targets.add(target);
+                }
+            }
+            tx.success();
+        } catch(Exception e) {
+            tx.failure();
+            throw new RuntimeException(
+                "Could not clean up relation of type " + type + " from " + source, e);
+        } finally {
+          tx.finish();
         }
         return targets;
     }
