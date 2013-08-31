@@ -94,7 +94,8 @@ public class SessionRepresentation extends LinkableRepresentation<Session> imple
                         getUriInfo().getBaseUriBuilder()
                         .path(SessionResource.class)
                         .segment("{id}")
-                        .build(id)));
+                        .build(id),
+                        SessionResource.SESSION_XML_MEDIA_TYPE));
             }
             if(doesNotContainRel("parent") && parentId != null) {
                 links.add(
@@ -103,7 +104,8 @@ public class SessionRepresentation extends LinkableRepresentation<Session> imple
                         getUriInfo().getBaseUriBuilder()
                         .path(ConferenceResource.class)
                         .segment("{id}")
-                        .build(parentId)));
+                        .build(parentId),
+                        ConferenceResource.CONFERENCE_XML_MEDIA_TYPE));
             }
         }
         return links;

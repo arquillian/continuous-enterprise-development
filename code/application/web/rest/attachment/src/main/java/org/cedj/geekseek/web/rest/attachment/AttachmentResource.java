@@ -15,8 +15,8 @@ import org.cedj.geekseek.web.rest.core.annotation.ResourceModel;
 public class AttachmentResource extends RepositoryResource<Attachment, AttachmentRepresentation>
     implements MetadataResource {
 
-    private static final String ATTACHMENT_XML_MEDIA_TYPE = BASE_XML_MEDIA_TYPE + "; type=attachment";
-    private static final String ATTACHMENT_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + "; type=attachment";
+    public static final String ATTACHMENT_XML_MEDIA_TYPE = BASE_XML_MEDIA_TYPE + "; type=attachment";
+    public static final String ATTACHMENT_JSON_MEDIA_TYPE = BASE_JSON_MEDIA_TYPE + "; type=attachment";
 
     public AttachmentResource() {
         super(AttachmentResource.class, Attachment.class, AttachmentRepresentation.class);
