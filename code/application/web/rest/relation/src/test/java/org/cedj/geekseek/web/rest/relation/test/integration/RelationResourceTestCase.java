@@ -45,8 +45,8 @@ public class RelationResourceTestCase {
 
     private static final String BASE_JSON_MEDIA_TYPE = "application/vnd.ced+json";
 
-    private static final String SOURCE_ID = "11";
-    private static final String TARGET_ID = "1";
+    private static final String SOURCE_ID = "10";
+    private static final String TARGET_ID = "12";
 
     @Deployment
     public static WebArchive deploy() {

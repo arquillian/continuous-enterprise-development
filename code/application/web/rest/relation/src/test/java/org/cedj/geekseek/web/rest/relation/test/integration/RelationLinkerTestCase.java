@@ -42,7 +42,7 @@ public class RelationLinkerTestCase {
     private static final String BASE_XML_MEDIA_TYPE = "application/vnd.ced+xml";
 
     private static final String SOURCE_ID = "11";
-    private static final String TARGET_ID = "1";
+    private static final String TARGET_ID = "12";
 
     @Deployment
     public static WebArchive deploy() {

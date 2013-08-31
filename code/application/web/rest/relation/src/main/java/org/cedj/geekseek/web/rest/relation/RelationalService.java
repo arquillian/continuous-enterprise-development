@@ -39,6 +39,9 @@ public class RelationalService {
         List<RelationMatch> result = new ArrayList<RelationMatch>();
         ResourceMetadata sourceMeta = this.metadata.get(sourceType);
         for(ResourceMetadata targetMeta : this.metadata.values()) {
+            if(targetMeta.getModel() == sourceType) {
+                continue;
+            }
             for(NamedRelation match : targetMeta.match(sourceMeta)) {
                 result.add(new RelationMatch(
                     sourceMeta.getModel(), match, targetMeta.getModel()));

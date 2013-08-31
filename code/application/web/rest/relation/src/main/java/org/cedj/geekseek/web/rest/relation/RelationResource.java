@@ -147,6 +147,6 @@ public class RelationResource {
         }
         StringBuilder sb = new StringBuilder(href);
         sb.reverse();
-        return sb.substring(lastIndex, sb.indexOf("/", lastIndex));
+        return new StringBuilder(sb.substring(lastIndex, sb.indexOf("/", lastIndex))).reverse().toString();
     }
 }
