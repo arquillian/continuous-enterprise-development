@@ -15,9 +15,10 @@
             }
         }
 
-        function Node($q, $http, meta, startURL, parent, startData) {
+        function Node($q, $http, $cache, meta, startURL, parent, startData) {
             this.$q = $q;
             this.$http = $http;
+            this.$cache = $cache;
             this._meta = meta;
             this._startURL = startURL;
             this._parent = parent;
@@ -25,12 +26,13 @@
             this._options = [];
             this._children = [];
             this._isarray = false;
+            this._datalevel = 'link';
 
             if(angular.isDefined(startData)) {
                 this._data = startData;
                 this._isarray = angular.isArray(startData);
             }
-
+            this.$cache.put(startURL, this);
             if(angular.isUndefined(meta.$type)) {
                 this._meta.$type = function() {
                     var typeIndex = 0;
@@ -111,10 +113,20 @@
                 var link = findLink('self', data);
                 link.$source = this.meta.rel;
 
-                var node = new Node(
-                        this.$q, this.$http, link,
-                        link.href, this, data);
-                node.init().then(resolve(d));
+                var node = this.$cache.get(link.href);
+                if(angular.isDefined(node)) {
+                    if(node._datalevel !== 'full') {
+                        node._data = data;
+                        node._datalevel = 'list'
+                        node.$discoverChildren();
+                    }
+                    d.resolve(node);
+                } else {
+                    var node = new Node(
+                            this.$q, this.$http, this.$cache, link,
+                            link.href, this, data);
+                    node.init().then(resolve(d));
+                }
             }
             this._data = this.$q.all(children);
         };
@@ -132,10 +144,15 @@
                             defer.resolve(node);
                         };
                     };
-                    var linkNode = new Node(
-                            this.$q, this.$http, link,
-                            link.href, this);
-                    linkNode.init().then(resolve(d));
+                    var node = this.$cache.get(link.href);
+                    if(angular.isDefined(node)) {
+                        d.resolve(node);
+                    } else {
+                        var linkNode = new Node(
+                                this.$q, this.$http, this.$cache, link,
+                                link.href, this);
+                        linkNode.init().then(resolve(d));
+                    }
                 }
                 this._data.$link = this.data.link;
                 delete this._data.link;
@@ -164,7 +181,7 @@
                     if (link.meta.rel === name) {
                         return func(link);
                     }
-                }d
+                }
                 return func();
             })
         };
@@ -179,15 +196,21 @@
             var url = root.url + "/bookmark/" + type + "/" + id;
             this.$http.get(url).then(function(data) {
                 var selfLink = findLink('self', data.data);
-                var linkNode = new Node(self.$q, self.$http, {
-                    rel : type,
-                    url : selfLink.href,
-                    mediaType : selfLink.mediaType
-                }, selfLink.href, root, data.data);
-                linkNode.init().then(function(node) {
-                    node.$discoverChildren();
+
+                var node = self.$cache.get(selfLink.href);
+                if(angular.isDefined(node)) {
                     d.resolve(node);
-                });
+                } else {
+                    var linkNode = new Node(self.$q, self.$http, self.$cache, {
+                        rel : type,
+                        url : selfLink.href,
+                        mediaType : selfLink.mediaType
+                    }, selfLink.href, root, data.data);
+                    linkNode.init().then(function(node) {
+                        node.$discoverChildren();
+                        d.resolve(node);
+                    });
+                }
             });
             return d.promise;
         };
@@ -207,6 +230,7 @@
                         self._data = {}
                     }
                     self.$discoverChildren();
+                    self._datalevel = 'full';
                 }
                 d.resolve(self);
             }, function(data) {
@@ -250,11 +274,17 @@
             var d = this.$q.defer();
             this.$http.post(this._startURL, updateddata).then(
                     function(data) {
-                        var node = new Node(self.$q, self.$http, self.meta,
-                                data.headers('Location'), self);
-                        node.init().then(function(res) {
-                            d.resolve(res);
-                        });
+                        var location = data.headers('Location');
+                        var node = self.$cache.get(location);
+                        if(angular.isDefined(node)) {
+                            d.resolve(node);
+                        } else {
+                            var node = new Node(self.$q, self.$http, self.$cache, self.meta,
+                                    data.headers('Location'), self);
+                            node.init().then(function(res) {
+                                d.resolve(res);
+                            });
+                        }
                     }, function(data) {
                         self._data = data.data;
                         d.reject(self);
@@ -262,9 +292,9 @@
             return d.promise;
         };
 
-        this.$get = function($q, $http) {
+        this.$get = function($q, $http, $cacheFactory) {
             return function(baseURL) {
-                return new Node($q, $http, {
+                return new Node($q, $http, $cacheFactory('node'), {
                     href : baseURL,
                     rel : 'root'
                 }, baseURL);

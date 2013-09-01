@@ -106,3 +106,36 @@ asyncTest("handle arrays as nodes", 3, function() {
     })
     this.$http.flush();
 })
+asyncTest("should cache nodes based on URL", 2, function() {
+    var linkURLOne = this.$requestURL + 'one';
+    this.$http.when('OPTIONS', this.$requestURL).respond({}, {'Allow':'GET'})
+    this.$http.when('OPTIONS', linkURLOne).respond({}, {'Allow':'GET'})
+    this.$http.when('GET', this.$requestURL).respond([
+          {name:'One', link:[{href:linkURLOne, rel:'self', mediaType:'test'}]}
+    ], {});
+
+    this.$http.when('GET', linkURLOne).respond(
+          {name:'One', full:'Test', link:[{href:linkURLOne, rel:'self', mediaType:'test'}]}
+    ,{});
+
+    this.$graph(this.$requestURL).init().then(function(root) {
+       root.get().then( function(root) {
+           root.data.then(function(data) {
+               data[0].getLink('self', function(selfLinkList) {
+                   selfLinkList.get().then(function() {
+                       selfLinkList.getLink('self', function(selfLink) {
+                           selfLink.get().then(function() {
+                               selfLinkList.test = true;
+                               ok(selfLink.test, "Should refer to the same node")
+                               selfLink.test = false;
+                               ok(!selfLinkList.test, "Should refer to the same node")
+                               start();
+                           })
+                       })
+                   });
+               })
+           })
+       })
+    });
+    this.$http.flush();
+})

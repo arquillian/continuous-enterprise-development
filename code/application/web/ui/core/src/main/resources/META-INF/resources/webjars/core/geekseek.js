@@ -42,15 +42,14 @@ function MainCtrl($q, $rootScope, $scope, $location, RestGraph, UserService) {
     var setupResource = function(resource) {
         if (angular.isDefined(resource)) {
             $q.when(resource).then(function(value) {
+                $scope.parents = $scope.$calcParents(value);
+                $scope.userActionLinks = $scope.$calcUserActionLinks(value);
+                $scope.actionLinks = $scope.$calcActionLinks(value);
+
                 if ('meta' in value) {
                     $scope.template = value.meta.$type() + '.html';
                     $scope.$bookmark(value);
                 }
-                $scope.parents = $scope.$calcParents(value);
-                $scope.userActionLinks = $scope.$calcUserActionLinks(value);
-                $scope.actionLinks = $scope.$calcActionLinks(value);
-                $scope.isList = $scope.$isListWithData()
-                $scope.isSingle = $scope.$isSingleWithData()
             });
         }
     }
@@ -96,6 +95,13 @@ function MainCtrl($q, $rootScope, $scope, $location, RestGraph, UserService) {
     $scope.$watch('mode', function(newvalue, oldvalue) {
         if(angular.isDefined($scope.resource)) {
             $scope.$bookmark($scope.resource);
+        }
+    });
+
+    $scope.$watch('resource.data', function(newvalue, oldvalue) {
+        if(angular.isDefined(newvalue)) {
+            $scope.isList = $scope.$isListWithData()
+            $scope.isSingle = $scope.$isSingleWithData()
         }
     });
 
@@ -235,9 +241,9 @@ function MainCtrl($q, $rootScope, $scope, $location, RestGraph, UserService) {
 
     $scope.addUserTo = function(userAction) {
         $q.when(UserService.current()).then(function(auth) {
-            auth.user.getLink('self', function(link) {
-                userAction.add(link.meta);
-                $scope.$emit("RootResource.Refresh")
+            userAction.add(auth.user.meta).then(function() {
+                userAction.get();
+                //$scope.$emit("RootResource.Refresh")
             });
         });
     };
@@ -300,11 +306,16 @@ function SubCtrl($q, $scope) {
 
     $scope.$watch('resource', function(newvalue, oldvalue) {
         if(angular.isDefined(newvalue)) {
-            $scope.isList = $scope.$isListWithData()
-            $scope.isSingle = $scope.$isSingleWithData()
             $scope.mode = MODE_SHOW;
         } else {
             $scope.mode = MODE_NONE;
+        }
+    });
+
+    $scope.$watch('resource.data', function(newvalue, oldvalue) {
+        if(angular.isDefined(newvalue)) {
+            $scope.isList = $scope.$isListWithData()
+            $scope.isSingle = $scope.$isSingleWithData()
         }
     });
 
@@ -599,11 +610,15 @@ gs.service(
                         angular.forEach(links, function(link) {
                             if (link.meta.rel === 'whoami') {
                                 link.get().then(function(res) {
-                                    state.resolve({
-                                        user: res,
-                                        authenticated: true,
-                                        knownstate: true
-                                    });
+                                    res.getLink('self', function(link) {
+                                        link.get().then(function(user) {
+                                            state.resolve({
+                                                user: user,
+                                                authenticated: true,
+                                                knownstate: true
+                                            });
+                                        })
+                                    })
                                 }, function() {
                                     state.resolve({
                                         authenticated: false,
