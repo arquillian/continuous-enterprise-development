@@ -42,7 +42,7 @@
           </li>
          </ul>
 
-         <ul class="nav navbar-nav pull-right" data-ng-controller="UserCtrl" data-ng-show="current.knownstate">
+         <ul class="nav navbar-nav pull-right" data-ng-cloak data-ng-controller="UserCtrl" data-ng-show="current.knownstate">
 	        <li class="user" data-ng-show="current.authenticated">
                 <a href=""><img data-ng-src="{{current.user.data.avatarUrl}}" /> {{current.user.data.name}}</a>
             </li>
@@ -52,8 +52,8 @@
 	     </ul>
        </div>
     </nav>
-    <div class="container content" data-ng-include="'front.html'" data-ng-cloak data-ng-controller="MainCtrl">
-
+    <div class="container content" data-ng-include="'front.html'" data-ng-controller="MainCtrl">
+      loading..
     </div>
 
   </body>
