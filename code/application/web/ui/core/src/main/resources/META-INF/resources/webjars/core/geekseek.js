@@ -1,7 +1,12 @@
-function UserCtrl($scope, UserService) {
+function UserCtrl($q, $scope, $rootScope, UserService) {
 
     $scope.current = UserService.current();
 
+    $scope.view = function() {
+        $q.when($scope.current).then(function(current) {
+            $rootScope.$broadcast("RootResource.Show", current.user)
+        })
+    }
 }
 function MainCtrl($q, $rootScope, $scope, $location, RestGraph, UserService) {
 

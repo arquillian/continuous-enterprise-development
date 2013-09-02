@@ -44,7 +44,7 @@
 
          <ul class="nav navbar-nav pull-right" data-ng-cloak data-ng-controller="UserCtrl" data-ng-show="current.knownstate">
 	        <li class="user" data-ng-show="current.authenticated">
-                <a href=""><img data-ng-src="{{current.user.data.avatarUrl}}" /> {{current.user.data.name}}</a>
+                <a data-ng-click="view()"><img data-ng-src="{{current.user.data.avatarUrl}}" /> {{current.user.data.name}}</a>
             </li>
             <li class="user" data-ng-hide="current.authenticated">
                <a href="../auth" class="btn">Login</a>
