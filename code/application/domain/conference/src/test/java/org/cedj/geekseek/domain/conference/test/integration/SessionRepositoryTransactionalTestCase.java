@@ -50,8 +50,8 @@ public class SessionRepositoryTransactionalTestCase extends
     }
 
     @Override
-    protected void updateDomainObject(Session domain) {
-        domain.setTitle(UPDATED_TITLE);
+    protected Session updateDomainObject(Session domain) {
+        return domain.setTitle(UPDATED_TITLE);
     }
 
     @Override

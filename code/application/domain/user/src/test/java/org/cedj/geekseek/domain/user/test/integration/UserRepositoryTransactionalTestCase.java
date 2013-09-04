@@ -50,8 +50,8 @@ public class UserRepositoryTransactionalTestCase extends
     }
 
     @Override
-    protected void updateDomainObject(User domain) {
-        domain.setName(UPDATED_NAME);
+    protected User updateDomainObject(User domain) {
+        return domain.setName(UPDATED_NAME);
     }
 
     @Override

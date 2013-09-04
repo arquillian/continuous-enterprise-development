@@ -50,8 +50,8 @@ public class ConferenceRepositoryTransactionalTestCase extends
     }
 
     @Override
-    protected void updateDomainObject(Conference domain) {
-        domain.setName(UPDATED_NAME);
+    protected Conference updateDomainObject(Conference domain) {
+        return domain.setName(UPDATED_NAME);
     }
 
     @Override

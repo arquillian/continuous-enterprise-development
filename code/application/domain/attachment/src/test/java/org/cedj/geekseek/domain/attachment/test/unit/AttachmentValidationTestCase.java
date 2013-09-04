@@ -1,7 +1,8 @@
 package org.cedj.geekseek.domain.attachment.test.unit;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.Date;
 
 import org.cedj.geekseek.domain.attachment.model.Attachment;
 import org.cedj.geekseek.domain.test.unit.TimestampableSpecification;
@@ -21,9 +22,9 @@ public class AttachmentValidationTestCase extends TimestampableSpecification<Att
 
     @Override
     protected void forceUpdate(Attachment entity) throws Exception {
-        Method update = Attachment.class.getDeclaredMethod("updated");
+        Field update = Attachment.class.getDeclaredField("updated");
         update.setAccessible(true);
-        update.invoke(entity);
+        update.set(entity, new Date());
     }
 
     @Test(expected = IllegalArgumentException.class)
