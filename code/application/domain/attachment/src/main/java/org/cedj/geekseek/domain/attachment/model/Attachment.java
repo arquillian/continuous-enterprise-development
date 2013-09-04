@@ -27,28 +27,29 @@ public class Attachment implements Identifiable, Timestampable, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String id;
+    private final String id;
 
-    private String title;
+    private final String title;
 
-    private String mimeType;
+    private final String mimeType;
 
-    private URL url;
+    private final URL url;
 
-    private Date created;
+    private final Date created;
 
-    private Date updated;
-
-    protected Attachment() {
-        this.id = UUID.randomUUID().toString();
-        this.created = new Date();
-    }
+    private final Date updated;
 
     public Attachment(String title, String mimeType, URL url) {
-        this();
+        this(UUID.randomUUID().toString(), title, mimeType, url, new Date());
+    }
+
+    private Attachment(String id, String title, String mimeType, URL url, Date created) {
         requireNonNull(title, "Title must be specified)");
         requireNonNull(mimeType, "MimeType must be specified)");
         requireNonNull(url, "Url must be specified)");
+        this.id = id;
+        this.created = created;
+        this.updated = new Date();
         this.title = title;
         this.mimeType = mimeType;
         this.url = url;
@@ -64,10 +65,7 @@ public class Attachment implements Identifiable, Timestampable, Serializable {
     }
 
     public Attachment setTitle(String title) {
-        requireNonNull(title, "Title must be specified)");
-        this.title = title;
-        updated();
-        return this;
+        return new Attachment(this.id, title, this.mimeType, this.url, this.created);
     }
 
     public String getMimeType() {
@@ -75,10 +73,7 @@ public class Attachment implements Identifiable, Timestampable, Serializable {
     }
 
     public Attachment setMimeType(String mimeType) {
-        requireNonNull(mimeType, "MimeType must be specified)");
-        this.mimeType = mimeType;
-        updated();
-        return this;
+        return new Attachment(this.id, this.title, mimeType, this.url, this.created);
     }
 
     public URL getUrl() {
@@ -86,10 +81,7 @@ public class Attachment implements Identifiable, Timestampable, Serializable {
     }
 
     public Attachment setUrl(URL url) {
-        requireNonNull(url, "Url must be specified)");
-        this.url = url;
-        updated();
-        return this;
+        return new Attachment(this.id, this.title, this.mimeType, url, this.created);
     }
 
     public Date getLastUpdated() {
@@ -106,7 +98,28 @@ public class Attachment implements Identifiable, Timestampable, Serializable {
         return getLastUpdated() == null ? getCreated():getLastUpdated();
     }
 
-    private void updated() {
-        this.updated = new Date();
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Attachment other = (Attachment) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
     }
 }

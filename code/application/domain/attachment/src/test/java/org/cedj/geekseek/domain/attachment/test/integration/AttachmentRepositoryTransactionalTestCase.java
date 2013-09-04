@@ -48,8 +48,8 @@ public class AttachmentRepositoryTransactionalTestCase extends
     }
 
     @Override
-    protected void updateDomainObject(Attachment domain) {
-        domain.setTitle(UPDATED_TITLE);
+    protected Attachment updateDomainObject(Attachment domain) {
+        return domain.setTitle(UPDATED_TITLE);
     }
 
     @Override

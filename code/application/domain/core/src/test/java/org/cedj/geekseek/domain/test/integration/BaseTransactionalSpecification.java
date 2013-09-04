@@ -39,7 +39,7 @@ public abstract class BaseTransactionalSpecification<DOMAIN extends Identifiable
     /**
      * Update some domain object values
      */
-    protected abstract void updateDomainObject(DOMAIN domain);
+    protected abstract DOMAIN updateDomainObject(DOMAIN domain);
 
     /**
      * Validate that the update change has occurred.
@@ -66,7 +66,7 @@ public abstract class BaseTransactionalSpecification<DOMAIN extends Identifiable
         commit(Void.class, new Store(domain));
 
         DOMAIN stored = commit(new Get(domain.getId()));
-        updateDomainObject(stored);
+        stored = updateDomainObject(stored);
         commit(Void.class, new Store(stored));
 
         DOMAIN updated = commit(new Get(domain.getId()));
@@ -105,7 +105,7 @@ public abstract class BaseTransactionalSpecification<DOMAIN extends Identifiable
         commit(Void.class, new Store(domain));
 
         DOMAIN stored = commit(new Get(domain.getId()));
-        updateDomainObject(stored);
+        stored = updateDomainObject(stored);
         rollback(Void.class, new Store(stored));
 
         DOMAIN updated = commit(new Get(domain.getId()));
@@ -151,7 +151,7 @@ public abstract class BaseTransactionalSpecification<DOMAIN extends Identifiable
 
         commit(Void.class, new Store(domain));
         DOMAIN stored = commit(new Get(domain.getId()));
-        updateDomainObject(stored);
+        stored = updateDomainObject(stored);
         stored = commit(new Get(domain.getId()));
 
         Timestampable timed = (Timestampable)stored;

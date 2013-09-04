@@ -122,8 +122,8 @@ public abstract class RepositoryResource<DOMAIN extends Identifiable&Timestampab
             return Response.status(Status.BAD_REQUEST).build(); // TODO: Need Business Exception type to explain why?
         }
 
-        getConverter().update(uriInfo, representation, entity);
-        getRepository().store(entity);
+        DOMAIN updatedEntity = getConverter().update(uriInfo, representation, entity);
+        getRepository().store(updatedEntity);
 
         return Response.noContent().build();
     }

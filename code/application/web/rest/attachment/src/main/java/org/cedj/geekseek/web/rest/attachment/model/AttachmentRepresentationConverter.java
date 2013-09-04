@@ -33,9 +33,8 @@ public class AttachmentRepresentationConverter extends RepresentationConverter.B
 
     @Override
     public Attachment update(UriInfo uriInfo, AttachmentRepresentation representation, Attachment target) {
-        target.setTitle(representation.getTitle());
-        target.setMimeType(representation.getMimeType());
-        target.setUrl(representation.getUrl());
-        return target;
+        return target.setTitle(representation.getTitle())
+                     .setMimeType(representation.getMimeType())
+                     .setUrl(representation.getUrl());
     }
 }

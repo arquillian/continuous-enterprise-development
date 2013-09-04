@@ -1,11 +1,11 @@
 package org.cedj.geekseek.domain.attachment.infinispan;
 
-import java.util.Map;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 
+import org.cedj.geekseek.domain.attachment.model.Attachment;
+import org.infinispan.AdvancedCache;
 import org.infinispan.Cache;
 import org.infinispan.configuration.cache.CacheMode;
 import org.infinispan.configuration.cache.Configuration;
@@ -37,8 +37,14 @@ public class CacheProducer {
     }
 
     @Produces @ApplicationScoped
-    public Cache<Object, Map<String, String>> create(EmbeddedCacheManager manager) {
+    public Cache<String, Attachment> create(EmbeddedCacheManager manager) {
         return manager.getCache();
+    }
+
+    @Produces @ApplicationScoped
+    public AdvancedCache<String, Attachment> createAdvanced(EmbeddedCacheManager manager) {
+        Cache<String, Attachment> cache = manager.getCache();
+        return cache.getAdvancedCache();
     }
 
     public void destroy(@Disposes EmbeddedCacheManager manager) {

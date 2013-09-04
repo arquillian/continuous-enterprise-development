@@ -60,7 +60,7 @@ public class AttachmentRepositoryTestCase {
         Attachment attachment = createAttachment();
         attachment = repository.store(attachment);
 
-        attachment.setTitle(updatedTitle);
+        attachment = attachment.setTitle(updatedTitle);
         attachment = repository.store(attachment);
 
         Attachment updated = repository.get(attachment.getId());
@@ -91,7 +91,7 @@ public class AttachmentRepositoryTestCase {
         Attachment stored = repository.store(attachment);
 
         // tile change not stored to repository
-        stored.setTitle(updatedTitle);
+        stored = stored.setTitle(updatedTitle);
 
         Attachment refreshed = repository.get(attachment.getId());
 
