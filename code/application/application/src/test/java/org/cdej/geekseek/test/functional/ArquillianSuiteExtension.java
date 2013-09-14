@@ -1,5 +1,7 @@
 package org.cdej.geekseek.test.functional;
 
+import java.util.concurrent.Callable;
+
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.container.spi.Container;
 import org.jboss.arquillian.container.spi.ContainerRegistry;
@@ -28,8 +30,7 @@ import org.jboss.arquillian.test.spi.annotation.ClassScoped;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 import org.jboss.arquillian.test.spi.context.ClassContext;
 import org.jboss.arquillian.test.spi.event.suite.Before;
-
-import java.util.concurrent.Callable;
+import org.jboss.arquillian.test.spi.event.suite.BeforeClass;
 
 public class ArquillianSuiteExtension implements LoadableExtension {
 
@@ -110,6 +111,12 @@ public class ArquillianSuiteExtension implements LoadableExtension {
         public void resotreProtocolMetaData(@Observes EventContext<Before> eventContext) {
             testScopedProtocolMetaData.set(cachedProtocolMetaData);
             eventContext.proceed();
+        }
+
+        public void restoreDeploymentScenario(@Observes EventContext<BeforeClass> event) {
+            // Setup the Suite level scenario as if it came from the TestClass
+            event.proceed();
+            classDeploymentScenario.set(suiteDeploymentScenario);
         }
 
         public void blockUnDeployManagedDeployments(@Observes EventContext<UnDeployManagedDeployments> ignored) {
