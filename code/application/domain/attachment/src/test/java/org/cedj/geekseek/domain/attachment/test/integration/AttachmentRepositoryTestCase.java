@@ -84,7 +84,7 @@ public class AttachmentRepositoryTestCase {
 
     @Test
     public void shouldNotReflectNonStoredChanges() throws Exception {
-        String updatedTitle = "Test 2";
+        String updatedTitle = "Test Non Stored Changes";
         Attachment attachment = createAttachment();
         String originalTitle = attachment.getTitle();
 

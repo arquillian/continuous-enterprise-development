@@ -149,12 +149,12 @@ We'll start by introducing the model for our +Attachment+.  Because this will no
 public class Attachment implements Identifiable, Timestampable, Serializable {
 
     private static final long serialVersionUID = 1L;
-    private String id;
-    private String title;
-    private String mimeType;
-    private URL url;
-    private Date created;
-    private Date updated;
+    private final String id;
+    private final String title;
+    private final String mimeType;
+    private final URL url;
+    private final Date created;
+    private final Date updated;
 ----
 
 This class declaration will adhere to the contracts we've seen before in +Identifiable+ and +Timestampable+, and has no JPA annotations or metadata as we'll be delegating the persistent operations of this class to Infinispan.
@@ -163,16 +163,18 @@ We should also be sure that these +Attachment+ objects are in valid state, so we
 
 [source,java]
 ----
-    protected Attachment() {
-        this.id = UUID.randomUUID().toString();
-        this.created = new Date();
+    public Attachment(String title, String mimeType, URL url) {
+        this(UUID.randomUUID().toString(), 
+          title, mimeType, url, new Date());
     }
 
-    public Attachment(String title, String mimeType, URL url) {
-        this();
+    private Attachment(String id, String title, String mimeType, URL url, Date created) {
         requireNonNull(title, "Title must be specified)");
         requireNonNull(mimeType, "MimeType must be specified)");
         requireNonNull(url, "Url must be specified)");
+        this.id = id;
+        this.created = created;
+        this.updated = new Date();
         this.title = title;
         this.mimeType = mimeType;
         this.url = url;
@@ -188,10 +190,7 @@ We should also be sure that these +Attachment+ objects are in valid state, so we
     }
 
     public Attachment setTitle(String title) {
-        requireNonNull(title, "Title must be specified)");
-        this.title = title;
-        updated();
-        return this;
+        return new Attachment(this.id, title, this.mimeType, this.url, this.created);
     }
 
     public String getMimeType() {
@@ -199,10 +198,7 @@ We should also be sure that these +Attachment+ objects are in valid state, so we
     }
 
     public Attachment setMimeType(String mimeType) {
-        requireNonNull(mimeType, "MimeType must be specified)");
-        this.mimeType = mimeType;
-        updated();
-        return this;
+        return new Attachment(this.id, this.title, mimeType, this.url, this.created);
     }
 
     public URL getUrl() {
@@ -210,10 +206,7 @@ We should also be sure that these +Attachment+ objects are in valid state, so we
     }
 
     public Attachment setUrl(URL url) {
-        requireNonNull(url, "Url must be specified)");
-        this.url = url;
-        updated();
-        return this;
+        return new Attachment(this.id, this.title, this.mimeType, url, this.created);
     }
 
     public Date getLastUpdated() {
@@ -228,10 +221,6 @@ We should also be sure that these +Attachment+ objects are in valid state, so we
     @Override
     public Date getLastModified() {
         return getLastUpdated() == null ? getCreated():getLastUpdated();
-    }
-
-    private void updated() {
-        this.updated = new Date();
     }
 }
 ----
@@ -251,12 +240,12 @@ public class AttachmentRepository implements Repository<Attachment> {
 
 We're implementing this +AttachmentRepository+ as a Stateless Session EJB, where all business methods are executed inside the context of a transaction.  If a transaction is already in flight, it will be used, else a new one will be started at the onset of the method invocation and committed when complete.
 
-Our storage engine will be accessed via the Infinispan API's +org.infinispan.Cache+, so we'll inject this using CDI:
+Our storage engine will be accessed via the Infinispan API's +org.infinispan.AdvancedCache+, so we'll inject this using CDI:
 
 [source,java]
 ----
 @Inject
-private Cache<Object, Map<String, String>> cache;
+private AdvancedCache<String, Attachment> cache;
 ----
 
 Armed with a hook to the Infinispan grid, we can then implement the methods of the +Repository+ contract using the Infinispan API:
@@ -271,92 +260,37 @@ Armed with a hook to the Infinispan grid, we can then implement the methods of t
     @Override
     public Attachment store(Attachment entity) {
         try {
-            cache.put(entity.getId(), serialize(entity));
+            cache.withFlags(Flag.SKIP_REMOTE_LOOKUP, 
+               Flag.SKIP_CACHE_LOAD, 
+               Flag.IGNORE_RETURN_VALUES)
+                .put(entity.getId(), entity);
+            return entity;
         } catch (Exception e) {
-            throw new RuntimeException("Could not store Attachment with id " + entity.getId());
+            throw new RuntimeException("Could not store Attachment with id " + entity.getId(), e);
         }
-        return get(entity.getId());
     }
 
     @Override
     public Attachment get(String id) {
         try {
-            Map<String, String> value = (Map<String, String>)cache.get(id);
-            if(value == null) {
-                return null;
-            }
-            return deserialize(value);
+            return cache.get(id);
         } catch (Exception e) {
-            throw new RuntimeException("Could not retreive Attachment with id " + id, e);
+            throw new RuntimeException(
+              "Could not retreive Attachment with id " 
+                + id, e);
         }
     }
 
     @Override
     public void remove(Attachment entity) {
-        cache.remove(entity.getId());
+        cache.withFlags(Flag.SKIP_REMOTE_LOOKUP, 
+          Flag.SKIP_CACHE_LOAD, 
+          Flag.IGNORE_RETURN_VALUES)
+            .remove(entity.getId());
     }
 ----
 
-Because the +Cache.put+ and +Cache.get+ operations act on type of +Map<String,String>+, we provide the methods +serialize+ and +deserialize+ to convert our own +Attachment+ into a detyped view:
-
-[source,java]
-----
-    private Map<String, String> serialize(Attachment attachment) throws Exception {
-        Map<String, String> map = new HashMap<String, String>();
-
-        for(Field f : attachment.getClass().getDeclaredFields()) {
-            if(!Modifier.isStatic(f.getModifiers())) {
-                if(!f.isAccessible()) {
-                    f.setAccessible(true);
-                }
-                Object value = f.get(attachment);
-                if(value != null) {
-                    if(f.getType() == Date.class) {
-                        value = ((Date)value).getTime();
-                    }
-                    map.put(f.getName(), String.valueOf(value));
-                }
-            }
-        }
-        return map;
-    }
-
-    private Attachment deserialize(Map<String, String> values) throws Exception {
-        Attachment attachment = createNewInstance();
-
-        for(Map.Entry<String, String> entry : values.entrySet()) {
-            Field f =  Attachment.class.getDeclaredField(entry.getKey());
-            if(!f.isAccessible()) {
-                f.setAccessible(true);
-            }
-            if(f.getType() == String.class) {
-                f.set(attachment, entry.getValue());
-            } else if(f.getType() == Date.class) {
-                Date date = new Date();
-                date.setTime(Long.parseLong(entry.getValue()));
-                f.set(attachment, date);
-            } else if(f.getType() == URL.class) {
-                f.set(attachment, new URL(entry.getValue()));
-            }
-        }
-        return attachment;
-    }
-
-    private Attachment createNewInstance() throws
-        NoSuchMethodException, 
-        InstantiationException, 
-        IllegalAccessException,
-        InvocationTargetException {
-            Constructor<Attachment> constructor =
-               Attachment.class.getDeclaredConstructor();
-            constructor.setAccessible(true);
-            Attachment attachment = constructor.newInstance();
-            return attachment;
-    }
-}
-----
-
-Our +AttachmentRepository+ relies upon an Infinispan +Cache+, so we must make a CDI producer to create the cache instance to be injected.  This is handled by +org.cedj.geekseek.domain.attachment.infinispan.CacheProducer+:
+Our +AttachmentRepository+ relies upon an Infinispan +AdvancedCache+, so we must make a CDI producer to create the cache instance to be injected.  This is handled by +org.cedj.geekseek.domain.attachment.infinispan.CacheProducer+:
 
 [source,java]
 ----
@@ -379,6 +313,13 @@ public class CacheProducer {
         return new DefaultCacheManager(global, local);
     }
 
+    @Produces @ApplicationScoped
+    public AdvancedCache<String, Attachment> createAdvanced(EmbeddedCacheManager manager) {
+        Cache<String, Attachment> cache = 
+          manager.getCache();
+        return cache.getAdvancedCache();
+    }
+
     public void destroy(@Disposes Cache<?, ?> cache) {
         cache.stop();
     }
@@ -387,7 +328,7 @@ public class CacheProducer {
 }
 ----
 
-+CacheProducer+ does the business of creating and configuring the Infinispan +Cache+ instance and makes it a valid injection source by use of CDI's (technically +javax.enterprise.inject+) +@Produces+ annotation.
++CacheProducer+ does the business of creating and configuring the Infinispan +AdvancedCache+ instance and makes it a valid injection source by use of CDI's (technically +javax.enterprise.inject+) +@Produces+ annotation.
 
 This should be enough to fulfill our requirements to perform CRUD operations on an +Attachment+, and does so in a way that won't bog our RDBMS with binary data.
 
@@ -916,7 +857,7 @@ With the deployment and injection of the +Repository+ done, we're now free to im
         Attachment attachment = createAttachment();
         attachment = repository.store(attachment);
 
-        attachment.setTitle(updatedTitle);
+        attachment = attachment.setTitle(updatedTitle);
         attachment = repository.store(attachment);
 
         Attachment updated = repository.get(attachment.getId());
@@ -940,14 +881,14 @@ With the deployment and injection of the +Repository+ done, we're now free to im
 
     @Test
     public void shouldNotReflectNonStoredChanges() throws Exception {
-        String updatedTitle = "Test 2";
+        tring updatedTitle = "Test Non Stored Changes";
         Attachment attachment = createAttachment();
         String originalTitle = attachment.getTitle();
 
         Attachment stored = repository.store(attachment);
 
         // tile change not stored to repository
-        stored.setTitle(updatedTitle);
+        stored = stored.setTitle(updatedTitle);
 
         Attachment refreshed = repository.get(attachment.getId());
 
@@ -1122,8 +1063,9 @@ We'll extend +BaseTransactionalSpecification+ and close the generic context to b
     }
 
     @Override
-    protected void updateDomainObject(Attachment domain) {
-        domain.setTitle(UPDATED_TITLE);
+    protected Attachment updateDomainObject(
+      Attachment domain) {
+        return domain.setTitle(UPDATED_TITLE);
     }
 
     @Override

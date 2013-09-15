@@ -296,10 +296,13 @@ That should do it for the fields needed by our +RepositoryResource+.  Time to do
 @Consumes({ BASE_JSON_MEDIA_TYPE, BASE_XML_MEDIA_TYPE })
 public Response create(REP representation) {
     DOMAIN entity = getConverter().to(
-      uriInfo,representation);
+      uriInfo, representation);
     getRepository().store(entity);
     return Response.created(
-            UriBuilder.fromResource(getResourceClass()).segment("{id}").build(entity.getId())).build();
+      UriBuilder.fromResource(
+        getResourceClass())
+          .segment("{id}")
+          .build(entity.getId())).build();
 }
 ----
 
