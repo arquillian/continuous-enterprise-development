@@ -1,5 +1,6 @@
 package org.cedj.geekseek.service.security.test.arquillian;
 
+import java.lang.annotation.Annotation;
 import java.net.URI;
 import java.util.Collection;
 
@@ -7,11 +8,18 @@ import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.config.descriptor.api.ExtensionDef;
 import org.jboss.arquillian.container.spi.client.protocol.metadata.HTTPContext;
 import org.jboss.arquillian.container.spi.client.protocol.metadata.ProtocolMetaData;
+import org.jboss.arquillian.container.spi.context.annotation.DeploymentScoped;
 import org.jboss.arquillian.container.spi.event.container.AfterDeploy;
 import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.LoadableExtension;
+import org.jboss.arquillian.drone.spi.event.AfterDroneInstantiated;
+import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.arquillian.test.spi.enricher.resource.ResourceProvider;
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.WebDriver;
 
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.config.RestAssuredConfig;
@@ -42,9 +50,30 @@ public class AuthorizedSessionExtension implements LoadableExtension {
     @Override
     public void register(ExtensionBuilder builder) {
         builder.observer(CreateAuthorizedSession.class);
+        builder.service(ResourceProvider.class, SessionIDResourceProvider.class);
+    }
+
+    public static class SessionIDResourceProvider implements ResourceProvider {
+
+        @Inject
+        private Instance<org.cedj.geekseek.service.security.test.arquillian.AuthorizedSessionExtension.CreateAuthorizedSession.SessionIDHolder> sessionId;
+
+        @Override
+        public boolean canProvide(Class<?> type) {
+            return String.class.isAssignableFrom(type);
+        }
+
+        @Override
+        public Object lookup(ArquillianResource resource, Annotation... qualifiers) {
+            return sessionId.get().getSessionId();
+        }
+
     }
 
     public static class CreateAuthorizedSession {
+
+        @Inject @DeploymentScoped
+        private InstanceProducer<SessionIDHolder> holder;
 
         @Inject
         private Instance<ArquillianDescriptor> desc;
@@ -58,8 +87,23 @@ public class AuthorizedSessionExtension implements LoadableExtension {
             URI authUri = locateAuthURI(data);
             String sessionId = authenticate(authUri);
 
+            holder.set(new SessionIDHolder(sessionId, authUri));
+
+            System.out.println("Setting REST session: " + sessionId);
             RestAssured.config = RestAssuredConfig.config().sessionConfig(
                 SessionConfig.sessionConfig().sessionIdValue(sessionId));
+        }
+
+        public void setDroneSession(@Observes AfterDroneInstantiated event) {
+            System.out.println("Setting WebDriver session: " + holder.get().getSessionId());
+            if(WebDriver.class.isAssignableFrom(event.getDroneType())) {
+                WebDriver driver = event.getInstance().asInstance(WebDriver.class);
+                // We need to navigate somewhere before we can set a cookie.
+                // https://www.w3.org/Bugs/Public/show_bug.cgi?id=20975
+                driver.get(holder.get().getURI() + "/../");
+                driver.manage().deleteAllCookies();
+                driver.manage().addCookie(new Cookie("JSESSIONID", holder.get().getSessionId()));
+            }
         }
 
         private String authenticate(URI authUri) {
@@ -87,6 +131,24 @@ public class AuthorizedSessionExtension implements LoadableExtension {
                 }
             }
             return false;
+        }
+
+        private class SessionIDHolder {
+            private String sessionId;
+            private URI uri;
+
+            public SessionIDHolder(String sessionId, URI uri) {
+                this.sessionId = sessionId;
+                this.uri = uri;
+            }
+
+            public URI getURI() {
+                return uri;
+            }
+
+            public String getSessionId() {
+                return sessionId;
+            }
         }
     }
 }

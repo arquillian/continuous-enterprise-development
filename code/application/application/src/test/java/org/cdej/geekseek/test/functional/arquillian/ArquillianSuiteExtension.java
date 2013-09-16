@@ -1,4 +1,4 @@
-package org.cdej.geekseek.test.functional;
+package org.cdej.geekseek.test.functional.arquillian;
 
 import java.util.concurrent.Callable;
 
@@ -108,7 +108,7 @@ public class ArquillianSuiteExtension implements LoadableExtension {
             cachedProtocolMetaData = protocolMetaData;
         }
 
-        public void resotreProtocolMetaData(@Observes EventContext<Before> eventContext) {
+        public void restoreProtocolMetaData(@Observes EventContext<Before> eventContext) {
             testScopedProtocolMetaData.set(cachedProtocolMetaData);
             eventContext.proceed();
         }

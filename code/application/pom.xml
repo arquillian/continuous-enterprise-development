@@ -43,7 +43,7 @@
     <version.arquillian_core>1.1.1.Final</version.arquillian_core>
     <version.arquillian_persistence>1.0.0.Alpha6</version.arquillian_persistence>
     <version.arquillian_drone>1.2.0.Beta1</version.arquillian_drone>
-    <version.arquillian_graphene>2.0.0.Beta1</version.arquillian_graphene>
+    <version.arquillian_graphene>2.0.0.Final-SNAPSHOT</version.arquillian_graphene>
     <version.arquillian_warp>1.0.0.Alpha3</version.arquillian_warp>
     <version.arquillian_warp_rest>1.0.0.Final-SNAPSHOT</version.arquillian_warp_rest>
     <version.arquillian_qunit>1.0.0.Alpha1</version.arquillian_qunit>

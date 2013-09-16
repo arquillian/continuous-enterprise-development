@@ -1,8 +1,9 @@
 <div class="col-md-8 form-group" data-ng-class="{'error':error}">
-   <label class="control-label" for="{{id}}">{{name}}</label>
+   <label class="control-label" for="{{id}}_field">{{name}}</label>
    <div>
       <span class="help-block">{{help}}</span>
-      <textarea class="form-control input-xxlarge" id="{{id}}" data-ng-model="field" required>
+      <textarea class="form-control input-xxlarge" id="{{id}}_field" data-ng-model="field" required>
       </textarea>
+      <div class="has-error" data-ng-show="error">{{error}}</div>
    </div>
 </div>

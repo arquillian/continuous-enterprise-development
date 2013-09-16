@@ -5,9 +5,11 @@
   <defaultProtocol type="Servlet 3.0" />
 
   <extension qualifier="suite">
-    <property name="deploymentClass">org.cdej.geekseek.test.functional.Deployments</property>
+    <property name="deploymentClass">org.cdej.geekseek.test.functional.arquillian.Deployments</property>
   </extension>
-
+  <extension qualifier="webdriver">
+    <property name="browser">phantomjs</property>
+  </extension>
   <container qualifier="JBoss" default="true">
     <configuration>
     </configuration>

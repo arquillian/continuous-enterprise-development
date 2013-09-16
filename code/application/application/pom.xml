@@ -171,8 +171,7 @@
       <build>
         <plugins>
           <plugin>
-            <artifactId>maven-enforcer-plugin
-                      </artifactId>
+            <artifactId>maven-enforcer-plugin</artifactId>
             <executions>
               <execution>
                 <id>enforce-maven-environment</id>

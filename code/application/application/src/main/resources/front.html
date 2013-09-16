@@ -7,28 +7,24 @@
                <a data-ng-click="get(level)">{{level.meta.$type()}}</a>
             </li>
          </ul>
-         <div data-ng-include="template"></div>
+         <div id="resource" data-ng-include="template"></div>
       </div>
    </div>
 
    <div id="sidebar" class="pull-right">
       <div id="action-links">
-         <div data-ng-repeat="link in actionLinks">
-            <ul>
-               <li data-ng-show="link.canCreate()">
-                  <button class="btn btn-success" data-ng-click="create(link)">Add {{link.meta.rel}}</button>
-               </li>
-            </ul>
-         </div>
+         <ul data-ng-repeat="link in actionLinks">
+            <li data-ng-show="link.canCreate()">
+               <button class="btn btn-success" data-ng-click="create(link)">Add {{link.meta.rel}}</button>
+            </li>
+         </ul>
       </div>
       <div id="user-action-links">
-         <div data-ng-repeat="link in userActionLinks">
-            <ul>
-               <li data-ng-show="link.canCreate()">
-                  <button class="btn btn-primary" data-ng-click="addUserTo(link)">{{link.meta.rel}}</button>
-               </li>
-            </ul>
-         </div>
+         <ul data-ng-repeat="link in userActionLinks">
+            <li data-ng-show="link.canCreate()">
+               <button class="btn btn-primary" data-ng-click="addUserTo(link)">{{link.meta.rel}}</button>
+            </li>
+         </ul>
       </div>
    </div>
 </div>

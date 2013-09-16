@@ -1,5 +1,6 @@
 <div class="col-md-8 form-group" data-ng-class="{'has-error':error}">
-   <label class="control-label" for="{{id}}">{{name}}</label>
-   <input class="form-control" type="text" id="{{id}}" data-ng-model="field"
+   <label class="control-label" for="{{id}}_field">{{name}}</label>
+   <input class="form-control" type="text" id="{{id}}_field" data-ng-model="field"
       required placeholder="{{help}}" />
+   <div class="has-error" data-ng-show="error">{{error}}</div>
 </div>
