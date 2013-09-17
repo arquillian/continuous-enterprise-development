@@ -464,7 +464,7 @@ public class GraphRelationRepository implements RelationRepository {
 
 +GraphRelationRepository+ is implemented as an application-scoped CDI bean; it contains a few constants, a hook to the backend graph database (Neo4j API's +GraphDatabaseService+), and a reference to the CDI +BeanManager+.
 
-The +RelationRepository+ contract implementation look like this:
+The +RelationRepository+ contract implementation looks like this:
 
 [source,java]
 ----
@@ -818,7 +818,7 @@ As we can see, Infinispan and all of its dependencies have made their way to +WE
 [NOTE]
 ====
 It's useful to debug your deployments by simply printing out a listing of your archive; this is easily accomplished by throwing a statement like +System.out.println(archive.toString(true));+ in your +@Deployment+ method before returning the archive.
-If you want to debug the content of the final deployment as seen by the Container, you can set the +deploymentExportPath+ property under the +engine+ element in +arquillian.xml+ to the path where you want Arquillian to output the deployments. This is useful if you're having deployment problems that you suspect is related to how Arquillian enrcih the deployment or you're generating file content dynamically.
+If you want to debug the content of the final deployment as seen by the Container, you can set the +deploymentExportPath+ property under the +engine+ element in +arquillian.xml+ to the path where you want Arquillian to output the deployments. This is useful if you're having deployment problems that you suspect is related to how Arquillian enriches the deployment, or if you're generating file content dynamically.
 ====
 
 
