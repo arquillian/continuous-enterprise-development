@@ -508,7 +508,7 @@ public @interface ResourceModel {
 }
 ----
 
-By placing this +@ResourceModel+ annotation atop, for instance, +UserResource+ as we've done above, this JAX-RS resource will now be marked as +@REST+, and a CDI +@Stereotype+.  This is a nice shortcut provided by CDI to compose behaviours together in one definition.
+By placing this +@ResourceModel+ annotation atop, for instance, +UserResource+ as we've done above, this JAX-RS resource will now be marked as +@REST+ via the CDI +@Stereotype+.  This is a nice shortcut provided by CDI to compose behaviours together in one definition.
 
 The +@org.cedj.geekseek.web.rest.core.annotation.REST+ annotation is defined as a CDI +@InterceptorBinding+:
 
@@ -522,7 +522,7 @@ public @interface REST {
 }
 ----
 
-In order to avoid having to define the entire interceptor chain for the REST layer in piecemeal fashion for each module that wishes to use it, we centralize the chain definition in +org.cedj.geekseek.web.rest.core.interceptor.RESTInterceptorEnabler+:
+In order to avoid having to define the entire interceptor chain for the REST layer in piecemeal fashion for each module that wishes to use it, we create only one CDI +Interceptor+ and define our own chain using pure CDI beans which is handled in +org.cedj.geekseek.web.rest.core.interceptor.RESTInterceptorEnabler+:
 
 [source,java]
 ----
@@ -546,7 +546,7 @@ public class RESTInterceptorEnabler {
 }
 ----
 
-Marking the +RESTInterceptorEnabler+ with +@REST+ defines the interceptor binding; then we may inject all valid +RESTInterceptor+ instances and invoke them according to a sorted order in the +intercept+ method annotated with +@AroundInvoke+.  With our custom chain we can rely on CDI to provide an +Instance<X>+ of our desired interceptor type dynamically based on what is deployed rather then what is configured.
+Marking the +RESTInterceptorEnabler+ with +@REST+ and +@Interceptor+ binds the +RESTInterceptorEnabler+ to the use of the +@REST+ annotation; then we may inject all valid +RESTInterceptor+ instances and invoke them according to a sorted order in the +intercept+ method annotated with +@AroundInvoke+.  With our custom chain we can rely on CDI to provide an +Instance<X>+ of our desired custom interceptor type dynamically based on what is deployed rather then what is configured.
 
 In practice, this means that our +SecurityInterceptor+, +LinkedInterceptor+, and +ValidatedInterceptor+ (our implementations of type +RESTInterceptor+) will all be invoked for business methods on classes marked +@ResourceModel+.
 
@@ -636,7 +636,7 @@ public abstract class LinkableRepresentation<X>
 }
 ----
 
-In the previous section above, we see that our +@ResourceModel+ stereotype is marked with +@REST+.  This indicates that we'll apply an interceptor called +org.cedj.geekseek.web.rest.core.interceptor.LinkedInterceptor+ to anything with this annotation.  +LinkedInterceptor+ has the responsibility to determine if the invocation has a linkable representation, and if so, link all of the +LinkableRepresentation+ views together, as demonstrated in the above code sample.  Anything with the +@REST+ annotation will run this interceptor, including our +@ResourceModel+.
+In the previous section above, we see that our +@ResourceModel+ stereotype is marked with +@REST+.  This implies that we'll apply an interceptor called +org.cedj.geekseek.web.rest.core.interceptor.LinkedInterceptor+ to anything with this annotation.  +LinkedInterceptor+ has the responsibility to determine if the invocation has a linkable representation, and if so, link all of the +LinkableRepresentation+ views together, as demonstrated in the above code sample.  Anything with the +@REST+ annotation will run this interceptor.
 
 The reasoning behind this approach is: some +Representation+ objects are linkable.  Via the +@ResourceModel+ (which contains +@REST+), a link provider may link a given resource to some other resource.  This way, we may draw relationships between resources (entities) that are not described in the by JPA.  The interceptor is implemented like so:
 
