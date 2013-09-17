@@ -160,8 +160,8 @@ Additionally, we want to lay out a map of the application as the client navigate
 ____
 ** +/ application/vnd.ced+xml;type=root+
 *** +GET+ -> Links
-*** Link -> +/conference application/vnd.ced+xml;type=conference+
-*** Link -> +/venue application/vnd.ced+xml;type=venue+
+*** Link -> +conference application/vnd.ced+xml;type=conference+
+*** Link -> +venue application/vnd.ced+xml;type=venue+
 ** +/conference application/vnd.ced+xml;type=conference+
 *** +GET+ -> List
 *** +POST+ -> Add
@@ -169,9 +169,9 @@ ____
 *** +GET+ -> Single
 *** +PUT+ -> Update
 *** +DELETE+ -> Remove
-*** Link -> +/conference/[c_id]/session application/vnd.ced+xml;type=session+
-*** Link -> +/venue/[v_id] application/vnd.ced+xml;type=venue+
-*** Link -> +/attachment/[a_id] application/vnd.ced+xml;type=attachment+
+*** Link -> +session application/vnd.ced+xml;type=session+
+*** Link -> +venue application/vnd.ced+xml;type=venue+
+*** Link -> +attachments application/vnd.ced+xml;type=attachment+
 ** +/conference/[c_id]/session application/vnd.ced+xml;type=session+
 *** +GET+ -> List
 *** +POST+ -> Add
@@ -179,8 +179,9 @@ ____
 *** +GET+ -> Single
 *** +PUT+ -> Update
 *** +DELETE+ -> Remove
-*** Link -> +/venue/[v_id]/room/[r_id] application/vnd.ced+xml;type=room+
-*** Link -> +/attachment/[a_id] application/vnd.ced+xml;type=attachment+
+*** Link -> +venue application/vnd.ced+xml;type=room+
+*** Link -> +attachments application/vnd.ced+xml;type=attachment+
+*** Link -> +parent application/vnd.ced+xml;type=conference+
 ** +/venue application/vnd.ced+xml;type=venue+
 *** +GET+ -> List
 *** +POST+ -> Add
@@ -188,16 +189,16 @@ ____
 *** +GET+ -> Single
 *** +PUT+ -> Update
 *** +DELETE+ -> Remove
-*** Link -> +/venue/[v_id]/room application/vnd.ced+xml;type=room+
+*** Link -> +room application/vnd.ced+xml;type=room+
 ** +/venue/[v_id]/room application/vnd.ced+xml;type=room+
 *** +GET+ -> List
 *** +POST+ -> Add
-*** Link -> +/attachment/[a_id] application/vnd.ced+xml;type=attachment+
+*** Link -> +attachments application/vnd.ced+xml;type=attachment+
 ** +/venue/[v_id]/room/[r_id] application/vnd.ced+xml;type=room+
 *** +GET+ -> Single
 *** +PUT+ -> Update
 *** +DELETE+ -> Remove
-*** Link -> +/attachment/[a_id] application/vnd.ced+xml;type=attachment+
+*** Link -> +attachments application/vnd.ced+xml;type=attachment+
 ** +/attachment application/vnd.ced+xml;type=attachment+
 *** +GET+ -> List 
 *** +POST+ -> Add
