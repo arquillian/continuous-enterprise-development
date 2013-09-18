@@ -19,11 +19,11 @@ public class AddConferenceStory {
     private WebDriver driver;
 
     @Test @InSequence(1)
-    public void shouldbeAbleToCreateConference(@InitialPage MainPage page) {
+    public void shouldShowErrorMessageOnMissingDatesInConferenceForm(@InitialPage MainPage page) {
 
         ActionLinks links = page.getActionLinks();
         Assert.assertTrue(
-            "",
+            "Add Conference action should be available",
             links.hasLink("conference"));
 
         links.getLink("conference").click();
