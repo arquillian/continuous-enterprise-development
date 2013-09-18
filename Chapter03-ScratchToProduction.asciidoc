@@ -564,3 +564,71 @@ image:images/ch03-scratch_to_production/passing_test.png["Passing the Tests"]
 
 With assurance that our application has some minimal level of tested functionality, let's take a risk and move this off the isolation of our local machine and into the public realm, accessible from the world.
 
+=== Deploying to OpenShift via JBoss Developer Studio
+
+JBDS provides us a convenient user interface to the OpenShift cloud service, which will run our applications on the publicly-available web.  Complete information is available at the https://www.openshift.com/[OpenShift] site; for our purposes we'll be running the Java EE webapp we've created above in a JBossAS7 _cartridge_, OpenShift's moniker for a canned set of cloud services.
+
+Before continuing, it's required to create an account; this can be achived by clicking on the "SIGN UP" button from the home page and completing the requisite form.
+
+image:images/ch03-scratch_to_production/openshift_signup.png["OpenShift Signup"]
+
+Existing users may simply log in to see active applications.
+
+image:images/ch03-scratch_to_production/openshift_login.png["OpenShift Login"]
+
+With that accomplished, we can use JBDS to connect our current _feedback_ project to a new application on OpenShift and bring it all the way to deployment.  The actions we need are available in the "OpenShift Explorer", a _view_ in JBDS.
+
+image:images/ch03-scratch_to_production/jbds_openshift_1.png["OpenShift Explorer View Selection"]
+
+In the explorer we can sign into OpenShift from JBDS using the "Connect to OpenShift" button as shown on the far right below:
+
+image:images/ch03-scratch_to_production/jbds_openshift_3.png["OpenShift Explorer"]
+
+This will open a prompt for us to enter our authentication information; simply provide the same credentials used to log into the OpenShift site.
+
+image:images/ch03-scratch_to_production/jbds_openshift_2.png["Sign In to OpenShift"]
+
+Right-clicking our account will allow us to create a "New OpenShift Application..."  Here we'll supply a name ("feedback" seems appropriate) and choose the target cartridge or "type" as "JBoss Application Server 7 (jbossas-7)"
+
+image:images/ch03-scratch_to_production/jbds_openshift_4.png["New OpenShift Application"]
+
+Next we'll be asked to set up a new project to back the application on OpenShift.  As we've just created the project above, we may "Use existing project" and select the "feedback" project from our JBDS workspace.
+
+image:images/ch03-scratch_to_production/jbds_openshift_5.png["Project for OpenShift Application"]
+
+As the OpenShift deployment mechanism is powered by Git, JBDS will now prompt us to accept some defaults for the Git metadata it'll write into our local project directory.  You may tailor thees as you see fit, though we use the defaults in this example.
+
+image:images/ch03-scratch_to_production/jbds_openshift_6.png["Import Existing OpenShift Application"]
+
+Finishing this setup will trigger the deployment of our built artifacts from our project, and JBDS will report this for us.
+
+image:images/ch03-scratch_to_production/jbds_openshift_7.png["Embedded Cartridges"]
+
+And we'll also want to confirm the Git metadata to be written into our project directory a final time; as JBDS notes, this cannot be undone (though you may manually delete the +.git+ directory from your project should you choose to disconnect your local workspace from any OpenShift or Git references).
+
+image:images/ch03-scratch_to_production/jbds_openshift_8.png["Adding Git Repo Information to Project"]
+
+As OpenShift is using Git under the covers, and by extension SSH authentication, there may be some system-specific confirmation needed to continue.  For instance, we may need to confirm that it's OK to connect:
+
+image:images/ch03-scratch_to_production/jbds_openshift_9.png["Establishing SSH Keys"]
+
+And if you have a passphrase enabled on your SSH key, you will be asked to provide this as well:
+
+image:images/ch03-scratch_to_production/jbds_openshift_10.png["Unlocking SSH Keys"]
+
+With these steps completed, our console view should show us output similar to the following:
+
+----
+Deploying JBoss
+Starting jbossas cartridge
+Found 127.13.6.1:8080 listening port
+Found 127.13.6.1:9999 listening port
+/var/lib/openshift/52390eb55973cafc7000008a/jbossas/standalone/deployments /var/lib/openshift/52390eb55973cafc7000008a/jbossas
+CLIENT_MESSAGE: Artifact: ./ROOT.war is still deploying
+/var/lib/openshift/52390eb55973cafc7000008a/jbossas
+CLIENT_RESULT: Artifacts deployed: ./ROOT.war
+----
+
+This indicates success, and we can find our application running in the browser at +http://feedback-${openShiftAccountName}.rhcloud.com+.
+
+While this is not indicitive of the steps we'd traditionally take to develop a more realistic application, we've found that Forge, JBossAS7 (WildFly support forthcoming) and OpenShift make a powerful team in quickly prototyping or learning the components involved in bringing a blank slate to a fully-deployed, live, Java EE application.
