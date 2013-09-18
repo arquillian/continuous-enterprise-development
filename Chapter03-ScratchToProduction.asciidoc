@@ -14,17 +14,17 @@ In the interest of providing a uniformly-workable solution to the reader, this t
 
 While all projects used here are ultimately standalone and require no plugins or special environments aside from a Java runtime, we're going to make our lives easier by taking advantage of the integration facilities provided by JBoss Developer Studio (JBDS).
 
-image:images/ch03-scratch_to_production/jbds.png["JBoss Developer Studio"]_(TODO: Get an updated approved image)_
+image:images/ch03-scratch_to_production/jbds.png["JBoss Developer Studio"]
 
-The JBDS plugins atop the Eclipse Integrated Development Environment (IDE) will unify our development experience and allow us to stay inside one window.  Installation is via an executable JAR available from the https://devstudio.jboss.com/earlyaccess/builds/stable/6.0.0.GA/jbdevstudio-product-universal-6.0.0.GA-v20121206-1855-B186.jar[JBDS Site] _TODO Examine link and ensure it's up-to-date before final publication_.
+The JBDS plugins atop the Eclipse Integrated Development Environment (IDE) will unify our development experience and allow us to stay inside one window.  Installation is via an executable JAR available from the https://devstudio.jboss.com/download/7.x.html[JBDS Site].
 
 To kick off the installation process, either double-click the icon (if your environment has the ".jar" extension correctly associated as a Java executable) or launch the installer from the command line via the Java runtime:
 
 ----
-$> java -jar jbdevstudio-product-universal-6.0.0.GA-v20121206-1855-B186.jar
+$> java -jar jbdevstudio-product-universal-7.0.0.GA-v20130720-0044-B364.jar
 ----
 
-image:images/ch03-scratch_to_production/jbds_install.png["JBoss Developer Studio Installation"]_(TODO: Ensure version is correct)_
+image:images/ch03-scratch_to_production/jbds_install.png["JBoss Developer Studio Installation"]_
 
 Following the graphical wizard will install the JDBS (and all requisite plugins we'll be using) IDE onto your local machine.
 
@@ -48,8 +48,8 @@ image:images/ch03-scratch_to_production/start_forge.png["Start Forge"]
    |_|  \___/|_|  \__, |\___| 
                    |___/      
 
-JBoss Forge, version [ 1.0.6.Final ] - JBoss, by Red Hat, Inc. [ http://jboss.org/forge ]
-[no project] pwd $ 
+JBoss Forge, version [ 1.3.3.Final ] - JBoss, by Red Hat, Inc. [ http://forge.jboss.org ]
+[no project] workspace $ 
 ----
 
 JBDS integration with Forge is especially useful in this console as the IDE will automatically refresh any changes we make in Forge with our project view and open text editors.
@@ -355,13 +355,13 @@ This instructs Forge to connect to its plugin repository, grab the latest versio
 With the Arquillian plugin installed, we now have access to the +arquillian+ command.  Let's instruct Forge to equip our POM with the dependencies needed to run Arquillian tests on the JBoss AS7 container.
 
 ----
-$> arquillian setup --container JBOSS_AS_REMOTE_7.X;
+$> arquillian setup --containerType REMOTE --containerName JBOSS_AS_REMOTE_7.X --testframework
 ----
 
 You'll be prompted for the versions of Arquillian, JUnit, and JBoss AS7 that you'd like to use, and the available options will expand over time as new versions are released.  These instructions have been tested with:
 
 ----
-[org.jboss.arquillian:arquillian-bom:pom::1.0.3.Final]
+[org.jboss.arquillian:arquillian-bom:pom::1.1.1.Final]
 [junit:junit:::4.11]
 [org.jboss.as:jboss-as-arquillian-container-remote:::7.1.1.Final]
 ----
@@ -369,7 +369,7 @@ You'll be prompted for the versions of Arquillian, JUnit, and JBoss AS7 that you
 With the POM config changes out of the way, let's ask Forge to now create for us a jumping-off point from which we'll write our test.
 
 ----
-$> arquillian create-test --class org.cedj.feedback.model.FeedbackEntry.java
+$> arquillian create-test --class org.cedj.ch03.feedback.model.FeedbackEntry.java
 Picked up type <JavaResource>: org.cedj.feedback.model.FeedbackEntryTest
 Wrote ./feedback/src/test/java/org/cedj/feedback/model/FeedbackEntryTest.java
 ----
@@ -474,7 +474,7 @@ The rest of the file is all test logic!  Remember, the focus of the Arquillian p
 Time to see our generated application in action.  First we should run the build to package our flat-file deployable +feedback.war+ for manual deployment into JBoss AS7.  We can trigger Maven from the Forge console:
 
 ----
-$> build --notest --profile JBOSS_AS_REMOTE_7.X;
+$> build --notest --profile arq-jboss_as_remote_7.x;
 ----
 
 After a series of informative build output messages from Maven, you should see +BUILD SUCCESS+, indicating that the WAR has been properly built from sources.
@@ -502,7 +502,7 @@ $> as7 start --jboss-home target/jboss-as-dist/jboss-as-7.1.1.Final/
 If you've opted for a different version of JBossAS7, you may have to make substitutions to point +JBOSS_HOME+ correctly.  Assuming all goes to plan, you should see the JBossAS7 startup sequence in the Forge shell, followed by:
 
 ----
-***INFO*** JBoss AS 7.1.3.Final has successfully started.
+***INFO*** JBoss AS 7.1.1.Final has successfully started.
 ----
 
 With the server up, let's deploy our application:
@@ -537,11 +537,11 @@ The deployment operation (UNDEPLOY_IGNORE_MISSING) was successful.
 
 === Running the Arquillian Integration Test
 
-At this point, we still have a running JBoss AS7 server and have undeployed the "feedback" application.  Because we'd chosen the +JBOSS_AS_REMOTE_7.X+ option as part of the Forge Arquillian Plugin +setup+ command above, our POM is equipped with a profile which enables a dependency on the JBoss AS7 Arquillian Container:
+At this point, we still have a running JBoss AS7 server and have undeployed the "feedback" application.  Because we'd chosen the +JBOSS_AS_MANAGED_7.X+ option as part of the Forge Arquillian Plugin +setup+ command above, our POM is equipped with a profile which enables a dependency on the JBoss AS7 Arquillian Container:
 
 ----
     <profile>
-      <id>JBOSS_AS_REMOTE_7.X</id>
+      <id>arq-jboss_as_remote_7.x</id>
       <dependencies>
         <dependency>
           <groupId>org.jboss.as</groupId>
@@ -552,16 +552,15 @@ At this point, we still have a running JBoss AS7 server and have undeployed the 
     </profile>
 ----
 
-Let's inform JBDS that we should consider the metadata considered in this profile; this will impact our compilation and JUnit runtime +classpath+s.
+Let's inform JBDS that we should consider the metadata considered in this profile; this will impact our compilation and JUnit runtime classpaths.
 
 image:images/ch03-scratch_to_production/select_maven_profiles.png["Select Maven Profile"]
 
-Now the Arquillian test launcher will know to pick up the proper adaptor to a remote JVM instance of JBoss AS7 when running tests; it will connect to the currently-running instance, deploy the defined +@Deployment+, execute the tests, and undeploy to clean up.  If we'd like to allow Arquillian to automatically control the server start/stop lifecycle alongside each test suite, we could alternatively use the +JBOSS_AS_REMOTE_7.X+ setup option which defines +org.jboss.as:jboss-as-arquillian-container-managed+ as a dependency in a POM profile.
+Now the Arquillian test launcher will know to pick up the proper adaptor to a remote JVM instance of JBoss AS7 when running tests; it will connect to the currently-running instance, deploy the defined +@Deployment+, execute the tests, and undeploy to clean up.  If we'd like to allow Arquillian to automatically control the server start/stop lifecycle alongside each test suite, we could alternatively use the +JBOSS_AS_MANAGED_7.X+ setup option which defines +org.jboss.as:jboss-as-arquillian-container-managed+ as a dependency in a POM profile.
 
 With JBDS now configured with the proper +classpath+ for test execution, all that's left to do is launch the test.  A simple right-click on the test class in the Project Explorer yields the option +Run As > JUnit Test+.  The IDE's JUnit launcher will create a new process, fire up JUnit, and yield control to Arquillian.  We'll receive results just as we'd expect from any other JUnit test.
 
 image:images/ch03-scratch_to_production/passing_test.png["Passing the Tests"]
 
 With assurance that our application has some minimal level of tested functionality, let's take a risk and move this off the isolation of our local machine and into the public realm, accessible from the world.
-
 
