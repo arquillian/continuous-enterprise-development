@@ -1,5 +1,7 @@
 = Continuous Enterprise Development in Java
 
+include::Foreward.asciidoc[]
+
 include::Chapter00-Prelude.asciidoc[]
 
 include::Chapter01-Continuity.asciidoc[]

@@ -1,0 +1,12 @@
+== Foreward
+
+Even ancient J2EE was never just about development. From the advent of J2EE there was a holistic, role concept available. Component providers, assemblers, system administrators and server providers had a well defined responsibilities, but were rarely used in real world. Because of politics and organizational structure often the developer took the responsibility of all these roles, except system administration and operations. Because developer’s main goal was development, all the well-defined roles collapsed.
+In “real world” a dedicated “operations” department takes the results of the development cycle and attempted to install, run and just keep it alive. 
+Such artificially separated model works, but is far away from being optimal. Sometimes it gets even worse and signing off documents becomes more important, than software quality or even working software.
+If you are only interested in quick hacks, you will hate Java EE, applications servers and probably this book altogether. Packaging, deployment, monitoring and management sounds like bloat and is bloat, if you are just focussing on development.
+However the “DevOps” movement also considers operations and development as a single unit. Who needs beautiful code which cannot be properly installed in a predefined environment? DevOps is nothing groundbreaking, rather than a “back to the roots” movement.
+This book is not only compatible with the “DevOps” idea and pragmatically shows how to build a Java EE application from scratch, but also patches wholes in the Java EE spec. Automation of project and archive creation, pragmatic integration of Maven builds into the process and testing on all levels are deeply explained with concrete code. Rather than focussing on best case scenarios, this book shows you also how to test the inconvenient like e.g. SMTP servers or Message Driven Beans.
+Although tools, libraries and frameworks introduced in this book are initiated by Red Hat employees, this book is equally valuable for you if you are not using JBoss or WildFly at all. In fact I used arquillian, shrinkwrap, forge to test applications on GlassFish and TomEE at the same time. Also in my workshops (airhacks.com) I use Arquillian to test plugins, extensions sophisticated dependency injection without deploying mocks to production archive. 
+It was fun to read this book on the flight to JavaOne 2013 in San Francisco. I learned a lot. I wish you happy reading and enjoy the lightweight Java EE development lifecycle!
+
+Adam Bien, adam-bien.com 
