@@ -295,17 +295,17 @@ JBAS015874: WildFly 8.0.0.Alpha2 "WildFly" started in 8624ms - Started 153 of 18
 Copying the +application/target/geekseek-(version).war+ file into +$JBOSS_HOME/standalone/deployments+ will trigger deployment of the GeekSeek application:
 
 ----
-$> cp code/application/application/target/geekseek-1.0.0-alpha-1-SNAPSHOT.war code/application/target/wildfly-8.0.0.Alpha2/standalone/deployments/ -v
-‘code/application/application/target/geekseek-1.0.0-alpha-1-SNAPSHOT.war’ -> ‘code/application/target/wildfly-8.0.0.Alpha2/standalone/deployments/geekseek-1.0.0-alpha-1-SNAPSHOT.war’
+$> cp code/application/application/target/geekseek-1.0.0-alpha-1-SNAPSHOT.war code/application/target/wildfly-8.0.0.Alpha2/standalone/deployments/geekseek.war -v
+‘code/application/application/target/geekseek-1.0.0-alpha-1-SNAPSHOT.war’ -> ‘code/application/target/wildfly-8.0.0.Alpha2/standalone/deployments/geekseek.war’
 ----
 
 This will trigger something similar to the following on the server console:
 
 ----
-18:11:46,839 INFO  [org.jboss.as.server] (DeploymentScanner-threads - 2) JBAS018559: Deployed "geekseek-1.0.0-alpha-1-SNAPSHOT.war" (runtime-name : "geekseek-1.0.0-alpha-1-SNAPSHOT.war")
+18:11:46,839 INFO  [org.jboss.as.server] (DeploymentScanner-threads - 2) JBAS018559: Deployed "geekseek.war" (runtime-name : "geekseek.war")
 ----
 
-Once deployed, you'll be able to launch your web browser of choice, point it to +http://localhost:8080/geekseek-(version)+ (for instance +http://localhost:8080/geekseek-1.0.0+), and add explore the screens powering the featureset we've covered above.
+Once deployed, you'll be able to launch your web browser of choice, point it to +http://localhost:8080/geekseek+, and add explore the screens powering the featureset we've covered above.
 
 === Use Cases and Chapter Guide
 
