@@ -15,7 +15,7 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 @ApplicationScoped
 public class GraphDatabaseProducer {
 
-    private String DATABASE_PATH_PROPERTY = "neo4j.path";
+    private String DATABASE_PATH_PROPERTY = "NEO4J.PATH";
 
     private static Logger log = Logger.getLogger(GraphDatabaseProducer.class.getName());
 
@@ -36,7 +36,7 @@ public class GraphDatabaseProducer {
     }
 
     private String getDataBasePath() {
-        String path = System.clearProperty(DATABASE_PATH_PROPERTY);
+        String path = System.getenv(DATABASE_PATH_PROPERTY);
         if(path == null || path.isEmpty()) {
             try {
                 File tmp = File.createTempFile("neo", "geekseek");
@@ -44,11 +44,10 @@ public class GraphDatabaseProducer {
                 tmp.delete();
                 parent.mkdirs();
                 path = parent.getAbsolutePath();
-                //path = "/home/aslak/dev/source/neo/";
-            }catch (IOException e) {
+            } catch (IOException e) {
                 throw new RuntimeException(
                     "Could not create temp location for Nepo4j Database. " +
-                    "Please provide system property " + DATABASE_PATH_PROPERTY + " with a valid path", e);
+                    "Please provide environment variable " + DATABASE_PATH_PROPERTY + " with a valid path", e);
             }
         }
         return path;

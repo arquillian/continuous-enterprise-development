@@ -30,7 +30,6 @@ import org.cedj.geekseek.domain.Repository;
 import org.cedj.geekseek.domain.model.Identifiable;
 import org.cedj.geekseek.domain.relation.RelationRepository;
 import org.cedj.geekseek.domain.relation.model.Relation;
-import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
