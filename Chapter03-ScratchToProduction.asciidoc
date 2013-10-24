@@ -284,7 +284,7 @@ public::setVersion(final int version)::void
 public::toString()::String
 ----
 
-With our sole Entity in place, it's time to let Forge generate a UI layer for us as a starting point for the view in our web application.  The "+scaffolding+" command makes short work of this.
+With our sole Entity in place, it's time to let Forge generate a UI layer for us as a starting point for the view in our web application.  The "+scaffold+" command makes short work of this.
 
 ----
 $> scaffold setup 
@@ -537,7 +537,7 @@ The deployment operation (UNDEPLOY_IGNORE_MISSING) was successful.
 
 === Running the Arquillian Integration Test
 
-At this point, we still have a running JBoss AS7 server and have undeployed the "feedback" application.  Because we'd chosen the +JBOSS_AS_MANAGED_7.X+ option as part of the Forge Arquillian Plugin +setup+ command above, our POM is equipped with a profile which enables a dependency on the JBoss AS7 Arquillian Container:
+At this point, we still have a running JBoss AS7 server and have undeployed the "feedback" application.  Because we'd chosen the +JBOSS_AS_REMOTE_7.X+ option as part of the Forge Arquillian Plugin +setup+ command above, our POM is equipped with a profile which enables a dependency on the JBoss AS7 Arquillian Container:
 
 ----
     <profile>
