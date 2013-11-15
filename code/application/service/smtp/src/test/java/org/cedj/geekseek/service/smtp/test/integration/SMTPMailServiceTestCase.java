@@ -1,5 +1,8 @@
 package org.cedj.geekseek.service.smtp.test.integration;
 
+import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.COMPOSITE;
+import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.STEPS;
+
 import java.io.File;
 import java.net.InetAddress;
 import java.util.concurrent.BrokenBarrierException;
@@ -19,7 +22,9 @@ import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.as.controller.PathAddress;
 import org.jboss.as.controller.client.ModelControllerClient;
+import org.jboss.as.controller.operations.common.Util;
 import org.jboss.dmr.ModelNode;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -51,7 +56,7 @@ public class SMTPMailServiceTestCase {
      */
     @Deployment(managed = false, name = DEPLOYMENT_NAME)
     public static WebArchive getApplicationDeployment() {
-        final File[] subethamailandDeps = Maven.resolver().loadPomFromFile("pom.xml").resolve("org.subethamail:subethasmtp").withTransitivity().asFile();
+        final File[] subethamailandDeps = Maven.resolver().loadPomFromFile("pom.xml").resolve("org.subethamail:subethasmtp").withoutTransitivity().asFile();
         final WebArchive war = ShrinkWrap.create(WebArchive.class).addAsLibraries(subethamailandDeps).
                 addClasses(SMTPMailService.class, MailMessageBuilder.class,
                         SMTPMailServiceConstants.class, SMTPMessageConsumer.class, SMTPServerService.class)
@@ -98,6 +103,9 @@ public class SMTPMailServiceTestCase {
 
         final ModelControllerClient client = ModelControllerClient.Factory.create(InetAddress.getLoopbackAddress(), 9999);
 
+        final ModelNode composite = Util.getEmptyOperation(COMPOSITE, new ModelNode());
+        final ModelNode steps = composite.get(STEPS);
+
         final ModelNode createSocketBindingOperation = new ModelNode();
         createSocketBindingOperation.get("operation").set("add");
         createSocketBindingOperation.get("host").set("localhost");
@@ -105,7 +113,7 @@ public class SMTPMailServiceTestCase {
         final ModelNode socketBindingAddress = createSocketBindingOperation.get("address");
         socketBindingAddress.add("socket-binding-group", "standard-sockets");
         socketBindingAddress.add("remote-destination-outbound-socket-binding", "mail-smtp-25000");
-        System.out.println("Add remote outbound socket binding: " + client.execute(createSocketBindingOperation));
+        steps.add(createSocketBindingOperation);
 
         final ModelNode createMailServiceOperation = new ModelNode();
         createMailServiceOperation.get("operation").set("add");
@@ -114,24 +122,19 @@ public class SMTPMailServiceTestCase {
         final ModelNode smtpAddress = createMailServiceOperation.get("address");
         smtpAddress.add("subsystem", "mail");
         smtpAddress.add("mail-session", SMTPMailServiceConstants.JNDI_BIND_NAME_MAIL_SESSION);
-        System.out.println("Add mail service:" + client.execute(createMailServiceOperation));
+        steps.add(createMailServiceOperation);
 
-        final ModelNode createSocketBindingRefOp = new ModelNode();
-        createSocketBindingRefOp.get("operation").set("add");
-        createSocketBindingRefOp.get("outbound-socket-binding-ref").set("mail-smtp-25000");
-        final ModelNode socketBindingRefAddress = createSocketBindingRefOp.get("address");
-        socketBindingRefAddress.add("subsystem", "mail");
-        socketBindingRefAddress.add("mail-session", SMTPMailServiceConstants.JNDI_BIND_NAME_MAIL_SESSION);
-        socketBindingRefAddress.add("server", "smtp");
-        System.out.println("Configure mail service w/ socket binding:" + client.execute(createSocketBindingRefOp));
+        final ModelNode createSMTPServer = new ModelNode();
+        createSMTPServer.get("operation").set("add");
+        createSMTPServer.get("outbound-socket-binding-ref").set("mail-smtp-25000");
+        final ModelNode smtpServerAddress = createSMTPServer.get("address");
+        smtpServerAddress.add("subsystem", "mail");
+        smtpServerAddress.add("mail-session", SMTPMailServiceConstants.JNDI_BIND_NAME_MAIL_SESSION);
+        smtpServerAddress.add("server", "smtp");
+        steps.add(createSMTPServer);
 
-        final ModelNode reloadOperation = new ModelNode();
-        reloadOperation.get("operation").set("reload");
-        System.out.println("Reload config:" + client.execute(reloadOperation));
+        System.out.println("Configure mail service :" + client.execute(composite));
 
-        Thread.sleep(3000); // Because the operation returns but then server reload continues in the BG
-        // Find from the WildFly team a better notification mechanism upon which to wait
-        // https://github.com/arquillian/continuous-enterprise-development/issues/66
         client.close();
 
         /*
@@ -171,6 +174,7 @@ public class SMTPMailServiceTestCase {
         Thread.sleep(3000); // Because the operation returns but then server reload continues in the BG
                     // Find from the WildFly team a better notification mechanism upon which to wait
                     // https://github.com/arquillian/continuous-enterprise-development/issues/66
+        //no longer needed since WildFly 8 CR1
 
         client.close();
     }
