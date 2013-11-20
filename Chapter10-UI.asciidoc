@@ -1,7 +1,243 @@
-== Assembly and Deployment
+== The User Interface
 
-_"The road to success is always under construction." - Lily Tomlin_ 
+_"Beauty is a sign of intelligence." - Andy Warhol_ 
 
-Stuff
+Introduction
 
-=== Heading
+=== Use Case / Requirements
+
+* Expose data in human consumable interface
+
+----
+As a User I should be able Add/Change/Delete a Conference
+
+As a User I should be able Add/Change/Delete a Session
+  to Conferences
+
+As a User I should be able Add/Change/Delete a Attachment
+ to Sessions and Conferences
+
+As a User I should be able Add/Change/Delete a Venue
+  (and attach to Conference and Session)
+----
+
+ 
+=== Background
+
+* UI Types
+** Server side state/rendering
+*** JEE specs: JSF, JSP (servlet, not really UI pr say)
+*** Struts, Spring MVC....
+** Client side state/rendering
+*** EmberJS, GWT, AngularJS, Backbone ++
+** Advantages / Disatvantages with the two approaches
+
+
+=== Implementation
+
+* AngularJS over Rest Services API
+** HTML5 / JS Client
+*** Dynamically Map MediaTypes to Templates
+*** Dynamically Map Links to Controllers
+
+=== Requirement Test Scenarios
+
+* Unit
+** Pure JS
+*** Testing Controllers, Directives
+* Integration
+** Test Double Rest layer
+
+==== Overview
+
+* Mapping
+** URL 
+*** MediaType application/vnd.ced+xml;type=conference 
+*** Template type. conference.html
+**** template has different states, EDIT, VIEW (List, Single)
+*** Filter Links(Rel) to Action types, Action vs UserAction
+**** Action -> add / edit X  (conference, session)
+**** User Action -> Add me to X (tracker, attendees, speakers)
+
+==== Setup
+
+* https://github.com/arquillian/arquillian-extension-qunit[Arquillian QUnit (Alpha1)]
+** Unit test level of JS components
+*** Uses htmlunit to parse and execute AngularJS modules (directives, controllers, services)
+*** No @Deployment defined, custom deployment generated in background, not deployed to a server
+*** https://github.com/arquillian/continuous-enterprise-development/blob/master/code/application/web/ui/core/src/test/java/org/cedj/geekseek/web/core/test/integration/GraphTestCase.java[Arquillian QUnit Test]
+**** Needs a Java test case to trigger Arquillian Qunit and do it's magic
+**** Bound to JUnit
+**** Maps between JavaScript TestRunners tests/modules to Junit output
+***** Seen as any other JUnit test. Surefire/IDE
+*** @QUnitTest defines which HTML page to 'run' for this @Test
+**** HTML page contain the <script> tags to define the 'environment' for the test
+*** @QUnitResources defines the root source of the javascript files
+**** Used by Arquillian QUnit internally to package up the required resources
+
+[source,java]
+----
+@RunWith(QUnitRunner.class)
+@QUnitResources("src")
+public class GraphTestCase {
+
+    @QUnitTest("test/resources/assets/tests/graph/graph-assertions.html")
+    public void testGraph() {
+        // empty body
+    }
+}
+----
+
+*** https://github.com/arquillian/continuous-enterprise-development/blob/master/code/application/web/ui/core/src/test/resources/assets/tests/graph/graph-assertions.html[Unit Test page]
+*** https://github.com/arquillian/continuous-enterprise-development/blob/master/code/application/web/ui/core/src/test/resources/assets/tests/graph/assert.js[Graph Qunit test]
+**** Plain QUnit JavaScript test
+
+[source,javascript]
+----
+module("Service OPTIONS", optionsInit)
+asyncTest("can get?", 1, function() {
+    this.$initGraph('GET', function(node) {
+        ok(node.canGet(), "Should be able to create Resource")
+    })
+});
+asyncTest("can remove?", 1, function() {
+    this.$initGraph('DELETE', function(node) {
+        ok(node.canRemove(), "Should be able to remove Resource")
+    })
+});
+----
+
+** Arquillian Graphene Functional test level
+*** Page Fragments (encapsulate fragments of a Page, reusable parts across pages)
+*** Capture Templates and Actions in Page fragments (abstract away webdriver expressions)
+**** https://github.com/arquillian/continuous-enterprise-development/blob/master/code/application/application/src/test/java/org/cdej/geekseek/test/functional/ui/page/MainPage.java[MainPage]
+***** Single page application == Single page Page object. 
+***** Any 'rest Resource' can be displayed within the Single Page #resource container
+***** Custom SelfAwareFragment interface to allow the Fragment to say if it's active in the current 'document' or not
+ 
+[source,java]
+----
+@Location("app/")
+public class MainPage {
+
+    @FindBy(id = "action-links")
+    private ActionLinks actionLinks;
+
+    @FindBy(id = "user-action-links")
+    private ActionLinks userActionLinks;
+
+    @FindBy(id = "resource")
+    private WebElement resource;
+
+    public ActionLinks getActionLinks() {
+        return actionLinks;
+    }
+
+    public ActionLinks getUserActionLinks() {
+        return userActionLinks;
+    }
+
+    public <T extends SelfAwareFragment> boolean isResource(Class<T> fragment) {
+        try {
+            return getResource(fragment).is();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public <T extends SelfAwareFragment> T getResource(Class<T> fragment) {
+        return PageFragmentEnricher.createPageFragment(fragment, resource);
+    }
+}
+----
+
+**** https://github.com/arquillian/continuous-enterprise-development/blob/master/code/application/application/src/test/java/org/cdej/geekseek/test/functional/ui/fragment/Conference.java[Conference Fragment]
+
+[source,java]
+----
+public static class Form implements SelfAwareFragment {
+	@Root
+	private WebElement root;
+
+	@FindBy(css = ".content.conference")
+	private WebElement conference;
+
+	@FindBy(tagName = "form")
+	private WebElement form;
+
+	@FindBy(css = "#name")
+	private InputComponent name;
+
+    ...
+
+	@FindBy(tagName = "button")
+	private List<WebElement> buttons;
+
+	@Override
+	public boolean is() {
+		return conference.isDisplayed() && form.isDisplayed();
+	}
+
+	public Form name(String name) {
+		this.name.value(name);
+		return this;
+	}
+
+	public InputComponent name() {
+		return name;
+	}
+
+    ...
+
+	public void submit() {
+		for(WebElement button : buttons) {
+			if(button.isDisplayed()) {
+				button.click();
+				break;
+			}
+		}
+	}
+}
+----
+
+*** Cover UI Specific testing around error message handling in UI
+*** https://github.com/arquillian/continuous-enterprise-development/blob/master/code/application/application/src/test/java/org/cdej/geekseek/test/functional/ui/AddConferenceStory.java[AddConferenceStory]
+
+[source,java]
+----
+@Drone
+private WebDriver driver;
+
+@Test @InSequence(1)
+public void shouldShowErrorMessageOnMissingDatesInConferenceForm(@InitialPage MainPage page) {
+
+	ActionLinks links = page.getActionLinks();
+	Assert.assertTrue(
+		"Add Conference action should be available",
+		links.hasLink("conference"));
+
+	links.getLink("conference").click();
+
+	Assert.assertTrue(
+		"Should have been directed to Conference Form",
+		page.isResource(Conference.Form.class));
+
+	Conference.Form form = page.getResource(Conference.Form.class);
+	form
+		.name("Test")
+		.tagLine("Tag line")
+		.start("")
+		.end("")
+		.submit();
+
+	Assert.assertFalse("Should not display error", form.name().hasError());
+	Assert.assertFalse("Should not display error", form.tagLine().hasError());
+	Assert.assertTrue("Should display error on null input", form.start().hasError());
+	Assert.assertTrue("Should display error on null input", form.end().hasError());
+}
+----
+
+
+
+*** https://github.com/arquillian/continuous-enterprise-development/blob/master/code/application/application/src/test/java/org/cdej/geekseek/test/functional/arquillian/AngularJSDroneExtension.java[AngularJS Drone/Graphene Extension]
+**** Execute some extra javascript to wait for AngularJS to finish on 'command actions' (click, navigate)
