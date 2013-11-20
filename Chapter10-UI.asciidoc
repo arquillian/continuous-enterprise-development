@@ -59,6 +59,303 @@ As a User I should be able Add/Change/Delete a Venue
 **** Action -> add / edit X  (conference, session)
 **** User Action -> Add me to X (tracker, attendees, speakers)
 
+=== Testing the User Interface
+
+Our UI is based on a JavaScript front end talking to a REST backend. In this scenario there are some different approaches and types of testing we can do; one is for the pure client js code (e.g. controllers) and the other part is the interaction with the browser and REST backend. 
+
+==== Pure JavaScript
+
+For the pure client JavaScript we're going to use QUnit. And handy enough, Arquillian has an extension that can handle QUnit execution within our normal Java build system.
+
+While the QUnit tests them selves does not require any Java code, the Arquillian QUnit extension use a normal JUnit test class to configure and report on the QUnit execution. 
+
+Our UI code contain a Graph that can hold the state of the different REST responses and their links. In this test scenario we want to test that the Graph can understand the response returned from a REST service given an OPTIONS request.
+
+We start by configuring the QUnit Arquillian runner in a simple JUnit Java class:
+
+[source,java]
+----
+@RunWith(QUnitRunner.class)
+@QUnitResources("src")
+public class GraphTestCase {
+
+    @QUnitTest("test/resources/assets/tests/graph/graph-assertions.html")
+    public void testGraph() {
+        // empty body
+    }
+}
+----
+
+In the above example we introduce two new annotations that are specific to the Arquillian QUnit extension; 
+
+* @QUnitResources defines the root source of the javascript files
+* @QUnitTest defines which HTML page to 'run' for this @Test
+
+The graph-assertions.html referenced in the @QUnitTest annotation is the html page that contain the <script> tag to include the qunit javascript tests and any other javascript dependencies this might need.
+
+[source,javascript]
+----
+module("Service OPTIONS", optionsInit)
+asyncTest("can get?", 1, function() {
+    this.$initGraph('GET', function(node) {
+        ok(node.canGet(), "Should be able to create Resource")
+    })
+});
+asyncTest("can remove?", 1, function() {
+    this.$initGraph('DELETE', function(node) {
+        ok(node.canRemove(), "Should be able to remove Resource")
+    })
+});
+----
+
+When we execute the GraphTestCase Java class as part of the test execution, Arquillian QUnit will create and configure Drone and Graphene to represents our defined environment. It then parses the QUnit JavaScript to extract the real test names and replace the Java JUnit defined ones. That means that in our test results we'll see test names like "can remove?" and "can get?" as appose to "testGraph".
+
+We have configured Drone to use the PhantomJS browser to allow us to run headless on a CI server. This is easily configurable via arquillian.xml.  
+
+With this setup we now have control over our JavaScript client code and can integrate JavaScript tests in our test pipeline. 
+
+==== Functional Behavior
+
+But we still have functional behavior in our application that goes beyond how the JavaScript code itself run.
+
+* Does the end user see what is expected?
+* ...
+
+We can argue that we're now moving over from integration into functional testing. Either way, we need to setup our functional tests to be easily maintainable, robust and easy to read.
+
+We use Drone to control the lifecycle of the browser and Graphene to wrap the browser and provide client side object injection. 
+
+We rely on a pattern called Page Object from Selenium to encapuslate the logic within a page in a type safe and programable API. With Graphene we can take the Page Object concept one step futher and use Page Fragments. Page Fragments are reusable components that you might find within a Page. We might have a Conference object displayed on multiple different pages or a Login controller repeated in all headers.
+
+By encapsulating the references to the HTML ID's and CSS rules within Page Object and Page Fragments we can create reusable Test Objects that represents our Application.
+
+We start out by creating a Page Object for our application.
+
+[source,java]
+----
+@Location("app/")
+public class MainPage {
+
+    @FindBy(id = "action-links")
+    private ActionLinks actionLinks;
+
+    @FindBy(id = "user-action-links")
+    private ActionLinks userActionLinks;
+
+    @FindBy(id = "resource")
+    private WebElement resource;
+
+    public ActionLinks getActionLinks() {
+        return actionLinks;
+    }
+
+    public ActionLinks getUserActionLinks() {
+        return userActionLinks;
+    }
+
+    ...
+}
+----
+
+We use Graphene's @Location to predefine the relative URl to where this page can be found. Combine Graphene with Drone and we can now simply inject the MainPage object into our @Test method with a state navigated to the correct URL and fully powered by WebDriver in the background.
+
+[source,java]
+----
+@Test
+public void testMethod(@InitialPage MainPage page) {}
+----
+
+When Graphene initialize the MainPage instance for injection it scans the PageObject for @FindBy annotations to inject proxies that represent the given element. In out case we use a second layer of abstraction, ActionLinks, our PageFragment. Each page has a menu of 'what can be done next', following the flow of the underlying REST backend. These are split in two; actionLinks and userActionLinks. The difference is; is this a general Action against a Resource or an action against a resource that involves the User. An example of a Action is 'Add Conference' and a User Action example would be 'Add me as a Tracker to this Conference'.
+
+We add an ActionLinks abstraction to simply expose a nicer API around checking if a link exist and how to retrieve it.
+
+[source,java]
+----
+public class ActionLinks {
+
+    @Root
+    private WebElement root;
+
+    @FindBy(tagName = "button")
+    private List<WebElement> buttons;
+
+    public WebElement getLink(String name) {
+        for(WebElement elem : buttons) {
+            if(elem.getText().contains(name) && elem.isDisplayed()) {
+                return elem;
+            }
+        }
+        return null;
+    }
+
+    public boolean hasLink(String name) {
+        return getLink(name) != null;
+    }
+}
+----
+
+The ActionLinks PageFragment is very similar in how the Page Object works. The main difference being the use of the @Root annotation. Both Actions and UserActions are modeled as the PageFragment type ActionLinks. They are two lists of links located in different locations on the page. In the PageObject MainPage we have the folowing two injection points;
+
+[source,java]
+----
+    @FindBy(id = "action-links")
+    private ActionLinks actionLinks;
+
+    @FindBy(id = "user-action-links")
+    private ActionLinks userActionLinks;
+----
+
+The ActionsLinks @Root WebElement represents the parents @FindBy element. Where on the page was this fragment found. When working within a PageFragment, all of our @FindBy expressions are relative to the @Root element.
+
+You might remember that our application is a Single Page application, so everything happens within the same physical URL only manipulating the content via JavaScript. With this in mind we've modeled in a concept of a fragment being SelfAware. This allows us to encapsulate the logic of knowing how to find certain fragments within the fragment itself.  
+
+[source,java]
+----
+public interface SelfAwareFragment {
+
+    boolean is();
+}
+----
+
+Within the PageObject we implement the discovery logic as this:
+
+[source,java]
+----
+    public <T extends SelfAwareFragment> boolean isResource(Class<T> fragment) {
+        try {
+            return getResource(fragment).is();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public <T extends SelfAwareFragment> T getResource(Class<T> fragment) {
+        return PageFragmentEnricher.createPageFragment(fragment, resource);
+    }
+----
+
+Within the MainPage we want to control the creation of PageFragments so we can do it dynamically based on the requested type. This to avoid having to create a @FindBy injection point for all possible combinations within our application. But we still want our 'on demand' PageFragments to have the same features as the injected once, so we delegate the actual creation of the instance to Graphene's PageFragmentEnricher giving it the requested type and the @Root element we expect it it be found within.
+
+
+After discovering and executing ActionLinks we can now ask the MainPage; Are we within a given 'sub page'? by only refering to the Class it self. 
+
+
+[source,java]
+----
+public static class Form implements SelfAwareFragment {
+  @Root
+  private WebElement root;
+
+  @FindBy(css = ".content.conference")
+  private WebElement conference;
+
+  @FindBy(tagName = "form")
+  private WebElement form;
+
+  @FindBy(css = "#name")
+  private InputComponent name;
+
+    ...
+
+  @FindBy(tagName = "button")
+  private List<WebElement> buttons;
+
+  @Override
+  public boolean is() {
+    return conference.isDisplayed() && form.isDisplayed();
+  }
+
+  public Form name(String name) {
+    this.name.value(name);
+    return this;
+  }
+
+  public InputComponent name() {
+    return name;
+  }
+
+    ...
+
+  public void submit() {
+    for(WebElement button : buttons) {
+      if(button.isDisplayed()) {
+        button.click();
+        break;
+      }
+    }
+  }
+}
+----
+
+As seen in the above example of one of our SelfAwareFragment, Conference.Form, we continue nesting PageFragments to encapsulate more behavoir down the stack. Mainly the InputComponent. While a HTML Form <input> tag has the knowledge of how to input data, the InputComponent goes a level up. 
+
+[source,html]
+----
+<div class="col-md-8 form-group" data-ng-class="{'has-error':error}">
+   <label class="control-label" for="{{id}}_field">{{name}}</label>
+   <input class="form-control" type="text" id="{{id}}_field" data-ng-model="field"
+      required placeholder="{{help}}" />
+   <div class="has-error" data-ng-show="error">{{error}}</div>
+</div>
+----
+
+The complete state of the input is required. Not only where to put data, but also the defined name, help text and most importantly; Is it in an error state after submitting?
+
+With all the main abstractions in place, we are now free to start validating the applications functional behavior. 
+
+----
+*Given* the User is 'Creating a new Conference'
+*When* the Conference has no start/end date
+*Then* an error should be displayed
+----
+
+[source,java]
+----
+@Drone
+private WebDriver driver;
+
+@Test @InSequence(1)
+public void shouldShowErrorMessageOnMissingDatesInConferenceForm(@InitialPage MainPage page) {
+
+  ActionLinks links = page.getActionLinks();
+  Assert.assertTrue(
+    "Add Conference action should be available",
+    links.hasLink("conference"));
+
+  links.getLink("conference").click();
+
+  Assert.assertTrue(
+    "Should have been directed to Conference Form",
+    page.isResource(Conference.Form.class));
+
+  Conference.Form form = page.getResource(Conference.Form.class);
+  form
+    .name("Test")
+    .tagLine("Tag line")
+    .start("")
+    .end("")
+    .submit();
+
+  Assert.assertFalse("Should not display error", form.name().hasError());
+  Assert.assertFalse("Should not display error", form.tagLine().hasError());
+  Assert.assertTrue("Should display error on null input", form.start().hasError());
+  Assert.assertTrue("Should display error on null input", form.end().hasError());
+}
+----
+
+To describe the above in english words;
+
+* Go the MainPage
+* Get all ActionLinks
+* Verify there is an ActionLink named 'conference'
+* Click the 'conference' ActionLink
+* Verify we're on the Conference.Form
+* Input given data in the form and submit it
+* Verify that name and tagLine input are not in error state
+* Verify that start and end input are in error state
+
+== TEST OUTLINE!!
+
 ==== Setup
 
 * https://github.com/arquillian/arquillian-extension-qunit[Arquillian QUnit (Alpha1)]
@@ -238,6 +535,6 @@ public void shouldShowErrorMessageOnMissingDatesInConferenceForm(@InitialPage Ma
 ----
 
 
-
+= MISSING_NOT_DESCRIBED_IN_TEXT
 *** https://github.com/arquillian/continuous-enterprise-development/blob/master/code/application/application/src/test/java/org/cdej/geekseek/test/functional/arquillian/AngularJSDroneExtension.java[AngularJS Drone/Graphene Extension]
 **** Execute some extra javascript to wait for AngularJS to finish on 'command actions' (click, navigate)
