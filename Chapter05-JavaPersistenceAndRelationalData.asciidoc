@@ -767,7 +767,7 @@ And we'll put some methods in place to observe the JPA create events and set the
     }
 ----
 
-+@Created+ and +@Removed+ our our own CDI qualifiers, defined like so:
++@Created+ and +@Removed+ our own CDI qualifiers, defined like so:
 
 [source,java]
 ----
