@@ -1,8 +1,8 @@
-package org.cdej.geekseek.test.functional.ui.fragment;
+package org.cedj.geekseek.test.functional.ui.fragment;
 
 import java.util.List;
 
-import org.cdej.geekseek.test.functional.ui.page.SelfAwareFragment;
+import org.cedj.geekseek.test.functional.ui.page.SelfAwareFragment;
 import org.jboss.arquillian.graphene.fragment.Root;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

@@ -1,2 +1,2 @@
-org.cdej.geekseek.test.functional.arquillian.ArquillianSuiteExtension
-org.cdej.geekseek.test.functional.arquillian.AngularJSDroneExtension
+cedj.geekseek.test.functional.arquillian.ArquillianSuiteExtension
+cedj.geekseek.test.functional.arquillian.AngularJSDroneExtension

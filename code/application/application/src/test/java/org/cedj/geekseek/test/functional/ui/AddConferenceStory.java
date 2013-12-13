@@ -1,8 +1,8 @@
-package org.cdej.geekseek.test.functional.ui;
+package org.cedj.geekseek.test.functional.ui;
 
-import org.cdej.geekseek.test.functional.ui.fragment.ActionLinks;
-import org.cdej.geekseek.test.functional.ui.fragment.Conference;
-import org.cdej.geekseek.test.functional.ui.page.MainPage;
+import org.cedj.geekseek.test.functional.ui.fragment.ActionLinks;
+import org.cedj.geekseek.test.functional.ui.fragment.Conference;
+import org.cedj.geekseek.test.functional.ui.page.MainPage;
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.page.InitialPage;
 import org.jboss.arquillian.junit.Arquillian;

@@ -5,7 +5,7 @@
   <defaultProtocol type="Servlet 3.0" />
 
   <extension qualifier="suite">
-    <property name="deploymentClass">org.cdej.geekseek.test.functional.arquillian.Deployments</property>
+    <property name="deploymentClass">org.cedj.geekseek.test.functional.arquillian.Deployments</property>
   </extension>
   <extension qualifier="webdriver">
     <property name="browser">phantomjs</property>
