@@ -1,4 +1,4 @@
-package org.cdej.geekseek.test.functional.ui.fragment;
+package org.cedj.geekseek.test.functional.ui.fragment;
 
 
 import org.jboss.arquillian.graphene.fragment.Root;

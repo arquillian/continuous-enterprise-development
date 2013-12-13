@@ -1,4 +1,4 @@
-package org.cdej.geekseek.test.functional.arquillian;
+package org.cedj.geekseek.test.functional.arquillian;
 
 import java.io.File;
 

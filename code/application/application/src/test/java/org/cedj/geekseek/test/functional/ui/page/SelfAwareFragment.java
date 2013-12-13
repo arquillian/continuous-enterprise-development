@@ -1,4 +1,4 @@
-package org.cdej.geekseek.test.functional.ui.page;
+package org.cedj.geekseek.test.functional.ui.page;
 
 public interface SelfAwareFragment {
 

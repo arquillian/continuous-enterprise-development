@@ -1,6 +1,6 @@
-package org.cdej.geekseek.test.functional.ui.page;
+package org.cedj.geekseek.test.functional.ui.page;
 
-import org.cdej.geekseek.test.functional.ui.fragment.ActionLinks;
+import org.cedj.geekseek.test.functional.ui.fragment.ActionLinks;
 import org.jboss.arquillian.graphene.enricher.PageFragmentEnricher;
 import org.jboss.arquillian.graphene.page.Location;
 import org.openqa.selenium.NoSuchElementException;
