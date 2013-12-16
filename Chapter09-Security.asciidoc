@@ -33,8 +33,6 @@ It likely doesn't benefit us much to build bespoke solutions for generalized and
 
 ===== PicketLink - Application-level Security
 
-image:images/ch09-security/picketlink.png["PicketLink"]
-
 http://www.picketlink.org[/PicketLink] is an umbrella project for security and identity management for Java Applications.  It provides the backbone of security for a variety of JBoss products, but also may be used standalone, as we'll do with GeekSeek.  There are PicketLink components to support:
 
 * http://www.jboss.org/picketlink/IDM.html[IDM]; universal identity management with pluggable backends like LDAP or RDBMS
@@ -193,8 +191,6 @@ The class above will supply a +User+ to fields annotated with +@Current+, or nul
 Here we've shown the use of PicketLink as a handy security abstraction, but we haven't done any real authentication or authorization yet.  For that, we'll need to implement a provider which will power the IDM requirements we have to enable social login via Twitter.
 
 ===== Agorava and Social Authentication
-
-image:images/ch09-security/agorava.png["Agorava"]
 
 http://agorava.org/[Agorava] is a library consisting of CDI beans and extensions for interaction with the predominant social networks.  Its featureset touts:
 

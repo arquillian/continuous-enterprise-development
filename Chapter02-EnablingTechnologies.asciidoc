@@ -27,8 +27,6 @@ Our examples will be built using a _declarative build tool_ which has standard c
 
 ==== Apache Maven
 
-image:images/ch02-enabling_technologies/maven.png["Apache Maven"]
-
 Perhaps the most prominent figure in the Java automated build tool landscape, http://maven.apache.org/[Apache Maven] positions itself as a "software project management and comprehension tool".  For simplicity's sake, we may view it as a build tool; it's capable of compiling, testing, and assembling.  
 
 One very nice feature of Maven is that it strives for _"convention over configuration"_.  By following a set of recommended best practices, you're likely to trim down on the amount of metadata you'd otherwise need to explicitly define.  Additionally, Maven actions (called _goals_) are bound to a documented http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html[lifecycle] which are common to all Maven-based projects.  For instance, in order to compile, test, and package your project, the command +$> mvn package+ applies.  This standardization alleviates us from having to declare or learn different build commands for each project.
@@ -49,8 +47,6 @@ It _is_ possible to use Maven-structured repositories from outside Maven.  In fa
 That said, Maven continues to be a popular and widely-used tool in Java development, and will satisfy our requirements to build our examples.
 
 ==== JBoss Forge
-
-image:images/ch02-enabling_technologies/forge.png["JBoss Forge"]
 
 If you've spent any time developing Java EE-based projects (or any nontrivial application, for that matter!), you've likely invested a good amount of energy in creating the project layout, defining dependencies, and informing the build system of the relevant ClassPaths to be used in compilation and execution.  While Maven enables us to reduce that load as compared with undertaking project setup manually, there's typically quite a bit of boilerplate involved in the +pom.xml+ defining your requirements.
 
@@ -94,8 +90,6 @@ In this text, we'll be using the open-source DVCS _Git_.
 
 ==== Git
 
-image:images/ch02-enabling_technologies/git.png["Git"]
-
 Originally developed to coordinate development of the Linux Kernel, Git is a DVCS whose usage has taken off in recent years, arguably due to the user-friendliness of the socially-aware hosting site http://www.github.com[GitHub].  In fact, this book's text and examples are https://github.com/arquillian/continuous-enterprise-development[hosted] on GitHub for all to participate.
 
 From a high-level, we've chosen Git for our projects as it enables:
@@ -118,8 +112,6 @@ True Java EE testing in this sense is an area left largely unspecified by the EE
 
 ==== Arquillian
 
-image:images/ch02-enabling_technologies/arquillian.png["Arquillian"]
-
 http://arquillian.org[Arquillian] is an innovative and highly extensible testing platform for the JVM that enables developers to easily create automated integration, functional and acceptance tests for Java middleware.
 
 Picking up where unit tests leave off, Arquillian handles all the plumbing of container management, deployment and framework initialization so you can focus on the business of writing test logic.  Instead of configuring a potentially-complex test harness, Arquillian abstracts out the target runtime by:
@@ -138,12 +130,9 @@ The Arquillian project adheres to three core principles:
 * *Tests should be executable from both the IDE and the build tool*.  By leveraging the IDE, the developer can skip the build for a faster turnaround and has a familiar environment for debugging. These benefits shouldn’t sacrifice the ability to run the tests in continuous integration using a build tool.
 * *The platform should extend or integrate existing test frameworks*.  An extensible architecture encourages reuse of existing software and fosters a unified Java testing ecosystem.  Regardless of how complex it becomes, executing an Arquillian test is as simple as selecting “Run As > Test” in the IDE or executing the “test” goal from the build tool.
 
-***NOTE: Get a better image for this***
 image:images/ch02-enabling_technologies/shrinkwrap_runas_junit.png["RunAs > JUnit"]
 
 ==== ShrinkWrap
-
-image:images/ch02-enabling_technologies/shrinkwrap.png["ShrinkWrap"]
 
 From the onset, ShrinkWrap was born from a need to more easily test Java Enterprise deployments. Traditionally defined as flat-file archives adhering to the ZIP standard, these have necessitated the introduction of some build step to package up all application resources. And a build step takes time:
 
@@ -168,7 +157,6 @@ JavaArchive archive = ShrinkWrap.create(JavaArchive.class,"myarchive.jar")
 
 This enables us to take advantage of the IDE’s incremental compilation features, allowing us to skip the build.
 
-*** NOTE: Get a better image for this
 image:images/ch02-enabling_technologies/shrinkwrap_incremental_compilation.png["ShrinkWrap Incremental Compilation"]
 
 This piece fulfills the design goal of Arquillian to run tests based on full-fledged deployments directly from the IDE.
@@ -789,8 +777,6 @@ Being simply a component model, Java EE needs a concrete implementation to provi
 
 ==== WildFly
 
-image:images/ch02-enabling_technologies/wildfly.png["WildFly"]
-
 The latest community edition of the application server offered by JBoss has recently been renamed to http://wildfly.org/[_WildFly_], and this will be the default target runtime for our examples.  Written from the ground up, WildFly (previously-known as _JBoss Application Server 7_) was designed with the following goals at the core:
 
 * *Speed*.  Startup, deployment, and request processing demands leverage a concurrent state machine and constant-time ClassLoading.
@@ -811,8 +797,6 @@ Because a quick feedback loop is important in testing during development, the sp
 The online User Guide for WildFly is located at https://docs.jboss.org/author/display/WFLY8/Documentation[https://docs.jboss.org/author/display/WFLY8/Documentation].
 
 ==== OpenShift
-
-image:images/ch02-enabling_technologies/openshift.png["OpenShift"]
 
 While getting our applications running on our own machine is a great step in developing, the beauty of the internet is that we can expose our content and services to the world at large.  Until very recently, Java EE hosting typically involved a dedicated and expensive server colocated in a data center.  With the rapid advent of virtualization and the Cloud, we're now able to gain public access much more easily, and at far reduced cost.
 

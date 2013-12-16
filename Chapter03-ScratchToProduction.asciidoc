@@ -14,8 +14,6 @@ In the interest of providing a uniformly-workable solution to the reader, this t
 
 While all projects used here are ultimately standalone and require no plugins or special environments aside from a Java runtime, we're going to make our lives easier by taking advantage of the integration facilities provided by JBoss Developer Studio (JBDS).
 
-image:images/ch03-scratch_to_production/jbds.png["JBoss Developer Studio"]
-
 The JBDS plugins atop the Eclipse Integrated Development Environment (IDE) will unify our development experience and allow us to stay inside one window.  Installation is via an executable JAR available from the https://devstudio.jboss.com/download/7.x.html[JBDS Site].
 
 To kick off the installation process, either double-click the icon (if your environment has the ".jar" extension correctly associated as a Java executable) or launch the installer from the command line via the Java runtime:

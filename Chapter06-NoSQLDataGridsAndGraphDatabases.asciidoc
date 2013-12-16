@@ -36,8 +36,6 @@ Data grids work a little bit differently.  They're designed to store pieces of d
 
 ===== Infinispan
 
-image:images/ch06-nosql/infinispan_logo.png["Infinispan"]
-
 http://www.jboss.org/infinispan/[Infinispan] is an open-source data grid from the JBoss Community.  It's API centers around a +Cache+, a +Map+ structure which provides a mapping between a key and value (this does not actually extend the +java.util.Map+ interface from the Java Collections library).  The full +javax.cache+ API is defined by the Java Community Process in http://jcp.org/en/jsr/detail?id=107[JSR-107], and while Infinispan is not a direct implementor of this specification, it contains many ideas adjacent to and inspiring JSR-107 and the newer Data Grids Specification http://www.jcp.org/en/jsr/detail?id=347[JSR-347].  Infinispan bills itself as a "Transactional in-memory key/value NoSQL datastore & Data Grid".
 
 [NOTE]
@@ -90,8 +88,6 @@ Using this view of our data points and the relationships between them, we may ap
 We'll be using a graph database to represent some of the relationships between the data held in our RDBMS; we can think of this as a "relationship layer" atop our pure data storage model.
 
 ===== Neo4j
-
-image:images/ch06-nosql/neo4j_logo.jpg["Neo4j"]
 
 Neo4j is is an open source, transactional graph database that *does* adhere to the ACID properties.  Both its user view and its backing storage engine use underlying graph structures, so it achieves the performance we'd expect from applying graph theory to queries it's suited to serve.  Because of this the Neo4j documentation touts performance one thousand times faster than possible by RDBMS for connected data problems.
 
