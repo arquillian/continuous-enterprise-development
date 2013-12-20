@@ -12,7 +12,7 @@ When we permit access to a resource, this is the process of _authorization_.  A 
 
 Coupled with authorization, the act of granting or denying access, is ensuring that the requesting party is who they say they are.  Surely the CEO of a company is privy to all sorts of details that wouldn't be available to the general public; if anyone could claim to be CEO, they'd be permitted to browse the whole system!  The process of validating identity is called _authentication_.
 
-=== Use Case / Requirements
+=== Use Cases and Requirements
 
 As GeekSeek is intended to communicate its users' conference schedules publicly, we're not concerned with locking down read operations.  However, it's still important that writes are done by authorized users, so our requirements will generally state "limit unauthorized users' access to create or change data":
 ____

@@ -10,7 +10,7 @@ In our _GeekSeek_ example, however, we'll be going off the beaten path a bit and
 
 In general our requirements remain to be simply: expose our operations in a human-consumable format.
 
-=== Use Case / Requirements
+=== Use Cases and Requirements
 
 On a high level, we're looking to allow a user to take advantage of the application's primary purpose; we'd like to modify state of our domain objects in a consistent fashion.  We may state these:
 
@@ -24,7 +24,7 @@ On a high level, we're looking to allow a user to take advantage of the applicat
   (and attach to Conference and Session)
 ----
 
-=== The Implementation
+=== Implementation
 
 Our frontend is written using the populare JavaScript framework http://angularjs.org/[AngularJS]; A framework that lets you extend the HTML syntax, write client side components in the familiar Model, View, Controller(MVC) pattern and allow for a two way binding of our data models.
 
@@ -159,7 +159,7 @@ As an example, the +Conference+ +MediaType+ in +View+ mode could look like this:
 </div>
 ----
 
-=== Testing the User Interface
+=== Requirement Test Scenarios
 
 The UI for our GeekSeek application is based on a JavaScript front end talking to a REST backend. In this scenario, there are some different approaches and types of testing we can do; one is for the pure JavaSscript code (e.g. client controllers) and the other part is the interaction with the browser and REST endpoints on the backend. 
 

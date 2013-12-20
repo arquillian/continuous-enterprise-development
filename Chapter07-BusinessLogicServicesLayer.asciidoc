@@ -42,7 +42,9 @@ This +UserService+ is clearly meant to be associated with a current user session
 
 In this chapter we'll be examining each of these complications and a proposed solution when tackling the testable development of a common, and seemingly innocuous, business requirement: sending email from a Java EE-based application.
 
-=== Use Case: Send Email On New User Signup
+=== Use Cases and Requirements
+
+==== Send Email On New User Signup
 
 Web-based applications offer few avenues to push information to their users once offline; perhaps the most prevalent is through the use of email.  We see this in a variety of user stories: "Confirm Email Address", "Reset Password", and "Welcome New User" are all subject lines we've grown to expect from the sites we use.  It's fitting, then, that we devise a simple strategy to send email from our application which may be easily reused by the more coarsely-grained operations.
 
@@ -58,7 +60,7 @@ _What if sending the email fails?  Should the enclosing user registration action
 
 _How do we test to ensure that the emails we've sent are received?  How do we validate the email's contents are correct?_  Even if we don't dispatch the communication with the SMTP server to a new Thread, interacting with this external process makes for an asynchronous action.  Asynchronous testing is not always the most simple process to set up, but this does not excuse us from the responsibility of ensuring that our email service is worked as designed.
 
-==== The SMTP Service
+=== Implementation
 
 We'll begin our example with the construction of a generic +SMTPMailService+.  As the name implies, its job will be to act as our Java interface to perform SMTP operations.  Specifically, we'll write this to send email.
 
@@ -309,6 +311,8 @@ public void onMessage(final javax.jms.Message message) {
 ----
 
 These compose all the working pieces of the business logic supporting this feature.  However, the true challenge lies in verifying that everything works as expected.
+
+=== Requirement Test Scenarios
 
 ==== A Test-Only SMTP Server
 

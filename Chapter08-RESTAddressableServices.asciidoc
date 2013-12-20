@@ -140,7 +140,7 @@ The above defines an example of a business object which will receive requests to
 
 As the specification supplies only a contract by which JAX-RS implementations must behave, the runtime will vary between application server vendors.  For instance the Reference Implementation, http://jersey.java.net/[Jersey], can be found in the http://glassfish.java.net/[GlassFish Application Server], while http://www.wildfly.org/[WildFly] from the JBoss Community uses http://www.jboss.org/resteasy[RESTEasy].
 
-=== Use Case: Provide Access to Interact with Domain State
+=== Use Cases and Requirements
 
 Thus far, we've visited and described the internal mechanisms with which we interact with data.  Now we're able to work on building an API for clients to access the domain state in a self-describing fashion, and RESTful design coupled with JAX-RS affords us the tools to expose our application's capabilities in a commonly-understood way.
 
@@ -209,7 +209,7 @@ ____
 
 The DAP above can be conceptually understood as a site map for services, and it defines the API for users of the system.  By designing to the DAP, we provide clients with a robust mechanism by which the details of attaining each resource or invoking the application's services can be read as the client navigates from state to state.
 
-=== The Implementation
+=== Implementation
 
 With our requirements defined, we're free to start implementation.  Remember that our primary goal here is to create HTTP endpoints at the locations defined by our DAP, and we want to ensure that they perform the appropriate action and return the contracted response.  By using JAX-RS we'll be making business objects and defining the mapping between the path, query parameters, and media types of the request before taking action and supplying the correct response.
 
