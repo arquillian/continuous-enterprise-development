@@ -6,9 +6,7 @@ The code we’ve developed and tested up to this point has dealt with data: orga
 
 _Business logic_ governs the behaviors which power our applications. As compared with more generic (and _cross-cutting_) concerns which may be abstracted - security, transactions, object-relational mapping, resource management - business logic lies at the heart of our projects. It is unique to our needs, and no one else can write it for us.
 
-That said, the cross cutting concerns mentioned above (and many more!) are all commonly-demanded by our business needs. For instance, imagine we have a series of services, each of which needing to be accessed by and authenticated and authorized user, and in the context of a transaction. If we were diligently applying proper modularization and encapsulation, we might implement separate functions for the transactional and security enforcement, then call these from our services:
-
-*INSERT IMAGE SHOWING MANY SERVICES CALLING A AT THE HEAD AND FOOT A COMMON TX AND SECURITY FUNCTION (Fig 07-01)*
+That said, the cross cutting concerns mentioned above (and many more!) are all commonly-demanded by our business needs. For instance, imagine we have a series of services, each of which needing to be accessed by and authenticated and authorized user, and in the context of a transaction. If we were diligently applying proper modularization and encapsulation, we might implement separate functions for the transactional and security enforcement, then call these from our services.
 
 A glaring problem with this approach is that while we’ve nicely extracted out the logic for our security and transactions for reuse, we must still manually _invoke_ them, sprinkling these method calls at the head and foot of every function requiring their use. Additionally, we may have to pass around contextual objects which know about the state of the current user or transactional registration (though in practice, these are commonly associated with a +Thread+, thus able to fly under the visible API radar in an obfuscated context).
 

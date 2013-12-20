@@ -3,7 +3,6 @@
 _"I get by with a little help from my friends." - Paul McCartney and John Lennon_
 
 There's a common misconception that the goal of a standard specification is to address _every_ problem.  This couldn't be further from the truth; creating a standard is meant to address the 80% case in a manner that's been proven through experience in the field.  The http://www.oracle.com/technetwork/java/javaee/downloads/index.html[Java Enterprise Edition] and its subsystems, governed by the http://www.jcp.org/en/home/index[Java Community Process]  (JCP), is no exception.  
-
 By its very makeup, the JCP is designed to strive for consensus among all participants in an Expert Group on a given technology.  Where corporate sponsors and individual contributors disagree or determine that a feature is not yet mature enough to be adequately standardized, latitude is given to specification implementors.  This helps to foster creativity and provides differentiation between vendors.  In fact, on a http://java.net/projects/javaee-spec/lists/jsr342-experts/archive/2012-08/message/16[discussion regarding the Java EE7 Roadmap], Expert Group member David Blevins succinctly addressed the dynamic: "Vendors innovate, collectively we standardize."
 
 While it's not the goal of this book to provide exhaustive instruction on the complete featureset of Java EE, it is absolutely our intent to unify the development experience.  Helping us along the way are a set of enabling technologies intending to smooth the rough edges of the EE Platform and fill the gaps left open by its specifications.
@@ -33,7 +32,7 @@ One very nice feature of Maven is that it strives for _"convention over configur
 
 At the core of the Maven engine is a sophisticated _dependency management_ solution capable of resolving libraries by name from a http://search.maven.org/[Central Repository] (or additionally-configured repository) onto a user's local system.  This feature allows us to skip the manual process of adding dependencies into our version control system, and allows us to instead fetch them on-demand as part of the build process.  As an added bonus, the requisite dependencies for all projects consuming ours are well-documented and automatically fetched for us.
 
-***INSERT IMAGE : Project A depends on B depends on C, gets all as requested from the Central Repo***
+[[Figure2-1]]
 
 Maven is not without its detractors, however.  It's been criticized for a few points, among them:
 
@@ -66,7 +65,7 @@ Overall, the goal of Forge is to ease project setup at all stages of development
 
 From the moment we collaborate on a project with others or would like to inspect the evolution of our code over time, we need some form of _version control_.  Until recently, the most common paradigm for synchronizing access to a shared codebase was the _client/server_ model wherein developers may keep a local working copy and check their changes into a centralized server.  
 
-***INSERT IMAGE SHOWING CENTRALIZED VERSION CONTROL***
+[[Figure2-2]]
 
 Some systems utilize file-level locking to ensure that no conflicts arise during development; others allow concurrent access at the file granularity but cue the developer to resolve line-level conflicts upon committing changes upstream.
 
@@ -74,7 +73,7 @@ Likely the widest-deployed client/server version control system (VCS) from the 1
 
 These days, the centralized model has been superseded by _distributed version control systems_ (DVCS), which is differentiated by its ability to store the full repository including all history in any number of nodes.
 
-***INSERT IMAGE SHOWING DVCS***
+[[Figure2-3]]
 
 This layout creates a "pull model", where developers on a common project are given the authority over their own repository, free to incorporate changes from others (or not!).  At first, this can be a confusing topic to grasp for users vested in the centralized "push model", but its our opinion that the benefits of this design easily justify the initial confusion inherent when considering many full-fledged repositories representing the same project.
 
@@ -130,6 +129,7 @@ The Arquillian project adheres to three core principles:
 * *Tests should be executable from both the IDE and the build tool*.  By leveraging the IDE, the developer can skip the build for a faster turnaround and has a familiar environment for debugging. These benefits shouldn’t sacrifice the ability to run the tests in continuous integration using a build tool.
 * *The platform should extend or integrate existing test frameworks*.  An extensible architecture encourages reuse of existing software and fosters a unified Java testing ecosystem.  Regardless of how complex it becomes, executing an Arquillian test is as simple as selecting “Run As > Test” in the IDE or executing the “test” goal from the build tool.
 
+[[Figure2-4]]
 image:images/ch02-enabling_technologies/shrinkwrap_runas_junit.png["RunAs > JUnit"]
 
 ==== ShrinkWrap
@@ -157,6 +157,7 @@ JavaArchive archive = ShrinkWrap.create(JavaArchive.class,"myarchive.jar")
 
 This enables us to take advantage of the IDE’s incremental compilation features, allowing us to skip the build.
 
+[[Figure2-5]]
 image:images/ch02-enabling_technologies/shrinkwrap_incremental_compilation.png["ShrinkWrap Incremental Compilation"]
 
 This piece fulfills the design goal of Arquillian to run tests based on full-fledged deployments directly from the IDE.

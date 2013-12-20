@@ -59,9 +59,9 @@ _Methodology.  Doctrine.  Paradigm._  Whatever we call it, our process (or absen
 
 ==== Serial Models
 
-A _serial_, or _sequential_, process follows a linear path from project inception to completion.  As each stage in the development lifecycle comes to a close, the next one in turn is started.  Prior stages are typically not revisited, and this model is often visualized as a series of steps, like this:
+A _serial_, or _sequential_, process follows a linear path from project inception to completion.  As each stage in the development lifecycle comes to a close, the next one in turn is started.  Prior stages are typically not revisited, and this model is often visualized as a series of steps:
 
-*** INSERT IMAGE ***
+[[Figure1-1]]
 
 Development flows from one stage to the next, forming the basis for the nickname "Waterfall", often-associated with serial models.  Also called "Big Design Up Front", this process relies heavily upon a full understanding of all requirements from the project onset.  The general theory supporting Waterfall Design is roughly "measure twice, cut once"; by doing an exhaustive evaluation of all moving parts, the goal is to reduce wasted time by avoiding the need to go back and make corrections.  In our opinion, this tack is best applied for projects with a long development cycle targeting a single release.
 
@@ -75,7 +75,7 @@ In stark contrast to the linear workflow prescribed by the Waterfall Model, ther
 
 Also known simply as "XP", _Extreme Programming_ is a discipline which introduces a feedback loop into each phase of the development process.  A practice which rose to popularity especially in the late 90s and early 2000s, XP lauds communication and other social aspects as centrally important themes.  Its workflow may look something like:
 
-*** INSERT IMAGE ***
+[[Figure1-2]]
 
 While the full reasoning behind XP is detailed by Kent Beck's _Extreme Programming Explained: Embrace Change (Second Edition)_, some of its primary tenants may be boiled down to:
 
@@ -281,14 +281,17 @@ The first benefit we get is that we don't need a +main(String[])+ method, and we
 
 JUnit also has widespread IDE support, making test execution during development much easier.  For instance, consider the context menu available in Eclipse:
 
+[[Figure1-3]]
 image:images/ch01-continuity/runas_junit.png["JUnit IDE Runner Integration"]
 
 As opposed to our homebrewed +main(String[])+ test client, JUnit supports reporting.  In the IDE this may appear graphically:
 
+[[Figure1-4]]
 image:images/ch01-continuity/junit_test_execution.png["JUnit IDE Reporting Integration"]
 
 Often we'll make use of a _continuous integration server_ to handle our builds and provide an auditable view of the codebase over time.  During this more formal build process, output may be directed to an XML file for analysis by plugins.  This can be very helpful in tracking progress of the failing and total number of tests, for instance graphically on the http://jenkins-ci.org/[Jenkins Continuous Integration Server]:
 
+[[Figure1-5]]
 image:images/ch01-continuity/ci_test_trend.png["Continuous Integration Test Reporting"]
 
 Of course, JUnit is not the only kid on the block when it comes to test frameworks.
@@ -328,6 +331,7 @@ Some of the parameter orders and API names for the annotations have changed, but
 
 IDE Integration, while not standard for Eclipse Juno, is http://testng.org/doc/download.html[simple enough to install] and provides a GUI runner as we've seen with JUnit:
 
+[[Figure1-6]]
 image:images/ch01-continuity/testng_test_execution.png["TestNG IDE Runner Integration"]
 
 === Continuous Development

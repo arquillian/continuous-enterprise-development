@@ -448,7 +448,7 @@ Another feature of Arquillian is its ability to provide services like injection 
 
 The +EntityManager+ is typically used by server-side business components like EJBs or CDI beans, but because this test is going to run _inside_ the container as part of a deployment, we'll be able to interact with it directly.  
 
-_TODO: Insert image of the Arquillian lifecycle with regards to in-container testing_
+[[Figure3-1]]
 
 Because Arquillian aims to follow the standards set forth by Java EE, instead of requiring the user to do a lookup or manual creation of the +EntityManager+, we'll be able to receive an instance by requesting injection via use of the +@PersistenceContext+ annotation.
 
