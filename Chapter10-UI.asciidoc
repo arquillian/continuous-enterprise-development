@@ -371,7 +371,7 @@ The +MainPage+ PageObject implements the discovery logic like so:
     }
 ----
 
-Within the +MainPage+ we want to control the creation of PageFragments so we can do it dynamically based on the requested type. This to avoid having to create a +@FindBy+ injection point for all possible combinations within our application. But we still want our 'on demand' PageFragments to have the same features as the injected once, so we delegate the actual creation of the instance to Graphene's +PageFragmentEnricher+ giving it the requested type and the +@Root+ element we expect it it be found within.
+Within the +MainPage+ we want to control the creation of PageFragments so we can do it dynamically based on the requested type. This to avoid having to create a +@FindBy+ injection point for all possible combinations within our application. But we still want our 'on demand' PageFragments to have the same features as the injected ones, so we delegate the actual creation of the instance to Graphene's +PageFragmentEnricher+ giving it the requested type and the +@Root+ element we expect it be found within.
 
 After discovering and executing +ActionLinks+ we can now ask the +MainPage+: "Are we within a given 'sub page'?" by only referring to the class itself. 
 
@@ -539,4 +539,4 @@ The +shouldShowErrorMessageOnMissingDatesInConferenceForm+ test method above tak
 * Verify that name and tagLine input are not in error state
 * Verify that start and end input are in error state
 
-As we can see, Arquillian Drone, together with Selenium and QUnit, makes for an integrated solution to testing front-end code with a Java object model.  Running the full quite on your own locally should be instructive
+As we can see, Arquillian Drone, together with Selenium and QUnit, makes for an integrated solution to testing front-end code with a Java object model.  Running the full suite on your own locally should be instructive
