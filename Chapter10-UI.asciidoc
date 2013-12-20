@@ -24,47 +24,144 @@ On a high level, we're looking to allow a user to take advantage of the applicat
   (and attach to Conference and Session)
 ----
 
-== ASLAK: Need more here on the impl  :)
+=== The Implementation
 
-=== Background
+Our frontend is written using the populare JavaScript framework http://angularjs.org/[AngularJS]; A framework that lets you extend the HTML syntax, write client side components in the familiar Model, View, Controller(MVC) pattern and allow for a two way binding of our data models.
 
-* UI Types
-** Server side state/rendering
-*** JEE specs: JSF, JSP (servlet, not really UI pr say)
-*** Struts, Spring MVC....
-** Client side state/rendering
-*** EmberJS, GWT, AngularJS, Backbone ++
-** Advantages / Disatvantages with the two approaches
+AngularJS has a built-in abstraction to work with +Resources+ like REST, but it lacks built-in support for HATEOAS. The AngularJS Resource can easily operate on a single +Resource+, but with no automatic link support or knowledge of the +OPTIONS+ that the +Resource+ might support. For our frontend view to be completely driven by the backend services we need this extra layer of support.
 
-=== Implementation
+To address HATEOAS in the client view we've created a simple object we call +RestGraph+. The main responsibillity of this object is to discover linked +Resources+ in the +Response+ and determine what we're allowed to do with the gicen +Resource+.
 
-* AngularJS over Rest Services API
-** HTML5 / JS Client
-*** Dynamically Map MediaTypes to Templates
-*** Dynamically Map Links to Controllers
+Without exposing too much of how exatly the +RestGraph+ is implemented, we'll just give you a short overview of what it can do and how it is useful.
 
-=== Requirement Test Scenarios
+To start of, the +RestGrahp+ require you to define a root Resource URL, the top level Resource of the graph.
+[source, javascript]
+----
+var root = RestGraph('http://geekseek.continuousdev.org/api').init();
+----
 
-* Unit
-** Pure JS
-*** Testing Controllers, Directives
-* Integration
-** Test Double Rest layer
+This is similar to how you would do it when you visit a web page in a web browser; you give your self and the browser a starting point by typing in an address(URL) in the address bar.  
 
-==== Overview
+Based on the +Response+ from the root +Resource+ we can determine what can be done next.
+[source, json]
+----
+{
+    "link": [
+        {
+            "rel": "conference",
+            "href": "http://geekseek.continuousdev.org/api/conference",
+            "mediaType": "application/vnd.ced+json; type=conference"
+        },
+        {
+            "rel": "whoami",
+            "href": "http://geekseek.continuousdev.org/api/security/whoami",
+            "mediaType": "application/vnd.ced+json; type=user"
+        }
+    ]
+}
+----
 
-* Mapping
-** URL 
-*** MediaType application/vnd.ced+xml;type=conference 
-*** Template type. conference.html
-**** template has different states, EDIT, VIEW (List, Single)
-*** Filter Links(Rel) to Action types, Action vs UserAction
-**** Action -> add / edit X  (conference, session)
-**** User Action -> Add me to X (tracker, attendees, speakers)
+In this example the start +Resource+ only contain links to other resources and contain no data it self. We can choose to discover where to go next by looking at all available links. Maybe let the user decide what path to take?
+[source, javascript]
+----
+var paths = root.links
+----
+
+Or choose to follow the graph down a desired path by fetching a named relation.
+[source, javascript]
+----
+var conference = root.getLink('conference')
+----
+
+Some function calls on the +conference+ instance can be mapped directly to the REST verbs for the given Resource: +GET+, +DELETE+, +PATCH+, +PUT+.
+[source, javascript]
+----
+conference.get()
+conference.remove()
+conference.add({})
+conference.update({})
+----
+
+Now we have the basics. But, we still don't know if we're allowed to perform all of those operations on all discovered +Resources+. There are certain security constraints and possible other limitations implementated on the server side that we need to take into consideration before/when we make a +Request+. In the same fashion we discover related resources and actions via links in the +Response+, we can query the +Resource+ for the +OPTIONS+ it supports.
+
+[source, http]
+----
+> OPTIONS /api/conference
+
+< Allow: GET, OPTIONS, HEAD
+----
+
+If the user performing the +Request+ is authenticated the +Response+ to the +OPTIONS+ query might look like this:
+
+[source, http]
+----
+> OPTIONS /api/conference
+
+< Allow: GET, PATCH, OPTIONS, HEAD
+----
+
+The server just told us that as an authenticated user you're allowd to perform a +PATCH+ operation on this Resource as well as a +GET+ operation. We're now not only restricted to a Read Only view, but have full Read/Write access.
+
+The +RestGraph+ hides the usage of +OPTIONS+ to query the server for allowed actions behind a meaningful API.
+
+[source, javascript]
+----
+conference.canGet()
+conference.canUpdate()
+conference.canRemove()
+conference.canCreate()
+----
+
+This gives us the complete picture of what the API and the backend, under the current circumstances, will allow us to do. While the communication with the backend is up and running, the user still can't see any thing. We need to convert the raw data into a suitable user interface.
+
+We choose to map the +MediaTypes+ described in the DAP to HTML templates in the UI.
+[source, json]
+----
+{
+  "rel": "conference",
+  "href": "http://geekseek.continuousdev.org/api/conference",
+  "mediaType": "application/vnd.ced+json; type=conference"
+}
+----
+
+By combining the current +Action+ (View, Update, Create) with the +MediaType+ sub type argument we can identify a unique template for how to represent the current +Resource+ as HTML.
+
+As an example, the +Conference+ +MediaType+ in +View+ mode could look like this:
+[source, html]
+----
+<div class="single" data-ng-if="isSingle">
+   <div class="well">
+      <div class="pull-right">
+         <a data-ng-show="resource.canUpdate()" data-ng-click="edit()">
+            <i class="icon-edit-sign"></i></a>
+         <a data-ng-show="resource.canRemove()" data-ng-click="remove()">
+            <i class="icon-remove-sign"></i></a>
+      </div>
+
+      <h1>{{resource.data.name}} <small>{{resource.data.tagLine}}</small></h1>
+
+      <p class="date">
+         <abbr title="{{resource.data.start|date:medium}}" class="start">
+            <span class="day">{{resource.data.start|date:'d'}}</span>
+         </abbr>
+         <span class="sep">-</span>
+         <abbr title="{{resource.data.end|date:medium}}" class="end">
+            <span class="day">{{resource.data.end|date:'d'}}</span>
+            <span class="month">{{resource.data.end|date:'MMMM'}}</span>
+            <span class="year">{{resource.data.end|date:'yyyy'}}</span>
+         </abbr>
+      </p>
+      <div class="attendees pull-right">
+         <subresource parent="resource" link="attendees" />
+      </div>
+   </div>
+   <subresource parent="resource" link="session" />
+</div>
+----
 
 === Testing the User Interface
 
-The UI for our GeekSeek application is based on a JavaScript front end talking to a REST backend. In this scenario, there are some different approaches and types of testing we can do; one is for the pure JS code (e.g. client controllers) and the other part is the interaction with the browser and REST endpoints on the backend. 
+The UI for our GeekSeek application is based on a JavaScript front end talking to a REST backend. In this scenario, there are some different approaches and types of testing we can do; one is for the pure JavaSscript code (e.g. client controllers) and the other part is the interaction with the browser and REST endpoints on the backend. 
 
 ==== Pure JavaScript
 
