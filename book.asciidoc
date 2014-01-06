@@ -2,7 +2,7 @@
 
 include::Foreward.asciidoc[]
 
-include::Chapter00-Prelude.asciidoc[]
+include::Chapter00-Preface.asciidoc[]
 
 include::Chapter01-Continuity.asciidoc[]
 
