@@ -23,7 +23,7 @@ EAP has some additional differences with WildFly which become very apparent duri
 First, let's obtain the EAP distribution and private JBoss EAP Maven Repository.  This is done from the http://www.jboss.org/jbossas/downloads/[JBoss Downloads] page.
 
 [[Figure10-1]]
-image:images/ch11-assembly_deployment/download_eap.png["Download JBoss EAP"]
+image::images/ch11-assembly_deployment/download_eap.png["Download JBoss EAP"]
 
 Once we agree to the Terms and Conditions, the links to download will begin the process.  Both the EAP distribution and the EAP Maven Repository are bundled as ZIP files.
 
@@ -82,7 +82,7 @@ bin $> ./standalone.sh
 And with that, we have our server process running and ready to receive deployments or service requests.  As noted in the above output, the startup sequence is complete on our machines in about 2.4 seconds.  You may ensure that everything is working correctly or find links to the web-based management interface by pointing your browser to +http://localhost:8080+:
 
 [[Figure10-2]]
-image:images/ch11-assembly_deployment/eap_home_page.png[EAP Home Page]
+image::images/ch11-assembly_deployment/eap_home_page.png[EAP Home Page]
 
 Let's leave this as-is for the time being, and open a new console window (or tab) in the _GeekSeek_ application's source root.
 
@@ -254,22 +254,22 @@ As our eventual deployment target will be EAP, we're going to configure CloudBee
 First we'll log into our CloudBees account and select to enter the Jenkins Dashboard from within CloudBees Central.
 
 [[Figure10-3]]
-image:images/ch11-assembly_deployment/cloudbees_jenkins_button.png["CloudBees Jenkins"]
+image::images/ch11-assembly_deployment/cloudbees_jenkins_button.png["CloudBees Jenkins"]
 
 We'll create a +New Job+, assigning it our project name of _GeekSeek_ and selecting a +Maven2/Maven3 Build+ configuration template.
 
 [[Figure10-4]]
-image:images/ch11-assembly_deployment/cloudbees_new_job.png["CloudBees New Job"]
+image::images/ch11-assembly_deployment/cloudbees_new_job.png["CloudBees New Job"]
 
 The next step is to configure the build parameters.  First let's set the +SCM+ section to point to our authoritative Git repository; this is where the build will pull code.
 
 [[Figure10-5]]
-image:images/ch11-assembly_deployment/cloudbees_scm.png["CloudBees SCM"]
+image::images/ch11-assembly_deployment/cloudbees_scm.png["CloudBees SCM"]
 
 Now we'll tell Maven how to run the build; remember, we want to enable the +arq-jbosseap-managed+ profile, so we'll note that in the +Goals and options+ section.  Also, enable our alternative settings file which will expose our +private+ repository to our build.
 
 [[Figure10-6]]
-image:images/ch11-assembly_deployment/cloudbees_build_config.png["CloudBees Build Config"]
+image::images/ch11-assembly_deployment/cloudbees_build_config.png["CloudBees Build Config"]
 
 ==== Populating CloudBees Jenkins with the EAP Repository
 
@@ -321,7 +321,7 @@ The +private+ repository requires authentication, so we must add authentication 
 Note the CloudBees username here is available on the details page under "Authenticated Access", located at https://forge.cloudbees.com/a/_domainId_/repositories/private:
 
 [[Figure10-7]]
-image:images/ch11-assembly_deployment/cloudbees_auth_access.png["CloudBees Authenticated Access"]
+image::images/ch11-assembly_deployment/cloudbees_auth_access.png["CloudBees Authenticated Access"]
 
 Now we should be ready to mount our volume (subsequent reboots to the system should do this automatically due to our +fstab+ configuration).
 
@@ -405,7 +405,7 @@ That will handle the CloudBees Jenkins side of the integration.
 In GitHub, we may now visit our repository's home, and select +Settings+ > +Service Hooks+ > +WebHook URLs+.  Add a URL with the format +https://_domainId_.ci.cloudbees.com/github-webhook+.  This will instruct GitHub to send an HTTP POST request to CloudBees containing information about the new push, and CloudBees will take it from there.
 
 [[Figure10-8]]
-image:images/ch11-assembly_deployment/github_webhook_urls.png[GitHub WebHook URLs]
+image::images/ch11-assembly_deployment/github_webhook_urls.png[GitHub WebHook URLs]
 
 From here on out, new commits pushed to the GitHub repository will trigger a build on the CloudBees Jenkins instance.  In this way we can nicely create a pipeline of build-related actions, triggered easily by our committing new work upstream.
 
@@ -420,27 +420,27 @@ With a working build to validate our tests and assemble the final deployable uni
 First, let's create our new application by logging into OpenShift and selecting +Add Application+:
 
 [[Figure10-9]]
-image:images/ch11-assembly_deployment/button_add_application.png[Add Application]
+image::images/ch11-assembly_deployment/button_add_application.png[Add Application]
 
 As EAP will be our target runtime, we'll select the "JBoss Enterprise Application Platform 6.0" cartridge, a pre-built environment for applications targeting EAP.
 
 [[Figure10-10]]
-image:images/ch11-assembly_deployment/cartridge_selection_jboss-eap.png[JBoss EAP Cartridge]
+image::images/ch11-assembly_deployment/cartridge_selection_jboss-eap.png[JBoss EAP Cartridge]
 
 Next we'll assign our application with a name unique to our account's domain.
 
 [[Figure10-11]]
-image:images/ch11-assembly_deployment/new_app_name.png[New App Name]
+image::images/ch11-assembly_deployment/new_app_name.png[New App Name]
 
 And when we've reviewed the configuration, hitting "Create Application" will instruct OpenShift to provision a new namespace and backing infrastructure for our application.
 
 [[Figure10-12]]
-image:images/ch11-assembly_deployment/button_create_application.png[Create Application]
+image::images/ch11-assembly_deployment/button_create_application.png[Create Application]
 
 When the process is completed, a default landing page will be accessible to us (and anyone in the world) from the browser.
 
 [[Figure10-13]]
-image:images/ch11-assembly_deployment/welcome_to_openshift.png[Welcome to OpenShift]
+image::images/ch11-assembly_deployment/welcome_to_openshift.png[Welcome to OpenShift]
 
 The default DNS record will be in format +http://_appName_-_domainId_.rhcloud.com+.  It's likely that this isn't really the name we desire for public consumption, so let's add our own custom DNS name.
 
@@ -449,13 +449,13 @@ This is a two step process:
 1) Create a DNS entry with your domain registrar or DNS Management interface to point to +http://_appName_-_domainId_.rhcloud.com+.  In our case, we'll opt for a subdomain, which amounts to a +CNAME+ record.  Consult your domain authority for the specifics of this step, but generally you might be presented with a screen that looks similar to:
 
 [[Figure10-14]]
-image:images/ch11-assembly_deployment/cname_add.png[Add CNAME]
+image::images/ch11-assembly_deployment/cname_add.png[Add CNAME]
 
 
 2) Add an "alias" in your OpenShift application's configuration.  This may be done via the web interface:
 
 [[Figure10-15]]
-image:images/ch11-assembly_deployment/alias_add.png[Add Alias]
+image::images/ch11-assembly_deployment/alias_add.png[Add Alias]
 
 Alternatively, you may acquire the https://www.openshift.com/developers/rhc-client-tools-install[OpenShift client-side command-line tools].  These rely on a Ruby installation of 1.8.7 or greater on your system, and are obtained by installing a Ruby gem:
 
@@ -517,17 +517,17 @@ The final piece of the automated deployment puzzle lies in deploying artifacts b
 We'll need to allow access for CloudBees Jenkins to interact with the OpenShift repository.  On the "Configure" screen for our CI job is a section entitled "CloudBees DEV@Cloud Authorization", which contains our public key.  Copy this to your OS's clipboard.
 
 [[Figure10-16]]
-image:images/ch11-assembly_deployment/cloudbees_ssh.png[CloudBees SSH Public Key]
+image::images/ch11-assembly_deployment/cloudbees_ssh.png[CloudBees SSH Public Key]
 
 Then log into your OpenShift Management Console and select https://openshift.redhat.com/app/console/settings[Settings]; there will be a dialog to manage the public keys allowed access to our repository.  Add the CloudBees Jenkins key by pasting it here.
 
 [[Figure10-17]]
-image:images/ch11-assembly_deployment/openshift_public_keys.png[OpenShift Public Keys]
+image::images/ch11-assembly_deployment/openshift_public_keys.png[OpenShift Public Keys]
 
 Switching back to our Jenkins job configuration screen, towards the bottom is a section where we may add "Post Build" steps.  Let's create a shell-based action which will be set to execute only upon successful build.
 
 [[Figure10-18]]
-image:images/ch11-assembly_deployment/cloudbees_post_build.png[CloudBees Post Build]
+image::images/ch11-assembly_deployment/cloudbees_post_build.png[CloudBees Post Build]
 
 The following script will handle the task for us.
 

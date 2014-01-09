@@ -282,17 +282,17 @@ The first benefit we get is that we don't need a +main(String[])+ method, and we
 JUnit also has widespread IDE support, making test execution during development much easier.  For instance, consider the context menu available in Eclipse:
 
 [[Figure1-3]]
-image:images/ch01-continuity/runas_junit.png["JUnit IDE Runner Integration"]
+image::images/ch01-continuity/runas_junit.png["JUnit IDE Runner Integration"]
 
 As opposed to our homebrewed +main(String[])+ test client, JUnit supports reporting.  In the IDE this may appear graphically:
 
 [[Figure1-4]]
-image:images/ch01-continuity/junit_test_execution.png["JUnit IDE Reporting Integration"]
+image::images/ch01-continuity/junit_test_execution.png["JUnit IDE Reporting Integration"]
 
 Often we'll make use of a _continuous integration server_ to handle our builds and provide an auditable view of the codebase over time.  During this more formal build process, output may be directed to an XML file for analysis by plugins.  This can be very helpful in tracking progress of the failing and total number of tests, for instance graphically on the http://jenkins-ci.org/[Jenkins Continuous Integration Server]:
 
 [[Figure1-5]]
-image:images/ch01-continuity/ci_test_trend.png["Continuous Integration Test Reporting"]
+image::images/ch01-continuity/ci_test_trend.png["Continuous Integration Test Reporting"]
 
 Of course, JUnit is not the only kid on the block when it comes to test frameworks.
 
@@ -332,7 +332,7 @@ Some of the parameter orders and API names for the annotations have changed, but
 IDE Integration, while not standard for Eclipse Juno, is http://testng.org/doc/download.html[simple enough to install] and provides a GUI runner as we've seen with JUnit:
 
 [[Figure1-6]]
-image:images/ch01-continuity/testng_test_execution.png["TestNG IDE Runner Integration"]
+image::images/ch01-continuity/testng_test_execution.png["TestNG IDE Runner Integration"]
 
 === Continuous Development
 

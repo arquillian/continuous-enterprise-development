@@ -170,12 +170,12 @@ The first step towards obtaining the source is to sign up for a GitHub account. 
 Signup is fairly simple and the process starts at https://github.com[https://github.com]
 
 [[Figure4-3]]
-image:images/ch04-requirements_example_app/github_signup.png["GitHub Signup"]
+image::images/ch04-requirements_example_app/github_signup.png["GitHub Signup"]
 
 Once logged in, we'll _fork_ the authoritative repo into your own publicly-viewable repository.  This is done by visiting the book's repo and pressing the "Fork" button:
 
 [[Figure4-4]]
-image:images/ch04-requirements_example_app/fork.png["Forking a GitHub Repository"]
+image::images/ch04-requirements_example_app/fork.png["Forking a GitHub Repository"]
 
 With the fork in your account, now you'll be able to _clone_ this repository locally.  And because you have your own fork on GitHub, you'll be able to _push_ the _commits_ you make locally to your own fork, where you have write access.  This provides two important benefits; first, it serves as a backup in case of disk failure, loss of machine, or a synchronization point if you develop on many machines.  Second, it allows others to see the changes you've made an optionally bring them in for their own use.
 
@@ -205,7 +205,7 @@ git version 1.8.1.2
 With your Git client installed locally, now you're free to pull down the book's repository from your public fork on GitHub to your local machine.  This is done by first finding the URI to your repository on your GitHub repo's home page:
 
 [[Figure4-5]]
-image:images/ch04-requirements_example_app/clone.png["GitHub URI to Clone"]
+image::images/ch04-requirements_example_app/clone.png["GitHub URI to Clone"]
 
 Then simply move to a directory in which you'd like to place your local clone, and issue the +git clone+ command, passing in the URI to your GitHub repository.  For instance:
 
