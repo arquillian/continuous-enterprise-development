@@ -51,11 +51,7 @@ This element indicates a warning or caution.
 
 Supplemental material (code examples, exercises, etc.) is available for download at link:$$https://continuousdev.org$$[].  We offer a guide to get started in the _Requirements and the Example Application_ chapter.
 
-This book is here to help you get your job done. In general, if example code is offered with this book, you may use it in your programs and documentation. You do not need to contact us for permission unless you’re reproducing a significant portion of the code. For example, writing a program that uses several chunks of code from this book does not require permission. Selling or distributing a CD-ROM of examples from O’Reilly books does require permission. Answering a question by citing this book and quoting example code does not require permission. Incorporating a significant amount of example code from this book into your product’s documentation does require permission.Requirements and the Example ApplicationRequirements and the Example Application
-
-We appreciate, but do not require, attribution. An attribution usually includes the title, author, publisher, and ISBN. For example: “_Book Title_ by Some Author (O’Reilly). Copyright 2012 Some Copyright Holder, 978-0-596-xxxx-x.”
-
-If you feel your use of code examples falls outside fair use or the permission given above, feel free to contact us at pass:[<email>permissions@oreilly.com</email>].
+This book is here to help you get your job done.  All contents here are licensed under http://creativecommons.org/licenses/by-sa/2.0/['Creative Commons Attribution-ShareAlike 2.0 Generic'], and we invite the community at large to contribute work including feature requests, typographical error corrections, and enhancements via our https://github.com/arquillian/continuous-enterprise-development/issues[GitHub Issue Tracker].  You may reuse any of the text or examples in compliance with the license, which requires attribution.  See full license for details.
 
 === Safari® Books Online
 
