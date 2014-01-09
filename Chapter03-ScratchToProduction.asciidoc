@@ -22,6 +22,7 @@ To kick off the installation process, either double-click the icon (if your envi
 $> java -jar jbdevstudio-product-universal-7.0.0.GA-v20130720-0044-B364.jar
 ----
 
+[[Figure3-1]]
 image:images/ch03-scratch_to_production/jbds_install.png["JBoss Developer Studio Installation"]_
 
 Following the graphical wizard will install the JDBS (and all requisite plugins we'll be using) IDE onto your local machine.
@@ -32,10 +33,12 @@ The previous chapter introduced us to JBoss Forge, a tool that aims to make proj
 
 Forge's user interface is a shell, so it can be installed manually and used from the terminal like any other command-line application.  However, JBDS removes the need for us to do this setup.  Selecting +Window > Show View > Other...+ will give us immediate access to the Forge Console:
 
+[[Figure3-2]]
 image:images/ch03-scratch_to_production/window_forge_console.png["Forge Console View Selection"]
 
 With our new _Forge Console_ view, we're now free to start up the Forge runtime, which came embedded with the JBDS installation.  Pressing the green "Play" button will give us access to the Forge shell.
 
+[[Figure3-3]]
 image:images/ch03-scratch_to_production/start_forge.png["Start Forge"]
 
 ----
@@ -82,6 +85,7 @@ Wrote ./presentations/feedback/src/main/resources/META-INF/forge.xml
 
 Additionally, our project has appeared in the Project View:
 
+[[Figure3-4]]
 image:images/ch03-scratch_to_production/project_created.png["Project Created"]
 
 Users of http://maven.apache.org/guides/introduction/introduction-to-archetypes.html[Maven Archetypes] may be familiar with this type of technique to create a new project, but as Forge is an _incremental_ tool, it's capable of reading a project's state and adding behaviors after creation.
@@ -517,10 +521,12 @@ The deployment operation (FORCE_DEPLOY) was successful.
 
 We're up and running!  Point your browser of choice to the root of the application at +http://localhost:8080/feedback+, and you should see the home screen of the UI that Forge has generated for us.
 
+[[Figure3-5]]
 image:images/ch03-scratch_to_production/feedback_home.png["Feedback Application Home"]
 
 Selecting the "Feedback Entry" button will grant us access to the CRUD editor for this entity.  From here we can create a new row in the database table.
 
+[[Figure3-6]]
 image:images/ch03-scratch_to_production/new_feedback_entry.png["New Feedback Entry"]
 
 While CRUD applications are little more than a UI frontend to an Entity, the benefit here is in having a fully-functioning application to use as a base from which to start.  For newcomers to Java EE, this is especially useful as a learning tool.
@@ -552,12 +558,14 @@ At this point, we still have a running JBoss AS7 server and have undeployed the 
 
 Let's inform JBDS that we should consider the metadata considered in this profile; this will impact our compilation and JUnit runtime classpaths.
 
+[[Figure3-7]]
 image:images/ch03-scratch_to_production/select_maven_profiles.png["Select Maven Profile"]
 
 Now the Arquillian test launcher will know to pick up the proper adaptor to a remote JVM instance of JBoss AS7 when running tests; it will connect to the currently-running instance, deploy the defined +@Deployment+, execute the tests, and undeploy to clean up.  If we'd like to allow Arquillian to automatically control the server start/stop lifecycle alongside each test suite, we could alternatively use the +JBOSS_AS_MANAGED_7.X+ setup option which defines +org.jboss.as:jboss-as-arquillian-container-managed+ as a dependency in a POM profile.
 
 With JBDS now configured with the proper +classpath+ for test execution, all that's left to do is launch the test.  A simple right-click on the test class in the Project Explorer yields the option +Run As > JUnit Test+.  The IDE's JUnit launcher will create a new process, fire up JUnit, and yield control to Arquillian.  We'll receive results just as we'd expect from any other JUnit test.
 
+[[Figure3-8]]
 image:images/ch03-scratch_to_production/passing_test.png["Passing the Tests"]
 
 With assurance that our application has some minimal level of tested functionality, let's take a risk and move this off the isolation of our local machine and into the public realm, accessible from the world.
@@ -568,50 +576,62 @@ JBDS provides us a convenient user interface to the OpenShift cloud service, whi
 
 Before continuing, it's required to create an account; this can be achived by clicking on the "SIGN UP" button from the home page and completing the requisite form.
 
+[[Figure3-9]]
 image:images/ch03-scratch_to_production/openshift_signup.png["OpenShift Signup"]
 
 Existing users may simply log in to see active applications.
 
+[[Figure3-10]]
 image:images/ch03-scratch_to_production/openshift_login.png["OpenShift Login"]
 
 With that accomplished, we can use JBDS to connect our current _feedback_ project to a new application on OpenShift and bring it all the way to deployment.  The actions we need are available in the "OpenShift Explorer", a _view_ in JBDS.
 
+[[Figure3-11]]
 image:images/ch03-scratch_to_production/jbds_openshift_1.png["OpenShift Explorer View Selection"]
 
 In the explorer we can sign into OpenShift from JBDS using the "Connect to OpenShift" button as shown on the far right below:
 
+[[Figure3-12]]
 image:images/ch03-scratch_to_production/jbds_openshift_3.png["OpenShift Explorer"]
 
 This will open a prompt for us to enter our authentication information; simply provide the same credentials used to log into the OpenShift site.
 
+[[Figure3-13]]
 image:images/ch03-scratch_to_production/jbds_openshift_2.png["Sign In to OpenShift"]
 
 Right-clicking our account will allow us to create a "New OpenShift Application..."  Here we'll supply a name ("feedback" seems appropriate) and choose the target cartridge or "type" as "JBoss Application Server 7 (jbossas-7)"
 
+[[Figure3-14]]
 image:images/ch03-scratch_to_production/jbds_openshift_4.png["New OpenShift Application"]
 
 Next we'll be asked to set up a new project to back the application on OpenShift.  As we've just created the project above, we may "Use existing project" and select the "feedback" project from our JBDS workspace.
 
+[[Figure3-15]]
 image:images/ch03-scratch_to_production/jbds_openshift_5.png["Project for OpenShift Application"]
 
 As the OpenShift deployment mechanism is powered by Git, JBDS will now prompt us to accept some defaults for the Git metadata it'll write into our local project directory.  You may tailor thees as you see fit, though we use the defaults in this example.
 
+[[Figure3-16]]
 image:images/ch03-scratch_to_production/jbds_openshift_6.png["Import Existing OpenShift Application"]
 
 Finishing this setup will trigger the deployment of our built artifacts from our project, and JBDS will report this for us.
 
+[[Figure3-17]]
 image:images/ch03-scratch_to_production/jbds_openshift_7.png["Embedded Cartridges"]
 
 And we'll also want to confirm the Git metadata to be written into our project directory a final time; as JBDS notes, this cannot be undone (though you may manually delete the +.git+ directory from your project should you choose to disconnect your local workspace from any OpenShift or Git references).
 
+[[Figure3-18]]
 image:images/ch03-scratch_to_production/jbds_openshift_8.png["Adding Git Repo Information to Project"]
 
 As OpenShift is using Git under the covers, and by extension SSH authentication, there may be some system-specific confirmation needed to continue.  For instance, we may need to confirm that it's OK to connect:
 
+[[Figure3-19]]
 image:images/ch03-scratch_to_production/jbds_openshift_9.png["Establishing SSH Keys"]
 
 And if you have a passphrase enabled on your SSH key, you will be asked to provide this as well:
 
+[[Figure3-20]]
 image:images/ch03-scratch_to_production/jbds_openshift_10.png["Unlocking SSH Keys"]
 
 With these steps completed, our console view should show us output similar to the following:
