@@ -25,3 +25,5 @@ include::Chapter09-Security.asciidoc[]
 include::Chapter10-UI.asciidoc[]
 
 include::Chapter11-AssemblyAndDeployment.asciidoc[]
+
+include::Chapter12-Epilogue.asciidoc[]
