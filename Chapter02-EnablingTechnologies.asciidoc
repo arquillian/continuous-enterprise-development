@@ -130,7 +130,7 @@ The Arquillian project adheres to three core principles:
 * *The platform should extend or integrate existing test frameworks*.  An extensible architecture encourages reuse of existing software and fosters a unified Java testing ecosystem.  Regardless of how complex it becomes, executing an Arquillian test is as simple as selecting “Run As > Test” in the IDE or executing the “test” goal from the build tool.
 
 [[Figure2-4]]
-image::images/ch02-enabling_technologies/shrinkwrap_runas_junit.png["RunAs > JUnit"]
+image::images/cedj_03in01.png["RunAs > JUnit"]
 
 ==== ShrinkWrap
 
@@ -158,7 +158,7 @@ JavaArchive archive = ShrinkWrap.create(JavaArchive.class,"myarchive.jar")
 This enables us to take advantage of the IDE’s incremental compilation features, allowing us to skip the build.
 
 [[Figure2-5]]
-image::images/ch02-enabling_technologies/shrinkwrap_incremental_compilation.png["ShrinkWrap Incremental Compilation"]
+image::images/cedj_03in02.png["ShrinkWrap Incremental Compilation"]
 
 This piece fulfills the design goal of Arquillian to run tests based on full-fledged deployments directly from the IDE.
 
