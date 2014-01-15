@@ -1,6 +1,9 @@
 == Security
 
-_"There is no real security except for whatever you build inside yourself." - Gilda Radner_
+[quote, Gilda Radner]
+____
+There is no real security except for whatever you build inside yourself.
+____
 
 In a Utopian society, we'd leave our homes in the morning unlocked.  We'd park our cars at the office with the windows open, and after dark we'd be free to walk unlit alleyways without concern.
 

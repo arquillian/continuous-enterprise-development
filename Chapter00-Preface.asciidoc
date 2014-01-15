@@ -1,6 +1,9 @@
 == Preface
 
-_"Simplicity is the ultimate sophistication." - Leonardo DaVinci_ 
+[quote, Leonardo DaVinci]
+____
+Simplicity is the ultimate sophistication.
+____
 
 Software development for the modern web continues to evolve at a furious pace.  In recent years we've seen the trend of client-side state move to the server only to correct itself back again.  Despite JavaScript's obvious utility, two engineers are likely to yield three opinions regarding its worthiness.  HTML5 ushers an armada of rich-media and concurrency support right into the browser.  The proven, forty-year-old relational data model has fallen out of vogue to defiant NoSQL systems, and our version-control stores have undergone both implementation and paradigm overhauls.
 

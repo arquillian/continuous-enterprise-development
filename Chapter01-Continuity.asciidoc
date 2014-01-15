@@ -1,6 +1,9 @@
 == Continuity
 
-_"If everyone is moving forward together, then success takes care of itself." - Henry Ford_
+[quote, Henry Ford]
+____
+If everyone is moving forward together, then success takes care of itself.
+____
 
 === The Zen of Prevention
 
@@ -91,7 +94,10 @@ In fact, XP along with other models has both inspired and acts as an implementat
 
 === Testing _is_ Development
 
-_"Move testing from the caboose to the engine." - Tim Ottinger, Senior Consultant, Industrial Logic_ 
+[quote, Tim Ottinger, Senior Consultant, Industrial Logic]
+____
+Move testing from the caboose to the engine.
+____
 
 No matter the development method your team prescribes, and no matter how rigidly you adhere to its principles, eventually you're going to need to assert that your code works.  Of course you could handle this manually by deploying the application and letting a human user follow a scripted test plan, but wherever possible it's much more efficient and fail-proof to automate the test execution. So you're going to need to write some tests.
 

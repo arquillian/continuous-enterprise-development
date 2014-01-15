@@ -1,6 +1,9 @@
 == Java Persistence and Relational Data
 
-_"Energy and persistence conquer all things." - Benjamin Franklin_
+[quote, Benjamin Franklin]
+____
+Energy and persistence conquer all things.
+____
 
 If we really boil down the primary objective of most applications to bare metal, we'll find that nearly everything we do involves an interaction with _data_.  We supply it when we make a new online order.  We pull it out when we research on a Wiki.  We update it when we change our credit card's billing address.
 

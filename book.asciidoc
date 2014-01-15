@@ -1,7 +1,7 @@
 :bookseries: animal
 = Continuous Enterprise Development in Java
 
-include::Foreward.asciidoc[]
+include::Foreword.asciidoc[]
 
 include::Chapter00-Preface.asciidoc[]
 

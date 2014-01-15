@@ -1,6 +1,9 @@
 == The User Interface
 
-_"Beauty is a sign of intelligence." - Andy Warhol_ 
+[quote, Andy Warhol]
+____
+Beauty is a sign of intelligence.
+____
 
 To this point, we've focused entirely on elements that cannot be seen.  In this chapter we bring everything home by exposing our backend services to the end-user.
 

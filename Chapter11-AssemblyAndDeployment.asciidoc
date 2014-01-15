@@ -1,6 +1,9 @@
 == Assembly and Deployment
 
-_"The road to success is always under construction." - Lily Tomlin_ 
+[quote, Lily Tomlin]
+____
+The road to success is always under construction.
+____
 
 To this point, we've focused primarily on the testable development of our modules and have taken some selective slices out for examination and testing.  The time has come for us to address full integration by bringing everything together into a single deployable unit.
 
@@ -390,7 +393,7 @@ Note: it's not atypical for large hold times while the cache synchronizes over t
 
 Now we can manually trigger a build of our project, and if all's set up correctly, we'll see our test result come out clear.
 
-==== Automatic Building on +Git Push+ Events
+==== Automatic Building on Git Push Events
 
 Let's take things one step further in terms of automation.  We don't have to press the +Build Now+ button on our CI server every time we'd like to run a build.  With some extra configuration we can set up a trigger for new +git push+ events on the authoritative source repository to start a new CI build.
 
@@ -442,11 +445,11 @@ When the process is completed, a default landing page will be accessible to us (
 [[Figure10-13]]
 image::images/cedj_12in13.png[Welcome to OpenShift]
 
-The default DNS record will be in format +http://_appName_-_domainId_.rhcloud.com+.  It's likely that this isn't really the name we desire for public consumption, so let's add our own custom DNS name.
+The default DNS record will be in format _http://appName-domainId.rhcloud.com_.  It's likely that this isn't really the name we desire for public consumption, so let's add our own custom DNS name.
 
 This is a two step process:
 
-1) Create a DNS entry with your domain registrar or DNS Management interface to point to +http://_appName_-_domainId_.rhcloud.com+.  In our case, we'll opt for a subdomain, which amounts to a +CNAME+ record.  Consult your domain authority for the specifics of this step, but generally you might be presented with a screen that looks similar to:
+1) Create a DNS entry with your domain registrar or DNS Management interface to point to _http://appName-domainId.rhcloud.com_.  In our case, we'll opt for a subdomain, which amounts to a +CNAME+ record.  Consult your domain authority for the specifics of this step, but generally you might be presented with a screen that looks similar to:
 
 [[Figure10-14]]
 image::images/cedj_12in14.png[Add CNAME]
@@ -463,7 +466,7 @@ Alternatively, you may acquire the https://www.openshift.com/developers/rhc-clie
 $> sudo gem install rhc
 ----
 
-Once the gem is installed, you may add the domain record to OpenShift using the command +rhc alias add _appName_ _alias_ -l _username_+, for instance:
+Once the gem is installed, you may add the domain record to OpenShift using the command _++rhc alias add appName alias -l username++_, for instance:
 
 ----
 $> $ rhc alias add geekseek geekseek.continuousdev.org -l admin@continuousdev.org

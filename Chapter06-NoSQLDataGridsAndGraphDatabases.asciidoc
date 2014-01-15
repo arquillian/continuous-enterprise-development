@@ -1,6 +1,9 @@
 == NoSQL: Data Grids and Graph Databases
 
-_"I’m more of an adventurous type than a relationship type.." - Bob Dylan_
+[quote, Bob Dylan]
+____
+I’m more of an adventurous type than a relationship type..
+____
 
 Until relatively recently, the relational database (RDBMS) reigned over data in enterprise applications by a wide margin when contrasted with other approaches.  RDBMSs follow a premise of storing heavily normalized data in relational structures such as tables, and are heavily based on rigorous mathematical set theory. Commercial offerings from http://www.oracle.com/index.html[Oracle] and established open-source projects like http://www.mysql.com/[MySQL] (reborn as https://mariadb.org/[MariaDB]) and http://www.postgresql.org/[PostgreSQL] became defacto choices when it came to storing, archiving, retrieving and searching for data.  In retrospect, it's shocking that given the varying requirements from those operations, one solution was so heavily lauded for so long.
 
@@ -710,7 +713,7 @@ Given our user requirements and the implementation choices we've made, we have a
 * Transactional integrity of CRUD operations on +Attachment+ objects
 * Create, Delete, and Find relationships between entities
 
-==== +Attachment+ CRUD Tests
+==== Attachment CRUD Tests
 
 First we'll need to ensure that we may Create, Read, Update and Delete +Attachment+ instances using the data grid provided by Infinispan.  To ensure these are working, we'll use +org.cedj.geekseek.domain.attachment.test.integration.AttachmentRepositoryTestCase+:
 
@@ -896,7 +899,7 @@ With the deployment and injection of the +Repository+ done, we're now free to im
 So here we have our CRUD tests using the injected +Repository+ to perform their persistence operations.  In turn, we've implemented the +Repository+ with an Infinispan backend (which in this case is running in local embedded mode).  We can now be assured that our repository layer is correctly hooked together and persistence to the data grid is working properly.
 
 
-==== Transactional Integrity of +Attachment+ Persistence
+==== Transactional Integrity of Attachment Persistence
 
 While we're confident that the CRUD operations of our +Attachment+ entity are in place, we should ensure that the transactional semantics are upheld if a transaction is in-flight.  This will essentially validate that Infinispan is respectful of the _Java Transactions API_ (JTA), a specification under the direction of the http://jcp.org/en/jsr/detail?id=907[JSR-907] Expert Group.
 

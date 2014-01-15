@@ -1,6 +1,9 @@
 == REST and Addressable Services
 
-_"Rest and be thankful." - Inscription at Rest Stop Along Scotland's Highway A83_
+[quote, Inscription at Rest Stop Along Scotland's Highway A83]
+____
+Rest and be thankful.
+____
 
 The concepts guiding the makeup of the modern web could be considered a happy accident, or at least an implementation of ideas that had general applicability far beyond their initial design criteria.  In the late 1980s we had the hardware and software necessary for networking; low-level tools for transmitting data from one computer to another.  We even had some payload protocols and application layers available including IRC for chat, POP for email, and USENET for general discussions.  We were communicating, albeit over relatively constrained channels.
 
@@ -492,7 +495,7 @@ private RepresentationConverter<SessionRepresentation,
 
 Through these converters we may easily delegate the messy business of parsing the media type payload formats to and from our own interal domain objects.
 
-==== The +@ResourceModel+
+==== The @ResourceModel
 
 As JAX-RS 1.x does not define an interceptor model, we need to apply these on our own in order to activate cross-cutting concerns such as security, validation, and resource linking to our JAX-RS endpoints.  This is easily enough accomplished by using the stereotype feature of CDI, where we may create our own annotation type (which itself has annotations); wherever our custom type is applied, the metadata we specify upon the stereotype will propagate.  So we may create an annotation to apply all of the features we'd like upon a +RepositoryResource+, and we call it +org.cedj.geekseek.web.rest.core.annotation.ResourceModel+:
 
@@ -550,7 +553,7 @@ Marking the +RESTInterceptorEnabler+ with +@REST+ and +@Interceptor+ binds the +
 
 In practice, this means that our +SecurityInterceptor+, +LinkedInterceptor+, and +ValidatedInterceptor+ (our implementations of type +RESTInterceptor+) will all be invoked for business methods on classes marked +@ResourceModel+.
 
-==== +LinkableRepresentation+
+==== LinkableRepresentation
 
 As you may have noticed from our DAP, we have a series of paths which accept a source media type and return another media type representing the data in question.  These are modeled by our +org.cedj.geekseek.web.rest.core.Representation+:
 
@@ -684,7 +687,7 @@ public class LinkedInterceptor implements RESTInterceptor {
 }
 ----
 
-==== +ResourceLink+
+==== ResourceLink
 
 Recall from our DAP that many requests are to return a link to other resources as the client makes its way through state changes in the application.  A link is really a value object to encapsulate a media type, href (link), and relation.  We provide this in +org.cedj.geekseek.web.rest.core.ResourceLink+:
 
@@ -889,24 +892,40 @@ Thanks to an ability to bring an arbitrary payload to a server and hook into ser
 
 ===== Supported Tools and Frameworks
 
-====== Cross-protocol
+++++
+<simpara></simpara>
+<sect4 id="_cross-protocol">
+<title>Cross-protocol</title>
+<simpara>Warp currently supports only the HTTP protocol, but conceptually it can be used with any protocol where we are able to intercept client-to-server communication on both, the client and the server.</simpara>
+</sect4>
+<sect4 id="_client-side_testing_tools">
+<title>Client-Side Testing Tools</title>
+<simpara>Warp supports any client-side tools if you are using them in a way that requests can be intercepted (in a case of HTTP protocol, you need to communicate through a proxy instead of direct communication with a server).</simpara>
+<simpara>Examples of such libraries/frameworks:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<literal>URL#openStream()</literal>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Apache HTTP Client
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Selenium WebDriver
+</simpara>
+</listitem>
+</itemizedlist>
+<note>
+<simpara>In order to use Warp, you should inject an @ArquillianResource URL into the test case, which points to the proxy automatically.</simpara>
+</note>
+</sect4>
 
-Warp currently supports only the HTTP protocol, but conceptually it can be used with any protocol where we are able to intercept client-to-server communication on both, the client and the server.
 
-====== Client-Side Testing Tools
-
-Warp supports any client-side tools if you are using them in a way that requests can be intercepted (in a case of HTTP protocol, you need to communicate through a proxy instead of direct communication with a server).
-
-Examples of such libraries/frameworks:
-
-* +URL#openStream()+
-* Apache HTTP Client
-* Selenium WebDriver
-
-[NOTE]
-====
-In order to use Warp, you should inject an @ArquillianResource URL into the test case, which points to the proxy automatically.
-====
+++++
 
 ===== Frameworks
 

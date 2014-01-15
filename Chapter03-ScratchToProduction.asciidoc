@@ -1,6 +1,9 @@
 == Scratch to Production
 
-_"The way to get started is to quit talking and begin doing." - Walt Disney_
+[quote, Walt Disney]
+____
+The way to get started is to quit talking and begin doing.
+____
 
 Enterprise Java has long suffered the (possibly correct) critique that it's difficult to bootstrap a new project.  Couple the lack of definitive jumpstart documentation with vendor-specific techniques for application deployment, throw a mess of 3rd-party dependencies into the mix, and we've got a prime recipe yielding barriers to entry for programmers new to web development in Java.
 
