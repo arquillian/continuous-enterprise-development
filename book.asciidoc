@@ -1,3 +1,4 @@
+:bookseries: animal
 = Continuous Enterprise Development in Java
 
 include::Foreward.asciidoc[]
@@ -27,3 +28,7 @@ include::Chapter10-UI.asciidoc[]
 include::Chapter11-AssemblyAndDeployment.asciidoc[]
 
 include::Chapter12-Epilogue.asciidoc[]
+
+include::index.asciidoc[]
+
+include::colo.asciidoc[]
