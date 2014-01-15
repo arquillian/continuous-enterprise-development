@@ -3,31 +3,31 @@
 
 include::Foreword.asciidoc[]
 
-include::Chapter00-Preface.asciidoc[]
+include::ch00.asciidoc[]
 
-include::Chapter01-Continuity.asciidoc[]
+include::ch01.asciidoc[]
 
-include::Chapter02-EnablingTechnologies.asciidoc[]
+include::ch02.asciidoc[]
 
-include::Chapter03-ScratchToProduction.asciidoc[]
+include::ch03.asciidoc[]
 
-include::Chapter04-RequirementsAndExampleApplication.asciidoc[]
+include::ch04.asciidoc[]
 
-include::Chapter05-JavaPersistenceAndRelationalData.asciidoc[]
+include::ch05.asciidoc[]
 
-include::Chapter06-NoSQLDataGridsAndGraphDatabases.asciidoc[]
+include::ch06.asciidoc[]
 
-include::Chapter07-BusinessLogicServicesLayer.asciidoc[]
+include::ch07.asciidoc[]
 
-include::Chapter08-RESTAddressableServices.asciidoc[]
+include::ch08.asciidoc[]
 
-include::Chapter09-Security.asciidoc[]
+include::ch09.asciidoc[]
 
-include::Chapter10-UI.asciidoc[]
+include::ch10.asciidoc[]
 
-include::Chapter11-AssemblyAndDeployment.asciidoc[]
+include::ch11.asciidoc[]
 
-include::Chapter12-Epilogue.asciidoc[]
+include::ch12.asciidoc[]
 
 include::index.asciidoc[]
 

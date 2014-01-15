@@ -1,0 +1,85 @@
+Continuous Enterprise Development in Java, 1E / 9781449328290
+RT # [ 174646 ]
+
+Stylesheet: animal
+Toolchain: Atlas/csspdf
+
+Atlas URL: http://atlas.labs.oreilly.com/books/1230000000485
+
+Incoming format: Asciidoc
+Outgoing format: Asciidoc
+
+Preliminary pagecount (without figures): xii + 210 = 222 
+
+
+Resources
+=========
+
+** Intake PDFs: 
+   (Git repo) pdf/drafts/intake.pdf
+   (Git repo) pdf/drafts/intake_with_remarks.pdf
+
+** Figs: Illustrations is still working on the figures. 
+   47 total. (46 are informal; 1 are inline.)
+
+   Once the figs are processed on /work, you'll need to add them to the book's repo in Git.
+
+** Intake Report:
+   (Git repo) tools/intakereport.txt
+
+** MS Snapshot:
+    To view the submitted files, you'll need to checkout the git tag named 'manuscript_to_prod' 
+    by running the following command in your checkout:
+    
+    $ git checkout manuscript_to_prod
+    
+    This will temporarily switch the files in your repo to the state they were in when the manuscript_to_prod tag 
+    was created. 
+    To switch the files back to the current state, run:
+    
+    $ git checkout master
+  
+  
+Notes from Tools:
+=================
+
+** Syntax highlighting: applied to 201 out of 290 code listings.
+
+** Please let Tools know ASAP if there are any other global problems for which we can help automate a fix.
+
+
+Notes from Dan:
+==================
+
+This book is ready for intake. 
+
+The Foreword is rendering as a Chapter.
+
+[Fixed. --Tools]
+
+The Preface opens with a quote and attribution, but they're not styled correctly. Actually, this is true of other epigraphs throughout.
+
+[Fixed. --Tools]
+
+See the note about Figure captions from Meg. The authors claim to have included them, but I don't see them. 
+
+[The authors may think that the alt text is the caption. Check out the text in the brackets for each figure and perhaps confirm with them. --Tools ]
+
+Prod: please ask copyeditor to suggest callouts for all figures and such. Also, ask her to watch for stacked headlines and ask the 
+authors to insert text to avoid them.
+
+*A figure under "The Development Environment" isn't rendering.
+
+[Fixed. --Tools]
+
+Watch for long code lines. 
+
+Watch figure sizes. Some look too big.
+
+==================
+
+Please let me know about any other issues.
+
+Thanks,
+Chris
+
