@@ -394,7 +394,7 @@ ShrinkWrap Resolvers is comprised of the following modules:
 .Needs a caption
 [options="header"]
 |====
-|_Name_|_Maven coordinates_
+|Name|Maven coordinates
 |API|org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-api
 |SPI|org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-spi
 |Maven API|org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-api-maven
