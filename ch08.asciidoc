@@ -69,24 +69,22 @@ As the Java community has come to understand the REST principles, it has provide
 
 The _Java API for RESTful Web Services_, or JAX-RS, is a specification under the direction of the Java Community Process, defined by http://jcp.org/aboutJava/communityprocess/final/jsr339/index.html[JSR-339] in its latest 2.0 version.  Java EE6 incorprates the 1.1 revision, as defined by http://jcp.org/en/jsr/detail?id=311[JSR-311]; this is the version we'll be covering here.  From the specification document, its goals are to be/have:
 
-____
-* *POJO-based*: The API will provide a set of annotations and associated classes/interfaces that may be used
+POJO-based:: The API will provide a set of annotations and associated classes/interfaces that may be used
 with POJOs in order to expose them as Web resources. The specification will define object lifecycle
 and scope.
-* *HTTP-centric*: The specification will assume HTTP is the underlying network protocol and will pro-
+HTTP-centric:: The specification will assume HTTP is the underlying network protocol and will pro-
 vide a clear mapping between HTTP and URI elements and the corresponding API classes and
 annotations. The API will provide high level support for common HTTP usage patterns and will be
 sufficiently flexible to support a variety of HTTP applications including WebDAV and the Atom
 Publishing Protocol.
-* *Format independence*: The API will be applicable to a wide variety of HTTP entity body content types. It
+Format independence:: The API will be applicable to a wide variety of HTTP entity body content types. It
 will provide the necessary pluggability to allow additional types to be added by an application in a
 standard manner.
-* *Container independence*: Artifacts using the API will be deployable in a variety of Web-tier containers.
+Container independence:: Artifacts using the API will be deployable in a variety of Web-tier containers.
 The specification will define how artifacts are deployed in a Servlet container and as a JAX-WS Provider.
-* *Inclusion in Java EE*: The specification will define the environment for a Web resource class hosted in a
+Inclusion in Java EE:: The specification will define the environment for a Web resource class hosted in a
 Java EE container and will specify how to use Java EE features and components within a Web resource
 class.
-____
 
 [NOTE]
 ====
