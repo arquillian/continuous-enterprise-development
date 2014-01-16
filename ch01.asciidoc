@@ -113,22 +113,14 @@ Automated testing can take many forms, and we'll categorize a few for use throug
 
 Proponents of test-oriented software development processes may qualify tests in one or more flavors:
 
-* Acceptance
-** Asserts that code meets business requirements
-* Black-Box
-** Asserts the contract of an API is working without respect to its internals
-* Compatibility
-** Asserts that code plays nicely with one or more outside components; for instance a web application may need to display correctly on Internet Explorer, Chrome, Firefox, Safari, and mobile devices.
-* Functional
-** Asserts that code meets the technical requirements derived from business requirements; ie. that all *functions* are working as expected
-* Load / Stress / Performance
-** Asserts and measures how a system handles input under load, and how gracefully it degrades with increased traffic
-* Regression
-** Asserts that previously-identified errors have been corrected or that existing features remain to function
-* Smoke
-** A subset of a full test suite, intended to run quickly and provide feedback that the system is generally intact from a simplistic level
-* White-Box
-** Asserts that an API is working as contracted, taking into concern implementation-specific data structures and constructs.
+Acceptance:: Asserts that code meets business requirements
+Black-Box:: Asserts the contract of an API is working without respect to its internals
+Compatibility:: Asserts that code plays nicely with one or more outside components; for instance a web application may need to display correctly on Internet Explorer, Chrome, Firefox, Safari, and mobile devices.
+Functional:: Asserts that code meets the technical requirements derived from business requirements (i.e., that all _functions_ are working as expected)
+Load/Stress/Performance:: Asserts and measures how a system handles input under load, and how gracefully it degrades with increased traffic
+Regression:: Asserts that previously-identified errors have been corrected or that existing features remain to function
+Smoke:: A subset of a full test suite, intended to run quickly and provide feedback that the system is generally intact from a simplistic level
+White-Box:: Asserts that an API is working as contracted, taking into concern implementation-specific data structures and constructs.
 
 A well-tested application may have tests covering many of the above areas, and we may further organize these types according to scope.
 
@@ -173,7 +165,7 @@ Imagine we'd like to build a pipe to carry water from a nearby reservoir to a tr
 
 And so it is with software; we must check that our components play nicely with one another.  This is especially true for Java EE where _dependency injection_ is a commonplace tool.  It's great that one bean not be explicitly bound to another, but eventually we rely upon a container to do the wiring for us.  If our metadata or configuration is incorrect, our injection points may not be filled as we're expecting.  This could result in a deployment-time exception or worse, making it imperative that we have test coverage for the interaction between components.
 
-When we talk about _integration testing_ in this book, it's within the context of a _container_.  Historically, interaction with an application server has been notoriously difficult to test.  For many, Java EE has become a dirty term as a result.  It's the goal of this text to clearly delineate techniques for building enterprise applications in a testable manner.  While many may view this discussion as related to integration testing, instead we feel that it's more about *development* and integration testing is a valued part of that equation.
+When we talk about _integration testing_ in this book, it's within the context of a _container_.  Historically, interaction with an application server has been notoriously difficult to test.  For many, Java EE has become a dirty term as a result.  It's the goal of this text to clearly delineate techniques for building enterprise applications in a testable manner.  While many may view this discussion as related to integration testing, instead we feel that it's more about _development_ and integration testing is a valued part of that equation.
 
 In that sense, testing _is_ development.
 
