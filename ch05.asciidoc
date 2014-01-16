@@ -84,7 +84,7 @@ Now, let's take a look at how that same information might be represented in a re
 .Needs a caption
 [options="header"]
 |============
-|*Data Type*|*Field Name*
+|*Data type*|*Field name*
 |+UNSIGNED INTEGER+ (_PK_)|id
 |+VARCHAR(255)+|name
 |+BIT(1)+|male
