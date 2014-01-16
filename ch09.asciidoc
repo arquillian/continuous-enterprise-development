@@ -7,7 +7,7 @@ ____
 
 In a Utopian society, we'd leave our homes in the morning unlocked.  We'd park our cars at the office with the windows open, and after dark we'd be free to walk unlit alleyways without concern.
 
-Unfortunately, the small percentage of those looking to take advantage of others necessitates taking some measures to protect ourselves.  We look after our belongings and each other.  In the digital arena, our vulnerable currency is _data_ - not everyone is entitled to see or edit everything.  While our systems are built to support a large number of users, we cannot simply allow anyone to take any action they please.  In software and life, security amounts to controlling access.
+Unfortunately, the small percentage of those looking to take advantage of others necessitates taking some measures to protect ourselves.  We look after our belongings and each other.  In the digital arena, our vulnerable currency is __data__--not everyone is entitled to see or edit everything.  While our systems are built to support a large number of users, we cannot simply allow anyone to take any action they please.  In software and life, security amounts to controlling access.
 
 The process by which we grant or restrict access is reflected in our _security model_; this defines the criteria by which we judge access attempts.  If someone is asking to enter the office, should we ensure they're an employee?  Is it after business hours, and how does that affect our decision?  Access may be permitted or denied based upon _contextual_ information, and the way we value those contexts is what comprises our security model.
 
@@ -18,13 +18,12 @@ Coupled with authorization, the act of granting or denying access, is ensuring t
 === Use Cases and Requirements
 
 As GeekSeek is intended to communicate its users' conference schedules publicly, we're not concerned with locking down read operations.  However, it's still important that writes are done by authorized users, so our requirements will generally state "limit unauthorized users' access to create or change data":
-____
+
 * As a 3rd-party integrator, I should not be able to:
 ** Add/Change/Delete a Conference without being authorized
 ** Add/Change/Delete a Session of a Conference without being authorized
 ** Add/Change/Delete an Attachment to Sessions and Conferences without being authorized
 ** Add/Change/Delete a Venue (and associate with a Conference and Session) without being authorized
-____
 
 In practice, this means we'll need to lock down the resources for these actions with a layer to inspect incoming requests, analyze the calling user and other contextual information, and determine whether we allow the invocation to proceed or not.
 
@@ -34,13 +33,13 @@ In practice, this means we'll need to lock down the resources for these actions 
 
 It likely doesn't benefit us much to build bespoke solutions for generalized and important layers such as security, so we'll be relying on integration with a few frameworks to help us fulfill our requirements.
 
-===== PicketLink - Application-level Security
+===== PicketLink: Application-level Security
 
 http://www.picketlink.org[/PicketLink] is an umbrella project for security and identity management for Java Applications.  It provides the backbone of security for a variety of JBoss products, but also may be used standalone, as we'll do with GeekSeek.  There are PicketLink components to support:
 
-* http://www.jboss.org/picketlink/IDM.html[IDM]; universal identity management with pluggable backends like LDAP or RDBMS
-* http://www.jboss.org/picketlink/Fed[Federation]; Federated Identity and Single-Sign-On (SSO)
-* http://www.jboss.org/picketlink/XACML.html[XACML]; Oasis XACML v2.0 compliant access control engine
+http://www.jboss.org/picketlink/IDM.html[IDM]:: Universal identity management with pluggable backends like LDAP or RDBMS
+http://www.jboss.org/picketlink/Fed[Federation]:: Federated Identity and Single-Sign-On (SSO)
+http://www.jboss.org/picketlink/XACML.html[XACML]:: Oasis XACML v2.0 compliant access control engine
 
 We'll be leveraging PicketLink in GeekSeek to supply us with an _identity manager_ which we may use for authentication.  This comes in the form of the PicketLink API's +org.picketlink.Identity+, which has operations to support checking the current login state, logging in, logging out, and checking access permission:
 
