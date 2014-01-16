@@ -176,7 +176,8 @@ While ShrinkWrap is a standalone virtual filesystem, in our examples we'll be pr
 
 The first step is getting your hands on the ShrinkWrap binaries. The Core is composed of three pieces:
 
-
+.Needs a caption
+[options="header"]
 |=========================
 |_Name_|_Maven Coordinates_
 |API|org.jboss.shrinkwrap:shrinkwrap-api
