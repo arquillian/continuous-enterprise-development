@@ -54,7 +54,9 @@ This makes Infinispan well-suited to holding large objects that may have otherwi
 
 The greatest irony of the _Relational_ Database Management System is that they start to break down when we need to model complex _relationships_.  As we've seen, a traditional RDBMS will associate data types by drawing pointers between tables using foreign-key relationships:
 
+.Needs a caption
 [[Figure6-1]]
+image::images/cedj_0601.png[]
 
 When we go to query for these relationships we often perform an operation called an +_SQL JOIN_+ to return a result of rows from two or more tables.  This process involves resolving any foreign keys to provide a _denormalized_ view; one that combines all relevant data into a form that's useful for us as humans to interpret, but might not be the most efficient for storage or searching purposes.
 
