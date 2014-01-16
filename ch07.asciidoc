@@ -2,7 +2,7 @@
 
 [quote, Mahatma Gandhi]
 ____
-The best way to find yourself is to lose yourself in the service of others."
+The best way to find yourself is to lose yourself in the service of others.
 ____
 
 The code we’ve developed and tested up to this point has dealt with data: organizing, accessing, mutating, and transforming it into formats more comfortable to us as application developers. We’ve mentioned that these are the nouns of our GeekSeek project; now it’s time to put these to some good use and take _action_.
