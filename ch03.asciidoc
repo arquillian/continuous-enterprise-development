@@ -9,7 +9,7 @@ Enterprise Java has long suffered the (possibly correct) critique that it's diff
 
 Of course, this all runs contrary to the mission of Java EE: to make our experience with enterprise features _easier_.  So while the programming model has certainly evolved past the days of confusingly verbose and explicitly-required metadata, the warts which lead to frustrating stack traces and unexpected deployment behaviors unfortunately persist.
 
-Some of this is by design.  The Specifications which comprise the Java EE Platform intentionally leave room for vendors to implement features like server startup and deployment at their discretion footnote:[While there is some limited facility to, for instance, create an EJB container in a running JVM and bring EJB deployments on the classpath into service, a full-scale deployment is still typically achieved in a vendor-specific manner].   
+Some of this is by design.  The Specifications which comprise the Java EE Platform intentionally leave room for vendors to implement features like server startup and deployment at their discretion.footnote:[While there is some limited facility to, for instance, create an EJB container in a running JVM and bring EJB deployments on the classpath into service, a full-scale deployment is still typically achieved in a vendor-specific manner]   
 
 In the interest of providing a uniformly-workable solution to the reader, this text will routinely opt for vendor-specific approaches in favor of generic guidelines.  By the end of this chapter, you should be comfortable creating a new Java EE Web Application and pushing it live to production using a few tools and services offered by the JBoss Community.
 
