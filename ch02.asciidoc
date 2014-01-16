@@ -133,9 +133,9 @@ Picking up where unit tests leave off, Arquillian handles all the plumbing of co
 
 The Arquillian project adheres to three core principles:
 
-* *Tests should be portable to any supported container*.  Keeping container-specific APIs out of the tests enables developers to verify application portability by running tests in a variety of containers. It also means that lightweight containers can be used as a substitute for full containers during development.
-* *Tests should be executable from both the IDE and the build tool*.  By leveraging the IDE, the developer can skip the build for a faster turnaround and has a familiar environment for debugging. These benefits shouldn’t sacrifice the ability to run the tests in continuous integration using a build tool.
-* *The platform should extend or integrate existing test frameworks*.  An extensible architecture encourages reuse of existing software and fosters a unified Java testing ecosystem.  Regardless of how complex it becomes, executing an Arquillian test is as simple as selecting “Run As > Test” in the IDE or executing the “test” goal from the build tool.
+Tests should be portable to any supported container:: Keeping container-specific APIs out of the tests enables developers to verify application portability by running tests in a variety of containers. It also means that lightweight containers can be used as a substitute for full containers during development.
+Tests should be executable from both the IDE and the build tool::  By leveraging the IDE, the developer can skip the build for a faster turnaround and has a familiar environment for debugging. These benefits shouldn’t sacrifice the ability to run the tests in continuous integration using a build tool.
+The platform should extend or integrate existing test frameworks:: An extensible architecture encourages reuse of existing software and fosters a unified Java testing ecosystem.  Regardless of how complex it becomes, executing an Arquillian test is as simple as selecting “Run As > Test” in the IDE or executing the “test” goal from the build tool.
 
 .RunAs > JUnit
 [[Figure2-4]]
