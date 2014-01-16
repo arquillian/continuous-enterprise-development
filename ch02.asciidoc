@@ -52,7 +52,7 @@ That said, Maven continues to be a popular and widely-used tool in Java developm
 
 If you've spent any time developing Java EE-based projects (or any nontrivial application, for that matter!), you've likely invested a good amount of energy in creating the project layout, defining dependencies, and informing the build system of the relevant ClassPaths to be used in compilation and execution.  While Maven enables us to reduce that load as compared with undertaking project setup manually, there's typically quite a bit of boilerplate involved in the +pom.xml+ defining your requirements.
 
-http://forge.jboss.org/[JBoss Forge] offers "incremental project enhancement for Java EE".  Implemented as a command shell, Forge gives us the ability to alter project files and folders.  Some concrete tasks we might use Forge to handle are:
+http://forge.jboss.org/[JBoss Forge] offers "incremental project enhancement for Java EE."  Implemented as a command shell, Forge gives us the ability to alter project files and folders.  Some concrete tasks we might use Forge to handle are:
 
 * Adding _Java Persistence API_ (JPA) entities and describing their model
 * Configuring Maven dependencies
@@ -60,7 +60,7 @@ http://forge.jboss.org/[JBoss Forge] offers "incremental project enhancement for
 * Generating a view layer, reversed-engineered from a domain model
 * Deploying to an application server
 
-Because Forge is built atop a _modular, http://forge.jboss.org/plugins.html[plugin]-based architecture_, it's extensible to additional tasks that may be specific to your application.
+Because Forge is built atop a _modular_, http://forge.jboss.org/plugins.html[_plugin-based architecture_], it's extensible to additional tasks that may be specific to your application.
 
 Overall, the goal of Forge is to ease project setup at all stages of development, so we'll be employing it in this text to speed along the construction of our examples.
 
