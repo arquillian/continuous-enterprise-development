@@ -571,7 +571,7 @@ image::images/cedj_04in07.png["Select Maven Profile"]
 
 Now the Arquillian test launcher will know to pick up the proper adaptor to a remote JVM instance of JBoss AS7 when running tests; it will connect to the currently-running instance, deploy the defined +@Deployment+, execute the tests, and undeploy to clean up.  If we'd like to allow Arquillian to automatically control the server start/stop lifecycle alongside each test suite, we could alternatively use the +JBOSS_AS_MANAGED_7.X+ setup option which defines +org.jboss.as:jboss-as-arquillian-container-managed+ as a dependency in a POM profile.
 
-With JBDS now configured with the proper +classpath+ for test execution, all that's left to do is launch the test.  A simple right-click on the test class in the Project Explorer yields the option +Run As > JUnit Test+.  The IDE's JUnit launcher will create a new process, fire up JUnit, and yield control to Arquillian.  We'll receive results just as we'd expect from any other JUnit test.
+With JBDS now configured with the proper +classpath+ for test execution, all that's left to do is launch the test.  A simple right-click on the test class in the Project Explorer yields the option Run As -> JUnit Test.  The IDE's JUnit launcher will create a new process, fire up JUnit, and yield control to Arquillian.  We'll receive results just as we'd expect from any other JUnit test.
 
 .Passing the Tests
 [[Figure3-8]]
