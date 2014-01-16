@@ -77,6 +77,7 @@ Simple enough; this value object which explicitly declares the relationship betw
 
 Now, let's take a look at how that same information might be represented in a relational database.  Much like a spreadsheet, classes from our object model are instead organized into tables:
 
+[option="header"]
 |============
 |*Data Type*|*Field Name*
 |+UNSIGNED INTEGER+ (_PK_)|id
@@ -90,6 +91,7 @@ Already we see there are some differences here.  The +id+, +name+, and +male+ fi
 
 This is the defining characteristic of _relational_ in RDBMS.  These fields are in fact pointers to the _primary key_, or identifying +id+ field of another record.  As such, they are called _foreign keys_.  So our data may look something like this:
 
+[option="header"]
 |==========
 |+id+|+name+|+male+|+father+|+mother+
 |1|Paternal Grandpa|1||
