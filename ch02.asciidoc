@@ -782,7 +782,7 @@ ShrinkWrap.create(MavenImporter.class).configureFromFile("/path/to/settings.xml"
   .loadPomFromFile("/path/to/pom.xml").importBuildOutput().as(JavaArchive.class);
 ----
 
-[IMPORTANT]
+[NOTE]
 ====
 +MavenImporter+ does not currently support other packagings but JAR and WAR. Also, it does not honor many of Maven plugins, currently it supports their limited subset.
 
