@@ -35,7 +35,9 @@ One very nice feature of Maven is that it strives for _"convention over configur
 
 At the core of the Maven engine is a sophisticated _dependency management_ solution capable of resolving libraries by name from a http://search.maven.org/[Central Repository] (or additionally-configured repository) onto a user's local system.  This feature allows us to skip the manual process of adding dependencies into our version control system, and allows us to instead fetch them on-demand as part of the build process.  As an added bonus, the requisite dependencies for all projects consuming ours are well-documented and automatically fetched for us.
 
+.Need a caption
 [[Figure2-1]]
+image::images/cedj_0201.png[]
 
 Maven is not without its detractors, however.  It's been criticized for a few points, among them:
 
@@ -68,7 +70,9 @@ Overall, the goal of Forge is to ease project setup at all stages of development
 
 From the moment we collaborate on a project with others or would like to inspect the evolution of our code over time, we need some form of _version control_.  Until recently, the most common paradigm for synchronizing access to a shared codebase was the _client/server_ model wherein developers may keep a local working copy and check their changes into a centralized server.  
 
+.Need a caption
 [[Figure2-2]]
+image::images/cedj_0202.png[]
 
 Some systems utilize file-level locking to ensure that no conflicts arise during development; others allow concurrent access at the file granularity but cue the developer to resolve line-level conflicts upon committing changes upstream.
 
@@ -132,6 +136,7 @@ The Arquillian project adheres to three core principles:
 * *Tests should be executable from both the IDE and the build tool*.  By leveraging the IDE, the developer can skip the build for a faster turnaround and has a familiar environment for debugging. These benefits shouldn’t sacrifice the ability to run the tests in continuous integration using a build tool.
 * *The platform should extend or integrate existing test frameworks*.  An extensible architecture encourages reuse of existing software and fosters a unified Java testing ecosystem.  Regardless of how complex it becomes, executing an Arquillian test is as simple as selecting “Run As > Test” in the IDE or executing the “test” goal from the build tool.
 
+.RunAs > JUnit
 [[Figure2-4]]
 image::images/cedj_03in01.png["RunAs > JUnit"]
 
@@ -160,6 +165,7 @@ JavaArchive archive = ShrinkWrap.create(JavaArchive.class,"myarchive.jar")
 
 This enables us to take advantage of the IDE’s incremental compilation features, allowing us to skip the build.
 
+.ShrinkWrap incremental compilation
 [[Figure2-5]]
 image::images/cedj_03in02.png["ShrinkWrap Incremental Compilation"]
 
