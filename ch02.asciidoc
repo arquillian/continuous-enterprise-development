@@ -179,7 +179,7 @@ The first step is getting your hands on the ShrinkWrap binaries. The Core is com
 .Needs a caption
 [options="header"]
 |=========================
-|_Name_|_Maven coordinates_
+|Name|Maven coordinates
 |API|org.jboss.shrinkwrap:shrinkwrap-api
 |SPI|org.jboss.shrinkwrap:shrinkwrap-spi
 |Implementation|org.jboss.shrinkwrap:shrinkwrap-impl-base
@@ -221,7 +221,7 @@ The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.a
 .Needs a caption
 [options="header"]
 |=============================
-|_Archive type_|_Description_
+|Archive type|Description
 |+org.jboss.shrinkwrap.api.GenericArchive+|Simplest type of concrete user-view of an +Archive+; supports generic operations
 |+org.jboss.shrinkwrap.api.spec.JavaArchive+|JAR type; allows addition of +Class+ es, +Package+ s, and Manifest operations
 |+org.jboss.shrinkwrap.api.spec.EnterpriseArchive+|Java EE EAR type; supports Manifest and related spec operations
@@ -243,7 +243,7 @@ Of course, an object representing an empty archive is pretty useless.  So let's 
 .Needs a caption
 [options="header"]
 |=====================
-|_Asset_|_Represents_
+|Asset|Represents
 |+org.jboss.shrinkwrap.api.asset.ArchiveAsset+|Nested +Archive+ content
 |+org.jboss.shrinkwrap.api.asset.ByteArrayAsset+|+byte[]+ or +InputStream+ content 
 |+org.jboss.shrinkwrap.api.asset.ClassAsset+|Java +Class+ content
@@ -336,7 +336,7 @@ There are 3 types of exporters which ship with ShrinkWrap:
 .Needs a caption
 [options="header"]
 |==========================
-|_Exporter_|_Output format_
+|Exporter|Output format
 |+org.jboss.shrinkwrap.api.exporter.TarExporter+|TAR
 |+org.jboss.shrinkwrap.api.exporter.TarGzExporter+|TAR.GZ
 |+org.jboss.shrinkwrap.api.exporter.ZipExporter+|ZIP
@@ -347,7 +347,7 @@ Of course, we can also obtain a ShrinkWrap archive from a flat-file in a similar
 .Needs a caption
 [options="header"]
 |==========================
-|_Importer_|_Output format_
+|Importer|Output format
 |+org.jboss.shrinkwrap.api.importer.TarImporter+|TAR
 |+org.jboss.shrinkwrap.api.importer.TarGzImporter+|TAR.GZ
 |+org.jboss.shrinkwrap.api.importer.ZipImporter+|ZIP
