@@ -13,7 +13,7 @@ This chapter will ultimately link a +git push+ to validate new commits in a _con
 
 === Obtaining JBoss EAP
 
-_JBoss Enterprise Application Platform_ (EAP) is Red Hat's supportable application server distribution born from the community open-source _WildFly_ project (formerly known as the JBoss Application Server).  A full discussion of the relationship and differences between community and supportable middleware is detailed by Red Hat http://www.redhat.com/products/jbossenterprisemiddleware/community-enterprise/[here], and some of the most important points are:
+_JBoss Enterprise Application Platform_ (EAP) is Red Hat's supportable application server distribution born from the community open-source _WildFly_ project (formerly known as the JBoss Application Server).  A full discussion of the relationship and differences between community and supportable middleware is detailed by http://www.redhat.com/products/jbossenterprisemiddleware/community-enterprise/[Red Hat], and some of the most important points are:
 
 * The community projects are built to innovate quickly and push new features at a rapid rate.
 * Supportable products are intended to have a multi-year life span, and receive updates and bug fixes over this time period.
