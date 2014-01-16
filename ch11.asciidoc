@@ -406,13 +406,13 @@ Let's take things one step further in terms of automation.  We don't have to pre
 
 CloudBees http://developer.cloudbees.com/bin/view/DEV/GitHub+Commit+Hooks+HOWTO[documents this process], and we'll follow along these guidelines.  
 
-First we must log into the CloudBees Jenkins home and select the "GitHub" plugin for installation at the +Manage Jenkins+ > +Manage Plugins+ screen.  Jenkins will download and install the plugin, then reboot the instance.  Then we may go to +Manage Jenkins+ > +Configure System+ and select "Manually manage hook URLs" under the "GitHub Web Hook" setting.  Save and exit the screen.
+First we must log into the CloudBees Jenkins home and select the "GitHub" plugin for installation at the Manage Jenkins -> Manage Plugins screen.  Jenkins will download and install the plugin, then reboot the instance.  Then we may go to Manage Jenkins -> Configure System and select "Manually manage hook URLs" under the "GitHub Web Hook" setting.  Save and exit the screen.
 
 With our Jenkins instance configured, now we should enable GitHub triggers in our build job configuration.  Check the box "Build when a change is pushed to GitHub" under "Build Triggers" on the build configuration page, then save.
 
 That will handle the CloudBees Jenkins side of the integration.
 
-In GitHub, we may now visit our repository's home, and select +Settings+ > +Service Hooks+ > +WebHook URLs+.  Add a URL with the format +https://_domainId_.ci.cloudbees.com/github-webhook+.  This will instruct GitHub to send an HTTP POST request to CloudBees containing information about the new push, and CloudBees will take it from there.
+In GitHub, we may now visit our repository's home, and select Settings -> Service Hooks -> WebHook URLs.  Add a URL with the format +https://_domainId_.ci.cloudbees.com/github-webhook+.  This will instruct GitHub to send an HTTP POST request to CloudBees containing information about the new push, and CloudBees will take it from there.
 
 .GitHub WebHook URLs
 [[Figure10-8]]
