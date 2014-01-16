@@ -608,7 +608,7 @@ Methods +withTransitivity()+ and +withoutTransitivity()+ are just a convenience 
 Strategies are composed of an array of +MavenResolutionFilter+ instances and +TransitiveExclusionPolicy+ instance. While defining the first allows you to transform dependency graph of resolved artifacts, the latter allows you to change default behavior when resolving transitive dependencies. By default, Maven does not resolve any dependencies in _provided_ and _test_ scope and it also skips _optional_ dependencies. ShrinkWrap resolver behaves the same way by default, but allows you to change that behaviour. This comes handy especially if when you want to for instance resolve all provided dependencies of +G:A:V+. For your convenience, ShrinkWrap Resolvers ships with strategies described in following table.
 +
 .Strategies available in ShrinkWrap Resolver
-[cols="1,3",options="header"]
+[cols="1,3"]
 |====
 | +AcceptAllStrategy+ | 
 Accepts all dependencies of artifacts. Equals +TransitiveStrategy+.
