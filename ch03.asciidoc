@@ -35,7 +35,7 @@ Following the graphical wizard will install the JDBS (and all requisite plugins 
 
 The previous chapter introduced us to JBoss Forge, a tool that aims to make project creation and enhancement more declarative and less manual.  As we're starting fresh now, it makes sense to use Forge to create our project layout.  This will ultimately give us a functional skeleton from database to view layer which we can use either as a learning tool or a quick shortcut to writing some real code.
 
-Forge's user interface is a shell, so it can be installed manually and used from the terminal like any other command-line application.  However, JBDS removes the need for us to do this setup.  Selecting +Window > Show View > Other...+ will give us immediate access to the Forge Console:
+Forge's user interface is a shell, so it can be installed manually and used from the terminal like any other command-line application.  However, JBDS removes the need for us to do this setup.  Selecting Window -> Show View -> Other will give us immediate access to the Forge Console.
 
 .Forge Console View Selection
 [[Figure3-2]]
@@ -438,7 +438,7 @@ The next point of interest is the class-level annotation:
 @RunWith(Arquillian.class)
 ----
 
-+@RunWith+ is a standard JUnit construct which directs control to a specified test runner.  This is Arquillian's entry point; from here Arquillian can receive lifecycle events from JUnit and perform its own handling.  The benefit to this design decision is that Arquillian requires no special plugins or configuration on the part of the user.  Anything which is capable of launching a JUnit test - be it a Maven build, an Ant task, a manual command, or an IDE - can take advantage of Arquillian without any additional handling.  For instance, JBDS and Eclipse can launch a full-scale integration test with Arquillian by right-clicking on the class and selecting "+Run As > JUnit Test+".
++@RunWith+ is a standard JUnit construct which directs control to a specified test runner.  This is Arquillian's entry point; from here Arquillian can receive lifecycle events from JUnit and perform its own handling.  The benefit to this design decision is that Arquillian requires no special plugins or configuration on the part of the user.  Anything which is capable of launching a JUnit test--be it a Maven build, an Ant task, a manual command, or an IDE--can take advantage of Arquillian without any additional handling.  For instance, JBDS and Eclipse can launch a full-scale integration test with Arquillian by right-clicking on the class and selecting Run As -> JUnit Test.
 
 Next up is the class declaration:
 
