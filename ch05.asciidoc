@@ -230,10 +230,10 @@ Given our user and technical concerns, the Java EE stack using JPA described abo
 
 Transactions are a wide subject that merits its own book when dealing with the mechanics of implementing a viable transactional engine.  For us as users, however, the rules are remarkably simple.  We'll imagine a transaction is a set of code that runs within a block.  The instructions that are executed within this block must adhere to the _ACID_ properties: Atomicity, Consistency, Isolation, and Durability.
 
-* Atomicity - The instructions in the block act as one unit; they either succeed (_commit_) or fail (_rollback_) together
-* Consistency - All resources associated with the transaction (in this case, our database), will always be in a legal, viable state.  For instance, a foreign key field will always point to a valid primary key.  These rules are typically enforced by the transactional resource (again, our database).
-* Isolation - Actions taken upon transactional resources within a Tx block will _not_ be seen outside the scope of the current transaction until and unless the transaction has successfully committed.
-* Durability - Once committed, the state of a transactional resource will not revert back or lose data.
+Atomicity:: The instructions in the block act as one unit; they either succeed (_commit_) or fail (_rollback_) together
+Consistency:: All resources associated with the transaction (in this case, our database), will always be in a legal, viable state.  For instance, a foreign key field will always point to a valid primary key.  These rules are typically enforced by the transactional resource (again, our database).
+Isolation:: Actions taken upon transactional resources within a Tx block will _not_ be seen outside the scope of the current transaction until and unless the transaction has successfully committed.
+Durability:: Once committed, the state of a transactional resource will not revert back or lose data.
 
 Enterprise JavaBeans, or EJBs, enjoy close integration with JTA, so we won't have to touch much of the transactional engine directly.  By managing our JPA entities through an +EntityManager+ which is encapsulated inside a transactional EJB, we'll get the benefits of transaction demarcation and management for free.
 
@@ -629,9 +629,9 @@ Creating ad-hoc object graphs in the test code is often too verbose and makes it
 
 Adding transactional support to these tests is fairly straightforward.  If that's only what you need simply put a +@Transactional+ annotation either on the test which you want be wrapped in transaction or on the test class (which will result in all tests running in their own transactions).  The following modes are supported:
 
-* +COMMIT+: Each test will be finished with commit operation. This is default behavior.
-* +ROLLBACK+: At the end of the test execution rollback will be performed.
-* +DISABLED+: If you have enabled transactional support at the test class level, marking given test with this mode will simply run it without the transaction.
++COMMIT+:: Each test will be finished with commit operation. This is default behavior.
++ROLLBACK+:: At the end of the test execution rollback will be performed.
++DISABLED+:: If you have enabled transactional support at the test class level, marking given test with this mode will simply run it without the transaction.
 
 We'll start by defining the Arquillian Persistence Extension in the +dependencyManagement+ section of our parent POM:
 
