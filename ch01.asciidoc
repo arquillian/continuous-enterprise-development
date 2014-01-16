@@ -121,7 +121,7 @@ Acceptance:: Asserts that code meets business requirements
 Black-Box:: Asserts the contract of an API is working without respect to its internals
 Compatibility:: Asserts that code plays nicely with one or more outside components; for instance a web application may need to display correctly on Internet Explorer, Chrome, Firefox, Safari, and mobile devices.
 Functional:: Asserts that code meets the technical requirements derived from business requirements (i.e., that all _functions_ are working as expected)
-Load/Stress/Performance:: Asserts and measures how a system handles input under load, and how gracefully it degrades with increased traffic
+Load/stress/performance:: Asserts and measures how a system handles input under load, and how gracefully it degrades with increased traffic
 Regression:: Asserts that previously-identified errors have been corrected or that existing features remain to function
 Smoke:: A subset of a full test suite, intended to run quickly and provide feedback that the system is generally intact from a simplistic level
 White-Box:: Asserts that an API is working as contracted, taking into concern implementation-specific data structures and constructs.
