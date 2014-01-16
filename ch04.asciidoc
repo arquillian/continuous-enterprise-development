@@ -172,7 +172,7 @@ We'd mentioned earlier that we'd be using the distributed version control system
 
 The first step towards obtaining the source is to sign up for a GitHub account.  While it's absolutely possible to clone the authoritative repo locally, without an account either here or at some other writable host you won't have an avenue to push changes of your own or contribute ideas.  As signing up for an account is free for our uses and has become commonplace espeically in open-source development, it's the avenue we'll advise.
 
-Signup is fairly simple and the process starts at https://github.com[https://github.com]
+Signup is fairly simple and the process starts at https://github.com[https://github.com].
 
 .GitHub Signup
 [[Figure4-3]]
@@ -324,7 +324,7 @@ Once deployed, you'll be able to launch your web browser of choice, point it to 
 
 Each chapter from here on out will address a set of related technical and user-centric use cases.  They'll be organized as follows:
 
-==== Chapter 5 - Java Persistence and Relational Data
+==== Chapter 5: Java Persistence and Relational Data
 
 Our featureset above demands a variety of operations that depend upon persistent data; information that must be saved longer than a user's session or even the application's startup/shutdown lifecycle.  It's likely we won't be able to hold all of our data in memory either, so we'll need to tackle issues like serialization and concurrent, multi-user access.
 
@@ -332,7 +332,7 @@ As our logical data analysis has exposed, we have plenty of data types that migh
 
 We'll also give a brief overview of mapping from a relational database to an object model that's more familiar and friendly using the _Java Persistence API_ and transactional support via _Enterprise JavaBeans_, and we'll be sure to test that our domain layer is properly tested against known data sets using the handy _Arquillian Persistence Extension_.
 
-==== Chapter 6 - NoSQL: Data Grids and Graph Databases
+==== Chapter 6: NoSQL: Data Grids and Graph Databases
 
 While it enjoys popularity as the most widely-deployed database management system flavor, the relational model is not the only representation we have at our disposal.  In recent years a paradigm shift has been prevalent in the persistence space.
 
@@ -340,7 +340,7 @@ NoSQL is a blanket term which has varied definitions, but generally refers to an
 
 We've noted above that our user relationship model is a natural graph and that our attachments might be well-served from a key/value store, so Chapter 6 will take a look at implementing persistent storage through these mechanisms.
 
-==== Chapter 7 - Business Logic and the Services Layer
+==== Chapter 7: Business Logic and the Services Layer
 
 With our persistence layers covered, we need to expose some way of allowing users to interact with the data and carry out the business logic demanded by our requirements.  Java EE recommends encapsulating business logic in components such as _Enterprise JavaBeans (EJBs)_ or _Contexts and Dependency Injection (CDI)_ beans; we'll be using primarily EJBs.
 
@@ -348,23 +348,23 @@ EJBs and CDI beans are very handy for either direct calling or via a _remote pro
 
 Our use case will explore the testable development of an SMTP service and interacting with an external, asynchronous, non-transactional resource.
 
-==== Chapter 8 - REST and Addressable Services
+==== Chapter 8: REST and Addressable Services
 
 REST (_Re_ presentational _S_ tate _T_ ransfer) is an architecture of patterns that reveal services as resources in a fashion consistent with the guiding concepts behind the web itself.  Chapter 7 will introduce the exposition of enterprise services using REST guidelines, and will be implemented with Java EE's JAX-RS framework.  Additionally, we'll test our endpoints using _Arquillian Warp_ and the http://code.google.com/p/rest-assured/[REST-assured] project.
 
-==== Chapter 9 - Security
+==== Chapter 9: Security
 
 Our featureset requirements clearly couple user registration with an existing Twitter account, so we'll need plenty of implementation and testing to ensure that the integrity of our users is not compromised.
 
 Chapter 9 will involve OAuth authentication using security and identify management from the http://www.jboss.org/picketlink[PicketLink] project.  We'll again look to REST-assured to help us with our client testing strategy.
 
-==== Chapter 10 - UI
+==== Chapter 10: UI
 
 The User Interface represents the visible elements with which end-users will interact to submit form data and view our domain objects in a unified aggregate view.  We test the UI through _Arquillian Drone_, _Arquillian Warp_, and hooks into the http://www.seleniumhq.org/[Selenium] project.  
 
 In this fashion we automate and emulate real user input by writing tests to push data into the browser and reading the response after it's been rendered.
 
-==== Chapter 11 - Assembly and Deployment
+==== Chapter 11: Assembly and Deployment
 
 Once we've abided by proper modular design principles, it's time to bring everything together and do some full-scale integration testing upon the final deployable archive.  Chapter 11 will combine our application and set up some test configurations to flex all layers of GeekSeek working in tandem.
 
