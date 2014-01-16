@@ -15,7 +15,7 @@ However the “DevOps” movement also considers operations and development as a
 
 This book is not only compatible with the “DevOps” ideals; it pragmatically shows how to build a Java EE application from scratch and also patches holes in the Java EE spec. Automation of project and archive creation, pragmatic integration of Maven builds into the process and testing on all levels are deeply explained with concrete code. Rather than focusing on best case scenarios, this book shows you  how to test the inconvenient, including examples with SMTP servers or Message Driven Beans.
 
-Although tools, libraries and frameworks introduced in this book are initiated by Red Hat employees, this book is equally valuable for you if you are not using JBoss or WildFly at all.  In fact, I used Arquillian, ShrinkWrap, and Forge to test applications on GlassFish and TomEE at the same time.  Also in my workshops (http://airhacks.com[http://airhacks.com]) I use Arquillian to test plugins, extensions, and sophisticated dependency injection without deploying mocks to a production archive. 
+Although tools, libraries and frameworks introduced in this book are initiated by Red Hat employees, this book is equally valuable for you if you are not using JBoss or WildFly at all.  In fact, I used Arquillian, ShrinkWrap, and Forge to test applications on GlassFish and TomEE at the same time.  Also in http://airhacks.com[my workshops] I use Arquillian to test plugins, extensions, and sophisticated dependency injection without deploying mocks to a production archive. 
 
-It was fun to read this book on the flight to JavaOne 2013 in San Francisco; I learned a lot.  I wish you happy reading - enjoy the lightweight Java EE development lifecycle!
+It was fun to read this book on the flight to JavaOne 2013 in San Francisco; I learned a lot.  I wish you happy reading--enjoy the lightweight Java EE development lifecycle!
 
