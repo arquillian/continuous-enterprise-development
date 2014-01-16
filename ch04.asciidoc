@@ -138,8 +138,9 @@ So in the case of the entities for our application as defined by our desired fea
 
 In graphical terms, this may look a little like:
 
+.Needs a caption
 [[Figure4-1]]
-***INSERT IMAGES HERE OF THE RELATIONSHIP MODEL BETWEEN ENTITIES (Fig 04-01)***
+image::images/cedj_0401.png[]
 
 ===== Intended Use
 
@@ -151,8 +152,9 @@ Of particular note is the many-to-many relationship among users.  Because a user
 
 In effect this relationship has a graph structure:
 
+.Needs a caption
 [[Figure4-2]]
-***INSERT MORE DETAILED IMAGE OF USER RELATIONSHIPS, (Fig 04-02)***
+image::images/cedj_0402.png[]
 
 While there are any number of ways we might store and model this structure, it's worth noting that requesting transient relationships can be a problem with geometric time complexity.  That is: we'd need one query to find all of a user's followers.  Then, *for each* of the results in that set, we'd need another query to find *their* followers.  With each level we drill in to find followers, the problem gets prohibitively complex and unsolvable when organized in standard tables and rows.
 
@@ -172,11 +174,13 @@ The first step towards obtaining the source is to sign up for a GitHub account. 
 
 Signup is fairly simple and the process starts at https://github.com[https://github.com]
 
+.GitHub Signup
 [[Figure4-3]]
 image::images/cedj_05in01.png["GitHub Signup"]
 
 Once logged in, we'll _fork_ the authoritative repo into your own publicly-viewable repository.  This is done by visiting the book's repo and pressing the "Fork" button:
 
+.Forking a GitHub Repository
 [[Figure4-4]]
 image::images/cedj_05in02.png["Forking a GitHub Repository"]
 
@@ -207,6 +211,7 @@ git version 1.8.1.2
 
 With your Git client installed locally, now you're free to pull down the book's repository from your public fork on GitHub to your local machine.  This is done by first finding the URI to your repository on your GitHub repo's home page:
 
+.GitHub URI to Clone
 [[Figure4-5]]
 image::images/cedj_05in03.png["GitHub URI to Clone"]
 
