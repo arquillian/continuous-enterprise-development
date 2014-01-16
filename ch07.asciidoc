@@ -51,17 +51,17 @@ In this chapter we'll be examining each of these complications and a proposed so
 
 Web-based applications offer few avenues to push information to their users once offline; perhaps the most prevalent is through the use of email.  We see this in a variety of user stories: "Confirm Email Address", "Reset Password", and "Welcome New User" are all subject lines we've grown to expect from the sites we use.  It's fitting, then, that we devise a simple strategy to send email from our application which may be easily reused by the more coarsely-grained operations.
 
-Our GeekSeek application will therefore introduce the requirement: "Send an Email to the new User upon successful Signup"
+Our GeekSeek application will therefore introduce the requirement: "Send an Email to the new User upon successful Signup."
 
 At first blush, this seems like a farily trivial problems to solve.  The http://www.oracle.com/technetwork/java/javamail/index.html[JavaMail] API is straightforward enough to use (though a bit dated), and is included as part of the Java EE platform.
 
-Unfortunately, there are many issues to consider beyond the boilerplate code required to send the email itself.
+Unfortunately, there are many issues to consider beyond the boilerplate code required to send the email itself:
 
-_Should we block (wait) while the mail message is sent to the SMTP server?_ Connecting to an external service can take some time, depending upon how it handles open connections.  The delivery of the email isn't designed to be immediate, so there's not much sense forcing the user to wait while we connect to an SMTP server, construct a +MimeMessage+, and send.
+Should we block (wait) while the mail message is sent to the SMTP server?:: Connecting to an external service can take some time, depending upon how it handles open connections.  The delivery of the email isn't designed to be immediate, so there's not much sense forcing the user to wait while we connect to an SMTP server, construct a +MimeMessage+, and send.
 
-_What if sending the email fails?  Should the enclosing user registration action which called the email service fail, too?_  Sending the email is, in our case, part of a welcome operation.  A new user registration doesn't strictly *need* this to succeed as we won't be relying upon email to validate the user's identity.  Still, we'd like to make every available effort to ensure that the email goes through, independent of the user registration action.  And we'd like to have some notification and options to handle emails that were attempted to be sent, but have failed.
+What if sending the email fails?  Should the enclosing user registration action which called the email service fail, too?::  Sending the email is, in our case, part of a welcome operation.  A new user registration doesn't strictly *need* this to succeed as we won't be relying upon email to validate the user's identity.  Still, we'd like to make every available effort to ensure that the email goes through, independent of the user registration action.  And we'd like to have some notification and options to handle emails that were attempted to be sent, but have failed.
 
-_How do we test to ensure that the emails we've sent are received?  How do we validate the email's contents are correct?_  Even if we don't dispatch the communication with the SMTP server to a new Thread, interacting with this external process makes for an asynchronous action.  Asynchronous testing is not always the most simple process to set up, but this does not excuse us from the responsibility of ensuring that our email service is worked as designed.
+How do we test to ensure that the emails we've sent are received?  How do we validate the email's contents are correct?::  Even if we don't dispatch the communication with the SMTP server to a new Thread, interacting with this external process makes for an asynchronous action.  Asynchronous testing is not always the most simple process to set up, but this does not excuse us from the responsibility of ensuring that our email service is worked as designed.
 
 === Implementation
 
