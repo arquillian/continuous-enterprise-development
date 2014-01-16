@@ -57,9 +57,9 @@ Because of its success, REST has become an abused buzzword in some circles.  It'
 
 A RESTful system is always Stage 3, though this is an often-misunderstood and neglected understanding of the REST architecture, particularly for newcomers.  In layman's terms, a Stage 3 exchange may sound a little like this:
 
-* _Server_: You've just created an order.  Do you want to pay?  Do you want to add more items?  Do you want to save your cart for later?  Here are the links for each of these actions.
-* _Client_: I'm following the link to save my cart, here is the request.
-* _Server_: Your cart is saved.  Do you want to continue shopping?  Do you want to view your cart?  Here are the links for these actions.
+Server:: You've just created an order.  Do you want to pay?  Do you want to add more items?  Do you want to save your cart for later?  Here are the links for each of these actions.
+Client:: I'm following the link to save my cart, here is the request.
+Server:: Your cart is saved.  Do you want to continue shopping?  Do you want to view your cart?  Here are the links for these actions.
 
 It's important to consider that REST is an _architectural style_, agnostic of any particular programming model or language.  At its core, REST is most simply explained as an API for accessing services and domain objects over the web.
 
