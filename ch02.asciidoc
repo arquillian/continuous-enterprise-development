@@ -179,7 +179,7 @@ The first step is getting your hands on the ShrinkWrap binaries. The Core is com
 .Needs a caption
 [options="header"]
 |=========================
-|_Name_|_Maven Coordinates_
+|_Name_|_Maven coordinates_
 |API|org.jboss.shrinkwrap:shrinkwrap-api
 |SPI|org.jboss.shrinkwrap:shrinkwrap-spi
 |Implementation|org.jboss.shrinkwrap:shrinkwrap-impl-base
@@ -209,9 +209,7 @@ In Maven, these may be brought in under the proper scopes easily by using the Sh
 </project>
 ----
 
-For projects outside use of the Maven repository system, the ShrinkWrap Distribution makes all modules available as a download, and you may set up the dependencies manually to suit your needs.
-
-_Prerequisites_
+For projects outside use of the Maven repository system, the ShrinkWrap Distribution makes all modules available as a download, and you may set up the dependencies manually to suit your needs. Here are the prerequisites:
 
 * JRE5+ Runtime
 * No additional dependencies
@@ -220,8 +218,10 @@ ShrinkWrap may run on any Java5 runtime or higher, but requires at least JDK6 fo
 
 The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.api.ShrinkWrap+ class.  From here you may call the +create+ method to make a new +Archive+, the a generic view of the virtual filesystem which allows the addition of content called +Asset+ s into a location called an +ArchivePath+.  The following table more easily shows ShrinkWrap nomenclature next to more common terms:
 
+.Needs a caption
+[options="header"]
 |=============================
-|_Archive Type_|_Description_
+|_Archive type_|_Description_
 |+org.jboss.shrinkwrap.api.GenericArchive+|Simplest type of concrete user-view of an +Archive+; supports generic operations
 |+org.jboss.shrinkwrap.api.spec.JavaArchive+|JAR type; allows addition of +Class+ es, +Package+ s, and Manifest operations
 |+org.jboss.shrinkwrap.api.spec.EnterpriseArchive+|Java EE EAR type; supports Manifest and related spec operations
@@ -240,6 +240,8 @@ That's it!  You've got your first ShrinkWrap archive!
 
 Of course, an object representing an empty archive is pretty useless.  So let's have a look at adding in some content.  As we noted before, content is modeled by the +Asset+ class, so let's first take a look at some of the +Asset+ implementations provided by ShrinkWrap:
 
+.Needs a caption
+[options="header"]
 |=====================
 |_Asset_|_Represents_
 |+org.jboss.shrinkwrap.api.asset.ArchiveAsset+|Nested +Archive+ content
@@ -331,8 +333,10 @@ So let's see what's going on here.  First we create a +JavaArchive+ and add all 
 
 There are 3 types of exporters which ship with ShrinkWrap:
 
+.Needs a caption
+[options="header"]
 |==========================
-|_Exporter_|_Output Format_
+|_Exporter_|_Output format_
 |+org.jboss.shrinkwrap.api.exporter.TarExporter+|TAR
 |+org.jboss.shrinkwrap.api.exporter.TarGzExporter+|TAR.GZ
 |+org.jboss.shrinkwrap.api.exporter.ZipExporter+|ZIP
@@ -340,8 +344,10 @@ There are 3 types of exporters which ship with ShrinkWrap:
 
 Of course, we can also obtain a ShrinkWrap archive from a flat-file in a similar fashion by using one of the standard importers:
 
+.Needs a caption
+[options="header"]
 |==========================
-|_Importer_|_Output Format_
+|_Importer_|_Output format_
 |+org.jboss.shrinkwrap.api.importer.TarImporter+|TAR
 |+org.jboss.shrinkwrap.api.importer.TarGzImporter+|TAR.GZ
 |+org.jboss.shrinkwrap.api.importer.ZipImporter+|ZIP
@@ -385,8 +391,10 @@ That is precisely the aim of the ShrinkWrap Resolvers project; it is a Java API 
 
 ShrinkWrap Resolvers is comprised of the following modules:
 
+.Needs a caption
+[options="header"]
 |====
-|_Name_|_Maven Coordinates_
+|_Name_|_Maven coordinates_
 |API|org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-api
 |SPI|org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-spi
 |Maven API|org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-api-maven
@@ -526,9 +534,7 @@ Maven.resolver().resolve("G1:A1:V1", "G2:A1:V1").withTransitivity().asFile();
 Maven.resolver().resolve("G:A:war:V").withTransitivity().asFile();
 ----
 +
-Packaging can be of any type; the most common are listed in following table.
-+
-.Packaging types
+Packaging can be of any type; the most common are listed here:
 |====
 | jar | war | ear | ejb | rar | par | pom | test-jar | maven-plugin
 |====
