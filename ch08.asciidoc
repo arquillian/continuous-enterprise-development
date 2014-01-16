@@ -147,18 +147,15 @@ Thus far, we've visited and described the internal mechanisms with which we inte
 
 We'd like to encourage 3rd-party integrators - clients about whom we may not have any up-front knowledge - to view, update, and create domain objects within the GeekSeek application.  Therefore, our use case requirements will be simply summed up as:
 
-____
 * As a 3rd-party integrator, I should be able to perform CRUD operations upon:
 ** A Conference
 ** Sessions within Conferences
 ** Attachments within Sessions
 ** Attachments within Conferences
 ** A Venue (and associate with a Conference and/or Session)
-____
 
 Additionally, we want to lay out a map of the application as the client navigates through state changes.  For instance, at the root, a client should know what operations it's capable of performing.  Once that operation is complete, a series of possible next steps should be made available to the client such that it may continue execution.  This guide is known as the _Domain Application Protocol_ (DAP), and it acts as a slimming agent atop the wide array of possible HTTP operations in order to show the valid business processes that are available to a client as it progresses through the application's various state changes.  It's this DAP layer which grants us the final HATEOAS step of the Richardson Maturity Model.  Our DAP will define a series of addressable resources coupled with valid HTTP methods and media types to determine what actions are taken, and what links are to come next in the business process.
 
-____
 ** +/ application/vnd.ced+xml;type=root+
 *** +GET+ -> Links
 *** Link -> +conference application/vnd.ced+xml;type=conference+
@@ -206,7 +203,6 @@ ____
 ** +/attachment/[a_id] application/vnd.ced+xml;type=attachment+
 *** +GET+ -> List
 *** +POST+ -> Add
-____
 
 The DAP above can be conceptually understood as a site map for services, and it defines the API for users of the system.  By designing to the DAP, we provide clients with a robust mechanism by which the details of attaining each resource or invoking the application's services can be read as the client navigates from state to state.
 
