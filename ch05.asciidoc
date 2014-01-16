@@ -29,7 +29,9 @@ Until we start to think through how this is going to play out in practice.  Our 
 
 It'd be much better to delegate the task of persistent storage to another component equipped to handle this efficiently and securely.  Luckily, we'll have our pick of any number of Database Management Systems (DBMS) which do just that.
 
+.Needs a caption
 [[Figure5-1]]
+image::images/cedj_0501.png[]
 
 The role of a DBMS is very generally to store and provide access to data.  They come in a variety of flavors which are differentiated in terms of how they internally organize information:
 
@@ -73,7 +75,9 @@ public class Person {
 
 Simple enough; this value object which explicitly declares the relationship between a parent and child is sufficient for us to further infer siblings, grandparents, cousins, aunts, uncles, and so on.  If we populate a few of these objects and wire them together, we'll end up with a _graph_ representing our family:
 
+.Needs a caption
 [[Figure5-2]]
+image::images/cedj_0502.png[]
 
 Now, let's take a look at how that same information might be represented in a relational database.  Much like a spreadsheet, classes from our object model are instead organized into tables:
 
@@ -120,7 +124,9 @@ To address each of these problems, Java EE6 provides a specification called the 
 
 So now our tiered data architecture may look something like this:
 
+.Needs a caption
 [[Figure5-3]]
+image::images/cedj_0503.png[]
 
 [NOTE]
 ====
