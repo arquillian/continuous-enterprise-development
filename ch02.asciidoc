@@ -622,7 +622,7 @@ This allows you to combine multiple strategies together. The behaviour defined a
 | +NonTransitiveStrategy+ |
 Rejects all dependencies that were not directly specified for resolution. This means that all transitive dependencies of artifacts for resolution are rejected.
 
-| +RejectDependenciesStrategy+ |
+| pass:[<phrase role='keep-together'><literal>RejectDependenciesStrategy</literal></phrase>] |
 Rejects dependencies defined by +G:A+ (version is not important for comparison, so it can be omitted altogether). By default, it is transitive: +RejectDependenciesStrategy("G:A", "G:B")+ means that all dependencies that origin at +G:A+ or +G:B+ are removed as well. If you want to change that behavior to reject defined dependencies but to keep their descendants, instantiate strategy as following: +RejectDependenciesStrategy(false, "G:A", "G:B")+
 
 | +TransitiveStrategy+ | 
