@@ -9,9 +9,9 @@ The concepts guiding the makeup of the modern web could be considered a happy ac
 
 Out of necessity for his own research, Tim Berners-Lee of the European Organization for Nuclear Research (CERN) concocted a small receipe for publishing documents in a manner that would make his findings more accessible between departments and encourage updates over time.  Called the "WorldWideWeb" (WWW), this project http://cdsweb.cern.ch/record/1405411/files/ARCH-WWW-4-010.pdf[proposed] a series of simple constructs:
 
-* Addressable resources: a unique key or address assigned to each document
-* Hypertext: A unidirectional pointer to an addressable resource
-* Browser: A client program capable of reading hypertext-enabled documents
+Addressable resources:: a unique key or address assigned to each document
+Hypertext:: A unidirectional pointer to an addressable resource
+Browser:: A client program capable of reading hypertext-enabled documents
 
 We take these concepts lightly now, but it's worthwhile considering the paradigm shift this evoked in the early 1990s; in only ten years' time, most of the world's university students and many homes were connected to a web that contained a marketing presense for an overwhelming majority of the Fortune 500.  These ideas ushered innovation and communication at a rate never before seen in the history of mankind.  This was instant, global publishing, and it was free.
 
