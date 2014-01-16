@@ -799,12 +799,12 @@ Being simply a component model, Java EE needs a concrete implementation to provi
 
 The latest community edition of the application server offered by JBoss has recently been renamed to http://wildfly.org/[_WildFly_], and this will be the default target runtime for our examples.  Written from the ground up, WildFly (previously-known as _JBoss Application Server 7_) was designed with the following goals at the core:
 
-* *Speed*.  Startup, deployment, and request processing demands leverage a concurrent state machine and constant-time ClassLoading.
-* *Efficiency*.  Memory usage is kept to a minimum.
-* *Modularity*.  Application libraries and server libraries are isolated from one another to avoid runtime conflicts
-* *Administration*.  Centralized settings via Web Interface, HTTP, Java, and Command-Line APIs
-* *Compliance*.  http://fedoraproject.org/wiki/Features/JBossAS7#Strict_Compliance[Java EE6 Full Profile Certification]
-* *Testable*.  Uses Arquillian and ShrinkWrap in its own internal test suite
+Speed:: Startup, deployment, and request processing demands leverage a concurrent state machine and constant-time ClassLoading.
+Efficiency:: Memory usage is kept to a minimum.
+Modularity::  Application libraries and server libraries are isolated from one another to avoid runtime conflicts
+Administration::  Centralized settings via Web Interface, HTTP, Java, and Command-Line APIs
+Compliance::  http://fedoraproject.org/wiki/Features/JBossAS7#Strict_Compliance[Java EE6 Full Profile Certification]
+Testable:: Uses Arquillian and ShrinkWrap in its own internal test suite
 
 Because a quick feedback loop is important in testing during development, the speed afforded by WildFly makes it a compelling candidate for our target runtime:
 
