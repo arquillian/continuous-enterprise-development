@@ -129,7 +129,7 @@ Picking up where unit tests leave off, Arquillian handles all the plumbing of co
 * Enriching the test case by providing dependency injection and other declarative services
 * Executing the tests inside (or against) the container
 * Capturing the results and returning them to the test runner for reporting
-* To avoid introducing unnecessary complexity into the developer’s build environment, Arquillian integrates seamlessly with familiar testing frameworks (e.g., JUnit 4, TestNG 5), allowing tests to be launched using existing IDE, Ant and Maven test plugins — without any add-ons.
+* To avoid introducing unnecessary complexity into the developer’s build environment, Arquillian integrates seamlessly with familiar testing frameworks (e.g., JUnit 4, TestNG 5), allowing tests to be launched using existing IDE, Ant and Maven test plugins--without any add-ons.
 
 The Arquillian project adheres to three core principles:
 
@@ -175,6 +175,7 @@ This piece fulfills the design goal of Arquillian to run tests based on full-fle
 While ShrinkWrap is a standalone virtual filesystem, in our examples we'll be primarily exercising it as the deployment mechanism for Arquillian.  Let's take a moment to review its usage.
 
 The first step is getting your hands on the ShrinkWrap binaries. The Core is composed of three pieces:
+
 
 |=========================
 |_Name_|_Maven Coordinates_
