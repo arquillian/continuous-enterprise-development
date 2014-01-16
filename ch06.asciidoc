@@ -2,7 +2,7 @@
 
 [quote, Bob Dylan]
 ____
-I’m more of an adventurous type than a relationship type..
+I’m more of an adventurous type than a relationship type.
 ____
 
 Until relatively recently, the relational database (RDBMS) reigned over data in enterprise applications by a wide margin when contrasted with other approaches.  RDBMSs follow a premise of storing heavily normalized data in relational structures such as tables, and are heavily based on rigorous mathematical set theory. Commercial offerings from http://www.oracle.com/index.html[Oracle] and established open-source projects like http://www.mysql.com/[MySQL] (reborn as https://mariadb.org/[MariaDB]) and http://www.postgresql.org/[PostgreSQL] became defacto choices when it came to storing, archiving, retrieving and searching for data.  In retrospect, it's shocking that given the varying requirements from those operations, one solution was so heavily lauded for so long.
