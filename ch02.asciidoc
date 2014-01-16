@@ -535,10 +535,11 @@ Maven.resolver().resolve("G:A:war:V").withTransitivity().asFile();
 ----
 +
 Packaging can be of any type; the most common are listed here:
++
 |====
 | jar | war | ear | ejb | rar | par | pom | test-jar | maven-plugin
 |====
-
++
 5. Resolving a dependency with specific classifier. With a classifier, such as +tests+, you need to include all +G:A:P:C:V+ parts of coordinates string.
 +
 [source,java]
