@@ -59,7 +59,7 @@ Supplemental material (code examples, exercises, etc.) is available for download
 
 This book is here to help you get your job done.  All contents here are licensed under http://creativecommons.org/licenses/by-sa/2.0/['Creative Commons Attribution-ShareAlike 2.0 Generic'], and we invite the community at large to contribute work including feature requests, typographical error corrections, and enhancements via our https://github.com/arquillian/continuous-enterprise-development/issues[GitHub Issue Tracker].  You may reuse any of the text or examples in compliance with the license, which requires attribution.  See full license for details.
 
-An attribution usually includes the title, author, publisher, and ISBN. For example: “_Book Title_ by Some Author (O’Reilly). Copyright 2012 Some Copyright Holder, 978-0-596-xxxx-x.”
+An attribution usually includes the title, author, publisher, and ISBN. For example: “_Continuous Enterprise Development in Java_ by Andrew Lee Rubinger and Aslak Knutsen (O’Reilly). Copyright 2014 Andrew Lee Rubinger and Aslak Knutsen, 978-1-449-32829-0.”
 
 === Safari® Books Online
 
