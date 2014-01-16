@@ -306,7 +306,7 @@ use_locks 0
 ask_auth 1
 if_match_bug 1
 ----
-The last line is unique to Ubuntu-based x64 systems, details: https://bugs.launchpad.net/ubuntu/+source/davfs2/+bug/466960
+The last line is unique to https://bugs.launchpad.net/ubuntu/+source/davfs2/+bug/466960[Ubuntu-based x64 systems].
 
 Now we may create a directory which will act as our mounting point; we've chosen +/mnt/cloudbees/arquillian/private+:
 
@@ -327,7 +327,7 @@ The +private+ repository requires authentication, so we must add authentication 
 {/mnt/location/path}   {cloudbees username}   {password}
 ----
 
-Note the CloudBees username here is available on the details page under "Authenticated Access", located at https://forge.cloudbees.com/a/_domainId_/repositories/private:
+Note the CloudBees username here is available on the details page under "Authenticated Access", located at https://forge.cloudbees.com/a/domainId/repositories/private.
 
 .CloudBees Authenticated Access
 [[Figure10-7]]
