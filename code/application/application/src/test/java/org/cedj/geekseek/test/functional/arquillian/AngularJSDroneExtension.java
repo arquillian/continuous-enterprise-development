@@ -4,7 +4,8 @@ import java.lang.annotation.Annotation;
 import java.util.concurrent.TimeUnit;
 
 import org.jboss.arquillian.core.spi.LoadableExtension;
-import org.jboss.arquillian.drone.spi.Enhancer;
+import org.jboss.arquillian.drone.spi.DroneInstanceEnhancer;
+import org.jboss.arquillian.drone.spi.InstanceOrCallableInstance;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,10 +17,10 @@ public class AngularJSDroneExtension implements LoadableExtension {
 
     @Override
     public void register(ExtensionBuilder builder) {
-        builder.service(Enhancer.class, AngularJSEnhancer.class);
+        builder.service(DroneInstanceEnhancer.class, AngularJSEnhancer.class);
     }
 
-    public static class AngularJSEnhancer implements Enhancer<WebDriver> {
+    public static class AngularJSEnhancer implements DroneInstanceEnhancer<WebDriver> {
 
         private WebDriverEventListener listener;
 
@@ -29,8 +30,9 @@ public class AngularJSDroneExtension implements LoadableExtension {
         }
 
         @Override
-        public boolean canEnhance(Class<?> type, Class<? extends Annotation> qualifier) {
-            return WebDriver.class.isAssignableFrom(type);
+        public boolean canEnhance(InstanceOrCallableInstance instance,
+				Class<?> droneType, Class<? extends Annotation> qualifier) {
+		            return WebDriver.class.isAssignableFrom(droneType);
         }
 
         @Override

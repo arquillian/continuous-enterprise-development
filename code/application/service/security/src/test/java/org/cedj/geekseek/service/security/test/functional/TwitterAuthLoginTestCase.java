@@ -27,7 +27,7 @@ public class TwitterAuthLoginTestCase {
     @Deployment(testable = false)
     public static WebArchive deploy() {
         return ShrinkWrap.create(WebArchive.class)
-            //.addAsResource("auth.properties")
+            .addAsResource("Twitter.properties")
             .addPackages(false,
                 AuthServlet.class.getPackage(),
                 OAuthAuthenticator.class.getPackage(),

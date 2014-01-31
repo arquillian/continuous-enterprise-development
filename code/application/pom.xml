@@ -42,12 +42,12 @@
 
     <version.arquillian_core>1.1.1.Final</version.arquillian_core>
     <version.arquillian_persistence>1.0.0.Alpha6</version.arquillian_persistence>
-    <version.arquillian_drone>1.2.0.Beta2</version.arquillian_drone>
-    <version.arquillian_graphene>2.0.0.Beta2</version.arquillian_graphene>
+    <version.arquillian_drone>1.2.1.Final</version.arquillian_drone>
+    <version.arquillian_graphene>2.0.0.Final</version.arquillian_graphene>
     <version.arquillian_warp>1.0.0.Beta1-SNAPSHOT</version.arquillian_warp>
     <version.arquillian_warp_rest>1.0.0.Final-SNAPSHOT</version.arquillian_warp_rest>
     <version.arquillian_qunit>1.0.0.Alpha1</version.arquillian_qunit>
-    <version.restassured>1.8.1</version.restassured>
+    <version.restassured>2.3.0</version.restassured>
     <version.wildfly>8.0.0.Beta1</version.wildfly>
     <version.jboss_as>7.1.1.Final</version.jboss_as>
     <version.jboss_eap>7.2.0.Final</version.jboss_eap>
@@ -712,31 +712,6 @@
       </dependencies>
       <build>
         <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>unpack</id>
-                <phase>process-test-classes</phase>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.wildfly</groupId>
-                      <artifactId>wildfly-dist</artifactId>
-                      <version>${version.wildfly}</version>
-                      <type>zip</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>${project.build.directory}</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
           <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
