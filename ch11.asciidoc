@@ -31,7 +31,7 @@ image::images/cedj_12in01.png["Download JBoss EAP"]
 
 Once we agree to the Terms and Conditions, the links to download will begin the process.  Both the EAP distribution and the EAP Maven Repository are bundled as ZIP files.
 
-Let's install EAP by unzipping it into a location on the filesystem.  Anywhere will do; for instance, in Unix-like systems we can handle this from the command line:
+Let's install EAP by unzipping it into a location on the filesystem.  Anywhere will do; for instance, in *nix-like systems we can handle this from the command line:
 
 ----
 ~ $> mkdir -p /home/alr/opt/jboss/eap; cd /home/alr/opt/jboss/eap
@@ -329,10 +329,11 @@ The +fstab+ utility on *nix systems acts to automatically handle mounting to reg
 
 ----
 # Arquillian WebDAV on CloudBees
-https://repository-{domainId}.forge.cloudbees.com/private/ {/mnt/location/path} davfs rw,user,noauto,conf=/etc/davfs2/davfs2.conf,uid=$UID 0 0
+https://repository-{domainId}.forge.cloudbees.com/private/ {/mnt/location/path} 
+   davfs rw,user,noauto,conf=/etc/davfs2/davfs2.conf,uid=$UID 0 0
 ----
 
-The +private+ repository requires authentication, so we must add authentication information to +/etc/davfs2/secrets+:
+The +private+ repository requires authentication, so we must add authentication information to _/etc/davfs2/secrets_:
 
 ----
 {/mnt/location/path}   {cloudbees username}   {password}
