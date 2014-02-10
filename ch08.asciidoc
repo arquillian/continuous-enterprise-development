@@ -28,11 +28,11 @@ and
 
 +urn:example:animal:ferret:nose+
 
-In short time, Berners-Lee introduced the first version of the _HyperText Markup Language_ (HTML), aimed at providing a more concise vernacular for incorporating links into a common markup that browsers could format for viewing.  The WWW was built as a mechanism for _document exchange_, sharing of published material over a commonly-understood protocol and payload format (commonly HTML).  
+In short time, Berners-Lee introduced the first version of the _HyperText Markup Language_ (HTML), aimed at providing a more concise vernacular for incorporating links into a common markup that browsers could format for viewing.  The WWW was built as a mechanism for _document exchange_, sharing of published material over a commonly understood protocol and payload format (commonly HTML).  
 
-In 2000, University of California at Irvine's Roy Fielding published his dissertation http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm["Architectural Styles and the Design of Network-based Software Architectures"], which expanded the notion of addressing documents to include _services_ among the data exchanged on the web, and defined a system of _REpresentational State Transfer_ (REST).  With his background in co-authoring http://tools.ietf.org/html/rfc2616[RFC-2616] which defined the HTTP/1.1 protocol, Fielding was in a position of expertise to rethink how the principles of the web might be applied to services.
+In 2000, University of California at Irvine's Roy Fielding published his dissertation http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm["Architectural Styles and the Design of Network-based Software Architectures"], which expanded the notion of addressing documents to include _services_ among the data exchanged on the Web, and defined a system of _REpresentational State Transfer_ (REST).  With his background in coauthoring http://tools.ietf.org/html/rfc2616[RFC-2616], which defined the HTTP/1.1 protocol, Fielding was in a position of expertise to rethink how the principles of the Web might be applied to services.
 
-By addressing services and applying a set of conventions to these URIs, we're able to compose a wide array of operations upon services with the following key benefits:
+By addressing services and applying a set of conventions to these URIs, we're able to compose a wide array of operations on services with the following key benefits:
 
 * Loose coupling
 * Interoperability
