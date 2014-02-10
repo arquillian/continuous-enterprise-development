@@ -94,25 +94,25 @@ Because it's not our aim to provide a comprehensive overview of JAX-RS, we recom
 The http://jsr311.java.net/nonav/javadoc/[JAX-RS Specification API] provides a set of annotations helpful to developers seeking to map incoming HTTP-based requests to backend services.  From the docs, these include:
 
 |====
-|+ApplicationPath+|Identifies the application path that serves as the base URI for all resource URIs provided by Path.
-|+Consumes+|Defines the media types that the methods of a resource class or MessageBodyReader can accept.
+|+ApplicationPath+|Identifies the application path that serves as the base URI for all resource URIs provided by `Path`.
+|+Consumes+|Defines the media types that the methods of a resource class or `MessageBodyReader` can accept.
 |+CookieParam+|Binds the value of a HTTP cookie to a resource method parameter, resource class field, or resource class bean property.
-|+DefaultValue+|Defines the default value of request meta-data that is bound using one of the following annotations: PathParam, QueryParam, MatrixParam, CookieParam, FormParam, or HeaderParam.
-|+DELETE+|Indicates that the annotated method responds to HTTP DELETE requests.
-|+Encoded+|Disables automatic decoding of parameter values bound using QueryParam, PathParam, FormParam or MatrixParam.
+|+DefaultValue+|Defines the default value of request metadata that is bound using one of the following annotations: `PathParam`, `QueryParam`, `MatrixParam`, `CookieParam`, `FormParam`, or `HeaderParam`.
+|+DELETE+|Indicates that the annotated method responds to HTTP `DELETE` requests.
+|+Encoded+|Disables automatic decoding of parameter values bound using `QueryParam`, `PathParam`, `FormParam`, or `MatrixParam`.
 |+FormParam+|Binds the value(s) of a form parameter contained within a request entity body to a resource method parameter.
-|+GET+|Indicates that the annotated method responds to HTTP GET requests.
-|+HEAD+|Indicates that the annotated method responds to HTTP HEAD requests.
-|+HeaderParam+|Binds the value(s) of a HTTP header to a resource method parameter, resource class field, or resource class bean property.
-|+HttpMethod+|Associates the name of a HTTP method with an annotation.
+|+GET+|Indicates that the annotated method responds to HTTP `GET` requests.
+|+HEAD+|Indicates that the annotated method responds to HTTP `HEAD` requests.
+|+HeaderParam+|Binds the value(s) of an HTTP header to a resource method parameter, resource class field, or resource class bean property.
+|+HttpMethod+|Associates the name of an HTTP method with an annotation.
 |+MatrixParam+|Binds the value(s) of a URI matrix parameter to a resource method parameter, resource class field, or resource class bean property.
-|+OPTIONS+|Indicates that the annotated method responds to HTTP OPTIONS requests.
+|+OPTIONS+|Indicates that the annotated method responds to HTTP `OPTIONS` requests.
 |+Path+|Identifies the URI path that a resource class or class method will serve requests for.
 |+PathParam+|Binds the value of a URI template parameter or a path segment containing the template parameter to a resource method parameter, resource class field, or resource class bean property.
-|+POST+|Indicates that the annotated method responds to HTTP POST requests.
-|+Produces+|Defines the media type(s) that the methods of a resource class or MessageBodyWriter can produce.
-|+PUT+|Indicates that the annotated method responds to HTTP PUT requests.
-|+QueryParam+|Binds the value(s) of a HTTP query parameter to a resource method parameter, resource class field, or resource class bean property.
+|+POST+|Indicates that the annotated method responds to HTTP `POST` requests.
+|+Produces+|Defines the media type(s) that the methods of a resource class or `MessageBodyWriter` can produce.
+|+PUT+|Indicates that the annotated method responds to HTTP `PUT` requests.
+|+QueryParam+|Binds the value(s) of an HTTP query parameter to a resource method parameter, resource class field, or resource class bean property.
 |====
 
 These may be composed together to define the mapping between a business object's methods and the requests it will service, as shown in the API documentation:
