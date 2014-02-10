@@ -35,13 +35,13 @@ It likely doesn't benefit us much to build bespoke solutions for generalized and
 
 ===== PicketLink: application-level security
 
-http://www.picketlink.org[/PicketLink] is an umbrella project for security and identity management for Java Applications.  It provides the backbone of security for a variety of JBoss products, but also may be used standalone, as we'll do with GeekSeek.  There are PicketLink components to support:
+http://www.picketlink.org[PicketLink] is an umbrella project for security and identity management for Java applications.  It provides the backbone of security for a variety of JBoss products, but also can be used standalone, as we'll do with GeekSeek. PicketLink components are available to support the following:
 
 http://www.jboss.org/picketlink/IDM.html[IDM]:: Universal identity management with pluggable backends like LDAP or RDBMS
 http://www.jboss.org/picketlink/Fed[Federation]:: Federated Identity and Single-Sign-On (SSO)
-http://www.jboss.org/picketlink/XACML.html[XACML]:: Oasis XACML v2.0 compliant access control engine
+http://www.jboss.org/picketlink/XACML.html[XACML]:: Oasis XACML v2.0–compliant access control engine
 
-We'll be leveraging PicketLink in GeekSeek to supply us with an _identity manager_ which we may use for authentication.  This comes in the form of the PicketLink API's +org.picketlink.Identity+, which has operations to support checking the current login state, logging in, logging out, and checking access permission:
+We'll be leveraging PicketLink in GeekSeek to supply us with an _identity manager_ that we can use for authentication.  This comes in the form of the PicketLink API's +org.picketlink.Identity+, which has operations to support checking the current login state, logging in, logging out, and checking access permission:
 
 [source,java]
 ----
@@ -66,7 +66,7 @@ public interface Identity extends Serializable
 }
 ----
 
-We may use the +Identity+ API to lock down all requests to a URL pattern +/auth+ via our +org.cedj.geekseek.service.security.oauth.AuthServlet+:
+We can use the +Identity+ API to lock down all requests that match the URL pattern +/auth+ via our +org.cedj.geekseek.service.security.oauth.AuthServlet+:
 
 [source,java]
 ----
@@ -74,7 +74,7 @@ We may use the +Identity+ API to lock down all requests to a URL pattern +/auth+
 public class AuthServlet extends HttpServlet {
 ----
 
-The +@WebServlet+ annotation and +urlPatterns+ attribute assign this servlet to handle all requests to context paths matching the +/auth+ pattern.
+The +@WebServlet+ annotation and +urlPatterns+ attribute assign this servlet to handle all requests to context paths matching the +/auth+ pattern:
 
 [source,java]
 ----
@@ -91,12 +91,13 @@ The +@WebServlet+ annotation and +urlPatterns+ attribute assign this servlet to 
     private Identity identity;
 ----
 
-Here we define some constants and inject the PicketLink +@Identity+.  We may then use these in our servlet's +service+ method, called by the contained on incoming client requests:
+Here we define some constants and inject the PicketLink +@Identity+.  We can then use these in our servlet's +service+ method, called by the container on incoming client requests:
 
 [source,java]
 ----
     @Override
-    public void service(ServletRequest req, ServletResponse resp) throws IOException,
+    public void service(ServletRequest req, ServletResponse resp) 
+       throws IOException,
         ServletException {
 
         HttpServletRequest request = (HttpServletRequest)req;
@@ -112,13 +113,15 @@ Here we define some constants and inject the PicketLink +@Identity+.  We may the
             try {
                 AuthenticationResult status = identity.login();
                 if(status == AuthenticationResult.FAILED) {
-                    if(response.getStatus() == 302) { // Authenticator is requesting a redirect
+                    if(response.getStatus() == 302) { // Authenticator is 
+                                                      // requesting a redirect
                         return;
                     }
                     response.setStatus(400);
                     response.getWriter().append("FAILED");
                 } else {
-                    String url = String.valueOf(request.getSession().getAttribute(SESSION_REDIRECT));
+                    String url = String.valueOf(
+                    request.getSession().getAttribute(SESSION_REDIRECT));
                     response.setStatus(302);
                     response.setHeader(LOCATION, url);
                     request.getSession().removeAttribute(SESSION_REDIRECT);
@@ -138,9 +141,9 @@ Here we define some constants and inject the PicketLink +@Identity+.  We may the
 }
 ----
 
-By using the operations permitted by the +Identity+ API to check the login state and perform a login if necessary, we may set the appropriate HTTP status codes and authentication redirect attributes.
+By using the operations permitted by the +Identity+ API to check the login state and perform a login if necessary, we can set the appropriate HTTP status codes and authentication redirect attributes.
 
-CDI beans will also be interested in knowing the current +User+ we have logged-in.  A PicketLink +Identity+ is associated with an implementation of +org.picketlink.idm.model.Account+, and we link an +Identity+ to a +User+ via our +org.cedj.geekseek.service.security.picketlink.UserAccount+.
+CDI beans will also be interested in knowing the current logged-in +User+.  A PicketLink +Identity+ is associated with an implementation of +org.picketlink.idm.model.Account+, and we link an +Identity+ to a +User+ via our +org.cedj.geekseek.service.security.picketlink.UserAccount+:
 
 [source,java]
 ----
@@ -159,7 +162,7 @@ public class UserAccount implements Account {
     ...
 ----
 
-With the line between an +Identity+ and our own +User+ object now drawn, we may make the current +User+ available as an injection target by supplying a CDI producer method, scoped to the current request.  This is handled by +org.cedj.geekseek.service.security.CurrentUserProducer+:
+With the line between an +Identity+ and our own +User+ object now drawn, we can make the current +User+ available as an injection target by supplying a CDI producer method, scoped to the current request.  This is handled by +org.cedj.geekseek.service.security.CurrentUserProducer+:
 
 [source,java]
 ----
@@ -188,19 +191,19 @@ public class CurrentUserProducer {
 }
 ----
 
-The class above will supply a +User+ to fields annotated with +@Current+, or null if no one is logged in.  As we've seen, our +UserAccount+ implementation will allow us to call +getUser()+ on the current +Identity+.
+This class will supply a +User+ to fields annotated with +@Current+, or null if no one is logged in.  As we've seen, our +UserAccount+ implementation will allow us to call +getUser()+ on the current +Identity+.
 
-Here we've shown the use of PicketLink as a handy security abstraction, but we haven't done any real authentication or authorization yet.  For that, we'll need to implement a provider which will power the IDM requirements we have to enable social login via Twitter.
+Here we've shown the use of PicketLink as a handy security abstraction, but we haven't done any real authentication or authorization yet.  For that, we'll need to implement a provider that will power the IDM requirements we have to enable social login via Twitter.
 
-===== Agorava and Social Authentication
+===== Agorava and social authentication
 
 http://agorava.org/[Agorava] is a library consisting of CDI beans and extensions for interaction with the predominant social networks.  Its featureset touts:
 
 * A generic and portable REST client API
 * A generic API to work with OAuth 1.0a and 2.0 services
-* A generic API to interact with JSON serialization and de-serialization
-* A generic identification API to retrieve basic user information from a Social Service
-* Specific APIs for Twitter, Facebook and LinkedIn
+* A generic API to interact with JSON serialization and deserialization
+* A generic identification API to retrieve basic user information from a social service
+* Specific APIs for Twitter, Facebook, and LinkedIn
 
 In short, we'll be using Agorava to handle our _authentication_ process and do the behind-the-scenes interaction with Twitter, powering our sign-in integration.
 
@@ -221,7 +224,8 @@ public class SessionProducer implements Serializable {
     @Produces
     @Twitter
     @Current
-    public OAuthSession produceOauthSession(@Twitter @Default OAuthSession session) {
+    public OAuthSession produceOauthSession(
+       @Twitter @Default OAuthSession session) {
         return session;
     }
 }
@@ -229,7 +233,7 @@ public class SessionProducer implements Serializable {
 
 The +@Twitter+ annotation from Agorava supplies us with an injection point to map the +OAuthSession+ into the +@Produces+ method.
 
-We also need a mechanism to initialize Agorava's settings for the OAuth application, so we have +org.cedj.geekseek.service.security.oauth.SettingsProducer+ to provide these.
+We also need a mechanism to initialize Agorava's settings for the OAuth application, so we have +org.cedj.geekseek.service.security.oauth.SettingsProducer+ to provide these:
 
 [source,java]
 ----
@@ -262,7 +266,8 @@ public class SettingsProducer implements Serializable {
             apiCallback = "auth";
         }
 
-        SimpleOAuthAppSettingsBuilder builder = new SimpleOAuthAppSettingsBuilder();
+        SimpleOAuthAppSettingsBuilder builder = 
+           new SimpleOAuthAppSettingsBuilder();
         builder.apiKey(apiKey).apiSecret(apiSecret).callback(apiCallback);
 
         return builder.build();
@@ -272,11 +277,13 @@ public class SettingsProducer implements Serializable {
     public void validateEnvironment() {
         String apiKey = System.getenv(PROP_API_KEY);
         if(apiKey == null) {
-            throw new IllegalStateException(PROP_API_KEY + " env variable must be set");
+            throw new IllegalStateException(
+               PROP_API_KEY + " env variable must be set");
         }
         String apiSecret = System.getenv(PROP_API_SECRET);
         if(apiSecret == null) {
-            throw new IllegalStateException(PROP_API_SECRET + " env variable must be set");
+            throw new IllegalStateException(
+               PROP_API_SECRET + " env variable must be set");
         }
     }
 }
@@ -284,7 +291,7 @@ public class SettingsProducer implements Serializable {
 
 This +@Singleton+ EJB is scoped application-wide and available to all sessions needing configuration to create OAuth sessions.  We store the config data in environment variables to not couple secrets into our application, and allow our various deployment targets (local dev, staging, production, etc) to have independent configurations.
 
-Now we can move to the business of authenticating a user via the Twitter OAuth service via Agorava.  We may extend PicketLink's +BaseAuthenticator+ to provide the necessary logic in our +org.cedj.geekseek.service.security.picketlink.OAuthAuthenticator+:
+Now we can move to the business of authenticating a user via the Twitter OAuth service via Agorava.  We can extend PicketLink's +BaseAuthenticator+ to provide the necessary logic in our +org.cedj.geekseek.service.security.picketlink.OAuthAuthenticator+:
 
 [source,java]
 ----
@@ -326,7 +333,8 @@ public class OAuthAuthenticator extends BaseAuthenticator {
                 UserProfile userProfile = session.getUserProfile();
 
                 User user = repository.get(userProfile.getId());
-                if(user == null) {  // can't find a matching account, shouldn't really happen
+                if(user == null) {  // can't find a matching account, shouldn't
+                                    // really happen
                     setStatus(AuthenticationStatus.FAILURE);
                 } else {
                     setAccount(new UserAccount(user));
@@ -334,22 +342,26 @@ public class OAuthAuthenticator extends BaseAuthenticator {
                 }
             } else {
                 // Callback
-                String verifier = request.getParameter(service.getVerifierParamName());
+                String verifier = request.getParameter(
+                   service.getVerifierParamName());
                 if(verifier != null) {
                     session.setVerifier(verifier);
                     service.initAccessToken();
 
                     // https://issues.jboss.org/browse/AGOVA-53
-                    successful.fire(new SuccessfulAuthentication(service.getSession().getUserProfile(), service.getAccessToken()));
+                    successful.fire(new SuccessfulAuthentication(
+                    service.getSession().getUserProfile(), service.getAccessToken()));
 
-                    String screenName = ((TwitterProfile)service.getSession().getUserProfile()).getScreenName();
+                    String screenName = ((TwitterProfile)service.
+                       getSession().getUserProfile()).getScreenName();
                     User user = repository.get(screenName);
                     if(user == null) { // can't find a matching account
                         setStatus(AuthenticationStatus.FAILURE);
                     } else {
                         setAccount(new UserAccount(user));
                         setStatus(AuthenticationStatus.SUCCESS);
-                        response.addCookie(new Cookie(AUTH_COOKIE_NAME, user.getApiToken()));
+                        response.addCookie(new Cookie(
+                           AUTH_COOKIE_NAME, user.getApiToken()));
                     }
 
                 } else {
@@ -368,9 +380,9 @@ public class OAuthAuthenticator extends BaseAuthenticator {
 
 By annotating the +OAuthAuthenticator+ with +@PicketLink+, this denotes that this is the authenticator instance to be used by PicketLink.
 
-The +authenticate+ method above uses the current (injected) +OAuthSession+ to determine whether or not we have a logged-in user, and further may extract profile information from there.  If the session is not yet connected, we may issue the redirect to the provider for access.
+The +authenticate+ method uses the current (injected) +OAuthSession+ to determine whether or not we have a logged-in user, and further may extract profile information from there.  If the session is not yet connected, we can issue the redirect to the provider for access.
 
-Upon a +SuccessfulAuthentication+ event, we may take further action to store this user's information from Twitter in our datastore by observing the event in +org.cedj.geekseek.service.security.user.UserRegistration+:
+Upon a +SuccessfulAuthentication+ event, we can take further action to store this user's information from Twitter in our datastore by observing the event in +org.cedj.geekseek.service.security.user.UserRegistration+:
 
 [source,java]
 ----
@@ -417,7 +429,7 @@ With our resources secured by URL patterns, it's time to ensure that the barrier
 
 ==== Overview
 
-We must validate that for each of the operations we invoke upon secured resources, we're getting back the appropriate response.  As we've seen before in the REST chapter, this will pertain to:
+We must validate that for each of the operations we invoke upon secured resources, we're getting back the appropriate response.  As we've seen before in <<ch08>>, this will pertain to:
 
 * +PUT+ data
 * +GET+ data
@@ -430,7 +442,7 @@ We must validate that for each of the operations we invoke upon secured resource
 
 ==== Setup
 
-By making use of CDI's producers, we can swap in some test-only implementations to provide our tests with a logged in +User+; this will mimic the true +@CurrentUser+ behavior we'll see in production.  For instance, +org.cedj.geekseek.service.security.test.model.TestCurrentUser+ contains:
+By making use of CDI's producers, we can swap in some test-only implementations to provide our tests with a logged-in +User+; this will mimic the true +@CurrentUser+ behavior we'll see in production.  For instance, +org.cedj.geekseek.service.security.test.model.TestCurrentUser+ contains:
 
 [source,java]
 ----
