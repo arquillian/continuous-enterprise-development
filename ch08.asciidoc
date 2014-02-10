@@ -1,3 +1,4 @@
+[[ch08]]
 == REST and Addressable Services
 
 [quote, Inscription at Rest Stop Along Scotland's Highway A83]
