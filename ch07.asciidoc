@@ -608,10 +608,8 @@ The test logic looks like this:
         // Set the body of the email to be sent
         final String body = "This is a test of the async SMTP Service";
 
-        /*
-        * Define a barrier for us to wait upon while email is sent through the
-        * JMS Queue
-        */
+        // Define a barrier for us to wait upon while email is sent through the
+        // JMS Queue
         final CyclicBarrier barrier = new CyclicBarrier(2);
 
         // Set a handler which will ensure the body was received properly
@@ -642,8 +640,10 @@ The test logic looks like this:
 
         // Construct and send the message async
         final MailMessageBuilder.MailMessage message =
-                new MailMessageBuilder().from("alr@continuousdev.org").addTo("alr@continuousdev.org")
-                        .subject("Test").body(body).contentType("text/plain").build();
+                new MailMessageBuilder().from("alr@continuousdev.org")
+                   .addTo("alr@continuousdev.org")
+                        .subject("Test").body(body).contentType("text/plain")
+                           .build();
         mailService.queueMailForDelivery(message);
 
         // Wait on the barrier until the message is received by the SMTP
@@ -655,8 +655,10 @@ The test logic looks like this:
         } catch (final BrokenBarrierException e) {
             throw new RuntimeException("Broken test setup", e);
         } catch (final TimeoutException e) {
-            // If the SMTP server hasn't processed the message in the allotted time
-            Assert.fail("Test did not receive confirmation message in the allotted time");
+            // If the SMTP server hasn't processed the message in the allotted
+            // time
+            Assert.fail(
+               "Test did not receive confirmation message in the allotted time");
         }
     }
 ----
@@ -665,11 +667,11 @@ Walking through this, we see that first we define the subject of the email to be
 
 The handler will perform our assertions to validate the message contents, then wait at the barrier until the test is done with its processing.
 
-Meanwhile, the test will send the email via the +SMTPMailService+, then wait for the handler to receive the mail message and carry through the logic we'd put in place above.
+Meanwhile, the test will send the email via the +SMTPMailService+, then wait for the handler to receive the mail message and carry through the logic we put in place.
 
-When both the test client and the handler arrive at the +CyclicBarrer+ and no +AssertionErrors+ or other issues have cropped up, we know that we're free to proceed; the test method may continue its execution until invocation is complete and it reports a success.
+When both the test client and the handler arrive at the +CyclicBarrier+ and no +AssertionErrors+ or other issues have cropped up, we know that we're free to proceed; the test method can continue its execution until invocation is complete and it reports a success.
 
-Finally, we need to be sure to undeploy the archive (remember, we'd opted for manual deployment this time around) and reset the server's configuration.  Again, we'll run this code in the client/test process:
+Finally, we need to be sure to undeploy the archive (remember, we opted for manual deployment this time around) and reset the server's configuration.  Again, we'll run this code in the client/test process:
 
 [source,java]
 ----
@@ -686,4 +688,4 @@ public void resetAppServerConfig()
  }
 ----
 
-This example serves to illustrate a common and often undertested aspect of enterprise development.  Though the techniques we've applied here deal with external, non-transactional resources, asynchronous calling, and server configurations, this should serve as proof that even difficult cases may be adequately-tested given a little thought and effort.  It's our belief that this will pay off dividends in avoiding production runtime errors and peace-of-mind in being armed with one more weapon in the battle to maintain a comprehensive, automated testsuite.
+This example serves to illustrate a common and often undertested aspect of enterprise development.  Though the techniques we've applied here deal with external, non-transactional resources, asynchronous calling, and server configurations, this should serve as proof that even difficult cases can be adequately tested given a little thought and effort.  It's our belief that this will pay off dividends in avoiding production runtime errors and peace-of-mind in being armed with one more weapon in the battle to maintain a comprehensive, automated test suite.
