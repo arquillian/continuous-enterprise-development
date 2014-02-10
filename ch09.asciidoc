@@ -478,9 +478,9 @@ public class SetupAuth extends Inspection {
 
 ==== Security Tests
 
-===== Secured Options
+===== Secured options
 
-The whole picture comes together in +org.cedj.geekseek.service.security.test.integration.SecuredOptionsTestCase+.  This will test that the +Allow+ HTTP header is not returned for unauthorized users issuing state-changing requests upon a protected URL.  Additionally, it'll ensure that if a user *is* logged-in, the state-changing methods will be allowed and the +Allow+ header will be present.  
+The whole picture comes together in +org.cedj.geekseek.service.security.test.integration.SecuredOptionsTestCase+.  This will test that the +Allow+ HTTP header is not returned for unauthorized users issuing state-changing requests upon a protected URL.  Additionally, it'll ensure that if a user _is_ logged in, the state-changing methods will be allowed and the +Allow+ header will be present:
 
 [source,java]
 ----
@@ -508,12 +508,13 @@ public class SecuredOptionsTestCase {
     private URL baseURL;
 ----
 
-We start by defining a +@WarpTest+ to run from the client-side (as denoted by +@RunAsClient+), and provide an +@Deployment+ with test-double elements like our +TestCurrentUserProducer+ as explained above.  Arquillian will inject the +baseURL+ of our deployment as we've annotated it with +@ArquillianResource+.
+We start by defining a +@WarpTest+ to run from the client side (as denoted by +@RunAsClient+), and provide an +@Deployment+ with test-double elements like our +TestCurrentUserProducer+ as explained earlier.  Arquillian will inject the +baseURL+ of our deployment because we've annotated it with +@ArquillianResource+:
 
 [source,java]
 ----
     @Test
-    public void shouldNotContainStateChangingMethodsForUnauthorizedAccess() throws Exception {
+    public void shouldNotContainStateChangingMethodsForUnauthorizedAccess() 
+       throws Exception {
         final URL testURL = createTestURL();
         Warp.initiate(new Activity() {
             @Override
@@ -535,12 +536,13 @@ We start by defining a +@WarpTest+ to run from the client-side (as denoted by +@
 
 Warp's fluent syntax allows us to construct a test to ensure that the +Allow+ header is not returned for the state-changing HTTP requests +POST+, +PUT+, +DELETE+, and +PATCH+.  The use of a +null+ user in +SetupAuth+ is where we set no current user.  
 
-Conversely, we can ensure that we do obtain the +Allow+ header for all methods when we +are+ logged-in:
+Conversely, we can ensure that we do obtain the +Allow+ header for all methods when we are logged in:
 
 [source,java]
 ----
     @Test
-    public void shouldContainStateChangingMethodsForAuthorizedAccess() throws Exception {
+    public void shouldContainStateChangingMethodsForAuthorizedAccess() 
+       throws Exception {
         final URL testURL = createTestURL();
         Warp.initiate(new Activity() {
             @Override
@@ -565,7 +567,7 @@ Conversely, we can ensure that we do obtain the +Allow+ header for all methods w
 
 Here we use +SetupAuth+ to set ourselves a +testuser+ for use in this test.
 
-We may take a similar approach to validating that we receive an HTTP "Unauthorized"+" +401+ status response when attempting to +POST+, +PUT+, +PATCH+ or +DELETE+ a resource if we're not an authorized user; this is done in +org.cedj.geekseek.service.security.test.integration.SecuredMethodsTestCase+:
+We can take a similar approach to validating that we receive an HTTP Unauthorized +401+ status response when attempting to +POST+, +PUT+, +PATCH+, or +DELETE+ a resource if we're not an authorized user; we do this in +org.cedj.geekseek.service.security.test.integration.SecuredMethodsTestCase+:
 
 [source,java]
 ----
@@ -639,16 +641,17 @@ public class SecurityInterceptor implements RESTInterceptor {
 }
 ----
 
-This interceptor prohibits accesses and returns an HTTP +401+ if the request is for a state-changing method and there is no currently logged-in user.
+This interceptor prohibits access and returns an HTTP +401+ if the request is for a state-changing method and there is no currently logged-in user.
 
-===== Testing the Current User
+===== Testing the current user
 
-Our user interface will be using the +WhoAmIResource+ to determine the login information; it issues an HTTP 302 redirect to a +User+ resource if authorized and an HTTP 401 "Unauthorized" response if not.  The +org.cedj.geekseek.service.security.test.integration.WhoAmIResourceTestCase+ asserts this behaviour, with test methods:
+Our user interface will be using the +WhoAmIResource+ to determine the login information; it issues an HTTP `302` redirect to a +User+ resource if authorized and an HTTP `401` "Unauthorized" response if not.  The +org.cedj.geekseek.service.security.test.integration.WhoAmIResourceTestCase+ asserts this behavior, with test methods:
 
 [source,java]
 ----
     @Test
-    public void shouldReponseWithNotAuthorizedWhenNoUserFound() throws Exception {
+    public void shouldReponseWithNotAuthorizedWhenNoUserFound() 
+       throws Exception {
         final URL whoAmIURL = createTestURL();
         Warp.initiate(new Activity() {
             @Override
@@ -688,7 +691,7 @@ Again we use Warp in the +shouldReponseWithNotAuthorizedWhenNoUserFound+ and +sh
 
 ===== OAuth
 
-Assuming a successful OAuth login we should redirect back to the user's initial entry point.  Additionally, we must handle exceptional cases and authorization responses from our PicketLink +Authenticator+ implementation.
+Assuming a successful OAuth login, we should redirect back to the user's initial entry point.  Additionally, we must handle exceptional cases and authorization responses from our PicketLink +Authenticator+ implementation.
 
 Our test case will use a custom +Authenticator+ to control the various scenarios; we implement these in +org.cedj.geekseek.service.security.test.integration.ControllableAuthenticator+:
 
@@ -723,9 +726,9 @@ public class ControllableAuthenticator extends BaseAuthenticator {
 }
 ----
 
-This gives a a hook to programatically control whether or not this +Authenticator+ type will permit success via a call to the +setShouldFailAuth+ method.
+This gives us a hook to programmatically control whether or not this +Authenticator+ type will permit success via a call to the +setShouldFailAuth+ method.
 
-Our +org.cedj.geekseek.service.security.test.integration.AuthServletTestCase+ may then use this +ControllableAuthenticator+ in testing to ensure our _handling_ of various authentication outcomes is correct, independently of the authentication process itself.
+Our +org.cedj.geekseek.service.security.test.integration.AuthServletTestCase+ can then use this +ControllableAuthenticator+ in testing to ensure our _handling_ of various authentication outcomes is correct, independently of the authentication process itself:
 
 [source,java]
 ----
@@ -737,7 +740,8 @@ public class AuthServletTestCase {
     @Deployment
     public static WebArchive deploy() {
         return ShrinkWrap.create(WebArchive.class)
-            .addClasses(AuthServlet.class, HttpObjectHolder.class, ControllableAuthenticator.class)
+            .addClasses(AuthServlet.class, HttpObjectHolder.class,
+               ControllableAuthenticator.class)
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
             .addAsLibraries(
                 Maven.resolver()
@@ -757,11 +761,13 @@ public class AuthServletTestCase {
             @Override
             public void perform() {
                 try {
-                    final HttpURLConnection conn = (HttpURLConnection)new URL(baseURL, "auth").openConnection();
+                    final HttpURLConnection conn = (HttpURLConnection)new URL(
+                       baseURL, "auth").openConnection();
                     conn.setRequestProperty("Referer", "http:/geekseek.com");
                     conn.setInstanceFollowRedirects(false);
                     Assert.assertEquals(302, conn.getResponseCode());
-                    Assert.assertEquals(conn.getHeaderField("Location"), "http:/geekseek.com");
+                    Assert.assertEquals(
+                       conn.getHeaderField("Location"), "http:/geekseek.com");
                 } catch(Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -791,7 +797,8 @@ public class AuthServletTestCase {
             @Override
             public void perform() {
                 try {
-                    final HttpURLConnection conn = (HttpURLConnection)new URL(baseURL, "auth").openConnection();
+                    final HttpURLConnection conn = (HttpURLConnection)new URL(
+                       baseURL, "auth").openConnection();
                     conn.setInstanceFollowRedirects(false);
                     Assert.assertEquals(400, conn.getResponseCode());
                 } catch(Exception e) {
@@ -818,6 +825,6 @@ public class AuthServletTestCase {
 }
 ----
 
-Above we have two test methods, +shouldRedirectToRefererOnAuthSuccess+ and +shouldReturnUnAuthorizedOnAuthFailure+, which issue plain HTTP requests and assert that the response code returned is correct depending upon how we've configured the +ControllableAuthenticator+.
+Here we have two test methods, +shouldRedirectToRefererOnAuthSuccess+ and +shouldReturnUnAuthorizedOnAuthFailure+, which issue plain HTTP requests and assert that the response code returned is correct depending on how we've configured the +ControllableAuthenticator+.
 
-While it's thematic that this text does not promote the usage of mocks in situations where real runtime components may be used, these test fixtures give us a hook into the greater runtime and allow how tests to control backend responses normally out of their reach.  In this case, we advocate on behalf of their utility.
+Although it's thematic that this text does not promote the usage of mocks in situations where real runtime components may be used, these test fixtures give us a hook into the greater runtime and allow how tests to control backend responses normally out of their reach.  In this case, we advocate on behalf of their utility.
