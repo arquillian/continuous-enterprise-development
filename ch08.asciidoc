@@ -42,7 +42,7 @@ By addressing services and applying a set of conventions to these URIs, we're ab
 
 [NOTE]
 ====
-Clearly the study of REST is worthy of its own text, and we'll recommend http://restinpractice.com/book/[_REST in Practice_] by Webber/Parastatidis/Robinson from O'Reilly Media to those looking to explore in greater depth.
+Clearly the study of REST is worthy of its own text, and we'll recommend pass:[<emphasis><ulink role="orm:hideurl" url="http://shop.oreilly.com/product/9780596805838.do">REST in Practice</ulink></emphasis>] by Webber et al. (O'Reilly, 2010) to those looking to explore in greater depth.
 ====
 
 REST is certainly not the first distributed architecture; _Remote Procedure Call_ (RPC) varients have been used in various forms (ie. SOAP, XML-RPC) for a long while.  In recent years, the trend towards REST has been largely attributed to its ease-of-use and slim profile when coupled with the _HyperText Transfer Protocol_ (HTTP), an established communication protocol providing for _methods_ , _headers_, and _return status codes_ that map well to the objectives of the caller.  In practice, the success of the WWW is inherently linked to HTTP, though this is only one protocol (scheme) that may be applied to the general guidelines of the web.  Due to its widespread usage and versatility, we'll be employing HTTP throughout this chapter.
