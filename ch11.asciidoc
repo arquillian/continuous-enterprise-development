@@ -339,19 +339,19 @@ The +private+ repository requires authentication, so we must add authentication 
 {/mnt/location/path}   {cloudbees username}   {password}
 ----
 
-Note the CloudBees username here is available on the details page under "Authenticated Access", located at https://forge.cloudbees.com/a/domainId/repositories/private.
+Note the CloudBees username here is available on the details page under "Authenticated Access" (as shown in <<Figure10-7>>), located at https://forge.cloudbees.com/a/domainId/repositories/private.
 
 .CloudBees Authenticated Access
 [[Figure10-7]]
 image::images/cedj_12in07.png["CloudBees Authenticated Access"]
 
-Now we should be ready to mount our volume (subsequent reboots to the system should do this automatically due to our +fstab+ configuration).
+Now we should be ready to mount our volume (subsequent reboots to the system should do this automatically due to our +fstab+ configuration):
 
 ----
 $> sudo mount /mnt/cloudbees/arquillian/private/
 ----
 
-With our volume mounted, any file activities we make under +/mnt/cloudbees/arquillian/private/+ will be reflected in our remote +private+ CloudBees Maven Repository.  Let's copy the contents of the JBoss EAP Maven Repository into +private+:
+With our volume mounted, any file activities we make under _/mnt/cloudbees/arquillian/private/_ will be reflected in our remote +private+ CloudBees Maven Repository.  Let's copy the contents of the JBoss EAP Maven Repository into +private+:
 
 ----
 sudo cp -Rv ~/.m2/jboss-eap-6.1.0.GA-maven-repository/* \
@@ -360,7 +360,7 @@ sudo cp -Rv ~/.m2/jboss-eap-6.1.0.GA-maven-repository/* \
 
 This may take some time as we copy all artifacts and the directory structure over the network.
 
-We must also enable this private repository in our build configuration.  In the private repo (which we have mounted) is a file +maven/settings.xml+.  We'll edit it to add the following sections:
+We must also enable this private repository in our build configuration.  In the private repo (which we have mounted) is a file called _maven/settings.xml_.  We'll edit it to add the following sections.
 
 Under +<servers>+:
 ----
@@ -397,7 +397,7 @@ And under +<profiles>+:
 </profile>
 ----
 
-Keep in mind that some mounting systems (including +davfs2+) may cache content locally, and avoid flushing bytes to the remote CloudBees DAV repository immediately for performance reasons.  In order to force a flush, we can unmount, then remount the volume:
+Keep in mind that some mounting systems (including +davfs2+) may cache content locally, and avoid flushing bytes to the remote CloudBees DAV repository immediately for performance reasons. To force a flush, we can unmount, then remount the volume:
 
 ----
 $> sudo umount /mnt/cloudbees/arquillian/private
@@ -407,18 +407,19 @@ $> sudo mount -a
 Note: it's not atypical for large hold times while the cache synchronizes over the network:
 
 ----
-/sbin/umount.davfs: waiting while mount.davfs (pid 11125) synchronizes the cache ....
+/sbin/umount.davfs: waiting while mount.davfs (pid 11125) synchronizes the cache
+....
 ----
 
 Now we can manually trigger a build of our project, and if all's set up correctly, we'll see our test result come out clear.
 
 ==== Automatic Building on Git Push Events
 
-Let's take things one step further in terms of automation.  We don't have to press the +Build Now+ button on our CI server every time we'd like to run a build.  With some extra configuration we can set up a trigger for new +git push+ events on the authoritative source repository to start a new CI build.
+Let's take things one step further in terms of automation.  We don't have to click the Build Now button on our CI server every time we'd like to run a build.  With some extra configuration we can set up a trigger for new +git push+ events on the authoritative source repository to start a new CI build.
 
 CloudBees http://developer.cloudbees.com/bin/view/DEV/GitHub+Commit+Hooks+HOWTO[documents this process], and we'll follow along these guidelines.  
 
-First we must log into the CloudBees Jenkins home and select the "GitHub" plugin for installation at the Manage Jenkins -> Manage Plugins screen.  Jenkins will download and install the plugin, then reboot the instance.  Then we may go to Manage Jenkins -> Configure System and select "Manually manage hook URLs" under the "GitHub Web Hook" setting.  Save and exit the screen.
+First we must log in to the CloudBees Jenkins home and select the GitHub plug-in for installation at the Manage Jenkins -> Manage Plugins screen.  Jenkins will download and install the plug-in, then reboot the instance.  Then we can go to Manage Jenkins -> Configure System and select "Manually manage hook URLs" under the "GitHub Web Hook" setting.  Save and exit the screen.
 
 With our Jenkins instance configured, now we should enable GitHub triggers in our build job configuration.  Check the box "Build when a change is pushed to GitHub" under "Build Triggers" on the build configuration page, then save.
 
