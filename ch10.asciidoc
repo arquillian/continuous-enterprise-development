@@ -489,11 +489,9 @@ The +waitForLoad+ method, triggered by all of the action handlers, contains the 
 
 With all the main abstractions in place, we are now free to start validating the application's functional behavior: 
 
-----
-*Given* the User is 'Creating a new Conference'
-*When* the Conference has no start/end date
-*Then* an error should be displayed
-----
+* Given the User is 'Creating a new Conference'
+* When the Conference has no start/end date
+* Then an error should be displayed
 
 To satisfy these test requirements we have, for example, +org.cedj.geekseek.test.functional.ui.AddConferenceStory+:
 
