@@ -966,7 +966,7 @@ This will lock down the versions correctly such that all Warp modules are of the
 
 Now we'd like to test details of the REST service behavior; we'll use Warp to allow easy control over permutations of data.  Again, we'll be swapping out alternate +Repository+ implementations to  bypass JPA and real peristence; we're just interested in the HTTP request/response interactions at this stage.
 
-What we'd like to do in this test is create +Conference+ domain objects on the client side and transfer them to the server.  Warp will allow us to control which data to fetch through the JAX-RS layer.  For instance, from the abstract base of the +ConferenceResourceSpecificationTestCase+, which is annotated with +@WarpTest+ to activate Warp:
+What we'd like to do in this test is create +Conference+ domain objects on the client side and transfer them to the server.  Warp will allow us to control which data to fetch through the JAX-RS layer.  We can look at the abstract base class of +ConferenceResourceSpecificationTestCase+ as an example:
 
 [source,java]
 ----
@@ -997,7 +997,8 @@ Here we use Warp to produce the data we want the REST layer to receive, and vali
 Running this test locally, we'll see that Warp constructs an HTTP +GET+ request for us:
 
 ----
-GET /9676980f-2fc9-4103-ae28-fd0261d1d7c3/api/conference/ac5390ad-5483-4239-850c-62efaeee7bf1 HTTP/1.1[\r][\n]
+GET /9676980f-2fc9-4103-ae28-fd0261d1d7c3/api/conference/
+ac5390ad-5483-4239-850c-62efaeee7bf1 HTTP/1.1[\r][\n]
 Accept: application/vnd.ced+xml; type=conference[\r][\n]
 Host: 127.0.1.1:18080[\r][\n]
 Connection: Keep-Alive[\r][\n]
@@ -1007,7 +1008,14 @@ Accept-Encoding: gzip,deflate[\r][\n]
 Because we've coded our JAX-RS endpoints and backing business objects correctly, we'll receive the expected reply (an HTTP +200 OK+ status):
 
 ----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns3:conference xmlns:ns2="urn:ced:link" xmlns:ns3="urn:ced:conference"><ns2:link href="http://127.0.1.1:18080/9676980f-2fc9-4103-ae28-fd0261d1d7c3/api/conference/ac5390ad-5483-4239-850c-62efaeee7bf1" rel="self"/><ns2:link href="http://127.0.1.1:18080/9676980f-2fc9-4103-ae28-fd0261d1d7c3/api/conference/ac5390ad-5483-4239-850c-62efaeee7bf1/session" rel="session"/><end>2013-08-21T00:14:44.159-04:00</end><name>Name</name><start>2013-08-21T00:14:44.159-04:00</start><tagLine>TagLine</tagLine></ns3:conference>"
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns3:conference xmlns:ns2="urn:ced:link" xmlns:ns3="urn:ced:conference">
+<ns2:link href="http://127.0.1.1:18080/9676980f-2fc9-4103-ae28-fd0261d1d7c3/
+api/conference/ac5390ad-5483-4239-850c-62efaeee7bf1" rel="self"/>
+<ns2:link href="http://127.0.1.1:18080/9676980f-2fc9-4103-ae28-fd0261d1d7c3/
+api/conference/ac5390ad-5483-4239-850c-62efaeee7bf1/session" rel="session"/>
+<end>2013-08-21T00:14:44.159-04:00</end><name>Name</name><start>
+2013-08-21T00:14:44.159-04:00</start><tagLine>TagLine</tagLine></ns3:conference>"
 HTTP/1.1 200 OK
 X-Arq-Enrichment-Response=3778738317992283532
 Last-Modified=Wed, 21 Aug 2013 04:14:44 GMT
