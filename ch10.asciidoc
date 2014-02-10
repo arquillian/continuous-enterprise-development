@@ -538,7 +538,7 @@ public class AddConferenceStory {
     }
 ----
 
-The +shouldShowErrorMessageOnMissingDatesInConferenceForm+ test method above takes the following actions:
+The +shouldShowErrorMessageOnMissingDatesInConferenceForm+ test method takes the following actions:
 
 * Go the +MainPage+ (as injected)
 * Get all +ActionLinks+
@@ -546,7 +546,7 @@ The +shouldShowErrorMessageOnMissingDatesInConferenceForm+ test method above tak
 * Click the 'conference' +ActionLink+
 * Verify we're on the +Conference.Form+
 * Input given data in the form and submit it
-* Verify that name and tagLine input are not in error state
+* Verify that name and `tagLine` input are not in error state
 * Verify that start and end input are in error state
 
-As we can see, Arquillian Drone, together with Selenium and QUnit, makes for an integrated solution to testing front-end code with a Java object model.  Running the full suite on your own locally should be instructive
+As we can see, Arquillian Drone, together with Selenium and QUnit, makes for an integrated solution to testing frontend code with a Java object model.  Running the full suite on your own locally should be instructive.
