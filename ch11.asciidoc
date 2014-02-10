@@ -285,7 +285,7 @@ The next step is to configure the build parameters, as shown in <<Figure10-5>>. 
 [[Figure10-5]]
 image::images/cedj_12in05.png["CloudBees SCM"]
 
-Now we'll tell Maven how to run the build; remember, we want to enable the +arq-jbosseap-managed+ profile, so we'll note that in the +Goals and options+ section.  Also, enable our alternative settings file which will expose our +private+ repository to our build.
+Now we'll tell Maven how to run the build; remember, we want to enable the +arq-jbosseap-managed+ profile, so we'll note that in the "Goals and options" section (see <<Figure10-6>>).  Also, we'll enable our alternative settings file, which will expose our +private+ repository to our build.
 
 .CloudBees Build Config
 [[Figure10-6]]
