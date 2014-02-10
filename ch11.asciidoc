@@ -90,20 +90,20 @@ And with that, we have our server process running and ready to receive deploymen
 [[Figure10-2]]
 image::images/cedj_12in02.png[EAP Home Page]
 
-Let's leave this as-is for the time being, and open a new console window (or tab) in the _GeekSeek_ application's source root.
+Let's leave this as-is for the time being, and open a new console window (or tab) in the GeekSeek application's source root.
 
-Our experience with Arquillian up to this point has been using a _managed_ container configuration; this has ceded the responsibility of server startup and shutdown to Arquillian during the +Before Suite+ and +After Suite+ test lifecycle events.  Now that we've already got a server booted, we can let Arquillian bypass these steps to use a previously-bootstrapped process, which gives us some benefits:
+Our experience with Arquillian up to this point has been using a _managed_ container configuration; this has ceded the responsibility of server startup and shutdown to Arquillian during the +Before Suite+ and +After Suite+ test lifecycle events.  Now that we've already got a server booted, we can let Arquillian bypass these steps to use a previously bootstrapped process, which gives us some benefits:
 
 * We save the time needed to start/stop a server alongside each test suite.
 * A server does not have to be running locally; the server process may be housed on a separate physical machine accessible on the network.
 
-We've provided a Maven profile +arq-jbosseap-remote+ to run our Arquillian tests against a running EAP process on the local machine.  From the _GeekSeek_ source code root, simply pass this profile as an argument using the +-P+ switch to the +mvn+ command and instead of using the default WildFly managed container (which will automatically start/stop), we'll instead use our running server that we'd started earlier.
+We've provided a Maven profile, +arq-jbosseap-remote+, to run our Arquillian tests against a running EAP process on the local machine.  From the GeekSeek source code root, simply pass this profile as an argument using the +-P+ switch to the +mvn+ command, and instead of using the default WildFly managed container (which will automatically start/stop), we'll instead use our running server that we started earlier:
 
 ----
 code $> mvn clean install -Parq-jbosseap-remote
 ----
 
-The build will run as we've seen before, only this time you'll be able to see in the server console some activity resulting from the deployments made and tests run, for instance:
+The build will run as we've seen before, only this time we'll be able to see some activity in the server console resulting from the deployments made and tests run. For instance:
 
 ----
 03:35:30,984 INFO  [org.jboss.as.server] 
@@ -112,7 +112,7 @@ The build will run as we've seen before, only this time you'll be able to see in
   (runtime-name : "015c84ea-1a41-4e37-957a-f2433f201a23.war")
 ----
 
-This may be a preferable technique to employ while developing; at the start of the day you may launch the server and keep it running as an external process, and run your tests without the overhead of waiting for server start and stop, as well as the unzipping process (and resulting file I/O) to create local WildFly installation directories under +target+ for testing.  On our machines, this cuts the total build time from around 3:30 to 2:11 as we exercise quite a few test suites and hence remove a good number of start/stop lifecycle events by using the remote container.
+This may be a preferable technique to employ while developing; at the start of the day you can launch the server and keep it running as an external process, and run your tests without the overhead of waiting for server start and stop, as well as the unzipping process (and resulting file I/O) to create local WildFly installation directories under +target+ for testing.  On our machines, this cuts the total build time from around 3:30 to 2:11 as we exercise quite a few test suites and hence remove a good number of start/stop lifecycle events by using the remote container.
 
 As we're done with the EAP instance we'd started earlier, let's end the process.
 
