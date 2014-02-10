@@ -7,23 +7,23 @@ ____
 
 To this point, we've focused primarily on the testable development of our modules and have taken some selective slices out for examination and testing.  The time has come for us to address full integration by bringing everything together into a single deployable unit.
 
-Additionally, we'll look at some alternative (and arguably more enterprise-ready) runtimes for our application.  Ideally, we'd like to be in a position where our test environment is aligned as closely as possible to that which will be run in production, and we'll further aim to automate the process of deployment.  By removing human interaction as much as possible, our potential for mistakes decreases and we learn to rely instead on our testsuite as a guardian of code quality.
+Additionally, we'll look at some alternative (and arguably more enterprise-ready) runtimes for our application.  Ideally, we'd like to be in a position where our test environment is aligned as closely as possible to that which will be run in production, and we'll further aim to automate the process of deployment.  By removing human interaction as much as possible, our potential for mistakes decreases and we learn to rely instead on our test suite as a guardian of code quality.
 
-This chapter will ultimately link a +git push+ to validate new commits in a _continuous integration_ server before deploying the new version of our application into the publicly-accessible web.  Whether you go straight to production or first to a staging environment, these steps should outline a smooth transition from development to real application use.
+This chapter will ultimately link a +git push+ to validate new commits in a _continuous integration_ server before deploying the new version of our application into the publicly accessible Web.  Whether you go straight to production or first to a staging environment, these steps should outline a smooth transition from development to real application use.
 
 === Obtaining JBoss EAP
 
-_JBoss Enterprise Application Platform_ (EAP) is Red Hat's supportable application server distribution born from the community open-source _WildFly_ project (formerly known as the JBoss Application Server).  A full discussion of the relationship and differences between community and supportable middleware is detailed by http://www.redhat.com/products/jbossenterprisemiddleware/community-enterprise/[Red Hat], and some of the most important points are:
+_JBoss Enterprise Application Platform_ (EAP) is Red Hat's supportable application server distribution born from the community open source _WildFly_ project (formerly known as the JBoss Application Server).  A full discussion of the relationship and differences between community and supportable middleware is detailed by http://www.redhat.com/products/jbossenterprisemiddleware/community-enterprise/[Red Hat], and some of the most important points are:
 
 * The community projects are built to innovate quickly and push new features at a rapid rate.
-* Supportable products are intended to have a multi-year life span, and receive updates and bug fixes over this time period.
-* A support contract and SLA may be purchased for supportable products.
+* Supportable products are intended to have a multiyear life span, and receive updates and bug fixes over this time period.
+* A support contract and SLA can be purchased for supportable products.
 
-In March of 2013, JBoss Senior Director of Engineering https://community.jboss.org/blogs/mark.little/2013/03/07/eap-binaries-available-for-all-developers[announced] that EAP binaries and its dependencies will be made freely-available (at no monetary cost) through a _0-dollar subscription_ through Red Hat.  As this runtime comes with no obligation and allows us a migration path to support if our little _GeekSeek_ business were to need it, we'll opt for EAP as our target runtime.
+In March of 2013, the JBoss Senior Director of Engineering https://community.jboss.org/blogs/mark.little/2013/03/07/eap-binaries-available-for-all-developers[announced] that EAP binaries and its dependencies will be made freely available (at no monetary cost) through a _0-dollar subscription_ through Red Hat.  Because this runtime comes with no obligation and allows us a migration path to support if our little _GeekSeek_ business were to need it, we'll opt for EAP as our target runtime.
 
-EAP has some additional differences with WildFly which become very apparent during our development experience.  Though EAP is available for free, there is a _Terms and Conditions_ prerequisite to its use, and therefore is not currently-available in the JBoss Nexus or Maven Central repositories.  We'll have to perform some extra steps to setup our environments for EAP before we can enable this option in our builds.
+EAP has some additional differences with WildFly, which become very apparent during our development experience.  Though EAP is available for free, there is a _Terms and Conditions_ prerequisite to its use, and therefore is not currently available in the JBoss Nexus or Maven Central repositories.  We'll have to perform some extra steps to set up our environments for EAP before we can enable this option in our builds.
 
-First, let's obtain the EAP distribution and private JBoss EAP Maven Repository.  This is done from the http://www.jboss.org/jbossas/downloads/[JBoss Downloads] page.
+First, let's obtain the EAP distribution and private JBoss EAP Maven Repository from the http://www.jboss.org/jbossas/downloads/[JBoss Downloads] page, as shown in <<Figure10-1>>.
 
 .Download JBoss EAP
 [[Figure10-1]]
