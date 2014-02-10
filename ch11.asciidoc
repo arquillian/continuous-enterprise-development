@@ -221,7 +221,7 @@ org/jboss/as/jboss-as-dist/maven-metadata.xml (313 B at 305.7 KB/sec)
 [INFO] Final Memory: 5M/102M
 ----
 
-And in the +~/.m2/jboss-eap-6.1.0.GA-maven-repository/org/jboss/as/jboss-as-dist+ directory, we should see our EAP distribution ZIP along with some Maven-generated metadata files:
+And in the _~/.m2/jboss-eap-6.1.0.GA-maven-repository/org/jboss/as/jboss-as-dist_ directory, we should see our EAP distribution ZIP along with some Maven-generated metadata files:
 
 ----
 $> ls -R
@@ -238,9 +238,9 @@ jboss-as-dist-eap-6.1.0.zip.md5
 jboss-as-dist-eap-6.1.0.zip.sha1
 ----
 
-Now, assuming we enable the +jboss-eap-6.1.0+ profile in our builds, we'll be able to use EAP just as we had for WildFly, as we've assigned it to a proper Maven artifact in the coordinate space +org:jboss.as:jboss-as-dist:eap-6.1.0+.
+Now, assuming we enable the +jboss-eap-6.1.0+ profile in our builds, we'll be able to use EAP just as we had for WildFly, because we've assigned it to a proper Maven artifact in the coordinate space +org:jboss.as:jboss-as-dist:eap-6.1.0+.
 
-To run our _GeekSeek_ build with tests against EAP in managed mode, apply the +jboss-eap-6.1.0+ profile to enable our custom repository, and the +arq-jbosseap-managed+ profile to configure Arquillian with the proper adaptors:
+To run our GeekSeek build with tests against EAP in managed mode, we apply the +jboss-eap-6.1.0+ profile to enable our custom repository, and the +arq-jbosseap-managed+ profile to configure Arquillian with the proper adaptors:
 
 ----
 code $> mvn clean install -Parq-jbosseap-managed,jboss-eap-6.1.0
@@ -250,36 +250,36 @@ In this fashion, we can now automate our testing with EAP just as we've been doi
 
 === Continuous Integration and the Authoritative Build Server
 
-The practice of _continuous integration_ involves the frequent pushing of code to a shared mainline, then executing a robust testsuite against it.  Ideally each commit will be tested in this fashion, and while we should strive to run as many tests as are appropriate locally before pushing code to the source repository for all to see, the most reliable agent to verify correctness is our _authoritative build server_.
+The practice of _continuous integration_ involves the frequent pushing of code to a shared mainline, then executing a robust test suite against it.  Ideally, each commit will be tested in this fashion, and though we should strive to run as many tests as are appropriate locally before pushing code to the source repository for all to see, the most reliable agent to verify correctness is our _authoritative build server_.
 
-Our goal here is to set up a continuous integration environment which will serve two primary purposes:
+Our goal here is to set up a continuous integration environment that will serve two primary purposes:
 
-* Run the testsuite in a controlled environment when a +git push+ is made to the authoritative source repository
+* Run the test suite in a controlled environment when a +git push+ is made to the authoritative source repository
 * Trigger the deployment of the latest version of our application upon build success
 
-In this way we chain events together in order to automate the human action of a code commit all the way through deployment to a publicly-accessible application server.
+In this way we chain events together in order to automate the human action of a code commit all the way through deployment to a publicly accessible application server.
 
-While we have our choice of build servers and cloud services backing them, we've chosen for our examples the http://jenkins-ci.org/[Jenkins CI Server] (the project forked off http://hudson-ci.org/[Hudson]) run by the http://www.cloudbees.com/[CloudBees] service.  Of course, we could install a CI server and maintain it ourselves, but the excellent folks at CloudBees have proven more than capable at keeping our infrastructure running, patched, and updated.  Additionally, they offer a few extension services (which we'll soon see) that fit well with our desired use cases.  
+Although we have our choice of build servers and cloud services backing them, we've chosen for our examples the http://jenkins-ci.org/[Jenkins CI Server] (the project forked off http://hudson-ci.org/[Hudson]) run by the http://www.cloudbees.com/[CloudBees] service.  Of course, we could install a CI server and maintain it ourselves, but the excellent folks at CloudBees have proven more than capable at keeping our infrastructure running, patched, and updated.  Additionally, they offer a few extension services (which we'll soon see) that fit well with our desired use cases.  
 
-It's worth noting that the CloudBees team has kindly provided the Arquillian and ShrinkWrap communities with gratis service and support over the past several years, so we'd like to thank them for their contributions in keeping the open-source ecosystem running smoothly.
+It's worth noting that the CloudBees team has kindly provided the Arquillian and ShrinkWrap communities with gratis service and support over the past several years, so we'd like to thank them for their contributions in keeping the open source ecosystem running smoothly.
 
-==== Configuring the _GeekSeek_ Build on CloudBees
+==== Configuring the GeekSeek Build on CloudBees
 
-As our eventual deployment target will be EAP, we're going to configure CloudBees as our authoritative build server to execute Arquillian tests against the EAP runtime.  Just as we'd run a few extra steps on our local environment to equip the backing Maven repositories with an EAP distribution, we'll have to make the same artifacts available to our CloudBees Jenkins instance.  Luckily, we've already done most of that work locally, so this will mainly be an issue of copying over the EAP Maven repository we already have.
+Because our eventual deployment target will be EAP, we're going to configure CloudBees as our authoritative build server to execute Arquillian tests against the EAP runtime.  Just as we ran a few extra steps on our local environment to equip the backing Maven repositories with an EAP distribution, we'll have to make the same artifacts available to our CloudBees Jenkins instance.  Luckily, we've already done most of that work locally, so this will mainly be an issue of copying over the EAP Maven repository we already have.
 
-First we'll log into our CloudBees account and select to enter the Jenkins Dashboard from within CloudBees Central.
+First we'll log in to our CloudBees account and select to enter the Jenkins Dashboard from within CloudBees Central, as shown in <<Figure10-3>>.
 
 .CloudBees Jenkins
 [[Figure10-3]]
 image::images/cedj_12in03.png["CloudBees Jenkins"]
 
-We'll create a +New Job+, assigning it our project name of _GeekSeek_ and selecting a +Maven2/Maven3 Build+ configuration template.
+We'll create a new job, assigning it our project name of _GeekSeek_ and selecting a +Maven2/Maven3 Build+ configuration template, as shown in <<Figure10-4>>.
 
 .CloudBees New Job
 [[Figure10-4]]
 image::images/cedj_12in04.png["CloudBees New Job"]
 
-The next step is to configure the build parameters.  First let's set the +SCM+ section to point to our authoritative Git repository; this is where the build will pull code.
+The next step is to configure the build parameters, as shown in <<Figure10-5>>. First let's set the SCM section to point to our authoritative Git repository; this is where the build will pull code.
 
 .CloudBees SCM
 [[Figure10-5]]
