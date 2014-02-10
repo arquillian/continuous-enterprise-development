@@ -6,11 +6,11 @@ ____
 Rest and be thankful.
 ____
 
-The concepts guiding the makeup of the modern web could be considered a happy accident, or at least an implementation of ideas that had general applicability far beyond their initial design criteria.  In the late 1980s we had the hardware and software necessary for networking; low-level tools for transmitting data from one computer to another.  We even had some payload protocols and application layers available including IRC for chat, POP for email, and USENET for general discussions.  We were communicating, albeit over relatively constrained channels.
+The concepts guiding the makeup of the modern Web could be considered a happy accident, or at least an implementation of ideas that had general applicability far beyond their initial design criteria.  In the late 1980s we had the hardware and software necessary for networking; these were low-level tools for transmitting data from one computer to another.  We even had some payload protocols and application layers available including IRC for chat, POP for email, and Usenet for general discussions.  We were communicating, albeit over relatively constrained channels.
 
-Out of necessity for his own research, Tim Berners-Lee of the European Organization for Nuclear Research (CERN) concocted a small receipe for publishing documents in a manner that would make his findings more accessible between departments and encourage updates over time.  Called the "WorldWideWeb" (WWW), this project http://cdsweb.cern.ch/record/1405411/files/ARCH-WWW-4-010.pdf[proposed] a series of simple constructs:
+Out of necessity for his own research, Tim Berners-Lee of the European Organization for Nuclear Research (CERN) concocted a small receipe for publishing documents in a manner that would make his findings more accessible between departments and encourage updates over time.  Called the "WorldWideWeb" (WWW), http://cdsweb.cern.ch/record/1405411/files/ARCH-WWW-4-010.pdf[this project proposed] a series of simple constructs:
 
-Addressable resources:: a unique key or address assigned to each document
+Addressable resources:: A unique key or address assigned to each document
 Hypertext:: A unidirectional pointer to an addressable resource
 Browser:: A client program capable of reading hypertext-enabled documents
 
