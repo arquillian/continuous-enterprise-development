@@ -509,12 +509,15 @@ Assuming the CNAME is properly set up with your domain registrar, the record has
 Now let's clear the way for our real application.  First we'll clone the OpenShift application repository into our local workspace.  The Git URL for your application is displayed on the application's status screen on your OpenShift account.  The +git clone+ command will look a little like this:
 
 ----
-$> git clone ssh://(somehash))@geekseek-continuousdev.rhcloud.com/~/git/geekseek.git/
+$> git clone ssh://(somehash))@geekseek-continuousdev.
+rhcloud.com/~/git/geekseek.git/
 Cloning into 'geekseek'...
-The authenticity of host 'geekseek-continuousdev.rhcloud.com (72.44.62.62)' can't be established.
+The authenticity of host 'geekseek-continuousdev.rhcloud.com (72.44.62.62)' 
+can't be established.
 RSA key fingerprint is cf:ee:77:cb:0e:fc:02:d7:72:7e:ae:80:c0:90:88:a7.
 Are you sure you want to continue connecting (yes/no)? yes
-Warning: Permanently added 'geekseek-continuousdev.rhcloud.com,72.44.62.62' (RSA) to the list of known hosts.
+Warning: Permanently added 'geekseek-continuousdev.rhcloud.com,72.44.62.62' 
+(RSA) to the list of known hosts.
 remote: Counting objects: 39, done.
 remote: Compressing objects: 100% (31/31), done.
 remote: Total 39 (delta 1), reused 0 (delta 0)
@@ -522,7 +525,7 @@ Receiving objects: 100% (39/39), 19.98 KiB, done.
 Resolving deltas: 100% (1/1), done.
 ----
 
-Now we have a full copy of the OpenShift application's repository on our local disk.  Because we don't need the default landing page shown in the screenshot above, we can safely remove it.  This is easily enough done by +cd+-ing into our repository directory, removing the files in question with +git rm+, committing the changes, and then pushing the commit to the remote OpenShift repository.
+Now we have a full copy of the OpenShift application's repository on our local disk.  Because we don't need the default landing page shown in <<Figure10-13>>, we can safely remove it.  This is easily enough done by +cd+-ing into our repository directory, removing the files in question with +git rm+, committing the changes, and then pushing the commit to the remote OpenShift repository.
 
 ----
 $> cd geekseek
