@@ -2,6 +2,23 @@
 
 @import "DYNAMIC CSS PLACEHOLDER";
 
+blockquote {
+  margin:0 0 10pt 0;
+}
+
+.attribution{
+  margin:0;
+  font-style:normal;
+}
+
+blockquote p{
+  text-align:right;
+}
+
+blockquote p:first-child{
+  font-style:italic;
+}
+
 /*--------Put Your Custom CSS Rules Below--------*/
 
 /*----Uncomment to turn on automatic code wrapping
