@@ -227,7 +227,7 @@ This will be picked up by the container and signal that requests to paths under 
 
 ==== Repository Resources
 
-Looking over our requirements, we see that all paths in our DAP are capable of performing CRUD operations.  Therefore, it makes sense for us to define a base upon which individual resources can build, while giving persistence capabilities to create, read, update, and delete.  In GeekSeek, we'll handle this by making a generic +RepositoryResource+ base to give us a hook into the +Repository+ abstractions detailed in <<>>.  Let's walk through +org.cedj.geekseek.web.rest.core.RepositoryResource+:
+Looking over our requirements, we see that all paths in our DAP are capable of performing CRUD operations.  Therefore, it makes sense for us to define a base upon which individual resources can build, while giving persistence capabilities to create, read, update, and delete.  In GeekSeek, we'll handle this by making a generic +RepositoryResource+ base to give us a hook into the +Repository+ abstractions detailed in <<ch05>>.  Let's walk through +org.cedj.geekseek.web.rest.core.RepositoryResource+:
 
 [source,java]
 ----
