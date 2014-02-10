@@ -225,7 +225,7 @@ The _graph-assertions.html_ referenced in the +@QUnitTest+ annotation is the HTM
 </html>
 ----
 
-Our _assert.js_ is then free to contain the QUnit functions which define our client-side test suite:
+Our _assert.js_ is then free to contain the QUnit functions that define our client-side test suite:
 
 [source,javascript]
 ----
@@ -242,9 +242,9 @@ asyncTest("can remove?", 1, function() {
 });
 ----
 
-When we execute the +GraphTestCase+ Java class as part of the test execution, Arquillian QUnit will create and configure https://docs.jboss.org/author/display/ARQ/Drone[Drone] and https://community.jboss.org/wiki/ArquillianGraphene2[Graphene] to represent our defined environment.  It then parses the QUnit JavaScript to extract the real test names and replace the Java JUnit defined ones. That means that in our test results we'll see test names like "can remove?" and "can get?" as opposed to "testGraph".
+When we execute the +GraphTestCase+ Java class as part of the test execution, Arquillian QUnit will create and configure https://docs.jboss.org/author/display/ARQ/Drone[Drone] and https://community.jboss.org/wiki/ArquillianGraphene2[Graphene] to represent our defined environment.  It then parses the QUnit JavaScript to extract the real test names and replace the Java JUnit defined ones. That means that in our test results we'll see test names like "can remove?" and "can get?" as opposed to "testGraph."
 
-We have configured Drone to use the http://phantomjs.org/[PhantomJS] browser; this headless browser allows us to run on a CI server without a graphical environment.  This is easily configurable via +arquillian.xml+.  
+We have configured Drone to use the http://phantomjs.org/[PhantomJS] browser; this headless browser allows us to run on a CI server without a graphical environment.  This is easily configurable via _arquillian.xml_.  
 
 With this setup we now have control over our JavaScript client code and can integrate JavaScript tests in our test pipeline.
 
@@ -252,15 +252,15 @@ With this setup we now have control over our JavaScript client code and can inte
 
 We still have functional behavior in our application that goes beyond how the JavaScript code itself runs.  Are the page elements displaying properly?  Does the end user see what is expected?
 
-One could argue that we're now moving over from integration into functional testing.  Either way, we need to setup our functional tests to be maintainable, robust and easy to read.
+One could argue that we're now moving over from integration into functional testing.  Either way, we need to set up our functional tests to be maintainable, robust, and easy to read.
 
 We use Drone to control the lifecycle of the browser and Graphene to wrap the browser and provide client-side object injection.
 
-We rely on a pattern called http://code.google.com/p/selenium/wiki/PageObjects[PageObjects] from Selenium to encapsulate the logic within a page in a type safe and programmable API. With Graphene we can take the Page Object concept one step further and use Page Fragments. Page Fragments are reusable components that you might find within a Page. We might have a +Conference+ object displayed on multiple different pages or a Login controller repeated in all headers.
+We rely on a pattern called http://code.google.com/p/selenium/wiki/PageObjects[PageObjects] from Selenium to encapsulate the logic within a page in a type-safe and programmable API. With Graphene we can take the PageObject concept one step further and use PageFragments. PageFragments are reusable components that you might find within a Page. We might have a +Conference+ object displayed on multiple different pages or a Login controller repeated in all headers.
 
-By encapsulating the references to the HTML ID's and CSS rules within Page Object and Page Fragments we can create reusable Test Objects that represents our Application.
+By encapsulating the references to the HTML IDs and CSS rules within PageObjects and PageFragments, we can create reusable TestObjects that represent our application.
 
-We start out by creating a Page Object for our application in +org.cedj.geekseek.test.functional.ui.page.MainPage+:
+We start out by creating a PageObject for our application in +org.cedj.geekseek.test.functional.ui.page.MainPage+:
 
 [source,java]
 ----
@@ -288,7 +288,7 @@ public class MainPage {
 }
 ----
 
-We use Graphene's +@Location+ to define the relative URL  where this page can be found.  By combining Graphene with Drone we may now simply inject the +MainPage+ object into our +@Test+ method.  The injection will carry the state navigated to the correct URL and fully powered by +WebDriver+ in the background.  With this arrangement, our test class may end up with the following structure.
+We use Graphene's +@Location+ to define the relative URL where this page can be found.  By combining Graphene with Drone we can now simply inject the +MainPage+ object into our +@Test+ method.  The injection will carry the state navigated to the correct URL and be fully powered by +WebDriver+ in the background.  With this arrangement, our test class will end up with the following structure:
 
 [source,java]
 ----
@@ -304,9 +304,9 @@ public class MyUITest {
 
 The +testSomething+ method accepts a +MainPage+ object with proper state intact. 
 
-When Graphene initializes the +MainPage+ instance for injection it scans the PageObject for +@FindBy+ annotations to inject proxies that represent the given element.  In our case we use a second layer of abstraction, +ActionLinks+, our PageFragment.  Each page has a menu of "what can be done next?", following the flow of the underlying REST backend.  These are split in two; actionLinks and userActionLinks. The differentiator: is this a general action against a +Resource+ or an action against a resource that involves the +User+?  An example of an action is 'Add Conference' and a +User+ action example would be 'Add me as a Tracker to this Conference'.
+When Graphene initializes the +MainPage+ instance for injection, it scans the PageObject for +@FindBy+ annotations to inject proxies that represent the given element.  In our case we use a second layer of abstraction, +ActionLinks+, which is our PageFragment.  Each page has a menu of "what can be done next?" following the flow of the underlying REST backend.  These are split in two; `actionLinks` and `userActionLinks`. The differentiator: is this a general action against a +Resource+ or an action against a `Resource` that involves the +User+?  An example of an action is 'Add Conference' and a +User+ action example would be 'Add me as a Tracker to this Conference'.
 
-We add an +ActionLinks+ abstraction to simply expose a nicer API around checking if a link exist and how to retrieve it.
+We add an +ActionLinks+ abstraction to simply expose a nicer API around checking if a link exist and how to retrieve it:
 
 [source,java]
 ----
