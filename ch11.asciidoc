@@ -31,7 +31,7 @@ image::images/cedj_12in01.png["Download JBoss EAP"]
 
 Once we agree to the Terms and Conditions, the links to download will begin the process.  Both the EAP distribution and the EAP Maven Repository are bundled as ZIP files.
 
-Let's install EAP by unzipping it into a location on the filesystem.  Anywhere will do; for instance in *nix-like systems we may handle this from the command-line:
+Let's install EAP by unzipping it into a location on the filesystem.  Anywhere will do; for instance, in Unix-like systems we can handle this from the command line:
 
 ----
 ~ $> mkdir -p /home/alr/opt/jboss/eap; cd /home/alr/opt/jboss/eap
@@ -39,9 +39,9 @@ eap $> mv /home/alr/Downloads/jboss-eap-6.1.0.zip .
 eap $> unzip jboss-eap-6.1.0.zip
 ----
 
-Using the above, we'd now have EAP installed at +/home/alr/opt/jboss/eap/jboss-eap-6.1/+.
+Using this, we'd now have EAP installed at _/home/alr/opt/jboss/eap/jboss-eap-6.1/_.
 
-Now let's place our EAP Maven repository somewhere useful.  It might be enticing to mix in these artifacts with our default Maven repository (typically located at +_USER_HOME_/.m2/repository+), but let's keep things separated and create a new extension repo for our product bits.  This way we'll have the option of enabling this repository explicitly in our builds and won't ever have to worry about placing these artifacts alongside ones found in Maven Central.  We'll choose +_USER_HOME_/.m2/jboss-eap-6.1.0.GA-maven-repository+ (the default folder name contained inside the ZIP, under our user's Maven directory):
+Now let's place our EAP Maven repository somewhere useful.  It might be enticing to mix in these artifacts with our default Maven repository (typically located at _USER_HOME/.m2/repository_), but let's keep things separated and create a new extension repo for our product bits.  This way we'll have the option of enabling this repository explicitly in our builds and won't ever have to worry about placing these artifacts alongside ones found in Maven Central.  We'll choose _USER_HOME/.m2/jboss-eap-6.1.0.GA-maven-repository_ (the default folder name contained inside the ZIP, under our user's Maven directory):
 
 ----
 Downloads $> unzip jboss-eap-6.1.0-maven-repository.zip
@@ -55,14 +55,14 @@ With our EAP installation in place, we're now in a position to exercise our appl
 
 ==== Using the EAP Remote Container
 
-First we'll run EAP as a standalone process.  Opening a terminal or console window, let's +cd+ into the directory in which we unzipped the distribution.  From there we may export an environment variable to set +JBOSS_HOME+ to the present working directory (using the +export+ command on *nix systems or simply +set+ on Windows machines):
+First we'll run EAP as a standalone process.  Opening a terminal or console window, let's +cd+ into the directory in which we unzipped the distribution.  From there we can export an environment variable to set _JBOSS_HOME_ to the present working directory (using the +export+ command on *nix systems or simply +set+ on Windows machines):
 
 ----
 $> cd /home/alr/opt/jboss/eap/jboss-eap-6.1/
 jboss-eap-6.1 $> export JBOSS_HOME=`pwd`
 ----
 
-Now we'll launch the EAP server in standalone (non-domain) mode by using the provided scripts in the +bin+ directory:
+Now we'll launch the EAP server in standalone (nondomain) mode by using the provided scripts in the _bin_ directory:
 
 ----
 jboss-eap-6.1 $> cd bin
@@ -77,15 +77,16 @@ bin $> ./standalone.sh
      -Djava.awt.headless=true
 =================================
 ...output trimmed
-02:57:43,593 INFO  [org.jboss.as] (Controller Boot Thread) JBAS015874: JBoss EAP 6.1.0.GA 
+02:57:43,593 INFO  [org.jboss.as] (Controller Boot Thread) JBAS015874: 
+   JBoss EAP 6.1.0.GA 
    (AS 7.2.0.Final-redhat-8) started in 2404ms - 
    Started 123 of 177 services (53 services 
    are passive or on-demand)
 ----
 
-And with that, we have our server process running and ready to receive deployments or service requests.  As noted in the above output, the startup sequence is complete on our machines in about 2.4 seconds.  You may ensure that everything is working correctly or find links to the web-based management interface by pointing your browser to +http://localhost:8080+:
+And with that, we have our server process running and ready to receive deployments or service requests.  As noted in the preceding output, the startup sequence is complete on our machines in about 2.4 seconds.  You can ensure that everything is working correctly or find links to the web-based management interface by pointing your browser to _http://localhost:8080_, as shown in <<Figure10-2>>.
 
-.EAP Home Page
+.EAP home page
 [[Figure10-2]]
 image::images/cedj_12in02.png[EAP Home Page]
 
