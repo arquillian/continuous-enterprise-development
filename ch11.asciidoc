@@ -23,7 +23,7 @@ In March of 2013, the JBoss Senior Director of Engineering https://community.jbo
 
 EAP has some additional differences with WildFly, which become very apparent during our development experience.  Though EAP is available for free, there is a _Terms and Conditions_ prerequisite to its use, and therefore is not currently available in the JBoss Nexus or Maven Central repositories.  We'll have to perform some extra steps to set up our environments for EAP before we can enable this option in our builds.
 
-First, let's obtain the EAP distribution and private JBoss EAP Maven Repository from the http://www.jboss.org/jbossas/downloads/[JBoss Downloads] page, as shown in <<Figure10-1>>.
+First, let's obtain the EAP distribution and private JBoss EAP Maven repository from the http://www.jboss.org/jbossas/downloads/[JBoss Downloads] page, as shown in <<Figure10-1>>.
 
 .Download JBoss EAP
 [[Figure10-1]]
@@ -114,7 +114,7 @@ The build will run as we've seen before, only this time we'll be able to see som
 
 This may be a preferable technique to employ while developing; at the start of the day you can launch the server and keep it running as an external process, and run your tests without the overhead of waiting for server start and stop, as well as the unzipping process (and resulting file I/O) to create local WildFly installation directories under +target+ for testing.  On our machines, this cuts the total build time from around 3:30 to 2:11 as we exercise quite a few test suites and hence remove a good number of start/stop lifecycle events by using the remote container.
 
-As we're done with the EAP instance we'd started earlier, let's end the process.
+Because we're done with the EAP instance we started earlier, let's end the process:
 
 ----
 bin $> ^C
@@ -126,9 +126,9 @@ bin $> ^C
 
 ==== Using the EAP Managed Container
 
-Of course, the _GeekSeek_ examples also make EAP available for use in _managed_ mode, as we've used before.  As EAP is not currently-available as a distribution in a Maven repository, it'll take a few extra steps for us to enable this layout.
+Of course, the GeekSeek examples also make EAP available for use in _managed_ mode, as we've used before.  Because EAP is not currently available as a distribution in a Maven repository, it'll take a few extra steps for us to enable this layout.
 
-Remember that we above downloaded the EAP Maven Repository.  This is an _extension_ repo; it's meant to serve as an addition to a standard repo like that offered by JBoss Nexus or Maven Central.  As such, it contains EAP-specific artifacts and dependencies only.
+Remember that we downloaded the EAP Maven repository earlier. This is an _extension_ repo; it's meant to serve as an addition to a standard repo like that offered by JBoss Nexus or Maven Central.  As such, it contains EAP-specific artifacts and dependencies only.
 
 Let's begin by unpacking this into a new repository alongside the default +~/.m2/repository+ repo:
 
@@ -141,15 +141,16 @@ Let's begin by unpacking this into a new repository alongside the default +~/.m2
 
 This will leave us with a our new EAP extension repository +jboss-eap-6.1.0.GA-maven-repository+ under our +.m2/+ directory.
 
-Now we must let Maven know about our new repository, so we may define it in the default user-level +~/.m2/settings.xml+.  Note that we're actually free to use any settings file we choose, though if we opt outside of the default settings file we'll have to manually specify our settings configuration to the +mvn+ command using the +-s /path/to/settings/file+ switch.
+Now we must let Maven know about our new repository, so we can define it in the default user-level _~/.m2/settings.xml_.  Note that we're actually free to use any settings file we choose, though if we opt outside of the default settings file we'll have to manually specify our settings configuration to the +mvn+ command using the +-s /path/to/settings/file+ switch.
 
-Add our repository definition inside of a profile, so that we can enable this at-will without affecting other projects.  In this case we create the +jboss-eap-6.1.0+ profile:
+We'll add our repository definition inside of a profile, so that we can enable this at will without affecting other projects.  In this case we create the +jboss-eap-6.1.0+ profile:
 
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 
+             http://maven.apache.org/xsd/settings-1.0.0.xsd">
 ...
 <profiles>
   <profile>
@@ -177,7 +178,7 @@ Add our repository definition inside of a profile, so that we can enable this at
 </settings>
 ----
 
-Now, we'll need to again find our EAP ZIP.  Then, using the profile we've created above, we'll deploy our EAP distribution ZIP as a proper Maven artifact into the repository using the Maven +deploy+ plugin.  Remember to pass in our profile from above using the +-P+ switch:
+Now, we'll need to again find our EAP ZIP.  Then, using the profile we've created, we'll deploy our EAP distribution ZIP as a proper Maven artifact into the repository using the Maven +deploy+ plug-in. We must remember to pass in our profile using the +-P+ switch:
 
 ----
 mvn deploy:deploy-file -DgroupId=org.jboss.as \
@@ -197,13 +198,22 @@ If we've set everything up correctly, we'll see output:
 ...
 [INFO] 
 [INFO] --- maven-deploy-plugin:2.7:deploy-file (default-cli) @ standalone-pom ---
-Uploading: file:///home/alr/.m2/jboss-eap-6.1.0.GA-maven-repository/org/jboss/as/jboss-as-dist/eap-6.1.0/jboss-as-dist-eap-6.1.0.zip
-Uploaded: file:///home/alr/.m2/jboss-eap-6.1.0.GA-maven-repository/org/jboss/as/jboss-as-dist/eap-6.1.0/jboss-as-dist-eap-6.1.0.zip (112789 KB at 50828.7 KB/sec)
-Uploading: file:///home/alr/.m2/jboss-eap-6.1.0.GA-maven-repository/org/jboss/as/jboss-as-dist/eap-6.1.0/jboss-as-dist-eap-6.1.0.pom
-Uploaded: file:///home/alr/.m2/jboss-eap-6.1.0.GA-maven-repository/org/jboss/as/jboss-as-dist/eap-6.1.0/jboss-as-dist-eap-6.1.0.pom (431 B at 420.9 KB/sec)
-Downloading: file:///home/alr/.m2/jboss-eap-6.1.0.GA-maven-repository/org/jboss/as/jboss-as-dist/maven-metadata.xml
-Uploading: file:///home/alr/.m2/jboss-eap-6.1.0.GA-maven-repository/org/jboss/as/jboss-as-dist/maven-metadata.xml
-Uploaded: file:///home/alr/.m2/jboss-eap-6.1.0.GA-maven-repository/org/jboss/as/jboss-as-dist/maven-metadata.xml (313 B at 305.7 KB/sec)
+Uploading: file:///home/alr/.m2/jboss-eap-6.1.0.GA-maven-repository/
+org/jboss/as/jboss-as-dist/eap-6.1.0/jboss-as-dist-eap-6.1.0.zip
+Uploaded: file:///home/alr/.m2/jboss-eap-6.1.0.GA-maven-repository/
+org/jboss/as/jboss-as-dist/eap-6.1.0/jboss-as-dist-eap-6.1.0.zip 
+(112789 KB at 50828.7 KB/sec)
+Uploading: file:///home/alr/.m2/jboss-eap-6.1.0.GA-maven-repository/
+org/jboss/as/jboss-as-dist/eap-6.1.0/jboss-as-dist-eap-6.1.0.pom
+Uploaded: file:///home/alr/.m2/jboss-eap-6.1.0.GA-maven-repository/
+org/jboss/as/jboss-as-dist/eap-6.1.0/jboss-as-dist-eap-6.1.0.pom 
+(431 B at 420.9 KB/sec)
+Downloading: file:///home/alr/.m2/jboss-eap-6.1.0.GA-maven-repository/
+org/jboss/as/jboss-as-dist/maven-metadata.xml
+Uploading: file:///home/alr/.m2/jboss-eap-6.1.0.GA-maven-repository/
+org/jboss/as/jboss-as-dist/maven-metadata.xml
+Uploaded: file:///home/alr/.m2/jboss-eap-6.1.0.GA-maven-repository/
+org/jboss/as/jboss-as-dist/maven-metadata.xml (313 B at 305.7 KB/sec)
 ...
 [INFO] BUILD SUCCESS
 [INFO] Total time: 2.911s
