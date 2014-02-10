@@ -333,7 +333,7 @@ public class ActionLinks {
 }
 ----
 
-The +ActionLinks+ PageFragment is very similar in how the Page Object works. The main difference being the use of the +@Root+ annotation. Both +Actions+ and +UserActions+ are modeled as the PageFragment type +ActionLinks+. They are two lists of links located in different locations on the page. In the PageObject +MainPage+ we have the following two injection points:
+The +ActionLinks+ PageFragment is very similar in how the PageObject works. The main difference is the use of the +@Root+ annotation. Both +Actions+ and +UserActions+ are modeled as the PageFragment type +ActionLinks+. They are two lists of links located in different locations on the page. In the PageObject +MainPage+ we have the following two injection points:
 
 [source,java]
 ----
@@ -344,9 +344,9 @@ The +ActionLinks+ PageFragment is very similar in how the Page Object works. The
     private ActionLinks userActionLinks;
 ----
 
-The +ActionsLinks+ +@Root+ WebElement represents the parents +@FindBy+ element. Where on the page was this fragment found. When working within a PageFragment, all of our +@FindBy+ expressions are relative to the +@Root+ element.
+The +ActionsLinks+ +@Root+ WebElement is injected based on the parent `@FindBy` element and represents where on the page this fragment was found. When working within a PageFragment, all of our +@FindBy+ expressions are relative to the +@Root+ element.
 
-You might remember that our application is a Single Page application, so everything happens within the same physical URL only manipulating the content via JavaScript. With this in mind we've modeled in a concept of a fragment being SelfAware.  This allows us to encapsulate the logic of knowing how to find certain fragments within the fragment itself.  
+You might remember that our application is a single-page application, so everything happens within the same physical URL and the content is only manipulated via JavaScript. With this in mind we've modeled in a concept of a fragment being `SelfAware`.  This allows us to encapsulate the logic of knowing how to find certain fragments within the fragment itself:  
 
 +org.cedj.geekseek.test.functional.ui.page.SelfAwareFragment+:
 [source,java]
@@ -374,9 +374,9 @@ The +MainPage+ PageObject implements the discovery logic like so:
     }
 ----
 
-Within the +MainPage+ we want to control the creation of PageFragments so we can do it dynamically based on the requested type. This to avoid having to create a +@FindBy+ injection point for all possible combinations within our application. But we still want our 'on demand' PageFragments to have the same features as the injected ones, so we delegate the actual creation of the instance to Graphene's +PageFragmentEnricher+ giving it the requested type and the +@Root+ element we expect it be found within.
+Within the +MainPage+ we want to control the creation of PageFragments so we can do it dynamically based on the requested type. This to avoid having to create a +@FindBy+ injection point for all possible combinations within our application. But we still want our 'on demand' PageFragments to have the same features as the injected ones, so we delegate the actual creation of the instance to Graphene's +PageFragmentEnricher+, giving it the requested type and the +@Root+ element we expect it be found within.
 
-After discovering and executing +ActionLinks+ we can now ask the +MainPage+: "Are we within a given 'sub page'?" by only referring to the class itself. 
+After discovering and executing +ActionLinks+ we can now ask the +MainPage+: "Are we within a given 'subpage'?" by only referring to the class itself:
 
 
 [source,java]
@@ -426,26 +426,28 @@ public static class Form implements SelfAwareFragment {
 }
 ----
 
-As seen in the above example in one of our +SelfAwareFragment+ types, +Conference.Form+, we continue nesting +PageFragment+ to encapsulate more behavior down the stack (mainly the InputComponent).  While an HTML Form +<input>+ tag knows how to input data, the +InputComponent+ goes a level up. 
+As shown in this example in one of our +SelfAwareFragment+ types, +Conference.Form+, we continue nesting PageFragments to encapsulate more behavior down the stack (mainly the `InputComponent`). Whereas an HTML Form +<input>+ tag knows how to input data, the +InputComponent+ goes a level up: 
 
 +textfield.html+:
 [source,html]
 ----
 <div class="col-md-8 form-group" data-ng-class="{'has-error':error}">
    <label class="control-label" for="{{id}}_field">{{name}}</label>
-   <input class="form-control" type="text" id="{{id}}_field" data-ng-model="field"
+   <input class="form-control" type="text" id="{{id}}_field" 
+      data-ng-model="field"
       required placeholder="{{help}}" />
    <div class="has-error" data-ng-show="error">{{error}}</div>
 </div>
 ----
 
-The complete state of the input is required. Not only where to put data, but also the defined name, "help" text and most importantly: is it in an error state after submitting?
+The complete state of the input is required--not only where to put data, but also the defined name, "help" text, and most importantly: is it in an error state after submitting?
 
 We also have a custom extension to Drone and Arquillian; we need to ensure that "click" and "navigate" events wait for the loading of async calls before doing their time check.  For this, we have the +org.cedj.geekseek.test.functional.arquillian.AngularJSDroneExtension+, which defines:
 
 [source,java]
 ----
-public static class AngularJSEventHandler extends AbstractWebDriverEventListener {
+public static class AngularJSEventHandler 
+   extends AbstractWebDriverEventListener {
 
         @Override
         public void afterNavigateTo(String url, WebDriver driver) {
@@ -474,7 +476,8 @@ public static class AngularJSEventHandler extends AbstractWebDriverEventListener
                     "var callback = arguments[arguments.length - 1];" +
                     "var el = document.querySelector('body');" +
                     "if (window.angular) {" +
-                        "angular.element(el).injector().get('$browser').notifyWhenNoOutstandingRequests(callback);" +
+                        "angular.element(el).injector().get('$browser').
+                        notifyWhenNoOutstandingRequests(callback);" +
                     "} else {callback()}");
             }
         }
@@ -484,7 +487,7 @@ public static class AngularJSEventHandler extends AbstractWebDriverEventListener
 
 The +waitForLoad+ method, triggered by all of the action handlers, contains the logic to wait on an async call to return.
 
-With all the main abstractions in place, we are now free to start validating the application's functional behavior. 
+With all the main abstractions in place, we are now free to start validating the application's functional behavior: 
 
 ----
 *Given* the User is 'Creating a new Conference'
@@ -492,7 +495,7 @@ With all the main abstractions in place, we are now free to start validating the
 *Then* an error should be displayed
 ----
 
-To satisfy these test requirements, for example we have +org.cedj.geekseek.test.functional.ui.AddConferenceStory+:
+To satisfy these test requirements we have, for example, +org.cedj.geekseek.test.functional.ui.AddConferenceStory+:
 
 [source,java]
 ----
@@ -503,7 +506,8 @@ public class AddConferenceStory {
     private WebDriver driver;
 
     @Test @InSequence(1)
-    public void shouldShowErrorMessageOnMissingDatesInConferenceForm(@InitialPage MainPage page) {
+    public void shouldShowErrorMessageOnMissingDatesInConferenceForm(
+       @InitialPage MainPage page) {
 
         ActionLinks links = page.getActionLinks();
         Assert.assertTrue(
@@ -525,9 +529,12 @@ public class AddConferenceStory {
             .submit();
 
         Assert.assertFalse("Should not display error", form.name().hasError());
-        Assert.assertFalse("Should not display error", form.tagLine().hasError());
-        Assert.assertTrue("Should display error on null input", form.start().hasError());
-        Assert.assertTrue("Should display error on null input", form.end().hasError());
+        Assert.assertFalse(
+           "Should not display error", form.tagLine().hasError());
+        Assert.assertTrue(
+           "Should display error on null input", form.start().hasError());
+        Assert.assertTrue(
+           "Should display error on null input", form.end().hasError());
     }
 ----
 
