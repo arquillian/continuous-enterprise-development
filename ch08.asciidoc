@@ -73,9 +73,8 @@ The _Java API for RESTful Web Services_, or JAX-RS, is a specification under the
 POJO-based:: The API will provide a set of annotations and associated classes/interfaces that may be used
 with POJOs in order to expose them as Web resources. The specification will define object lifecycle
 and scope.
-HTTP-centric:: The specification will assume HTTP is the underlying network protocol and will pro-
-vide a clear mapping between HTTP and URI elements and the corresponding API classes and
-annotations. The API will provide high level support for common HTTP usage patterns and will be
+HTTP-centric:: The specification will assume HTTP is the underlying network protocol and will provide a clear mapping between HTTP and URI elements and the corresponding API classes and
+annotations. The API will provide high-level support for common HTTP usage patterns and will be
 sufficiently flexible to support a variety of HTTP applications including WebDAV and the Atom
 Publishing Protocol.
 Format independence:: The API will be applicable to a wide variety of HTTP entity body content types. It
@@ -89,7 +88,7 @@ class.
 
 [NOTE]
 ====
-As it's not our aim to provide a comprehensive overview of JAX-RS, we recommend http://shop.oreilly.com/product/9780596158057.do[_RESTful Java with JAX-RS_] by Bill Burke, member of the JSR-339 Expert Group and lead of the JBoss Community's http://www.jboss.org/resteasy[RESTEasy] implementation, from O'Reilly Media.  The second revision of the book, covering the latest 2.0 version of the specification, is now http://shop.oreilly.com/product/0636920028925.do[on sale] for pre-order.
+Because it's not our aim to provide a comprehensive overview of JAX-RS, we recommend http://shop.oreilly.com/product/9780596158057.do[_RESTful Java with JAX-RS_] by Bill Burke (O'Reilly), member of the JSR-339 Expert Group and lead of the JBoss Community's http://www.jboss.org/resteasy[RESTEasy implementation].  The second revision of the book, covering the latest 2.0 version of the specification, is now http://shop.oreilly.com/product/0636920028925.do[on sale for pre-order].
 ====
 
 http://jsr311.java.net/nonav/javadoc/[JAX-RS Specification API] provides a set of annotations helpful to developers seeking to map incoming HTTP-based requests to backend services.  From the docs, these include:
