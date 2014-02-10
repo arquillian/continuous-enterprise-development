@@ -525,7 +525,7 @@ Receiving objects: 100% (39/39), 19.98 KiB, done.
 Resolving deltas: 100% (1/1), done.
 ----
 
-Now we have a full copy of the OpenShift application's repository on our local disk.  Because we don't need the default landing page shown in <<Figure10-13>>, we can safely remove it.  This is easily enough done by +cd+-ing into our repository directory, removing the files in question with +git rm+, committing the changes, and then pushing the commit to the remote OpenShift repository.
+Now we have a full copy of the OpenShift application's repository on our local disk.  Because we don't need the default landing page shown in <<Figure10-13>>, we can safely remove it. We can do this easily by +cd+-ing into our repository directory, removing the files in question with +git rm+, committing the changes, and then pushing the commit to the remote OpenShift repository:
 
 ----
 $> cd geekseek
@@ -541,31 +541,31 @@ geekseek $> git commit -m 'Remove OpenShift default application structure'
 geekseek $> git push origin master
 ----
 
-When the +git push+ command concludes and the remote build is complete, reloading our application in the web browser should now yield us a blank page, as we've deleted the only content in the OpenShift repo.  We'll replace that with fresh content from our CI builds.
+When the +git push+ command concludes and the remote build is complete, reloading our application in the web browser should now yield us a blank page, because we've deleted the only content in the OpenShift repo.  We'll replace that with fresh content from our CI builds.
 
-==== Pushing From the CI Build Job to OpenShift
+==== Pushing from the CI Build Job to OpenShift
 
 The final piece of the automated deployment puzzle lies in deploying artifacts built from our CI server into our runtime environment.  In our case, this amounts to configuring the CloudBees Jenkins instance to perform some Git operations against our OpenShift repository.
 
-We'll need to allow access for CloudBees Jenkins to interact with the OpenShift repository.  On the "Configure" screen for our CI job is a section entitled "CloudBees DEV@Cloud Authorization", which contains our public key.  Copy this to your OS's clipboard.
+We'll need to allow access for CloudBees Jenkins to interact with the OpenShift repository. On the Configure screen for our CI job is a section entitled "CloudBees DEV@Cloud Authorization," which contains our public key (see <<Figure10-16>>). Copy this to your OS's clipboard.
 
-.CloudBees SSH Public Key
+.CloudBees SSH public key
 [[Figure10-16]]
 image::images/cedj_12in16.png[CloudBees SSH Public Key]
 
-Then log into your OpenShift Management Console and select https://openshift.redhat.com/app/console/settings[Settings]; there will be a dialog to manage the public keys allowed access to our repository.  Add the CloudBees Jenkins key by pasting it here.
+Then log in to your OpenShift Management Console and select https://openshift.redhat.com/app/console/settings[Settings]; there will be a dialog to manage the public keys allowed access to our repository (see <<Figure10-17>>). Add the CloudBees Jenkins key by pasting it here.
 
-.OpenShift Public Keys
+.OpenShift public keys
 [[Figure10-17]]
 image::images/cedj_12in17.png[OpenShift Public Keys]
 
-Switching back to our Jenkins job configuration screen, towards the bottom is a section where we may add "Post Build" steps.  Let's create a shell-based action which will be set to execute only upon successful build.
+Switching back to our Jenkins job configuration screen, toward the bottom is a section where we can add "Post Build" steps (see <<Figure10-18>>).  Let's create a shell-based action that will be set to execute only upon successful build.
 
 .CloudBees Post Build
 [[Figure10-18]]
 image::images/cedj_12in18.png[CloudBees Post Build]
 
-The following script will handle the task for us.
+The following script will handle the task for us:
 
 ----
 if [ -d geekseek ]; then
@@ -575,7 +575,8 @@ if [ -d geekseek ]; then
   fi
   git pull origin master
 else
-  git clone ssh://51abd6c84382ec5c160002e2@geekseek-continuousdev.rhcloud.com/~/git/geekseek.git/
+  git clone ssh://51abd6c84382ec5c160002e2@geekseek-continuousdev.rhcloud.com/
+  ~/git/geekseek.git/
   cd geekseek  
 fi
 
@@ -588,7 +589,7 @@ git commit -m "$COMMIT_MESSAGE"
 git push origin master
 ----
 
-Let's see what's going on here.  First we have some bash logic to either clone the remote OpenShift repository if this node hasn't already, or update the existing copy.  Then we copy the final deployable web application WAR into the +deployments+ directory of the repository, renaming it to +ROOT.war+ so that this acts as our application servicing requests from the web root.  Also, we'll add or update an empty +ROOT.war.dodeploy+ file to let OpenShift know that we want this application deployed when it's discovered (full documentation on this feature is https://access.redhat.com/site/documentation/en-US/OpenShift/2.0/html/User_Guide/sect-OpenShift-User_Guide-Deploying_JBoss_Applications-Example_JBoss_Application_Deployment_Workflows.html[available on the OpenShift site]).  Finally, we add our changes to be staged for commit, perform the commit, and then push the changes to our remote OpenShift repository.
+Let's see what's going on here.  First we have some bash logic to either clone the remote OpenShift repository if this node hasn't already, or update the existing copy.  Then we copy the final deployable web application. We'll WAR into the _deployments_ directory of the repository, renaming it to _ROOT.war_ so that this acts as our application servicing requests from the web root.  Also, we'll add or update an empty _ROOT.war.dodeploy_ file to let OpenShift know that we want this application deployed when it's discovered (full documentation on this feature is https://access.redhat.com/site/documentation/en-US/OpenShift/2.0/html/User_Guide/sect-OpenShift-User_Guide-Deploying_JBoss_Applications-Example_JBoss_Application_Deployment_Workflows.html[available on the OpenShift site]).  Finally, we add our changes to be staged for commit, perform the commit, and then push the changes to our remote OpenShift repository.
 
 As we've seen before, OpenShift will dutifully exercise the remote operations to redeploy our application and make it available for our use.
 
