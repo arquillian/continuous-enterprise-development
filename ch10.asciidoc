@@ -98,9 +98,9 @@ If the user performing the +Request+ is authenticated, the +Response+ to the +OP
 < Allow: GET, PATCH, OPTIONS, HEAD
 ----
 
-The server just told us that as an authenticated user you're allowd to perform a +PATCH+ operation on this Resource as well as a +GET+ operation. We're now not only restricted to a Read Only view, but have full Read/Write access.
+The server just told us that an authenticated user is allowed to perform a +PATCH+ operation on this `Resource` as well as a +GET+ operation. Now the user is no longer restricted to a read-only view, but has full read/write access.
 
-The +RestGraph+ hides the usage of +OPTIONS+ to query the server for allowed actions behind a meaningful API.
+The +RestGraph+ hides the usage of +OPTIONS+ to query the server for allowed actions behind a meaningful API:
 
 [source, javascript]
 ----
@@ -112,7 +112,7 @@ conference.canCreate()
 
 This gives us the complete picture of what the API and the backend, under the current circumstances, will allow us to do. While the communication with the backend is up and running, the user still can't see any thing. We need to convert the raw data into a suitable user interface.
 
-We choose to map the +MediaTypes+ described in the DAP to HTML templates in the UI.
+We choose to map the +MediaTypes+ described in the DAP to HTML templates in the UI:
 [source, json]
 ----
 {
@@ -122,7 +122,7 @@ We choose to map the +MediaTypes+ described in the DAP to HTML templates in the 
 }
 ----
 
-By combining the current +Action+ (View, Update, Create) with the +MediaType+ sub type argument we can identify a unique template for how to represent the current +Resource+ as HTML.
+By combining the current +Action+ (View, Update, Create) with the +MediaType+ subtype argument we can identify a unique template for how to represent the current +Resource+ as HTML.
 
 As an example, the +Conference+ +MediaType+ in +View+ mode could look like this:
 [source, html]
@@ -159,13 +159,13 @@ As an example, the +Conference+ +MediaType+ in +View+ mode could look like this:
 
 === Requirement Test Scenarios
 
-The UI for our GeekSeek application is based on a JavaScript front end talking to a REST backend. In this scenario, there are some different approaches and types of testing we can do; one is for the pure JavaSscript code (e.g. client controllers) and the other part is the interaction with the browser and REST endpoints on the backend. 
+The UI for our GeekSeek application is based on a JavaScript frontend talking to a REST backend. In this scenario, there are some different approaches and types of testing we can do; one is for the pure JavaSscript code (e.g., client controllers) and the other part is the interaction with the browser and REST endpoints on the backend. 
 
 ==== Pure JavaScript
 
 For the pure client JavaScript we're going to use http://qunitjs.com/[QUnit], a JavaScript Unit Testing framework. And handily enough, Arquillian has an extension that can invoke QUnit execution within our normal Java build system.
 
-While the QUnit tests themselves do not require any Java code, the Arquillian QUnit extension uses a normal JUnit test class to configure and report on the QUnit execution. 
+Although the QUnit tests themselves do not require any Java code, the Arquillian QUnit extension uses a normal JUnit test class to configure and report on the QUnit execution. 
 
 Our UI code contains a graph that can hold the state of the various REST responses and their links. In this test scenario we want to test that the graph can understand the response returned from a REST service given an +OPTIONS+ request.
 
@@ -184,30 +184,35 @@ public class GraphTestCase {
 }
 ----
 
-In the above example we introduce two new annotations that are specific to the Arquillian QUnit extension; 
+In the this example we introduce two new annotations that are specific to the Arquillian QUnit extension: 
 
-* +@QUnitResources+ defines the root source of the javascript files
-* +@QUnitTest+ defines which HTML page to 'run' for this @Test
+* +@QUnitResources+ defines the root source of the JavaScript files
+* +@QUnitTest+ defines which HTML page to 'run' for this `@Test`
 
-The +graph-assertions.html+ referenced in the +@QUnitTest+ annotation is the HTML page that contains the +<script>+ tag which includes the QUnit JavaScript tests and any other JavaScript dependencies we might need.
+The _graph-assertions.html_ referenced in the +@QUnitTest+ annotation is the HTML page that contains the +<script>+ tag, which includes the QUnit JavaScript tests and any other JavaScript dependencies we might need:
 
 [source,html]
 ----
 <html>
 <head>
 <title>QUnit Test Suite</title>
-<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.12.0.css" type="text/css" media="screen">
+<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.12.0.css" 
+   type="text/css" media="screen">
 <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" 
   src="http://code.jquery.com/qunit/qunit-1.12.0.js"></script>
 <script type="text/javascript" 
-  src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular.js"></script>
+  src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular.js">
+  </script>
 <script type="text/javascript" 
-  src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.js"></script>
+  src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.js">
+  </script>
 <script type="text/javascript" 
-  src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-mocks.js"></script>
+  src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-mocks.js">
+  </script>
 <script type="text/javascript" 
-  src="../../../../../main/resources/META-INF/resources/webjars/core/graph.js"></script>
+  src="../../../../../main/resources/META-INF/resources/webjars/core/graph.js">
+  </script>
 <script type="text/javascript" src="assert.js"></script>
 </head>
 <body>
@@ -220,7 +225,7 @@ The +graph-assertions.html+ referenced in the +@QUnitTest+ annotation is the HTM
 </html>
 ----
 
-Our +assert.js+ is then free to contain the QUnit functions which define our client-side test suite:
+Our _assert.js_ is then free to contain the QUnit functions which define our client-side test suite:
 
 [source,javascript]
 ----
