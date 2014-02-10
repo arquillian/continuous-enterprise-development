@@ -13,9 +13,9 @@ That said, the cross-cutting concerns just mentioned (and many more!) are all co
 
 A glaring problem with this approach is that, although we’ve nicely extracted out the logic for our security and transactions for reuse, we must still manually _invoke_ them, sprinkling these method calls at the head and foot of every function requiring their use. Additionally, we may have to pass around contextual objects that know about the state of the current user or transactional registration (though in practice, these are commonly associated with a +Thread+, and thus able to fly under the visible API radar in an obfuscated context).
 
-Things get more complicated when we introduce _dependent_ services. A +UserRegistration+ function may in turn call many finer-grained services like +SendEmail+, +PutUserInDatabase+, and +GenerateHashOfPassword+. This composition is desirable because it separates concerns, but we’re left with the problem of _looking up_ or locating each of this disparate services from +UserRegistration+. Ultimately this adds to the "plumbing" code which provides no benefit to us aside from hooking our cleanly-decoupled modules together. While this has historically been addressed by employing a technique known as the _Service Locator Pattern_, for reasons we’ll soon see, this is a largely outdated and inferior approach.
+Things get more complicated when we introduce _dependent_ services. A +UserRegistration+ function may in turn call many finer-grained services like +SendEmail+, +PutUserInDatabase+, and +GenerateHashOfPassword+. This composition is desirable because it separates concerns, but we’re left with the problem of _looking up_ or locating each of these disparate services from +UserRegistration+. Ultimately this adds to the "plumbing" code, which provides no benefit to us aside from hooking our cleanly decoupled modules together. Although this has historically been addressed by employing a technique known as the _Service Locator Pattern_, for reasons we’ll soon see, this is a largely outdated and inferior approach.
 
-A more subtle, yet very important, issue that arises with pure _POJO_ (Plain Old Java Object) programming in a multi-user environment is one of _shared state_. Consider the following code:
+A more subtle, yet very important, issue that arises with pure POJO programming in a multiuser environment is one of _shared state_. Consider the following code:
 
 [source,java]
 ----
@@ -41,7 +41,7 @@ public class UserService {
 }
 ----
 
-This +UserService+ is clearly meant to be associated with a current user session, and thus has what we call _conversational scope_ confined to that session. When writing manual POJO services, the onus is upon us as developers to ensure that this is enforced; imagine if UserB were to come along and receive the object that UserA had already set +isLoggedIn+ to +true+? Scope confinement is vitally important to the integrity of our system, and we have to be very careful when rolling our own solutions.
+This +UserService+ is clearly meant to be associated with a current user session, and thus has what we call _conversational scope_ confined to that session. When writing manual POJO services, the onus is upon us as developers to ensure that this is enforced; imagine if UserB were to come along and receive the object for which UserA had already set +isLoggedIn+ to +true+? Scope confinement is vitally important to the integrity of our system, and we have to be very careful when rolling our own solutions.
 
 In this chapter we'll be examining each of these complications and a proposed solution when tackling the testable development of a common, and seemingly innocuous, business requirement: sending email from a Java EE-based application.
 
@@ -49,25 +49,25 @@ In this chapter we'll be examining each of these complications and a proposed so
 
 ==== Send Email On New User Signup
 
-Web-based applications offer few avenues to push information to their users once offline; perhaps the most prevalent is through the use of email.  We see this in a variety of user stories: "Confirm Email Address", "Reset Password", and "Welcome New User" are all subject lines we've grown to expect from the sites we use.  It's fitting, then, that we devise a simple strategy to send email from our application which may be easily reused by the more coarsely-grained operations.
+Web-based applications offer few avenues to push information to their users once offline; perhaps the most prevalent is through the use of email.  We see this in a variety of user stories: "Confirm Email Address," "Reset Password," and "Welcome New User" are all subject lines we've grown to expect from the sites we use.  It's fitting, then, that we devise a simple strategy to send email from our application that can be easily reused by the more coarsely grained operations.
 
-Our GeekSeek application will therefore introduce the requirement: "Send an Email to the new User upon successful Signup."
+Our GeekSeek application will therefore introduce the requirement: "Send an Email to the New User Upon Successful Signup."
 
-At first blush, this seems like a farily trivial problems to solve.  The http://www.oracle.com/technetwork/java/javamail/index.html[JavaMail] API is straightforward enough to use (though a bit dated), and is included as part of the Java EE platform.
+At first blush, this seems like a farily trivial problem to solve.  The http://www.oracle.com/technetwork/java/javamail/index.html[JavaMail] API is straightforward enough to use (though a bit dated), and is included as part of the Java EE Platform.
 
 Unfortunately, there are many issues to consider beyond the boilerplate code required to send the email itself:
 
-Should we block (wait) while the mail message is sent to the SMTP server?:: Connecting to an external service can take some time, depending upon how it handles open connections.  The delivery of the email isn't designed to be immediate, so there's not much sense forcing the user to wait while we connect to an SMTP server, construct a +MimeMessage+, and send.
+Should we block (wait) while the mail message is sent to the SMTP server?:: Connecting to an external service can take some time, depending on how it handles open connections.  The delivery of the email isn't designed to be immediate, so there's not much sense forcing the user to wait while we connect to an SMTP server, construct a +MimeMessage+, and send.
 
-What if sending the email fails?  Should the enclosing user registration action which called the email service fail, too?::  Sending the email is, in our case, part of a welcome operation.  A new user registration doesn't strictly *need* this to succeed as we won't be relying upon email to validate the user's identity.  Still, we'd like to make every available effort to ensure that the email goes through, independent of the user registration action.  And we'd like to have some notification and options to handle emails that were attempted to be sent, but have failed.
+What if sending the email fails?  Should the enclosing user registration action that called the email service fail, too?::  Sending the email is, in our case, part of a welcome operation.  A new user registration doesn't strictly _need_ this to succeed because we won't be relying on email to validate the user's identity.  Still, we'd like to make every available effort to ensure that the email goes through, independent of the user registration action.  And we'd like to have some notification and options to handle emails that were attempted to be sent, but have failed.
 
-How do we test to ensure that the emails we've sent are received?  How do we validate the email's contents are correct?::  Even if we don't dispatch the communication with the SMTP server to a new Thread, interacting with this external process makes for an asynchronous action.  Asynchronous testing is not always the most simple process to set up, but this does not excuse us from the responsibility of ensuring that our email service is worked as designed.
+How do we test to ensure that the emails we've sent are received?  How do we validate the email's contents are correct?::  Even if we don't dispatch the communication with the SMTP server to a new `Thread`, interacting with this external process makes for an asynchronous action.  Asynchronous testing is not always the simplest process to set up, but this does not excuse us from the responsibility of ensuring that our email service works as designed.
 
 === Implementation
 
 We'll begin our example with the construction of a generic +SMTPMailService+.  As the name implies, its job will be to act as our Java interface to perform SMTP operations.  Specifically, we'll write this to send email.
 
-First we'll make a self-explanatory value object to encapsulate the fields needed to send an email message.  This is implemented as a mutable builder for ease-of-use:
+First we'll make a self-explanatory value object to encapsulate the fields needed to send an email message.  This is implemented as a mutable builder for ease of use:
 
 [source,java]
 ----
@@ -82,7 +82,8 @@ public class MailMessageBuilder implements Serializable {
     private String contentType;
     private final Collection<String> toAddresses = new HashSet<String>();
 
-    public MailMessageBuilder from(final String from) throws IllegalArgumentException {
+    public MailMessageBuilder from(final String from) 
+       throws IllegalArgumentException {
         if (from == null || from.length() == 0) {
             throw new IllegalArgumentException("from address must be specified");
         }
@@ -92,7 +93,7 @@ public class MailMessageBuilder implements Serializable {
     // Other fluent API methods omitted for brevity; see full source for details
 ----
 
-+MailMessageBuilder+ has a +build+ method which may then return an immutable view:
++MailMessageBuilder+ has a +build+ method that can then return an immutable view:
 
 [source,java]
 ----
@@ -103,7 +104,8 @@ public MailMessage build() throws IllegalStateException {
             throw new IllegalStateException("from address must be specified");
         }
         if (toAddresses.size() == 0) {
-            throw new IllegalStateException("at least one to address must be specified");
+            throw new IllegalStateException(
+               "at least one to address must be specified");
         }
         if (subject == null || subject.length() == 0) {
             throw new IllegalStateException("subject must be specified");
@@ -116,14 +118,15 @@ public MailMessage build() throws IllegalStateException {
         }
 
         // Construct immutable object and return
-        return new MailMessage(from, toAddresses.toArray(EMPTY), subject, body, contentType);
+        return new MailMessage(from, toAddresses.toArray(EMPTY),
+           subject, body, contentType);
 
     }
 ----
 
-It's this immutable +MailMessageBuilder.MailMessage+ which will be safely passed between our services.
+It's this immutable +MailMessageBuilder.MailMessage+ that will be safely passed between our services.
 
-With our value object defined, we can now create our +SMTPMailService+.  We know that we'll need to connect to some external SMTP server via the +JavaMail+ API, and Java EE allows injection of these via the +@Resource+ annotation (though the mechanics of exactly where some services are bound is vendor-dependent.).  Also, we know that this +SMTPMailService+ is meant to be shared by all users running the application, and won't have any session-specific state.  For these reasons, we'll implement the +SMTPMailService+ as a Singleton Session EJB.  Note that a a Stateless Session Bean (for use of a pool of instances) might work in an equally-appropriate fashion.
+With our value object defined, we can now create our +SMTPMailService+.  We know that we'll need to connect to some external SMTP server via the +JavaMail+ API, and Java EE allows injection of these via the +@Resource+ annotation (though the mechanics of exactly where some services are bound is vendor-dependent.).  Also, we know that this +SMTPMailService+ is meant to be shared by all users running the application, and won't have any session-specific state.  For these reasons, we'll implement the +SMTPMailService+ as a Singleton Session EJB.  Note that a Stateless Session Bean (for use of a pool of instances) might work in an equally appropriate fashion:
 
 [source,java]
 ----
@@ -133,11 +136,11 @@ With our value object defined, we can now create our +SMTPMailService+.  We know
 public class SMTPMailService {
 ----
 
-The above is our Singleton bean declaration.  Of particular note is the +TransactionAttributeType.SUPPORTS+ value for +@TransactionAttribute+, which will apply to all business methods of this EJB.
+This is our Singleton bean declaration.  Of particular note is the +TransactionAttributeType.SUPPORTS+ value for +@TransactionAttribute+, which will apply to all business methods of this EJB.
 
-An SMTP server is an external resource which is not transactionally-aware.  Therefore, we'll have to make note of any exceptions and ensure that if we want a transaction rolled back, we either explicitly tell that to the +TransactionManager+ or throw an unchecked exception which will signal the EJB container to mark any currently-executing transaction for rollback.
+An SMTP server is an external resource that is not transactionally aware.  Therefore, we'll have to make note of any exceptions and ensure that if we want a transaction rolled back, we either explicitly tell that to the +TransactionManager+ or throw an unchecked exception, which will signal the EJB container to mark any currently executing transaction for rollback.
 
-We're making a general-purpose SMTP service here, so we may not always know the appropriate actions to take with regards to transactions.  The default for EJB is +@TransactionAttributeType.MANDATORY+, which creates a transaction if one is not already in flight.  That's not really appropriate here; the SMTP server with which we interact is not transactional, it it'd be silly to sacrifice the overhead of starting a transaction when we're not even dealing with a resource which will respect its semantics!  +@TransactionAttributeType.SUPPORTS+, which we've used here, will accept existing transactions if one is in play, or do nothing if we're invoked outside of a transactional context.
+We're making a general-purpose SMTP service here, so we may not always know the appropriate actions to take with regards to transactions.  The default for EJB is +@TransactionAttributeType.MANDATORY+, which creates a transaction if one is not already in flight.  That's not really appropriate here; the SMTP server with which we interact is not transactional, it it'd be silly to sacrifice the overhead of starting a transaction when we're not even dealing with a resource that will respect its semantics!  +@TransactionAttributeType.SUPPORTS+, which we've used here, will accept existing transactions if one is in play, or do nothing if the service is invoked outside of a transactional context.
 
 Now we need to define a method to do the dirty work: accept our +MailMessage+ as a parameter and send it along to the SMTP server.  The +JavaMail+ API will act as our conduit to connect to the SMTP server, so we'll take advantage of Java EE's +@Resource+ annotation to inject some relevant supporting services into our +SMTPMailService+.
 
@@ -175,9 +178,9 @@ public interface SMTPMailServiceConstants {
 
 Note that we have put into place a field called +smtpQueue+, of type +javax.jms.Queue+.  This is how we'll handle two of the "hidden" problems with testable development of sending email raised earlier.
 
-First, sending a message to a JMS Queue is a "fire and forget" operation.  Once the message is received by the queue (which is in-process, unlike our production SMTP server), control is returned to the caller and the handling of the message is processed asynchronously.  If we create a listener to pull messages off the queue and send emails, then we won't have to wait for this process to complete.  This gives us asynchrony for free.
+First, sending a message to a JMS `Queue` is a "fire and forget" operation.  Once the message is received by the queue (which is in-process, unlike our production SMTP server), control is returned to the caller and the handling of the message is processed asynchronously.  If we create a listener to pull messages off the queue and send emails, then we won't have to wait for this process to complete.  This gives us asynchrony for free.
 
-The other tangible benefit to using a JMS queue to send messages is in the guaranteed processing afforded by JMS.  If there's a temporary error in sending the email, for instance a connection problem to the remote SMTP server, the messaging server will dutifully retry (as configured) a number of times.  This process will even survive server restarts; if for some reason all of these retries fail to yield a successful result (again, after some configured number of tries or timeout), messages can be forwarded to the DLQ (dead-letter queue) for manual inspection by system administrators later.  This gives us some assurance that we won't lose messages we intended to send, and we also won't have to fail our user registration process entirely if there's some issue with sending the welcome email.
+The other tangible benefit to using a JMS `Queue` to send messages is in the guaranteed processing afforded by JMS.  If there's a temporary error in sending the email, for instance a connection problem to the remote SMTP server, the messaging server will dutifully retry (as configured) a number of times.  This process will even survive server restarts; if for some reason all of these retries fail to yield a successful result (again, after some configured number of tries or timeout), messages can be forwarded to the DLQ (dead-letter queue) for manual inspection by system administrators later.  This gives us some assurance that we won't lose messages we intended to send, and we also won't have to fail our user registration process entirely if there's some issue with sending the welcome email.
 
 In WildFly / JBossAS7 / JBoss EAP, we deploy a JMS Queue with the deployment descriptor +geekseek-smtp-queue-jms.xml+ (the filename may be anything located in the EJB JAR's +META-INF+ and ending with the suffix +-jms.xml+):
 
