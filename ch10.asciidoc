@@ -5,47 +5,42 @@ ____
 Beauty is a sign of intelligence.
 ____
 
-To this point, we've focused entirely on elements that cannot be seen.  In this chapter we bring everything home by exposing our backend services to the end-user.
+To this point, we've focused entirely on elements that cannot be seen.  In this chapter we bring everything home by exposing our backend services to the end user.
 
 When it comes to Enterprise Java, we have our fill of options for display technologies.  The Java EE Specification provides _JavaServer Faces_ (JSF), a component-based framework for web applications.  This approach takes advantage of _server-side rendering_; that is, the final response returned to the client is created on the server from source templates (typically _Facelets_).
 
-In our _GeekSeek_ example, however, we'll be going off the beaten path a bit and rolling our own single-page application in pure HTML.  The dynamic elements backed by data will be supplied via JavaScript calls to the backend via the RESTful interface we'd exposed earlier.
+In our GeekSeek example, however, we'll be going off the beaten path a bit and rolling our own single-page application in pure HTML.  The dynamic elements backed by data will be supplied via JavaScript calls to the backend via the RESTful interface we exposed earlier.
 
-In general our requirements remain to be simply: expose our operations in a human-consumable format.
+In general, our requirements remain simply to expose our operations in a human-consumable format.
 
 === Use Cases and Requirements
 
-On a high level, we're looking to allow a user to take advantage of the application's primary purpose; we'd like to modify state of our domain objects in a consistent fashion.  We may state these:
+On a high level, we're looking to allow a user to take advantage of the application's primary purpose; we'd like to modify state of our domain objects in a consistent fashion.  We can state these:
 
-----
 * As a User I should be able Add/Change/Delete a Conference
-* As a User I should be able Add/Change/Delete a Session
-  to Conferences
-* As a User I should be able Add/Change/Delete a Attachment
- to Sessions and Conferences
-* As a User I should be able Add/Change/Delete a Venue
-  (and attach to Conference and Session)
-----
+* As a User I should be able Add/Change/Delete a Session to Conferences
+* As a User I should be able Add/Change/Delete a Attachment to Sessions and Conferences
+* As a User I should be able Add/Change/Delete a Venue (and attach to Conference and Session)
 
 === Implementation
 
-Our frontend is written using the populare JavaScript framework http://angularjs.org/[AngularJS]; A framework that lets you extend the HTML syntax, write client side components in the familiar Model, View, Controller(MVC) pattern and allow for a two way binding of our data models.
+Our frontend is written using the popular JavaScript framework http://angularjs.org/[AngularJS]: a framework that lets us extend the HTML syntax, write client-side components in the familiar Model, View, Controller (MVC) pattern, and allow for a two-way binding of our data models.
 
-AngularJS has a built-in abstraction to work with +Resources+ like REST, but it lacks built-in support for HATEOAS. The AngularJS Resource can easily operate on a single +Resource+, but with no automatic link support or knowledge of the +OPTIONS+ that the +Resource+ might support. For our frontend view to be completely driven by the backend services we need this extra layer of support.
+AngularJS has a built-in abstraction to work with +Resources+ like REST, but it lacks built-in support for HATEOAS. The AngularJS `Resource` can easily operate on a single +Resource+, but with no automatic link support or knowledge of the +OPTIONS+ that the +Resource+ might support. For our frontend view to be completely driven by the backend services we need this extra layer of support.
 
-To address HATEOAS in the client view we've created a simple object we call +RestGraph+. The main responsibillity of this object is to discover linked +Resources+ in the +Response+ and determine what we're allowed to do with the gicen +Resource+.
+To address HATEOAS in the client view we've created a simple object we call +RestGraph+. The main responsibility of this object is to discover linked +Resources+ in the +Response+ and determine what we're allowed to do with the given +Resource+.
 
-Without exposing too much of how exatly the +RestGraph+ is implemented, we'll just give you a short overview of what it can do and how it is useful.
+Without exposing too much of how exactly the +RestGraph+ is implemented, we'll just give you a short overview of what it can do and how it is useful.
 
-To start of, the +RestGrahp+ require you to define a root Resource URL, the top level Resource of the graph.
+To start, the +RestGraph+ requires you to define a root `Resource` URL, the top-level `Resource` of the graph:
 [source, javascript]
 ----
 var root = RestGraph('http://geekseek.continuousdev.org/api').init();
 ----
 
-This is similar to how you would do it when you visit a web page in a web browser; you give your self and the browser a starting point by typing in an address(URL) in the address bar.  
+This is similar to how you would do it when you visit a web page in a web browser; you give yourself and the browser a starting point by typing an address (URL) in the address bar.  
 
-Based on the +Response+ from the root +Resource+ we can determine what can be done next.
+Based on the +Response+ from the root +Resource+ we can determine what can be done next:
 [source, json]
 ----
 {
@@ -64,19 +59,19 @@ Based on the +Response+ from the root +Resource+ we can determine what can be do
 }
 ----
 
-In this example the start +Resource+ only contain links to other resources and contain no data it self. We can choose to discover where to go next by looking at all available links. Maybe let the user decide what path to take?
+In this example the start +Resource+ only contains links to other resources and contains no data itself. We can choose to discover where to go next by looking at all available links. Maybe let the user decide what path to take?
 [source, javascript]
 ----
 var paths = root.links
 ----
 
-Or choose to follow the graph down a desired path by fetching a named relation.
+Or choose to follow the graph down a desired path by fetching a named relation:
 [source, javascript]
 ----
 var conference = root.getLink('conference')
 ----
 
-Some function calls on the +conference+ instance can be mapped directly to the REST verbs for the given Resource: +GET+, +DELETE+, +PATCH+, +PUT+.
+Some function calls on the +conference+ instance can be mapped directly to the REST verbs for the given `Resource`: +GET+, +DELETE+, +PATCH+, +PUT+:
 [source, javascript]
 ----
 conference.get()
@@ -85,7 +80,7 @@ conference.add({})
 conference.update({})
 ----
 
-Now we have the basics. But, we still don't know if we're allowed to perform all of those operations on all discovered +Resources+. There are certain security constraints and possible other limitations implementated on the server side that we need to take into consideration before/when we make a +Request+. In the same fashion we discover related resources and actions via links in the +Response+, we can query the +Resource+ for the +OPTIONS+ it supports.
+Now we have the basics. But, we still don't know if we're allowed to perform all of those operations on all discovered +Resources+. Certain security constraints and possible other limitations are implementated on the server side that we need to take into consideration before/when we make a +Request+. In the same way we can discover related `Resources` and `Actions` via links in the +Response+, we can query the +Resource+ for the +OPTIONS+ it supports:
 
 [source, http]
 ----
@@ -94,7 +89,7 @@ Now we have the basics. But, we still don't know if we're allowed to perform all
 < Allow: GET, OPTIONS, HEAD
 ----
 
-If the user performing the +Request+ is authenticated the +Response+ to the +OPTIONS+ query might look like this:
+If the user performing the +Request+ is authenticated, the +Response+ to the +OPTIONS+ query might look like this:
 
 [source, http]
 ----
