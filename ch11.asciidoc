@@ -473,28 +473,27 @@ image::images/cedj_12in13.png[Welcome to OpenShift]
 
 The default DNS record will be in format _http://appName-domainId.rhcloud.com_.  It's likely that this isn't really the name we desire for public consumption, so let's add our own custom DNS name.
 
-This is a two step process:
+This is a two-step process:
 
-1) Create a DNS entry with your domain registrar or DNS Management interface to point to _http://appName-domainId.rhcloud.com_.  In our case, we'll opt for a subdomain, which amounts to a +CNAME+ record.  Consult your domain authority for the specifics of this step, but generally you might be presented with a screen that looks similar to:
-
+. Create a DNS entry with your domain registrar or DNS Management interface to point to _http://appName-domainId.rhcloud.com_.  In our case, we'll opt for a subdomain, which amounts to a +CNAME+ record.  Consult your domain authority for the specifics of this step, but generally you might be presented with a screen that looks similar to <<Figure10-14>>.
++
 .Add CNAME
 [[Figure10-14]]
 image::images/cedj_12in14.png[Add CNAME]
 
-
-2) Add an "alias" in your OpenShift application's configuration.  This may be done via the web interface:
-
-.Add Alias
+. Add an "alias" in your OpenShift application's configuration. You can do this via the web interface shown in <<Figure10-15>>.
++
+.Add alias
 [[Figure10-15]]
 image::images/cedj_12in15.png[Add Alias]
 
-Alternatively, you may acquire the https://www.openshift.com/developers/rhc-client-tools-install[OpenShift client-side command-line tools].  These rely on a Ruby installation of 1.8.7 or greater on your system, and are obtained by installing a Ruby gem:
+Alternatively, you can acquire the https://www.openshift.com/developers/rhc-client-tools-install[OpenShift client-side command-line tools].  These rely on a Ruby installation of 1.8.7 or greater on your system, and are obtained by installing a Ruby gem:
 
 ----
 $> sudo gem install rhc
 ----
 
-Once the gem is installed, you may add the domain record to OpenShift using the command _++rhc alias add appName alias -l username++_, for instance:
+Once the gem is installed, you can add the domain record to OpenShift using the command ++rhc alias add _appName alias_ -l _username_++. For instance:
 
 ----
 $> $ rhc alias add geekseek geekseek.continuousdev.org -l admin@continuousdev.org
