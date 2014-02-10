@@ -267,7 +267,7 @@ It's worth noting that the CloudBees team has kindly provided the Arquillian and
 
 Because our eventual deployment target will be EAP, we're going to configure CloudBees as our authoritative build server to execute Arquillian tests against the EAP runtime.  Just as we ran a few extra steps on our local environment to equip the backing Maven repositories with an EAP distribution, we'll have to make the same artifacts available to our CloudBees Jenkins instance.  Luckily, we've already done most of that work locally, so this will mainly be an issue of copying over the EAP Maven repository we already have.
 
-First we'll log in to our CloudBees account and select to enter the Jenkins Dashboard from within CloudBees Central, as shown in <<Figure10-3>>.
+First we'll log in to our CloudBees account and click Select to enter the Jenkins Dashboard from within CloudBees Central, as shown in <<Figure10-3>>.
 
 .CloudBees Jenkins
 [[Figure10-3]]
@@ -275,7 +275,7 @@ image::images/cedj_12in03.png["CloudBees Jenkins"]
 
 We'll create a new job, assigning it our project name of _GeekSeek_ and selecting a +Maven2/Maven3 Build+ configuration template, as shown in <<Figure10-4>>.
 
-.CloudBees New Job
+.CloudBees new job
 [[Figure10-4]]
 image::images/cedj_12in04.png["CloudBees New Job"]
 
