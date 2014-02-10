@@ -919,7 +919,7 @@ Selenium WebDriver
 </listitem>
 </itemizedlist>
 <note>
-<simpara>To use Warp, you should inject an +@ArquillianResource+ URL into the test case, which points to the proxy automatically.</simpara>
+<simpara>To use Warp, you should inject an <literal>@ArquillianResource</literal> URL into the test case, which points to the proxy automatically.</simpara>
 </note>
 </sect4>
 
