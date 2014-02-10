@@ -425,7 +425,7 @@ With our Jenkins instance configured, now we should enable GitHub triggers in ou
 
 That will handle the CloudBees Jenkins side of the integration.
 
-In GitHub, we may now visit our repository's home, and select Settings -> Service Hooks -> WebHook URLs.  Add a URL with the format +https://_domainId_.ci.cloudbees.com/github-webhook+.  This will instruct GitHub to send an HTTP POST request to CloudBees containing information about the new push, and CloudBees will take it from there.
+In GitHub, we can now visit our repository's home, and select Settings -> Service Hooks -> WebHook URLs (see <<Figure10-8>>).  Add a URL with the format +https://_domainId_.ci.cloudbees.com/github-webhook+.  This will instruct GitHub to send an HTTP `POST` request to CloudBees containing information about the new push, and CloudBees will take it from there.
 
 .GitHub WebHook URLs
 [[Figure10-8]]
@@ -433,39 +433,39 @@ image::images/cedj_12in08.png[GitHub WebHook URLs]
 
 From here on out, new commits pushed to the GitHub repository will trigger a build on the CloudBees Jenkins instance.  In this way we can nicely create a pipeline of build-related actions, triggered easily by our committing new work upstream.
 
-Note that this is simply one mechanism of chaining together actions from a git push, and it relies on the GitHub and CloudBees services specifically.  Of course, there are many other custom and thirdparty services available, and the choice will ultimately be yours based upon your needs.  This configuration is offered merely to prove the concept and provide a base implementation (and also it drives the software examples for this book).
+Note that this is simply one mechanism of chaining together actions from a `git push`, and it relies on the GitHub and CloudBees services specifically.  Of course, there are many other custom and third-party services available, and the choice will ultimately be yours based on your needs.  This configuration is offered merely to prove the concept and provide a base implementation (and it also drives the software examples for this book).
 
 === Pushing to Staging and Production
 
-With a working build to validate our tests and assemble the final deployable unit(s), we're now free to push our application out to a publicly-accessible runtime.  In most cases, we'd like to first target a staging server that may be accessed only by members of our team before going public, but the choice for that extra stage is left to the reader's discretion.  For the purposes of our _GeekSeek_ application, we'll allow commits that pass the testsuite to go straight to the public WWW on OpenShift.
+With a working build to validate our tests and assemble the final deployable unit(s), we're now free to push our application out to a publicly accessible runtime.  In most cases, we'd like to first target a staging server that can be accessed only by members of our team before going public, but the choice for that extra stage is left to the reader's discretion.  For the purposes of our GeekSeek application, we'll allow commits that pass the test suite to go straight to the public WWW on OpenShift.
 
 ==== Setting Up the OpenShift Application
 
-First, let's create our new application by logging into OpenShift and selecting +Add Application+:
+First, let's create our new application by logging in to OpenShift and selecting Add Application, as shown in <<Figure10-9>>.
 
 .Add Application
 [[Figure10-9]]
 image::images/cedj_12in09.png[Add Application]
 
-As EAP will be our target runtime, we'll select the "JBoss Enterprise Application Platform 6.0" cartridge, a pre-built environment for applications targeting EAP.
+Because EAP will be our target runtime, we'll select the "JBoss Enterprise Application Platform 6.0" cartridge, a prebuilt environment for applications targeting EAP (see <<Figure10-10>>).
 
-.JBoss EAP Cartridge
+.JBoss EAP cartridge
 [[Figure10-10]]
 image::images/cedj_12in10.png[JBoss EAP Cartridge]
 
-Next we'll assign our application with a name unique to our account's domain.
+Next we'll assign our application with a name unique to our account's domain, as shown in <<Figure10-11>>.
 
-.New App Name
+.New app name
 [[Figure10-11]]
 image::images/cedj_12in11.png[New App Name]
 
-And when we've reviewed the configuration, hitting "Create Application" will instruct OpenShift to provision a new namespace and backing infrastructure for our application.
+And when we've reviewed the configuration, clicking Create Application, as shown in <<Figure10-12>>, will instruct OpenShift to provision a new namespace and backing infrastructure for our application.
 
 .Create Application
 [[Figure10-12]]
 image::images/cedj_12in12.png[Create Application]
 
-When the process is completed, a default landing page will be accessible to us (and anyone in the world) from the browser.
+When the process is completed, a default landing page will be accessible to us (and anyone in the world) from the browser, as shown in <<Figure10-13>>.
 
 .Welcome to OpenShift
 [[Figure10-13]]
