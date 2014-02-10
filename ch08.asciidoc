@@ -1025,10 +1025,12 @@ Via=1.1.overdrive.home
 
 <ns3:conference xmlns:ns3="urn:ced:conference">
   <ns2:link xmlns:ns2="urn:ced:link" 
-    href="http://127.0.1.1:18080/9676980f-2fc9-4103-ae28-fd0261d1d7c3/api/conference/ac5390ad-5483-4239-850c-62efaeee7bf1" 
+    href="http://127.0.1.1:18080/9676980f-2fc9-4103-ae28-fd0261d1d7c3/api/
+    conference/ac5390ad-5483-4239-850c-62efaeee7bf1" 
     rel="self"/>
   <ns2:link xmlns:ns2="urn:ced:link" 
-    href="http://127.0.1.1:18080/9676980f-2fc9-4103-ae28-fd0261d1d7c3/api/conference/ac5390ad-5483-4239-850c-62efaeee7bf1/session" 
+    href="http://127.0.1.1:18080/9676980f-2fc9-4103-ae28-fd0261d1d7c3/api/
+    conference/ac5390ad-5483-4239-850c-62efaeee7bf1/session" 
     rel="session"/>
   <end>
     2013-08-21T00:14:44.159-04:00
@@ -1045,6 +1047,6 @@ Via=1.1.overdrive.home
 </ns3:conference>
 ----
 
-The response will contain our links to related resources, as well as information about the requested +Conference+ object in the XML +xmlns:ns3="urn:ced:conference"+ format.  Using Warp we may interact with and perform validations upon these types of payloads with ease.
+The response will contain our links to related resources, as well as information about the requested +Conference+ object in the XML +xmlns:ns3="urn:ced:conference"+ format.  Using Warp, we can interact with and perform validations upon these types of payloads with ease.
 
 There are plenty of other detailed Warp examples throughout the tests of the REST modules in the GeekSeek application code; we advise readers to peruse the source for additional ideas in using this very powerful tool for white-box testing of the request/response model.
