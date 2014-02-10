@@ -586,7 +586,7 @@ public void configureAppServer() throws Exception {
 }
 ----
 
-Yes, the code above is technically implemented as a test method, and it'd be much cleaner to fully-separate out our tests from our harness.  Future versions of Arquillian may provide more fine-grained handling of lifecycle events to accommodate that kind of separation, but for the time-being, this is our mechanism to configure running servers before issuing a deployment.
+Yes, the preceding code is technically implemented as a test method, and it'd be much cleaner to fully separate out our tests from our harness.  Future versions of Arquillian may provide more fine-grained handling of lifecycle events to accommodate that kind of separation, but for the time being, this is our mechanism to configure running servers before issuing a deployment.
 
 Now with server configuration completed and our application deployed, we're free to write our test logic.
 
@@ -595,7 +595,7 @@ The test is fairly simple from a conceptual standpoint, though the steps we've t
 * Construct a mail message
 * Set a handler on the test SMTP service to ensure the email is in the proper form, then signal to the test that we're ready to proceed
 * Send the email asynchronously
-* Wait on the handler to let us know that the message was received and that we may now proceed
+* Wait on the handler to let us know that the message was received and that we can now proceed
 
 The test logic looks like this:
 
@@ -608,7 +608,10 @@ The test logic looks like this:
         // Set the body of the email to be sent
         final String body = "This is a test of the async SMTP Service";
 
-        // Define a barrier for us to wait upon while email is sent through the JMS Queue
+        /*
+        * Define a barrier for us to wait upon while email is sent through the
+        * JMS Queue
+        */
         final CyclicBarrier barrier = new CyclicBarrier(2);
 
         // Set a handler which will ensure the body was received properly
@@ -618,12 +621,14 @@ The test logic looks like this:
                 try {
 
                     // Perform assertion
-                    Assert.assertTrue("message received does not contain body sent in email", contents.contains(body));
+                    Assert.assertTrue(
+                       "message received does not contain body sent in email",
+                       contents.contains(body));
 
                     // Should probably be the second and last to arrive, but this
                     // Thread can block indefinitely w/ no timeout needed.  If
-                    // the test waiting on the barrier times out, it'll trigger a test
-                    // failure and undeployment of the SMTP Service
+                    // the test waiting on the barrier times out, it'll trigger a
+                    // test failure and undeployment of the SMTP Service
                     barrier.await();
                 } catch (final InterruptedException e) {
                     // Swallow, this would occur if undeployment were triggered
