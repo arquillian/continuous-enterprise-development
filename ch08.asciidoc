@@ -115,7 +115,7 @@ The http://jsr311.java.net/nonav/javadoc/[JAX-RS Specification API] provides a s
 |+QueryParam+|Binds the value(s) of an HTTP query parameter to a resource method parameter, resource class field, or resource class bean property.
 |====
 
-These may be composed together to define the mapping between a business object's methods and the requests it will service, as shown in the API documentation:
+These can be composed together to define the mapping between a business object's methods and the requests it will service, as shown in the API documentation:
 
 [source,java]
 ----
@@ -137,24 +137,24 @@ public class WidgetResource {
  }
 ----
 
-The above defines an example of a business object which will receive requests to +$applicationRoot/widgets/$widgetid+, where +$widgetid+ is the identifier of the domain object to be acted upon.  HTTP +GET+ requests will be serviced by the +getWidget+ method, which will receive the +$widgetid+ as a method parameter; HTTP +PUT+ requests will be handled by the +updateWidget+ method.  The class-level +@Consumes+ and +@Produces+ annotations designate that all business methods of the class will expect and return a media type (content type) of "+application/widgets+xml+".
+This defines an example of a business object that will receive requests to +$applicationRoot/widgets/$widgetid+, where +$widgetid+ is the identifier of the domain object to be acted upon.  HTTP +GET+ requests will be serviced by the +getWidget+ method, which will receive the +$widgetid+ as a method parameter; HTTP +PUT+ requests will be handled by the +updateWidget+ method.  The class-level +@Consumes+ and +@Produces+ annotations designate that all business methods of the class will expect and return a media type (content type) of +application/widgets+xml+.
 
-As the specification supplies only a contract by which JAX-RS implementations must behave, the runtime will vary between application server vendors.  For instance the Reference Implementation, http://jersey.java.net/[Jersey], can be found in the http://glassfish.java.net/[GlassFish Application Server], while http://www.wildfly.org/[WildFly] from the JBoss Community uses http://www.jboss.org/resteasy[RESTEasy].
+Because the specification supplies only a contract by which JAX-RS implementations must behave, the runtime will vary between application server vendors.  For instance, the Reference Implementation, http://jersey.java.net/[Jersey], can be found in the http://glassfish.java.net/[GlassFish Application Server], while http://www.wildfly.org/[WildFly] from the JBoss Community uses http://www.jboss.org/resteasy[RESTEasy].
 
 === Use Cases and Requirements
 
-Thus far, we've visited and described the internal mechanisms with which we interact with data.  Now we're able to work on building an API for clients to access the domain state in a self-describing fashion, and RESTful design coupled with JAX-RS affords us the tools to expose our application's capabilities in a commonly-understood way.
+Thus far, we've visited and described the internal mechanisms with which we interact with data.  Now we're able to work on building an API for clients to access the domain state in a self-describing fashion, and RESTful design coupled with JAX-RS affords us the tools to expose our application's capabilities in a commonly understood way.
 
-We'd like to encourage 3rd-party integrators - clients about whom we may not have any up-front knowledge - to view, update, and create domain objects within the GeekSeek application.  Therefore, our use case requirements will be simply summed up as:
+We'd like to encourage third-party integrators--clients about whom we may not have any up-front knowledge--to view, update, and create domain objects within the GeekSeek application.  Therefore, our use case requirements will be simply summed up as:
 
-* As a 3rd-party integrator, I should be able to perform CRUD operations upon:
+* As a third-party integrator, I should be able to perform CRUD operations upon:
 ** A Conference
 ** Sessions within Conferences
 ** Attachments within Sessions
 ** Attachments within Conferences
 ** A Venue (and associate with a Conference and/or Session)
 
-Additionally, we want to lay out a map of the application as the client navigates through state changes.  For instance, at the root, a client should know what operations it's capable of performing.  Once that operation is complete, a series of possible next steps should be made available to the client such that it may continue execution.  This guide is known as the _Domain Application Protocol_ (DAP), and it acts as a slimming agent atop the wide array of possible HTTP operations in order to show the valid business processes that are available to a client as it progresses through the application's various state changes.  It's this DAP layer which grants us the final HATEOAS step of the Richardson Maturity Model.  Our DAP will define a series of addressable resources coupled with valid HTTP methods and media types to determine what actions are taken, and what links are to come next in the business process.
+Additionally, we want to lay out a map of the application as the client navigates through state changes.  For instance, at the root, a client should know what operations it's capable of performing.  Once that operation is complete, a series of possible next steps should be made available to the client such that it may continue execution.  This guide is known as the _Domain Application Protocol_ (DAP), and it acts as a slimming agent atop the wide array of possible HTTP operations in order to show the valid business processes that are available to a client as it progresses through the application's various state changes.  It's this DAP layer that grants us the final HATEOAS step of the Richardson Maturity Model.  Our DAP will define a series of addressable resources coupled with valid HTTP methods and media types to determine what actions are taken, and what links are to come next in the business process:
 
 ** +/ application/vnd.ced+xml;type=root+
 *** +GET+ -> Links
@@ -204,13 +204,13 @@ Additionally, we want to lay out a map of the application as the client navigate
 *** +GET+ -> List
 *** +POST+ -> Add
 
-The DAP above can be conceptually understood as a site map for services, and it defines the API for users of the system.  By designing to the DAP, we provide clients with a robust mechanism by which the details of attaining each resource or invoking the application's services can be read as the client navigates from state to state.
+The preceding DAP can be conceptually understood as a site map for services, and it defines the API for users of the system.  By designing to the DAP, we provide clients with a robust mechanism by which the details of attaining each resource or invoking the application's services can be read as the client navigates from state to state.
 
 === Implementation
 
 With our requirements defined, we're free to start implementation.  Remember that our primary goal here is to create HTTP endpoints at the locations defined by our DAP, and we want to ensure that they perform the appropriate action and return the contracted response.  By using JAX-RS we'll be making business objects and defining the mapping between the path, query parameters, and media types of the request before taking action and supplying the correct response.
 
-The first step is to let the container know that we have a JAX-RS component in our application; this is done by defining a +javax.ws.rs.ApplicationPath+ annotation atop a subclass of +javax.ws.rs.core.Application+.  Here we provide this in +org.geekseek.rest.GeekSeekApplication+:
+The first step is to let the container know that we have a JAX-RS component in our application; we do this by defining a +javax.ws.rs.ApplicationPath+ annotation atop a subclass of +javax.ws.rs.core.Application+.  Here we provide this in +org.geekseek.rest.GeekSeekApplication+:
 
 [source,java]
 ----
@@ -227,7 +227,7 @@ This will be picked up by the container and signal that requests to paths under 
 
 ==== Repository Resources
 
-Looking over our requirements, we see that all paths in our DAP are capable of performing CRUD operations.  Therefore, it makes sense for us to define a base upon which individual resources can build, while giving persistence capabilities to create, read, update, and delete.  In GeekSeek, we'll handle this by making a generic +RepositoryResource+ base to give us a hook into the +Repository+ abstractions detailed in Chapter 5.  Let's walk through +org.cedj.geekseek.web.rest.core.RepositoryResource+:
+Looking over our requirements, we see that all paths in our DAP are capable of performing CRUD operations.  Therefore, it makes sense for us to define a base upon which individual resources can build, while giving persistence capabilities to create, read, update, and delete.  In GeekSeek, we'll handle this by making a generic +RepositoryResource+ base to give us a hook into the +Repository+ abstractions detailed in <<>>.  Let's walk through +org.cedj.geekseek.web.rest.core.RepositoryResource+:
 
 [source,java]
 ----
