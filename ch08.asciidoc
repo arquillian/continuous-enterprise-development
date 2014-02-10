@@ -91,7 +91,7 @@ class.
 Because it's not our aim to provide a comprehensive overview of JAX-RS, we recommend pass:[<emphasis><ulink role="orm:hideurl" url="http://shop.oreilly.com/product/9780596158057.do">RESTful Java with JAX-RS</ulink></emphasis>] by Bill Burke (O'Reilly, 2009), member of the JSR-339 Expert Group and lead of the JBoss Community's http://www.jboss.org/resteasy[RESTEasy implementation].  The second revision of the book, covering the latest 2.0 version of the specification, is now http://shop.oreilly.com/product/0636920028925.do[on sale for pre-order].
 ====
 
-http://jsr311.java.net/nonav/javadoc/[JAX-RS Specification API] provides a set of annotations helpful to developers seeking to map incoming HTTP-based requests to backend services.  From the docs, these include:
+The http://jsr311.java.net/nonav/javadoc/[JAX-RS Specification API] provides a set of annotations helpful to developers seeking to map incoming HTTP-based requests to backend services.  From the docs, these include:
 
 |====
 |+ApplicationPath+|Identifies the application path that serves as the base URI for all resource URIs provided by Path.
