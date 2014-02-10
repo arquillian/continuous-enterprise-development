@@ -493,7 +493,7 @@ Alternatively, you can acquire the https://www.openshift.com/developers/rhc-clie
 $> sudo gem install rhc
 ----
 
-Once the gem is installed, you can add the domain record to OpenShift using the command +rhc alias add+ _+appName alias+_ +-l+ _+username+_. For instance:
+Once the gem is installed, you can add the domain record to OpenShift using the command +rhc alias add+ __++appName alias++__ +-l+ __++username++__. For instance:
 
 ----
 $> $ rhc alias add geekseek geekseek.continuousdev.org -l admin@continuousdev.org
