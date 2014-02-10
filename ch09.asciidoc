@@ -5,27 +5,27 @@ ____
 There is no real security except for whatever you build inside yourself.
 ____
 
-In a Utopian society, we'd leave our homes in the morning unlocked.  We'd park our cars at the office with the windows open, and after dark we'd be free to walk unlit alleyways without concern.
+In a Utopian society, we'd leave our homes unlocked in the morning.  We'd park our cars at the office with the windows open, and after dark we'd be free to walk unlit alleyways without concern.
 
-Unfortunately, the small percentage of those looking to take advantage of others necessitates taking some measures to protect ourselves.  We look after our belongings and each other.  In the digital arena, our vulnerable currency is __data__--not everyone is entitled to see or edit everything.  While our systems are built to support a large number of users, we cannot simply allow anyone to take any action they please.  In software and life, security amounts to controlling access.
+Unfortunately, the small percentage of those looking to take advantage of others necessitates taking some measures to protect ourselves.  We look after our belongings and each other.  In the digital arena, our vulnerable currency is __data__—not everyone is entitled to see or edit everything.  Although our systems are built to support a large number of users, we cannot simply allow anyone to take any action they please.  In software and life, security amounts to controlling access.
 
-The process by which we grant or restrict access is reflected in our _security model_; this defines the criteria by which we judge access attempts.  If someone is asking to enter the office, should we ensure they're an employee?  Is it after business hours, and how does that affect our decision?  Access may be permitted or denied based upon _contextual_ information, and the way we value those contexts is what comprises our security model.
+The process by which we grant or restrict access is reflected in our _security model_; this defines the criteria by which we judge access attempts.  If someone is asking to enter the office, should we ensure they're an employee?  Is it after business hours, and how does that affect our decision?  Access may be permitted or denied based on _contextual_ information, and the way we value those contexts is what comprises our security model.
 
-When we permit access to a resource, this is the process of _authorization_.  A commonly-employed approach involves _role-based security_, where functions and actions on the system are linked to a _role_.  For instance, the task of unlocking an office's front doors may be permitted by someone with the "janitor" role.  A staffer, Jim, may in turn be assigned to the "janitor" role; thus Jim will have permission to unlock the office's front doors.  Role-based security decouples the _user_ from the _task_; if Jim leaves the company and no longer is noted as the janitor, then the permissions he'd had when assigned to that role would disappear as well.  
+When we permit access to a resource, this is the process of _authorization_.  A commonly employed approach involves _role-based security_, where functions and actions on the system are linked to a _role_.  For instance, the task of unlocking an office's front doors may be permitted to someone with the "janitor" role.  A staffer, Jim, may in turn be assigned to the "janitor" role; thus Jim will have permission to unlock the office's front doors.  Role-based security decouples the _user_ from the _task_; if Jim leaves the company and no longer is noted as the janitor, the permissions he'd had when assigned to that role would disappear as well.  
 
-Coupled with authorization, the act of granting or denying access, is ensuring that the requesting party is who they say they are.  Surely the CEO of a company is privy to all sorts of details that wouldn't be available to the general public; if anyone could claim to be CEO, they'd be permitted to browse the whole system!  The process of validating identity is called _authentication_.
+Coupled with authorization, which is the act of granting or denying access, is ensuring that the requesting party is who they say they are.  Surely the CEO of a company is privy to all sorts of details that wouldn't be available to the general public; if anyone could claim to be CEO, they'd be permitted to browse the whole system!  The process of validating identity is called _authentication_.
 
 === Use Cases and Requirements
 
-As GeekSeek is intended to communicate its users' conference schedules publicly, we're not concerned with locking down read operations.  However, it's still important that writes are done by authorized users, so our requirements will generally state "limit unauthorized users' access to create or change data":
+Because GeekSeek is intended to communicate its users' conference schedules publicly, we're not concerned with locking down read operations.  However, it's still important that writes are done by authorized users, so our requirements will generally state "limit unauthorized users' access to create or change data":
 
-* As a 3rd-party integrator, I should not be able to:
+* As a third-party integrator, I should not be able to:
 ** Add/Change/Delete a Conference without being authorized
 ** Add/Change/Delete a Session of a Conference without being authorized
 ** Add/Change/Delete an Attachment to Sessions and Conferences without being authorized
 ** Add/Change/Delete a Venue (and associate with a Conference and Session) without being authorized
 
-In practice, this means we'll need to lock down the resources for these actions with a layer to inspect incoming requests, analyze the calling user and other contextual information, and determine whether we allow the invocation to proceed or not.
+In practice, this means we'll need to lock down the resources for these actions with a layer to inspect incoming requests, analyze the calling user and other contextual information, and determine whether or not we allow the invocation to proceed.
 
 === Implementation
 
@@ -33,7 +33,7 @@ In practice, this means we'll need to lock down the resources for these actions 
 
 It likely doesn't benefit us much to build bespoke solutions for generalized and important layers such as security, so we'll be relying on integration with a few frameworks to help us fulfill our requirements.
 
-===== PicketLink: Application-level Security
+===== PicketLink: application-level security
 
 http://www.picketlink.org[/PicketLink] is an umbrella project for security and identity management for Java Applications.  It provides the backbone of security for a variety of JBoss products, but also may be used standalone, as we'll do with GeekSeek.  There are PicketLink components to support:
 
