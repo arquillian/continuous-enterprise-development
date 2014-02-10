@@ -287,7 +287,7 @@ image::images/cedj_12in05.png["CloudBees SCM"]
 
 Now we'll tell Maven how to run the build; remember, we want to enable the +arq-jbosseap-managed+ profile, so we'll note that in the "Goals and options" section (see <<Figure10-6>>).  Also, we'll enable our alternative settings file, which will expose our +private+ repository to our build.
 
-.CloudBees Build Config
+.CloudBees build config
 [[Figure10-6]]
 image::images/cedj_12in06.png["CloudBees Build Config"]
 
@@ -295,9 +295,9 @@ image::images/cedj_12in06.png["CloudBees Build Config"]
 
 CloudBees offers a series of Maven repositories associated with each Jenkins domain.  These are documented http://wiki.cloudbees.com/bin/view/DEV/CloudBees+Private+Maven+Repository[here], and of particular note is the +private+ repository that is made available to us.  We'll be able to write to it and place in artifacts demanded by our builds, yet the visibility permissions associated with the +private+ repo will block the rest of the world from seeing or accessing these resources.
 
-To copy our EAP Maven Repository into the CloudBees Jenkins +private+ repo, we'll make use of the WebDAV protocol, an extension of HTTP which permits writing to WWW resources.  There are a variety of system-dependent tools to mount DAV volumes, and CloudBees addresses some known working techniques in their http://wiki.cloudbees.com/bin/view/DEV/Mounting+DAV+Repositories[documentation].  For illustrative purposes, we'll apply *nix-specific software in this guide, loosely based off the http://wiki.cloudbees.com/bin/view/DEV/CloudBees+Maven+Repository+-+Mounting[CloudBees Linux Documentation].
+To copy our EAP Maven Repository into the CloudBees Jenkins +private+ repo, we'll make use of the WebDAV protocol, an extension of HTTP that permits writing to WWW resources.  There are a variety of system-dependent tools to mount DAV volumes, and CloudBees addresses some known working techniques in its http://wiki.cloudbees.com/bin/view/DEV/Mounting+DAV+Repositories[documentation].  For illustrative purposes, we'll apply *nix-specific software in this guide, loosely based off the http://wiki.cloudbees.com/bin/view/DEV/CloudBees+Maven+Repository+-+Mounting[CloudBees Linux Documentation].
 
-First we need to install the http://savannah.nongnu.org/projects/davfs2[davfs2] project, a set of libraries enabling the mounting of a WebDAV resource as a standard logical volume.  In most Linux-based systems with a package manager, installation may be done using +apt-get+ or +yum+:
+First we need to install the http://savannah.nongnu.org/projects/davfs2[davfs2] project, a set of libraries enabling the mounting of a WebDAV resource as a standard logical volume.  In most Linux-based systems with a package manager, installation can be done using +apt-get+ or +yum+:
 
 ----
 $> sudo apt-get install davfs2
@@ -309,7 +309,7 @@ or
 $> sudo yum install davfs2
 ----
 
-Next we'll ensure that our +/etc/conf/davfs2/davfs2.conf+ configuration file is set up appropriately; be sure to edit yours to match the following:
+Next we'll ensure that our _/etc/conf/davfs2/davfs2.conf_ configuration file is set up appropriately; be sure to edit yours to match the following:
 
 ----
 $> cat /etc/davfs2/davfs2.conf
@@ -319,13 +319,13 @@ if_match_bug 1
 ----
 The last line is unique to https://bugs.launchpad.net/ubuntu/+source/davfs2/+bug/466960[Ubuntu-based x64 systems].
 
-Now we may create a directory which will act as our mounting point; we've chosen +/mnt/cloudbees/arquillian/private+:
+Now we can create a directory that will act as our mounting point; we've chosen _/mnt/cloudbees/arquillian/private_:
 
 ----
 $> mkdir -p /mnt/cloudbees/arquillian/private
 ----
 
-The +fstab+ utility on *nix systems acts to automatically handle mounting to registered endpoints.  It's configured in +/etc/fstab+, so using your favorite text editor, add the following line (replacing your own parameters) to the configuration:
+The +fstab+ utility on *nix systems acts to automatically handle mounting to registered endpoints.  It's configured in _/etc/fstab_, so using your favorite text editor, add the following line (replacing your own parameters) to the configuration:
 
 ----
 # Arquillian WebDAV on CloudBees
