@@ -14,6 +14,7 @@ import org.cedj.geekseek.service.security.rest.WhoAmIResource;
 import org.cedj.geekseek.service.security.test.model.SetupAuth;
 import org.cedj.geekseek.service.security.test.model.TestApplication;
 import org.cedj.geekseek.service.security.test.model.TestCurrentUserProducer;
+import org.cedj.geekseek.service.security.test.model.TestUserRepository;
 import org.cedj.geekseek.web.rest.core.test.integration.RestCoreDeployments;
 import org.cedj.geekseek.web.rest.user.test.integration.UserRestDeployments;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -40,7 +41,8 @@ public class WhoAmIResourceTestCase {
                 WhoAmIResource.class,
                 SetupAuth.class,
                 TestApplication.class,
-                TestCurrentUserProducer.class)
+                TestCurrentUserProducer.class,
+                TestUserRepository.class)
             .addAsLibraries(RestCoreDeployments.root())
             .addAsLibraries(UserDeployments.domain())
             .addAsLibraries(UserRestDeployments.module())
