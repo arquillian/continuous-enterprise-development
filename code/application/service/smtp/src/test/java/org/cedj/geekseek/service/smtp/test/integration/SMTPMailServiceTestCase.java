@@ -4,7 +4,6 @@ import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.COM
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.STEPS;
 
 import java.io.File;
-import java.net.InetAddress;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +21,7 @@ import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.as.controller.PathAddress;
+import org.jboss.as.arquillian.container.ManagementClient;
 import org.jboss.as.controller.client.ModelControllerClient;
 import org.jboss.as.controller.operations.common.Util;
 import org.jboss.dmr.ModelNode;
@@ -61,7 +60,8 @@ public class SMTPMailServiceTestCase {
                 addClasses(SMTPMailService.class, MailMessageBuilder.class,
                         SMTPMailServiceConstants.class, SMTPMessageConsumer.class, SMTPServerService.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsWebInfResource("META-INF/geekseek-smtp-queue-jms.xml");
+                .addAsWebInfResource("META-INF/geekseek-smtp-queue-jms.xml")
+                .addClass(ManagementClient.class);
         System.out.println(war.toString(true));
         return war;
     }
@@ -93,7 +93,7 @@ public class SMTPMailServiceTestCase {
     @RunAsClient
     @InSequence(value = 1)
     @Test
-    public void configureAppServer() throws Exception {
+    public void configureAppServer(@ArquillianResource ManagementClient managementClient) throws Exception {
 
         /*
          * First configure a JavaMail Session for the Server to bind into JNDI; this
@@ -101,7 +101,7 @@ public class SMTPMailServiceTestCase {
          * the server before it was started to point to a real SMTP server
          */
 
-        final ModelControllerClient client = ModelControllerClient.Factory.create(InetAddress.getLoopbackAddress(), 9999);
+        final ModelControllerClient client = managementClient.getControllerClient();
 
         final ModelNode composite = Util.getEmptyOperation(COMPOSITE, new ModelNode());
         final ModelNode steps = composite.get(STEPS);
@@ -135,8 +135,6 @@ public class SMTPMailServiceTestCase {
 
         System.out.println("Configure mail service :" + client.execute(composite));
 
-        client.close();
-
         /*
          * With the config all set and dependencies in place, now we can deploy
          */
@@ -148,9 +146,9 @@ public class SMTPMailServiceTestCase {
     @RunAsClient
     @InSequence(value = 3)
     @Test
-    public void resetAppServerConfig()
+    public void resetAppServerConfig(@ArquillianResource ManagementClient managementClient)
             throws Exception {
-        final ModelControllerClient client = ModelControllerClient.Factory.create(InetAddress.getLoopbackAddress(), 9999);
+        final ModelControllerClient client = managementClient.getControllerClient();
 
         deployer.undeploy(DEPLOYMENT_NAME);
 
@@ -175,8 +173,6 @@ public class SMTPMailServiceTestCase {
                     // Find from the WildFly team a better notification mechanism upon which to wait
                     // https://github.com/arquillian/continuous-enterprise-development/issues/66
         //no longer needed since WildFly 8 CR1
-
-        client.close();
     }
 
     /*
