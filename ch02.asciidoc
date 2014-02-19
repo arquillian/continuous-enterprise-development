@@ -223,11 +223,11 @@ The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.a
 [options="header"]
 |=============================
 |Archive type|Description
-|+org.jboss.shrinkwrap.api.+ pass:[<phrase role='keep-together'><literal>GenericArchive</literal></phrase>]|Simplest type of concrete user-view of an +Archive+; supports generic operations
-|+org.jboss.shrinkwrap.api.spec.+ pass:[<phrase role='keep-together'><literal>JavaArchive</literal></phrase>]|JAR type; allows addition of ++Class++es, ++Package++s, and Manifest operations
-|+org.jboss.shrinkwrap.api.spec.+ pass:[<phrase role='keep-together'><literal>EnterpriseArchive</literal></phrase>]|Java EE EAR type; supports Manifest and related spec operations
-|+org.jboss.shrinkwrap.api.spec.+ pass:[<phrase role='keep-together'><literal>WebArchive</literal></phrase>]|Java EE WAR type; supports operations common to web application deployments
-|+org.jboss.shrinkwrap.api.spec.+ pass:[<phrase role='keep-together'><literal>ResourceAdaptorArchive</literal></phrase>]|Java EE RAR type; supports operations common to resource adaptor deployments
+|pass:[<phrase role='keep-together'><literal>org.jboss.shrinkwrap.api.GenericArchive</literal></phrase>]|Simplest type of concrete user-view of an +Archive+; supports generic operations
+|pass:[<phrase role='keep-together'><literal>org.jboss.shrinkwrap.api.spec.JavaArchive</literal></phrase>]|JAR type; allows addition of ++Class++es, ++Package++s, and Manifest operations
+|pass:[<phrase role='keep-together'><literal>org.jboss.shrinkwrap.api.spec.EnterpriseArchive</literal></phrase>]|Java EE EAR type; supports Manifest and related spec operations
+|pass:[<phrase role='keep-together'><literal>org.jboss.shrinkwrap.api.spec.WebArchive</literal></phrase>]|Java EE WAR type; supports operations common to web application deployments
+|pass:[<phrase role='keep-together'><literal>org.jboss.shrinkwrap.api.spec.ResourceAdaptorArchive</literal></phrase>]|Java EE RAR type; supports operations common to resource adaptor deployments
 |=============================
 
 To create an +Archive+, simply choose your desired archive type and optionally supply a name to the static +ShrinkWrap:create+ method:
@@ -250,14 +250,14 @@ Of course, an object representing an empty archive is pretty useless.  So let's 
 |+org.jboss.shrinkwrap.api.asset.ArchiveAsset+|Nested +Archive+ content
 |+org.jboss.shrinkwrap.api.asset.ByteArrayAsset+|+byte[]+ or +InputStream+ content 
 |+org.jboss.shrinkwrap.api.asset.ClassAsset+|Java +Class+ content
-|pass:[<phrase role='keep-together'><literal>org.jboss.shrinkwrap.api.asset.ClassLoaderAsset</literal></phrase>]|A resource which can be loaded by an optionally-specified +ClassLoader+
+|pass:[<phrase role='keep-together'><literal>org.jboss.shrinkwrap.api.asset.ClassLoaderAsset</literal></phrase>]|A resource that can be loaded by an optionally specified +ClassLoader+
 |+org.jboss.shrinkwrap.api.asset.FileAsset+|+File+ content
 |+org.jboss.shrinkwrap.api.asset.StringAsset+|+String+ content
 |+org.jboss.shrinkwrap.api.asset.UrlAsset+|Content located at a given +URL+
 |+org.jboss.shrinkwrap.api.asset.EmptyAsset+|Empty (0-byte) content
 |=====================
 
-Additionally, because +Asset+ is an interface, you may provide your own implementation to supply any byte-based content that may be represented as an +InputStream+ .  For instance, the snippet below shows how to present an Activation Framework +DataSource+ as an +Asset+ :
+Additionally, because +Asset+ is an interface, you can provide your own implementation to supply any byte-based content that may be represented as an +InputStream+ .  For instance, the snippet below shows how to present an Activation Framework +DataSource+ as an +Asset+ :
 
 [source,java]
 ----
