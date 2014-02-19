@@ -743,7 +743,7 @@ Our implementation is almost complete, though it's our position that nothing tru
 
 === Requirement Test Scenarios
 
-Given our user requirements and the implementation choices we've made, we have a few areas it's important we assert is working as expected:
+Given our user requirements and the implementation choices we've made, it's important we assert a few areas are working as expected:
 
 * CRUD operations on +Attachment+ objects
 * Transactional integrity of CRUD operations on +Attachment+ objects
@@ -751,7 +751,7 @@ Given our user requirements and the implementation choices we've made, we have a
 
 ==== Attachment CRUD Tests
 
-First we'll need to ensure that we may Create, Read, Update and Delete +Attachment+ instances using the data grid provided by Infinispan.  To ensure these are working, we'll use +org.cedj.geekseek.domain.attachment.test.integration.AttachmentRepositoryTestCase+:
+First we'll need to ensure that we can Create, Read, Update, and Delete +Attachment+ instances using the data grid provided by Infinispan.  To ensure these are working, we'll use +org.cedj.geekseek.domain.attachment.test.integration.AttachmentRepositoryTestCase+:
 
 [source,java]
 ----
@@ -803,7 +803,7 @@ This will give us our +Attachment+ domain entity, the +AttachmentRepository+, an
     }
 ----
 
-This uses the _ShrinkWrap Maven Resolver_ to pull the +groupId:artifactId+ of +org.infinispan:infinispan-core+ and all of its dependencies in from the Maven repository, returning the artifacts as files.  We don't need to define the version explicitly here; that will be configured from the definition contained in the projects +pom.xml+ file because we've told the resolver to +loadPomFromFile("pom.xml")+.
+This uses the _ShrinkWrap Maven Resolver_ to pull the +groupId:artifactId+ of +org.infinispan:infinispan-core+ and all of its dependencies in from the Maven repository, returning the artifacts as files.  We don't need to define the version explicitly here; that will be configured from the definition contained in the project's _pom.xml_ file because we've told the resolver to +loadPomFromFile("pom.xml")+.
 
 Also as part of the deployment we'll throw in a +TestUtils+ class, which will let us easily create +Attachment+ objects from the tests running inside the container:
 
@@ -821,7 +821,7 @@ Also as part of the deployment we'll throw in a +TestUtils+ class, which will le
     }
 ----
 
-The resulting deployment should have structure looking similar to:
+The resulting deployment should have structure that looks similar to:
 
 ----
 749e9f51-d858-42a6-a06e-3f3d03fc32ad.war:
