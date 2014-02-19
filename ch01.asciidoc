@@ -124,13 +124,13 @@ Functional:: Asserts that code meets the technical requirements derived from bus
 Load/stress/performance:: Asserts and measures how a system handles input under load, and how gracefully it degrades with increased traffic
 Regression:: Asserts that previously identified errors have been corrected or that existing features continue to function
 Smoke:: A subset of a full test suite, intended to run quickly and provide feedback that the system is generally intact from a simplistic level
-White-box:: Asserts that an API is working as contracted, taking into consideration implementation-specific data structures and constructs.
+White-box:: Asserts that an API is working as contracted, taking into consideration implementation-specific data structures and constructs
 
-A well-tested application may have tests covering many of the above areas, and we may further organize these types according to scope.
+A well-tested application may have tests covering many of these areas, and we can further organize these types according to scope.
 
 ==== Unit
 
-The purpose of a unit test is to validate that a single functionality is operating as expected in isolation.  Unit tests are characterized as fast, simple, easy-to-run, and fine-grained.  They may dig into implementation details for use in _white-box testing.
+The purpose of a unit test is to validate that a single functionality is operating as expected in isolation.  Unit tests are characterized as fast, simple, easy-to-run, and fine-grained.  They may dig into implementation details for use in white-box testing.
 
 For instance, every Java object inherits the method +Object.hashCode()+ and the value equality test +Object.equals(Object)+.  By API contract, calls to +hashCode+ of equal-by-value objects must return equal, that is:
 
@@ -151,17 +151,17 @@ public void testHashCodeOfEqualObjects() {
 }
 ----
 
-The above test, implemented using the Java +assert+ keyword, is a classic example of a unit test; it checks for the smallest possible _invariant_ (in this case that the +equals()+ and +hashCode()+ implementations of +MyObject+ are working with respect to one another).  Many experts will advise that a unit test contains only one assertion; in our experience this is a fantastic guideline but as the above example illustrates, use common sense.  If more than one assertion is required to conclude that all participants in an invariant are in expected form, then use what's necessary.
+This test, implemented using the Java +assert+ keyword, is a classic example of a unit test; it checks for the smallest possible _invariant_ (in this case that the +equals()+ and +hashCode()+ implementations of +MyObject+ are working with respect to one another).  Many experts will advise that a unit test contains only one assertion; in our experience this is a fantastic guideline, but as the preceding example illustrates, use common sense.  If more than one assertion is required to conclude that all participants in an invariant are in expected form, then use what's necessary.
 
-In cases where a unit test may require inputs from unrelated components, the use of _mock objects_ is a common solution.  Mocks supply an alternate implementation used in testing which may help the developer to:
+In cases where a unit test may require inputs from unrelated components, the use of _mock objects_ is a common solution.  Mocks supply an alternate implementation used in testing that may help the developer to:
 
 * Simulate an error condition
 * Avoid starting up an expensive process or code path
-* Avoid dependence upon a third-party system which might not be reliable (or even not available) for testing purposes
-* Avoid dependence upon a mechanism which supplies non-idempotent (non-repeatable) values.
-** For instance a random-number generator or something that relies on the current time
+* Avoid dependence upon a third-party system that might not be reliable (or even not available) for testing purposes
+* Avoid dependence upon a mechanism that supplies nonidempotent (nonrepeatable) values
+** For instance, a random-number generator or something that relies on the current time
 
-While mocks absolutely have their place in the testing arsenal, in the context of Enterprise development it's our opinion that their use is to be limited.  The Java Enterprise Edition is based on a _POJO_ (Plain Old Java Object) component model which enables us to directly instantiate Servlets, EJBs, and CDI beans; this is great for validating business logic in simple calls.  However the true power of Java EE is in the _loose coupling_ between components, and mocks do not account for the linkage between these pieces that's provided by the container.  To fully test an application, you must test the whole runtime, not simply the code you've written on your own.  For that, we need a more comprehensive solution to validation than is allowed by Unit Tests.
+Although mocks absolutely have their place in the testing arsenal, in the context of Enterprise development it's our opinion that their use should be limited.  The Java Enterprise Edition is based on a _POJO_ (Plain Old Java Object) component model, which enables us to directly instantiate servlets, EJBs, and CDI beans; this is great for validating business logic in simple calls.  However, the true power of Java EE is in the _loose coupling_ between components, and mocks do not account for the linkage between these pieces that's provided by the container.  To fully test an application, you must test the whole runtime, not simply the code you've written on your own.  For that, we need a more comprehensive solution to validation than is allowed by unit tests.
 
 ==== Integration
 
