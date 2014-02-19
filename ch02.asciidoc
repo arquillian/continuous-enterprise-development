@@ -257,7 +257,7 @@ Of course, an object representing an empty archive is pretty useless.  So let's 
 |+org.jboss.shrinkwrap.api.asset.EmptyAsset+|Empty (0-byte) content
 |=====================
 
-Additionally, because +Asset+ is an interface, you can provide your own implementation to supply any byte-based content that may be represented as an +InputStream+ .  For instance, the snippet below shows how to present an Activation Framework +DataSource+ as an +Asset+ :
+Additionally, because +Asset+ is an interface, you can provide your own implementation to supply any byte-based content that may be represented as an +InputStream+.  For instance, the following snippet shows how to present an Activation Framework +DataSource+ as an +Asset+:
 
 [source,java]
 ----
@@ -274,7 +274,7 @@ Asset asset = new Asset() {
 };
 ----
 
-The +Archive:add+ method allows us to pass in some +Asset+ content and add it under an +ArchivePath+.
+The +Archive:add+ method allows us to pass in some +Asset+ content and add it under an +ArchivePath+:
 
 [source,java]
 ----
@@ -291,9 +291,9 @@ myArchive.jar:
 /path/to/content
 ----
 
-The +Archive+ views we covered before are also really helpful, depending upon the type of content you're working with.  For instance, a standard JAR file typically contains +.class+ files and other resources, so the +JavaArchive+ type lets you add these.
+The +Archive+ views we covered before are also really helpful, depending upon the type of content you're working with.  For instance, a standard JAR file typically contains _.class_ files and other resources, so the +JavaArchive+ type lets you add these.
 
-ShrinkWrap supports a simple mechanism allowing you to switch "views" of your archive, and it's provided by the +as+ method of the +org.jboss.shrinkwrap.api.Assignable+ interface; each view in turn extends +Assignable+. So in order to get your archive to use the +JavaArchive+ view in order to easily add +Class+ resources, you could simply:
+ShrinkWrap supports a simple mechanism allowing you to switch "views" of your archive, and it's provided by the +as+ method of the +org.jboss.shrinkwrap.api.Assignable+ interface; each view in turn extends +Assignable+. So to get your archive to use the +JavaArchive+ view in order to easily add +Class+ resources, you could simply write this:
 
 [source,java]
 ----
