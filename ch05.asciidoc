@@ -232,14 +232,14 @@ Given our user and technical concerns, the Java EE stack using JPA described ear
 * Enterprise JavaBeans (EJB, http://bit.ly/MAYJwZ[JSR 318])
 * JPA
 
-Transactions are a wide subject that merits its own book when dealing with the mechanics of implementing a viable transactional engine.  For us as users, however, the rules are remarkably simple.  We'll imagine a transaction is a set of code that runs within a block.  The instructions that are executed within this block must adhere to the _ACID_ properties: Atomicity, Consistency, Isolation, and Durability.
+Transactions are a wide subject that merits its own book when dealing with the mechanics of implementing a viable transactional engine.  For us as users, however, the rules are remarkably simple.  We'll imagine a transaction is a set of code that runs within a block.  The instructions that are executed within this block must adhere to the _ACID_ properties--Atomicity, Consistency, Isolation, and Durability:
 
-Atomicity:: The instructions in the block act as one unit; they either succeed (_commit_) or fail (_rollback_) together
-Consistency:: All resources associated with the transaction (in this case, our database), will always be in a legal, viable state.  For instance, a foreign key field will always point to a valid primary key.  These rules are typically enforced by the transactional resource (again, our database).
-Isolation:: Actions taken upon transactional resources within a Tx block will _not_ be seen outside the scope of the current transaction until and unless the transaction has successfully committed.
+Atomicity:: The instructions in the block act as one unit; they either succeed (_commit_) or fail (_rollback_) together.
+Consistency:: All resources associated with the transaction (in this case, our database) will always be in a legal, viable state.  For instance, a foreign key field will always point to a valid primary key.  These rules are typically enforced by the transactional resource (again, our database).
+Isolation:: Actions taken upon transactional resources within a `Tx` block will _not_ be seen outside the scope of the current transaction until and unless the transaction has successfully committed.
 Durability:: Once committed, the state of a transactional resource will not revert back or lose data.
 
-Enterprise JavaBeans, or EJBs, enjoy close integration with JTA, so we won't have to touch much of the transactional engine directly.  By managing our JPA entities through an +EntityManager+ which is encapsulated inside a transactional EJB, we'll get the benefits of transaction demarcation and management for free.
+Enterprise JavaBeans, or EJBs, enjoy close integration with JTA, so we won't have to touch much of the transactional engine directly.  By managing our JPA entities through an +EntityManager+ that is encapsulated inside a transactional EJB, we'll get the benefits of transaction demarcation and management for free.
 
 Persistence is a case that's well-understood by and lives at the heart of most Java EE applications, and these standards have been built specifically with our kind of use case in mind.  What's left for us is to sanely tie the pieces together, but not before we consider that the runtime is not the only thing with which we should be concerned.
 
@@ -256,7 +256,7 @@ public abstract class BaseEntity
 
 The +@javax.persistence.MappedSuperclass+ annotation signals that there will be no separate table strategy for this class; its fields will be reflected directly in the tables defined by its subclasses.
 
-We'll also want to fulfill the contract of +org.cedj.app.domain.model.Identifiable+, which mandates we provide:
+We'll also want to fulfill the contract of +org.cedj.app.domain.model.Identifiable+, which mandates we provide the following:
 
 [source,java]
 ----
