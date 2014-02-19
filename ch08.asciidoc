@@ -8,7 +8,7 @@ ____
 
 The concepts guiding the makeup of the modern Web could be considered a happy accident, or at least an implementation of ideas that had general applicability far beyond their initial design criteria.  In the late 1980s we had the hardware and software necessary for networking; these were low-level tools for transmitting data from one computer to another.  We even had some payload protocols and application layers available including IRC for chat, POP for email, and Usenet for general discussions.  We were communicating, albeit over relatively constrained channels.
 
-Out of necessity for his own research, Tim Berners-Lee of the European Organization for Nuclear Research (CERN) concocted a small receipe for publishing documents in a manner that would make his findings more accessible between departments and encourage updates over time.  Called the "WorldWideWeb" (WWW), http://bit.ly/1e8h4rh[this project proposed] a series of simple constructs:
+Out of necessity for his own research, Tim Berners-Lee of the European Organization for Nuclear Research (CERN) concocted a small receipe for publishing documents in a manner that would make his findings more accessible between departments and encourage updates over time.  Called the "WorldWideWeb" (WWW), http://bit.ly/1e8h4rh[this project proposed a series of simple constructs]:
 
 Addressable resources:: A unique key or address assigned to each document
 Hypertext:: A unidirectional pointer to an addressable resource
