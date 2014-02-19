@@ -443,11 +443,12 @@ public interface RelationRepository {
 
     void remove(Identifiable source, String type, Identifiable target);
 
-    <T extends Identifiable> List<T> findTargets(Identifiable source, String type, Class<T> targetType);
+    <T extends Identifiable> List<T> findTargets(Identifiable source, 
+    String type, Class<T> targetType);
 }
 ----
 
-The +RelationRepository+ will be used by the services layer, and acts as an abstraction above the datastore provider persisting the relationships (a graph database in this case).
+The +RelationRepository+ will be used by the services layer, and acts as an abstraction above the data store provider persisting the relationships (a graph database in this case).
 
 Now we're free to implement +RelationRepository+ with a Neo4j backend in +org.cedj.geekseek.domain.relation.neo.GraphRelationRepository+:
 
@@ -477,7 +478,8 @@ The +RelationRepository+ contract implementation looks like this:
 [source,java]
 ----
     @Override
-    public Relation add(Identifiable source, final String type, Identifiable target) {
+    public Relation add(Identifiable source, final String type, Identifiable 
+    target) {
 
         Transaction tx = graph.beginTx();
         try {
@@ -486,13 +488,17 @@ The +RelationRepository+ contract implementation looks like this:
             String targetTypeName = target.getClass().getSimpleName();
             Node sourceTypeNode = getOrCreateNodeType(sourceTypeName);
             Node targetTypeNode = getOrCreateNodeType(targetTypeName);
-            getOrCreateRelationship(root, sourceTypeNode, Named.relation(sourceTypeName));
-            getOrCreateRelationship(root, targetTypeNode, Named.relation(targetTypeName));
+            getOrCreateRelationship(root, sourceTypeNode, Named.relation(
+            sourceTypeName));
+            getOrCreateRelationship(root, targetTypeNode, Named.relation(
+            targetTypeName));
 
             Node sourceNode = getOrCreateNode(source, sourceTypeName);
-            getOrCreateRelationship(sourceTypeNode, sourceNode, Named.relation(REL_TYPE_ALL));
+            getOrCreateRelationship(sourceTypeNode, sourceNode, Named.relation(
+            REL_TYPE_ALL));
             Node targetNode = getOrCreateNode(target, targetTypeName);
-            getOrCreateRelationship(targetTypeNode, targetNode, Named.relation(REL_TYPE_ALL));
+            getOrCreateRelationship(targetTypeNode, targetNode, Named.relation(
+            REL_TYPE_ALL));
 
             getOrCreateRelationship(sourceNode, targetNode, Named.relation(type));
 
@@ -500,7 +506,8 @@ The +RelationRepository+ contract implementation looks like this:
         } catch(Exception e) {
             tx.failure();
             throw new RuntimeException(
-                "Could not add relation of type " + type + " between " + source + " and " + target, e);
+                "Could not add relation of type " + type + " between " + source + 
+                " and " + target, e);
         } finally {
           tx.finish();
         }
@@ -513,11 +520,13 @@ The +RelationRepository+ contract implementation looks like this:
         Transaction tx = graph.beginTx();
         try {
             Index<Node> nodeIndex = graph.index().forNodes(PROP_INDEX_NODE);
-            Index<Relationship> relationIndex = graph.index().forRelationships(PROP_INDEX_REL);
+            Index<Relationship> relationIndex = graph.index().forRelationships(
+            PROP_INDEX_REL);
 
             Node sourceNode = nodeIndex.get(PROP_ID, source.getId()).getSingle();
             Node targetNode = nodeIndex.get(PROP_ID, target.getId()).getSingle();
-            for(Relationship rel : sourceNode.getRelationships(Named.relation(type))) {
+            for(Relationship rel : sourceNode.getRelationships(
+            Named.relation(type))) {
                 if(rel.getEndNode().equals(targetNode)) {
                     rel.delete();
                     relationIndex.remove(rel);
@@ -528,18 +537,22 @@ The +RelationRepository+ contract implementation looks like this:
         } catch(Exception e) {
             tx.failure();
             throw new RuntimeException(
-                "Could not add relation of type " + type + " between " + source + " and " + target, e);
+                "Could not add relation of type " + type + " between " + source + 
+                " and " + target, e);
         } finally {
           tx.finish();
         }
     }
 
     @Override
-    public <T extends Identifiable> List<T> findTargets(Identifiable source, final String type, final Class<T> targetType) {
+    public <T extends Identifiable> List<T> findTargets(Identifiable source, 
+    final String type, final Class<T> targetType) {
 
         Repository<T> repo = locateTargetRepository(targetType);
         if(repo == null) {
-            throw new RuntimeException("Could not locate a " + Repository.class.getName() + " instance for Type " + targetType.getName());
+            throw new RuntimeException("Could not locate a " + 
+            Repository.class.getName() + " instance for Type " + 
+            targetType.getName());
         }
 
         List<T> targets = new ArrayList<T>();
@@ -548,7 +561,8 @@ The +RelationRepository+ contract implementation looks like this:
         if(node == null) {
             return targets;
         }
-        Iterable<Relationship> relationships = node.getRelationships(Named.relation(type));
+        Iterable<Relationship> relationships = node.getRelationships(
+        Named.relation(type));
         List<String> targetIds = new ArrayList<String>();
         for(Relationship relation : relationships) {
             targetIds.add(relation.getEndNode().getProperty(PROP_ID).toString());
@@ -561,20 +575,21 @@ The +RelationRepository+ contract implementation looks like this:
     }
 ----
 
-As shown above, this is a fairly simple undertaking given a little research into proper use of the Neo4j API.  We'll also need a little help to resolve the proper +Repository+ types from the types of the entities between which we're drawing relationships.  So we'll add some internal helper methods to +GraphRelationRepository+ to contain this logic.
+As shown, this is a fairly simple undertaking given a little research into proper use of the Neo4j API.  We'll also need a little help to resolve the proper +Repository+ types from the types of the entities between which we're drawing relationships.  So we'll add some internal helper methods to +GraphRelationRepository+ to contain this logic:
 
 [source,java]
 ----
     /**
-     * Helper method that looks in the BeanManager for a Repository that match signature
-     * Repository<T>.
+     * Helper method that looks in the BeanManager for a Repository that match
+     * signature Repository<T>.
      *
      * Used to dynamically find repository to load targets from.
      *
      * @param targetType Repository object type to locate
      * @return Repository<T>
      */
-    private <T extends Identifiable> Repository<T> locateTargetRepository(final Class<T> targetType) {
+    private <T extends Identifiable> Repository<T> locateTargetRepository(
+    final Class<T> targetType) {
         ParameterizedType paramType = new ParameterizedType() {
             @Override
             public Type getRawType() {
@@ -595,14 +610,17 @@ As shown above, this is a fairly simple undertaking given a little research into
         CreationalContext<?> cc = manager.createCreationalContext(null);
 
         @SuppressWarnings("unchecked")
-        Repository<T> repo = (Repository<T>)manager.getReference(bean, paramType, cc);
+        Repository<T> repo = (Repository<T>)manager.getReference(bean, 
+        paramType, cc);
         return repo;
     }
 
     private Node getOrCreateNodeType(String type) {
-        UniqueFactory<Node> factory = new UniqueFactory.UniqueNodeFactory(graph, PROP_INDEX_NODE) {
+        UniqueFactory<Node> factory = new UniqueFactory.UniqueNodeFactory(
+        graph, PROP_INDEX_NODE) {
             @Override
-            protected void initialize(Node created, Map<String, Object> properties) {
+            protected void initialize(Node created, Map<String, Object> 
+            properties) {
                 created.setProperty(PROP_ID, properties.get(PROP_ID));
             }
         };
@@ -621,7 +639,8 @@ As shown above, this is a fairly simple undertaking given a little research into
         return factory.getOrCreate(PROP_ID, source.getId());
     }
 
-    private Relationship getOrCreateRelationship(final Node source, final Node target, final RelationshipType type) {
+    private Relationship getOrCreateRelationship(final Node source, final Node 
+    target, final RelationshipType type) {
         final String key = generateKey(source, target, type);
 
         UniqueFactory<Relationship> factory = 
@@ -636,7 +655,8 @@ As shown above, this is a fairly simple undertaking given a little research into
             }
 
             @Override
-            protected void initialize(Relationship rel, Map<String, Object> properties) {
+            protected void initialize(Relationship rel, Map<String, Object> 
+            properties) {
                 rel.setProperty(PROP_CREATED, System.currentTimeMillis());
             }
         };
@@ -646,8 +666,10 @@ As shown above, this is a fairly simple undertaking given a little research into
     /**
      * Generate some unique key we can identify a relationship with.
      */
-    private String generateKey(Node source, Node target, RelationshipType type) {
-        return source.getProperty(PROP_ID, "X") + "-" + type.name() + "-" + target.getProperty(PROP_ID, "X");
+    private String generateKey(Node source, Node target, RelationshipType 
+    type) {
+        return source.getProperty(PROP_ID, "X") + "-" + type.name() + "-" + 
+        target.getProperty(PROP_ID, "X");
     }
 
     private static class Named implements RelationshipType {
@@ -679,7 +701,8 @@ public class GraphDatabaseProducer {
 
     private String DATABASE_PATH_PROPERTY = "neo4j.path";
 
-    private static Logger log = Logger.getLogger(GraphDatabaseProducer.class.getName());
+    private static Logger log = Logger.getLogger(
+    GraphDatabaseProducer.class.getName());
 
     @Produces
     public GraphDatabaseService createGraphInstance() throws Exception {
@@ -688,7 +711,8 @@ public class GraphDatabaseProducer {
         return new GraphDatabaseFactory().newEmbeddedDatabase(databasePath);
     }
 
-    public void shutdownGraphInstance(@Disposes GraphDatabaseService service) throws Exception {
+    public void shutdownGraphInstance(@Disposes GraphDatabaseService service) 
+    throws Exception {
         service.shutdown();
     }
 
@@ -704,7 +728,8 @@ public class GraphDatabaseProducer {
             }catch (IOException e) {
                 throw new RuntimeException(
                     "Could not create temp location for Nepo4j Database. " +
-                    "Please provide system property " + DATABASE_PATH_PROPERTY + " with a valid path", e);
+                    "Please provide system property " + DATABASE_PATH_PROPERTY + 
+                    " with a valid path", e);
             }
         }
         return path;
@@ -712,9 +737,9 @@ public class GraphDatabaseProducer {
 }
 ----
 
-With this in place we may inject a +GraphDataBaseService+ instance into our +GraphRelationRepository+.
+With this in place we can inject a +GraphDataBaseService+ instance into our +GraphRelationRepository+.
 
-Our implementation is about complete, though it's our position that nothing truly exists until it's been proven through tests.
+Our implementation is almost complete, though it's our position that nothing truly exists until it's been proven through tests.
 
 === Requirement Test Scenarios
 
