@@ -5,25 +5,25 @@ ____
 Simplicity is the ultimate sophistication.
 ____
 
-Software development for the modern web continues to evolve at a furious pace.  In recent years we've seen the trend of client-side state move to the server only to correct itself back again.  Despite JavaScript's obvious utility, two engineers are likely to yield three opinions regarding its worthiness.  HTML5 ushers an armada of rich-media and concurrency support right into the browser.  The proven, forty-year-old relational data model has fallen out of vogue to defiant NoSQL systems, and our version-control stores have undergone both implementation and paradigm overhauls.
+Software development for the modern Web continues to evolve at a furious pace.  In recent years we've seen the trend of client-side state move to the server, only to correct itself back again.  Despite JavaScript's obvious utility, two engineers are likely to yield three opinions regarding its worthiness.  HTML5 ushers an armada of rich-media and concurrency support right into the browser.  The proven, 40-year-old relational data model has fallen out of vogue to defiant NoSQL systems, and our version-control stores have undergone both implementation and paradigm overhauls.
 
 Our tools constitute an everchanging buffet of prescriptions, and sorting through the array of options presents a dizzying exercise.
 
-In the meantime, engineers face the same central challenges raised by building any multi-user program; we like our code elegant and maintainable.  We need it to run efficiently and securely.  We must assert its correctness.
+In the meantime, engineers face the same central challenges raised by building any multiuser program; we like our code elegant and maintainable.  We need it to run efficiently and securely.  We must assert its correctness.
 
 In the Java space, many answers have come from a set of specifications released under the heading of the _Java Enterprise Edition_.  The overarching goal of this effort remains: hide away the syntactic complexity inherent in software development, and attempt to provide a clean standard model upon which to build.  In other words, the Java EE Platform composes an evolving toolkit, and a fallible one at that.
 
-So a few years back we set out to fill some of the holes left unspecified by Java EE, and ended up holding the reins to a test framework which inspired our imaginations and proved more versatile than initially envisioned.  In fleshing out ideas to best share the lessons we'd learned, it became clear that we didn't need to document any particular technology.  Developers have been missing a cohesive map to navigate the murky waters of Java EE, its adjacent frameworks, and its services.
+So a few years back we set out to fill some of the holes left unspecified by Java EE, and ended up holding the reins to a test framework that inspired our imaginations and proved more versatile than initially envisioned.  In fleshing out ideas to best share the lessons we'd learned, it became clear that we didn't need to document any particular technology.  Developers have been missing a cohesive map to navigate the murky waters of Java EE, its adjacent frameworks, and its services.
 
 This text does not detail a singular specification.  Those volumes may be found elsewhere, because we've found it makes little sense to begin our learning with the Solutions.
 
-Instead, let's align our start with the Problems.  We'll take a use-case centric approach to the testable development of enterprise Java, and after a bit of exploratory theory and requisite background each chapter will tackle a single high-level issue.  The solutions we propose may span from the user interface to persistent storage, touching upon a number of standards or third-party projects along the way.  All examples are executable, and as proof run in production on the companion website.
+Instead, let's align our start with the Problems.  We'll take a use-case–centric approach to the testable development of enterprise Java, and after a bit of exploratory theory and requisite background each chapter will tackle a single high-level issue.  The solutions we propose may span from the user interface to persistent storage, touching upon a number of standards or third-party projects along the way.  All examples are executable, and as proof run in production on the companion website.
 
-The newbie should expect to meet the players in an enterprise Java system, and bring a blank repository from scratch to a fully-deployed, live public application on the cloud.  Coders of all stripes may find appealing approaches to testing against seed data, pushing events to the client, interacting with a distributed data grid, validating the user interface, and more.
+The newbie should expect to meet the players in an enterprise Java system, and bring a blank repository from scratch to a fully deployed, live public application on the cloud.  Coders of all stripes may find appealing approaches to testing against seed data, pushing events to the client, interacting with a distributed data grid, validating the user interface, and more.
 
 Quite simply, we'll aim to make the complicated much less so.  With luck, this will empower greater productivity and enjoyment in your work.
 
-At least, that's been our experience while employing the techniques which inspired this book.
+At least, that's been our experience while employing the techniques that inspired this book.
 
 === Conventions Used in This Book
 
@@ -55,7 +55,7 @@ This element indicates a warning or caution.
 
 === Using Code Examples
 
-Supplemental material (code examples, exercises, etc.) is available for download at link:$$https://continuousdev.org$$[].  We offer a guide to get started in the _Requirements and the Example Application_ chapter.
+Supplemental material (code examples, exercises, etc.) is available for download at link:$$https://continuousdev.org$$[].  We offer a guide to get started in <<>>.
 
 This book is here to help you get your job done.  All contents here are licensed under http://creativecommons.org/licenses/by-sa/2.0/['Creative Commons Attribution-ShareAlike 2.0 Generic'], and we invite the community at large to contribute work including feature requests, typographical error corrections, and enhancements via our https://github.com/arquillian/continuous-enterprise-development/issues[GitHub Issue Tracker].  You may reuse any of the text or examples in compliance with the license, which requires attribution.  See full license for details.
 
