@@ -1119,7 +1119,7 @@ With these tests passing, we're now satisfied that our Infinispan backend is com
 
 ==== Validating Relationships
 
-Armed with our Neo4j-backed +RelationRepository+, we're able to draw relationships between entities that are not otherwise related in the schema, or may even be in separate datastores.  Let's construct a test to validate that our +Relation+ edges in the graph are serving us well.  We'll do this in +org.cedj.geekseek.domain.relation.test.integration.RelationTestCase+:
+Armed with our Neo4j-backed +RelationRepository+, we're able to draw relationships between entities that are not otherwise related in the schema, or may even be in separate data stores.  Let's construct a test to validate that our +Relation+ edges in the graph are serving us well.  We'll do this in +org.cedj.geekseek.domain.relation.test.integration.RelationTestCase+:
 
 [source,java]
 ----
@@ -1127,7 +1127,7 @@ Armed with our Neo4j-backed +RelationRepository+, we're able to draw relationshi
 public class RelationTestCase {
 ----
 
-This will be another relatively-simple Arquillian test case, running inside the container.  We'll again define a deployment, this time including Neo4j as a dependency in place of Infinispan:
+This will be another relatively simple Arquillian test case, running inside the container.  We'll again define a deployment, this time including Neo4j as a dependency in place of Infinispan:
 
 [source,java]
 ----
@@ -1143,7 +1143,7 @@ This will be another relatively-simple Arquillian test case, running inside the 
     }
 ----
 
-The above deployment will include our +GraphDatabaseProducer+, so we'll be able to inject a +GraphRelationRepository+ in our test case to create, remove, and find +Relation+ edges.  This we'll obtain easily via injection into the test instance:
+This deployment will include our +GraphDatabaseProducer+, so we'll be able to inject a +GraphRelationRepository+ in our test case to create, remove, and find +Relation+ edges.  This we'll obtain easily via injection into the test instance:
 
 [source,java]
 ----
@@ -1179,7 +1179,7 @@ Now we'll want to run our tests to:
 * Delete the relationship
 * Only find valid targets remaining
 
-Rather than do this in one large test, we'll make separate tests for each case.  There are dependencies however, as the state of the system will change after each test is run.  Therefore we need to make sure that these tests run in the proper order using Arquillian's +@InSequence+ annotation:
+Rather than do this in one large test, we'll make separate tests for each case.  There are dependencies however, because the state of the system will change after each test is run.  Therefore we need to make sure that these tests run in the proper order using Arquillian's +@InSequence+ annotation:
 
 [source,java]
 ----
@@ -1195,7 +1195,8 @@ Rather than do this in one large test, we'll make separate tests for each case. 
         Assert.assertEquals("Verify returned object has same type", 
           relation.getType(), type);
 
-        Assert.assertNotNull("Verify created date was set", relation.getCreated());
+        Assert.assertNotNull("Verify created date was set", 
+        relation.getCreated());
     }
 
     @Test @InSequence(1)
@@ -1210,6 +1211,6 @@ Rather than do this in one large test, we'll make separate tests for each case. 
     public void shouldOnlyFindGivenRelation() {...}
 ----
 
-With these passing, it's now proven that we may perform all the contracted operations of +RelationRepository+ against a real Neo4j graph database backend.
+With these passing, it's now proven that we can perform all the contracted operations of +RelationRepository+ against a real Neo4j graph database backend.
 
-Our GeekSeek application now has many database layers at its disposal: CRUD operations in an RDBMS for most entities, a key/value store to hold onto +Attachment+ objects, and a graph to draw ties among the entities such that their relationships may be explored in an efficient manner.
+Our GeekSeek application now has many database layers at its disposal: CRUD operations in an RDBMS for most entities, a key/value store to hold onto +Attachment+ objects, and a graph to draw ties among the entities such that their relationships can be explored in an efficient manner.
