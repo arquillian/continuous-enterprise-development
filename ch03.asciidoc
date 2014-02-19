@@ -609,13 +609,13 @@ Existing users can simply log in to see active applications, as shown in <<Figur
 [[Figure3-10]]
 image::images/cedj_04in10.png["OpenShift Login"]
 
-With that accomplished, we can use JBDS to connect our current _feedback_ project to a new application on OpenShift and bring it all the way to deployment.  The actions we need are available in the "OpenShift Explorer", a _view_ in JBDS.
+With that accomplished, we can use JBDS to connect our current `feedback` project to a new application on OpenShift and bring it all the way to deployment.  The actions we need are available in the "OpenShift Explorer," a _view_ in JBDS (see <<Figure3-11>>).
 
-.OpenShift Explorer View Selection
+.OpenShift Explorer view selection
 [[Figure3-11]]
 image::images/cedj_04in11.png["OpenShift Explorer View Selection"]
 
-In the explorer we can sign into OpenShift from JBDS using the "Connect to OpenShift" button as shown on the far right below:
+In the Explorer, we can sign into OpenShift from JBDS using the Connect to OpenShift button, as shown on the far right in <<Figure3-12>>.
 
 .OpenShift Explorer
 [[Figure3-12]]
