@@ -84,11 +84,11 @@ Also known simply as "XP," _Extreme Programming_ is a discipline that introduces
 [[Figure1-2]]
 image::images/cedj_0102.png[]
 
-While the full reasoning behind XP is detailed by Kent Beck's _Extreme Programming Explained: Embrace Change (Second Edition)_, some of its primary tenants may be boiled down to:
+While the full reasoning behind XP is detailed by Kent Beck's _Extreme Programming Explained: Embrace Change, Second Edition_ (Addison-Wesley, 2004), some of its primary tenants can be boiled down to:
 
 * Short development cycles
 * Daily, brief meetings
-* Pair Programming, Team Ownership and Accountability
+* Pair Programming, Team Ownership, and Accountability
 * Doing only what needs to be done now, deferring nonessential work until later
 * Garnering feedback from all stakeholders, not only programmers, early and often
 * Test-Driven Development
@@ -96,7 +96,7 @@ While the full reasoning behind XP is detailed by Kent Beck's _Extreme Programmi
 
 In fact, XP along with other models has both inspired and acts as an implementation of a larger collection of iterative policies as outlined by the http://agilemanifesto.org/[_Manifesto for Agile Software Development_].
 
-=== Testing _is_ Development
+=== Testing _Is_ Development
 
 [quote, Tim Ottinger, Senior Consultant, Industrial Logic]
 ____
@@ -107,9 +107,9 @@ No matter the development method your team prescribes, and no matter how rigidly
 
 But it's our opinion that testing is not simply about making sure your code works as expected.
 
-When you write tests, you're a _user_ of your API.  You'll see how intuitive it is to use, you'll discover gaps in documentation.  You might discover that it's too verbose or ugly, and most importantly: you can re-evaluate your design before it's too late. You're putting yourself in the shoes of your target audience.
+When you write tests, you're a _user_ of your API.  You'll see how intuitive it is to use, and you'll discover gaps in documentation.  You might discover that it's too verbose or ugly, and most importantly: you can reevaluate your design before it's too late. You're putting yourself in the shoes of your target audience.
 
-What's more, if you write tests alongside the development of your business logic, you might find your work to be more _enjoyable_.  You'll know when a feature is completed; you'll have the satisfaction of seeing concrete feedback in real-time.  Proponents of _Test-Driven Development_ even make the case for writing tests _before_ implementation.  In our experience, testing may be done alongside construction of the primary code such that the experience from one end of the tunnel can inform the other.
+What's more, if you write tests alongside the development of your business logic, you might find your work to be more _enjoyable_.  You'll know when a feature is completed; you'll have the satisfaction of seeing concrete feedback in real time.  Proponents of _Test-Driven Development_ even make the case for writing tests _before_ implementation.  In our experience, testing may be done alongside construction of the primary code such that the experience from one end of the tunnel can inform the other.
 
 Automated testing can take many forms, and we'll categorize a few for use throughout this text.
 
@@ -118,13 +118,13 @@ Automated testing can take many forms, and we'll categorize a few for use throug
 Proponents of test-oriented software development processes may qualify tests in one or more flavors:
 
 Acceptance:: Asserts that code meets business requirements
-Black-Box:: Asserts the contract of an API is working without respect to its internals
-Compatibility:: Asserts that code plays nicely with one or more outside components; for instance a web application may need to display correctly on Internet Explorer, Chrome, Firefox, Safari, and mobile devices.
+Black-box:: Asserts the contract of an API is working without respect to its internals
+Compatibility:: Asserts that code plays nicely with one or more outside components; for instance, a web application may need to display correctly on Internet Explorer, Chrome, Firefox, Safari, and mobile devices
 Functional:: Asserts that code meets the technical requirements derived from business requirements (i.e., that all _functions_ are working as expected)
 Load/stress/performance:: Asserts and measures how a system handles input under load, and how gracefully it degrades with increased traffic
-Regression:: Asserts that previously-identified errors have been corrected or that existing features remain to function
+Regression:: Asserts that previously identified errors have been corrected or that existing features continue to function
 Smoke:: A subset of a full test suite, intended to run quickly and provide feedback that the system is generally intact from a simplistic level
-White-Box:: Asserts that an API is working as contracted, taking into concern implementation-specific data structures and constructs.
+White-box:: Asserts that an API is working as contracted, taking into consideration implementation-specific data structures and constructs.
 
 A well-tested application may have tests covering many of the above areas, and we may further organize these types according to scope.
 
