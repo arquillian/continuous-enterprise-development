@@ -206,29 +206,30 @@ Quite simple (and maybe even redundant!) when put in these terms, especially for
 To state even more generally:
 
 ----
-As a User, I should be able to Create, Read, Update, and Delete Conference and Session types.
+As a User, I should be able to Create, Read, Update, and Delete Conference and
+Session types.
 ----
 
-Of course, we have some other requirements which do not pertain to the user perspective.
+Of course, we have some other requirements that do not pertain to the user perspective.
 
 ==== Technical Concerns
 
 As noted in the introduction, the issue of data persistence is not trivial.  We must ensure that our solution will address:
 
 * Concurrent access
-* Multi-user access
+* Multiuser access
 * Fault-tolerance
 
-These constraints upon the environment will help to inform our implementation choices.  Again, explicitly stating these issues may seem obvious, but our experience teaches that sometimes we get so comfortable with an implementation choice that we may not first stop to think if it's even appropriate!  For instance, a news or blogging site which has a high read to write ratio may not even need to worry about concurrency if the application can support stale data safely.  In that case, we might not even need transactions, and bypassing that implementation choice can lead to great gains in performance.
+These constraints upon the environment will help to inform our implementation choices.  Again, explicitly stating these issues may seem obvious, but our experience teaches that sometimes we get so comfortable with an implementation choice that we may not first stop to think if it's even appropriate!  For instance, a news or blogging site that has a high read-to-write ratio may not even need to worry about concurrency if the application can support stale data safely.  In that case, we might not even need transactions, and bypassing that implementation choice can lead to great gains in performance.
 
 In GeekSeek, however, we'll want to ensure that users are seeing up-to-date information that's consistent, and that implies a properly synchronized data source guarded by transactions.
 
 === Implementation
 
-Given our user and technical concerns, the Java EE stack using JPA described above will do a satisfactory job towards meeting our requirements.  And there's an added benefit: by using frameworks designed to relieve the application developer of complicated programming, we'll end up writing a lot less code.  This will help us to reduce the _conceptual weight_ of our code and ease maintenance over the long run.  The slices of Java EE that we'll use specifically include: 
+Given our user and technical concerns, the Java EE stack using JPA described earlier will do a satisfactory job toward meeting our requirements.  And there's an added benefit: by using frameworks designed to relieve the application developer of complicated programming, we'll end up writing a lot less code.  This will help us to reduce the _conceptual weight_ of our code and ease maintenance over the long run.  The slices of Java EE that we'll use specifically include: 
 
 * Java Transaction API (JTA)
-* Enterprise JavaBeans (EJB, http://jcp.org/aboutJava/communityprocess/final/jsr318/[JSR 318])
+* Enterprise JavaBeans (EJB, http://bit.ly/MAYJwZ[JSR 318])
 * JPA
 
 Transactions are a wide subject that merits its own book when dealing with the mechanics of implementing a viable transactional engine.  For us as users, however, the rules are remarkably simple.  We'll imagine a transaction is a set of code that runs within a block.  The instructions that are executed within this block must adhere to the _ACID_ properties: Atomicity, Consistency, Isolation, and Durability.
