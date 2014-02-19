@@ -838,14 +838,16 @@ Our test class has similar methods to enforce related behaviors mandated by our 
 ----
     // Story: As a User I should be able to create a Conference with a Session
     @Test
-    @ShouldMatchDataSet(value = { "conference.yml", "session.yml" }, excludeColumns = { "*id" })
+    @ShouldMatchDataSet(value = { "conference.yml", "session.yml" }, 
+    excludeColumns = { "*id" })
     public void shouldBeAbleToCreateConferenceWithSession(){...}
 
 
     // Story: As a User I should be able to add a Session to a existing Conference
     @Test
     @UsingDataSet("conference.yml")
-    @ShouldMatchDataSet(value = { "conference.yml", "session.yml" }, excludeColumns = { "*id" })
+    @ShouldMatchDataSet(value = { "conference.yml", "session.yml" }, 
+    excludeColumns = { "*id" })
     public void shouldBeAbleToAddSessionToConference() {...}
 
     // Story: As a User I should be able to remove a Conference
