@@ -582,24 +582,25 @@ String version = artifact.getResolvedVersion();
 ScopeType scope = artifact.getScope();
 ----
 +
-You can still retrieve resolved artifact from +MavenResolvedArtifact+:
+You can still retrieve resolved artifacts from +MavenResolvedArtifact+:
 +
 [source,java]
 ----
 File file = artifact.asFile();
 ----
 
-* Excluding a dependency of the artifact you want to resolve. In case you need to resolve an artifact while avoiding some of its dependencies, you can follow concept of +<exclusions>+ known for Maven. The following shows how to exclude +G:B+ while resolving +G:A:V+.
+* Excluding a dependency of the artifact you want to resolve. In case you need to resolve an artifact while avoiding some of its dependencies, you can follow a Maven concept known as `<exclusions>`. The following shows how to exclude +G:B+ while resolving +G:A:V+:
 +
 [source,java]
 ----
 Maven.resolver()
   .addDependencies(
     MavenDependencies.createDependency("G:A:V", ScopeType.COMPILE, false,
-      MavenDependencies.createExclusion("G:B"))).resolve().withTransitivity().asFile();
+      MavenDependencies.createExclusion("G:B"))).resolve().
+          withTransitivity().asFile();
 ----
 
-* Using a strategy to control what will be resolved. In special cases, excluding a single dependency is not the behaviour you want to achieve. For instance, you want to resolve all test scoped dependencies of an artifact, you want to completely avoid some dependency while resolving multiple artifacts or maybe you're interested in optional dependencies. For those cases, ShrinkWrap Resolvers allows you to specify a +MavenResolutionStrategy+. For instance, you can exclude +G:B+ from +G:A:V+ (e.g. the same as previous examples) via following snippet:
+* Using a strategy to control what will be resolved. In special cases, excluding a single dependency is not the behavior you want to achieve. For instance, you want to resolve all test-scoped dependencies of an artifact, you want to completely avoid some dependency while resolving multiple artifacts, or maybe you're interested in optional dependencies. For those cases, ShrinkWrap Resolvers allows you to specify a +MavenResolutionStrategy+. For instance, you can exclude +G:B+ from +G:A:V+ (e.g., the same as in previous examples) via the following snippet:
 +
 [source,java]
 ----
@@ -609,19 +610,21 @@ Maven.resolver().resolve("G:A:V").using(
 +
 [NOTE]
 ====
-Methods +withTransitivity()+ and +withoutTransitivity()+ are just a convenience methods to avoid you writing down strategy names. The first one calls +TransitiveStrategy+ while the latter calls +NotTransitiveStrategy+.
++withTransitivity()+ and +withoutTransitivity()+ are just convenience methods you can use to avoid writing down strategy names. The first one calls +TransitiveStrategy+ and the second one calls +NotTransitiveStrategy+.
 ====
 +
-Strategies are composed of an array of +MavenResolutionFilter+ instances and +TransitiveExclusionPolicy+ instance. While defining the first allows you to transform dependency graph of resolved artifacts, the latter allows you to change default behavior when resolving transitive dependencies. By default, Maven does not resolve any dependencies in _provided_ and _test_ scope and it also skips _optional_ dependencies. ShrinkWrap resolver behaves the same way by default, but allows you to change that behaviour. This comes handy especially if when you want to for instance resolve all provided dependencies of +G:A:V+. For your convenience, ShrinkWrap Resolvers ships with strategies described in following table.
+Strategies are composed of an array of +MavenResolutionFilter+ instances and +TransitiveExclusionPolicy+ instances. Defining the former allows you to transform dependency graphs of resolved artifacts, and defining the latter allows you to change default behavior when resolving transitive dependencies. By default, Maven does not resolve any dependencies in _provided_ and _test_ scope and it also skips _optional_ dependencies. ShrinkWrap Resolver behaves the same way by default, but allows you to change that behavior. This comes in handy especially when you want to, for instance, resolve all provided dependencies of +G:A:V+. For your convenience, ShrinkWrap Resolvers ships with the strategies described in <<table2-7>>.
 +
 .Strategies available in ShrinkWrap Resolver
+[[table2-7]]
 [cols="1,3"]
+[options="header"]
 |====
 | +AcceptAllStrategy+ | 
 Accepts all dependencies of artifacts. Equals +TransitiveStrategy+.
 
 | +AcceptScopesStrategy+ |
-Accepts only dependencies that have defined scope type.
+Accepts only dependencies that have a defined scope type.
 
 | +CombinedStrategy+ |
 This allows you to combine multiple strategies together. The behaviour defined as logical AND between combined strategies.
