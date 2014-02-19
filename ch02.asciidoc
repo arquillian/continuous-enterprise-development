@@ -77,27 +77,25 @@ image::images/cedj_0202.png[]
 
 Some systems utilize file-level locking to ensure that no conflicts arise during development; others allow concurrent access at the file granularity but cue the developer to resolve line-level conflicts upon committing changes upstream.
 
-Likely the most widely deployed client/server version control system (VCS) from the 1990s through the 2000s has been http://savannah.nongnu.org/projects/cvs[Concurrent Versions Systems], most often referred to by its acronym _CVS_.  Although CVS has enabled teams to freely work on all files in the tree through _unreserved checkouts_, its shortcomings including non-atomic commits and absent tracking for file renames prompted the development of http://subversion.apache.org/[Subversion] (SVN), hier apparent to CVS.  Boasting a wider featureset and greater stability as contrasted with CVS, SVN has enjoyed its reign from the mid- to late-2000s.
+Likely the most widely deployed client/server version control system (VCS) from the 1990s through the 2000s has been http://savannah.nongnu.org/projects/cvs[Concurrent Versions Systems], most often referred to by its acronym _CVS_.  Although CVS has enabled teams to freely work on all files in the tree through _unreserved checkouts_, its shortcomings (including nonatomic commits and absent tracking for file renames) prompted the development of http://subversion.apache.org/[Subversion] (SVN), hier apparent to CVS.  Boasting a wider featureset and greater stability as contrasted with CVS, SVN has enjoyed its reign from the mid- to late-2000s.
 
-These days, the centralized model has been superseded by _distributed version control systems_ (DVCS), which is differentiated by its ability to store the full repository including all history in any number of nodes.
+These days, the centralized model has been superseded by _distributed version control systems_ (DVCS), which are differentiated by their ability to store the full repository including all history in any number of nodes.
 
-[[Figure2-3]]
-
-This layout creates a "pull model", where developers on a common project are given the authority over their own repository, free to incorporate changes from others (or not!).  At first, this can be a confusing topic to grasp for users vested in the centralized "push model", but its our opinion that the benefits of this design easily justify the initial confusion inherent when considering many full-fledged repositories representing the same project.
+This layout creates a "pull model," where developers on a common project are given the authority over their own repository, free to incorporate changes from others (or not!).  At first, this can be a confusing topic to grasp for users vested in the centralized "push model," but it's our opinion that the benefits of this design easily justify the initial confusion inherent when considering many full-fledged repositories representing the same project.
 
 Some immediate gains to consider:
 
-* Repository operations such as committing and searching history are much faster
-* Network connectivity is not required to alter the respository's state
-* Every repository is a full backup of the codebase's history
+* Repository operations such as committing and searching history are much faster.
+* Network connectivity is not required to alter the respository's state.
+* Every repository is a full backup of the codebase's history.
 
 This is because each user is typically working on a local repository, and synchronization with a remote repository is only necessary when pushing changes to be visible by others.
 
-In this text, we'll be using the open-source DVCS _Git_. 
+In this text, we'll be using the open source DVCS _Git_. 
 
 ==== Git
 
-Originally developed to coordinate development of the Linux Kernel, Git is a DVCS whose usage has taken off in recent years, arguably due to the user-friendliness of the socially-aware hosting site http://www.github.com[GitHub].  In fact, this book's text and examples are https://github.com/arquillian/continuous-enterprise-development[hosted] on GitHub for all to participate.
+Originally developed to coordinate development of the Linux Kernel, Git is a DVCS whose usage has taken off in recent years, arguably due to the user-friendliness of the socially-aware hosting site http://www.github.com[GitHub].  In fact, this book's text and examples are http://bit.ly/1e7o0ox[hosted on GitHub] for all to participate.
 
 From a high-level, we've chosen Git for our projects as it enables:
 
