@@ -406,4 +406,4 @@ Chapter 13 will cover the SPI and explain the construction of your own Arquillia
 
 ////
 
-With our birds-eye view of the GeekSeek example application complete, it's time to dig into some code.
+With our bird's-eye view of the GeekSeek example application complete, it's time to dig into some code.
