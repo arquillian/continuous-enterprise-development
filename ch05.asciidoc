@@ -517,7 +517,7 @@ public interface Repository<T extends Identifiable> {
 }
 ----
 
-This means that for any +Identifiable+ type, we'll be able to obtain the concrete class type, store the entity, and get and remove it from the database.  In JPA, we do this via an +EntityManager+, so we can write a base class to support these operations for all JPA entities.  From +org.cedj.geekseek.domain.persistence.PersistenceRepository+:
+This means that for any +Identifiable+ type, we'll be able to obtain the concrete class type, store the entity, and get and remove it from the database.  In JPA, we do this via an +EntityManager+, so we can write a base class to support these operations for all JPA entities. The following is from +org.cedj.geekseek.domain.persistence.PersistenceRepository+:
 
 [source,java]
 ----
@@ -565,9 +565,9 @@ public abstract class PersistenceRepository<T extends Identifiable>
 }
 ----
 
-An instance member of this class is our +EntityManager+, which is injected via the +@PersistenceContext+ annotation and will be used to carry out the public business methods +store+ (Create), +remove+ (Delete), and +get+ (Read).  Update is handled by simply reading in an entity, then making any changes to that object's state.  The application server will propagate these state changes to persistent storage when the transaction commits (ie. a transactional business method invocation completes successfully).
+An instance member of this class is our +EntityManager+, which is injected via the +@PersistenceContext+ annotation and will be used to carry out the public business methods +store+ (Create), +remove+ (Delete), and +get+ (Read).  Update is handled by simply reading in an entity, then making any changes to that object's state.  The application server will propagate these state changes to persistent storage when the transaction commits (i.e., a transactional business method invocation completes successfully).
 
-We can now extend this behavior with a concrete class and supply the requisite EJB annotations easily, for instance +org.cedj.geekseek.domain.conference.ConferenceRepository+:
+We can now extend this behavior with a concrete class and supply the requisite EJB annotations easily; for instance, +org.cedj.geekseek.domain.conference.ConferenceRepository+:
 
 [source,java]
 ----
@@ -587,7 +587,7 @@ Despite the small amount of code here, there's a lot of utility going on.
 
 The +Stateless+ annotation defines this class as an EJB, a Stateless Session Bean, meaning that the application server may create and destroy instances at will, and a client should not count on ever receiving any particular instance.  +@LocalBean+ indicates that this EJB has no _business interface_; clients may call upon +ConferenceRepository+ methods directly.
 
-The +TransactionAttribute+ annotation and its +REQUIRED+ value on the class level notes that every method invocation upon one of the business methods exposed by the EJB will run in a transaction.  That means that if a transaction does not exist one will be created, while if there's currently a transaction in flight, it will be used.
+The +TransactionAttribute+ annotation and its +REQUIRED+ value on the class level notes that every method invocation upon one of the business methods exposed by the EJB will run in a transaction.  That means that if a transaction does not exist one will be created, and if there's currently a transaction in flight, it will be used.
 
 The +@Typed+ annotation from CDI is explained best by the +ConferenceRepository+ JavaDocs:
 
@@ -603,26 +603,26 @@ The +@Typed+ annotation from CDI is explained best by the +ConferenceRepository+
  *
  * As a WorkAround we wrap the EJB that has Transactional properties in CDI bean
  * that can be used by the Type system. The EJB is to be considered a internal
- * implementation detail. The CDI Type provided by the ConferenceCDIDelegateRepository
- * is the real Repository api.
+ * implementation detail. The CDI Type provided by the 
+ * ConferenceCDIDelegateRepository is the real Repository api.
  */
 ----
 
 === Requirement Test Scenarios
 
-Of course the runtime will be the executable code of our application.  However, the theme of this book is in _testable development_, and we'll be focusing on proof through automated test.  To that end, every user and technical requirement we identify will be matched to an test which will ensure that functions are producing the correct results during the development cycle.
+Of course the runtime will be the executable code of our application.  However, the theme of this book is in _testable development_, and we'll be focusing on proof through automated tests.  To that end, every user and technical requirement we identify will be matched to a test that will ensure that functions are producing the correct results during the development cycle.
 
-In this case, we need to create coverage to ensure that we may:
+In this case, we need to create coverage to ensure that we can:
 
-* Perform CRUD operations on the Conference and Session entities
+* Perform CRUD operations on the `Conference` and `Session` entities
 ** Execute operations against known data sets and validate the results
-* Exercise our Transaction handling:
+* Exercise our transaction handling
 ** Commits should result in entity object state flushed to persistent storage
 ** Rollbacks (when a commit fails) result in no changes to persistent storage
 
 ==== Test Setup
 
-Our tests will be taking advantage of the https://docs.jboss.org/author/display/ARQ/Persistence[_Arquillian Persistence Extension_], which is created to aid in writing tests where the persistence layer is involved.  It supports the following features:
+Our tests will be taking advantage of the http://bit.ly/MB0wCg[_Arquillian Persistence Extension_], which is created to aid in writing tests where the persistence layer is involved.  It supports the following features:
 
 * Wrapping each test in the separated transaction.
 * Seeding database using:
