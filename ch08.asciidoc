@@ -8,7 +8,7 @@ ____
 
 The concepts guiding the makeup of the modern Web could be considered a happy accident, or at least an implementation of ideas that had general applicability far beyond their initial design criteria.  In the late 1980s we had the hardware and software necessary for networking; these were low-level tools for transmitting data from one computer to another.  We even had some payload protocols and application layers available including IRC for chat, POP for email, and Usenet for general discussions.  We were communicating, albeit over relatively constrained channels.
 
-Out of necessity for his own research, Tim Berners-Lee of the European Organization for Nuclear Research (CERN) concocted a small receipe for publishing documents in a manner that would make his findings more accessible between departments and encourage updates over time.  Called the "WorldWideWeb" (WWW), http://cdsweb.cern.ch/record/1405411/files/ARCH-WWW-4-010.pdf[this project proposed] a series of simple constructs:
+Out of necessity for his own research, Tim Berners-Lee of the European Organization for Nuclear Research (CERN) concocted a small receipe for publishing documents in a manner that would make his findings more accessible between departments and encourage updates over time.  Called the "WorldWideWeb" (WWW), http://bit.ly/1e8h4rh[this project proposed] a series of simple constructs:
 
 Addressable resources:: A unique key or address assigned to each document
 Hypertext:: A unidirectional pointer to an addressable resource
@@ -16,7 +16,7 @@ Browser:: A client program capable of reading hypertext-enabled documents
 
 We take these concepts lightly now, but it's worthwhile considering the paradigm shift this evoked in the early 1990s; in only ten years' time, most of the world's university students and many homes were connected to a web that contained a marketing presense for an overwhelming majority of the Fortune 500.  These ideas ushered innovation and communication at a rate never before seen in the history of mankind.  This was instant, global publishing, and it was free.
 
-Central to the makeup of the WWW was the introduction of the _Uniform Resource Identifier_, or URI.  The URI defined by http://tools.ietf.org/html/rfc3986[RFC 3986] forms the basis of an addressable resource, and has the following makeup:
+Central to the makeup of the WWW was the introduction of the _Uniform Resource Identifier_, or URI.  The URI defined by http://bit.ly/1e8haPu[RFC 3986] forms the basis of an addressable resource, and has the following makeup:
 
 +scheme ":" hierarchical-part ["?" query] ["#" fragment]+
 
@@ -30,7 +30,7 @@ and
 
 In short time, Berners-Lee introduced the first version of the _HyperText Markup Language_ (HTML), aimed at providing a more concise vernacular for incorporating links into a common markup that browsers could format for viewing.  The WWW was built as a mechanism for _document exchange_, sharing of published material over a commonly understood protocol and payload format (commonly HTML).  
 
-In 2000, University of California at Irvine's Roy Fielding published his dissertation http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm["Architectural Styles and the Design of Network-based Software Architectures"], which expanded the notion of addressing documents to include _services_ among the data exchanged on the Web, and defined a system of _REpresentational State Transfer_ (REST).  With his background in coauthoring http://tools.ietf.org/html/rfc2616[RFC-2616], which defined the HTTP/1.1 protocol, Fielding was in a position of expertise to rethink how the principles of the Web might be applied to services.
+In 2000, University of California at Irvine's Roy Fielding published his dissertation http://bit.ly/1e8hbTD["Architectural Styles and the Design of Network-based Software Architectures"], which expanded the notion of addressing documents to include _services_ among the data exchanged on the Web, and defined a system of _REpresentational State Transfer_ (REST).  With his background in coauthoring http://bit.ly/1e8he1T[RFC-2616], which defined the HTTP/1.1 protocol, Fielding was in a position of expertise to rethink how the principles of the Web might be applied to services.
 
 By addressing services and applying a set of conventions to these URIs, we're able to compose a wide array of operations on services with the following key benefits:
 
@@ -47,7 +47,7 @@ Clearly the study of REST is worthy of its own text, and we'll recommend pass:[<
 
 REST is certainly not the first distributed architecture; _Remote Procedure Call_ (RPC) variants have been used in various forms (i.e., SOAP, XML-RPC) for a long while.  In recent years, the trend toward REST has been largely attributed to its ease-of-use and slim profile when coupled with the _HyperText Transfer Protocol_ (HTTP), an established communication protocol providing for _methods_, _headers_, and _return status codes_ that map well to the objectives of the caller.  In practice, the success of the WWW is inherently linked to HTTP, though this is only one protocol (scheme) that can be applied to the general guidelines of the Web.  Due to its widespread usage and versatility, we'll be employing HTTP throughout this chapter.
 
-Because of its success, REST has become an abused buzzword in some circles.  It's helpful for us to clarify the stages of compliance with a truly RESTful system, and a maturity model developed by http://www.crummy.com/self/[Leonard Richardson] presents four rungs of evolution.  Martin Fowler ably sums these up in his http://martinfowler.com/articles/richardsonMaturityModel.html[blog post], and we'll outline them here:
+Because of its success, REST has become an abused buzzword in some circles.  It's helpful for us to clarify the stages of compliance with a truly RESTful system, and a maturity model developed by http://www.crummy.com/self/[Leonard Richardson] presents four rungs of evolution.  Martin Fowler ably sums these up in his http://bit.ly/1fh2AGt[blog post], and we'll outline them here:
 
 |====
 |Stage 0|Using HTTP as a transport system for arbitrary payloads; typically used in plain RPC where a caller may wish to invoke upon a server over a network.
