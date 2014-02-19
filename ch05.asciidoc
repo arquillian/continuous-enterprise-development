@@ -161,22 +161,25 @@ person.setName("New Name"); // By changing the name of the person,
                             // current transaction commits)
 ----
 
-Above we perform a lookup of the entity by its primary key, modify its properties just as we would any other object, then let the +EntityManager+ worry about synchronizing the state changes with the underlying database.  Alternatively, we could manually attach and detach the POJO from being _managed_:
+Here we perform a lookup of the entity by its primary key, modify its properties just as we would any other object, then let the +EntityManager+ worry about synchronizing the state changes with the underlying database.  Alternatively, we could manually attach and detach the POJO from being _managed_:
 
 [source,java]
 ----
 Person person = new Person();
 person.setId(1L); // Just a POJO
-managedPerson = entityManager.merge(person); // Sync the state with the existing persistence context
-managedPerson.setName("New Name"); // Make a change which be eventually become propagated to the DB
+managedPerson = entityManager.merge(person); // Sync the state with the existing 
+                                             // persistence context
+managedPerson.setName("New Name"); // Make a change which be eventually become 
+                                   // propagated to the DB
 entityManager.detach(managedPerson); // Make "managedPerson" unmanaged
 managedPerson.setName("Just a POJO");  // This state change will *not* be 
-                                       // propagated to the DB, as we're now unmanaged
+                                       // propagated to the DB, as we're now 
+                                       // unmanaged
 ----
 
 === Use Cases and Requirements
 
-This is the first chapter we'll be dealing with the companion GeekSeek Example Application for the book; its purpose is to highlight all layers working in concert to fulfill the _user requirements_ dictated by each chapter.  From here out, we'll be pointing to selections from the GeekSeek application in order to showcase how we wire together the domain, application, view, and test layers in a cohesive, usable project.
+This is the first chapter in which we'll be dealing with the companion GeekSeek example application for the book; its purpose is to highlight all layers working in concert to fulfill the _user requirements_ dictated by each chapter.  From here out, we'll be pointing to selections from the GeekSeek application in order to showcase how we wire together the domain, application, view, and test layers in a cohesive, usable project.
 
 As we proceed, we'll note each file so that you may draw references between the text and the deployable example.  We're firm believers that you best learn by doing (or at least exploring real code), so we invite you to dig in and run the examples as we go along.
 
