@@ -29,14 +29,14 @@ The live "production" GeekSeek site is hosted at http://geekseek.continuousdev.o
 
 We'll start by outlining in broad strokes the features provided by GeekSeek.  This will provide a high-level view of the actions users may take, and from these we can start to drill down into more technical requirements.
 
-Account-Centric Actions::
+Account-centric actions::
 * Users may sign up by associating the site with their http://www.twitter.com[Twitter] account
 * Users may track others whom they follow on Twitter
 * Users may see others whom may be interested in their activity (their Twitter followers)
 * Users may get updates on the activity of their followee's followees (transitively, the people followed by the people you follow)
-Directory View::
+Directory view::
 * Users may display upcoming and prior Conferences in the system
-Conferences and Sessions::
+Conferences and sessions::
 * Users may add Conference and Session data, additionally associating them with a Venue and Room
 * Users may define who is speaking at or attending a Session
 * Users may add arbitrary Attachments (media) information to a Conference, Session, Venue, or Room
