@@ -350,30 +350,34 @@ Wrote ./feedback/src/main/webapp/WEB-INF/classes/META-INF/forge.taglib.xml
 Wrote ./feedback/src/main/java/org/cedj/feedback/model/FeedbackEntry.java
 ----
 
-And that's enough for now; we've created the skeleton for a fully-functional application.  Of course, the thematic element of this book is _testable development_, so it's best we throw in the facility to run some integration tests on our little application.
+And that's enough for now; we've created the skeleton for a fully functional application.  Of course, the thematic element of this book is _testable development_, so it's best we throw in the facility to run some integration tests on our little application.
 
 === Writing Our First Integration Test with Arquillian
 
-We've mentioned before that Forge is based on a plugin architecture; all commands we've used thus far are actually plugins called by the Forge runtime when we request them in the console.  Up to this point, we've used support that comes standard with the Forge distribution.  Now we'd like to add some tests, and we'll use the Arquillian Test Platform as both the programming model and the JUnit test runner.  First order of business is to install the Arquillian plugin into our Forge runtime, and this is done by way of the +forge install-plugin+ command.
+We've mentioned before that Forge is based on a plug-in architecture; all commands we've used thus far are actually plug-ins called by the Forge runtime when we request them in the console.  Up to this point, we've used support that comes standard with the Forge distribution.  Now we'd like to add some tests, and we'll use the Arquillian Test Platform as both the programming model and the JUnit test runner.  The first order of business is to install the Arquillian plug-in into our Forge runtime, and we do this by way of the +forge install-plugin+ command:
 
 ----
 $> forge install-plugin arquillian
-Connecting to remote repository [https://raw.github.com/forge/plugin-repository/master/repository.yaml]... connected!
+Connecting to remote repository [https://raw.github.com/forge/plugin-repository/
+master/repository.yaml]... connected!
 ***INFO*** Preparing to install plugin: arquillian
-***INFO*** Checking out plugin source files to [/tmp/forgetemp1365281623326595751/repo] via 'git'
+***INFO*** Checking out plugin source files to 
+           [/tmp/forgetemp1365281623326595751/repo] via 'git'
 ***INFO*** Switching to branch/tag [refs/heads/1.0.2.Final]
 ***INFO*** Invoking build with underlying build system.
 ...
 ***INFO*** Installing plugin artifact.
-***SUCCESS*** Installed from [https://github.com/forge/plugin-arquillian.git] successfully.
+***SUCCESS*** Installed from [https://github.com/forge/plugin-arquillian.git] 
+              successfully.
 ----
 
-This instructs Forge to connect to its plugin repository, grab the latest version of the requested plugin, build it from source, and install the binaries into the current runtime.  As Forge is built on a modular ClassLoading architecture, we're able to load in plugins without the need to restart the process or concern ourselves with conflicting dependencies.
+This instructs Forge to connect to its plug-in repository, grab the latest version of the requested plug-in, build it from source, and install the binaries into the current runtime.  Because Forge is built on a modular class-loading architecture, we're able to load in plug-ins without the need to restart the process or concern ourselves with conflicting dependencies.
 
-With the Arquillian plugin installed, we now have access to the +arquillian+ command.  Let's instruct Forge to equip our POM with the dependencies needed to run Arquillian tests on the JBoss AS7 container.
+With the Arquillian plug-in installed, we now have access to the +arquillian+ command.  Let's instruct Forge to equip our POM with the dependencies needed to run Arquillian tests on the JBoss AS7 container:
 
 ----
-$> arquillian setup --containerType REMOTE --containerName JBOSS_AS_REMOTE_7.X --testframework
+$> arquillian setup --containerType REMOTE --containerName JBOSS_AS_REMOTE_7.X 
+   --testframework
 ----
 
 You'll be prompted for the versions of Arquillian, JUnit, and JBoss AS7 that you'd like to use, and the available options will expand over time as new versions are released.  These instructions have been tested with:
@@ -384,15 +388,16 @@ You'll be prompted for the versions of Arquillian, JUnit, and JBoss AS7 that you
 [org.jboss.as:jboss-as-arquillian-container-remote:::7.1.1.Final]
 ----
 
-With the POM config changes out of the way, let's ask Forge to now create for us a jumping-off point from which we'll write our test.
+With the POM config changes out of the way, let's ask Forge to now create for us a jumping-off point from which we'll write our test:
 
 ----
-$> arquillian create-test --class org.cedj.ch03.feedback.model.FeedbackEntry.java
+$> arquillian create-test --class org.cedj.ch03.feedback.model.
+   FeedbackEntry.java
 Picked up type <JavaResource>: org.cedj.feedback.model.FeedbackEntryTest
 Wrote ./feedback/src/test/java/org/cedj/feedback/model/FeedbackEntryTest.java
 ----
 
-The newly-created +FeedbackEntryTest+ is technically an Arquillian test, but it really doesn't do too much for us.  After all, we can automate quite a bit, but in the end it's up to us to write our own business and test logic.  So let's replace the contents of this class with:
+The newly created +FeedbackEntryTest+ is technically an Arquillian test, but it really doesn't do too much for us.  After all, we can automate quite a bit, but in the end it's up to us to write our own business and test logic.  So let's replace the contents of this class with:
 
 [source,java]
 ----
@@ -438,7 +443,7 @@ public class FeedbackEntryTest {
 
 Before going forward, let's break down the anatomy of this test.
 
-First, we'll note that there are no references in the +import+ statements to any particular application server or target container.  This is because Arquillian is designed to decouple the programming model of the test from the target runtime; any container which can handle the capabilities demanded by the test will work.  This keeps the portability goals of Java EE intact, moving the mechanics of startup and deployment to configuration elements.  In this case, the Arquillian runner will note that the JBossAS7 container adaptor is available on the +classpath+ as it's been defined in the POM when we ran the +setup+ command for the Arquillian Forge plugin.
+First, we'll note that there are no references in the +import+ statements to any particular application server or target container.  This is because Arquillian is designed to decouple the programming model of the test from the target runtime; any container that can handle the capabilities demanded by the test will work.  This keeps the portability goals of Java EE intact, moving the mechanics of startup and deployment to configuration elements.  In this case, the Arquillian runner will note that the JBossAS7 container adaptor is available on the +classpath+ because it was defined in the POM when we ran the +setup+ command for the Arquillian Forge plug-in.
 
 The next point of interest is the class-level annotation:
 
@@ -447,7 +452,7 @@ The next point of interest is the class-level annotation:
 @RunWith(Arquillian.class)
 ----
 
-+@RunWith+ is a standard JUnit construct which directs control to a specified test runner.  This is Arquillian's entry point; from here Arquillian can receive lifecycle events from JUnit and perform its own handling.  The benefit to this design decision is that Arquillian requires no special plugins or configuration on the part of the user.  Anything which is capable of launching a JUnit test--be it a Maven build, an Ant task, a manual command, or an IDE--can take advantage of Arquillian without any additional handling.  For instance, JBDS and Eclipse can launch a full-scale integration test with Arquillian by right-clicking on the class and selecting Run As -> JUnit Test.
++@RunWith+ is a standard JUnit construct that directs control to a specified test runner.  This is Arquillian's entry point; from here Arquillian can receive lifecycle events from JUnit and perform its own handling.  The benefit to this design decision is that Arquillian requires no special plug-ins or configuration on the part of the user.  Anything that is capable of launching a JUnit test--be it a Maven build, an Ant task, a manual command, or an IDE--can take advantage of Arquillian without any additional handling.  For instance, you can use JBDS and Eclipse to launch a full-scale integration test with Arquillian by right-clicking on the class and selecting Run As -> JUnit Test.
 
 Next up is the class declaration:
 
@@ -458,7 +463,7 @@ public class FeedbackEntryTest {...}
 
 The important bit here is what's _not_ required.  Because of the Arquillian JUnit Test Runner, you're free to use whatever class hierarchy you'd like, and there's no need to extend a base support class.  This keeps Arquillian tests in line with the POJO programming model originally introduced in Java EE5.
 
-Another feature of Arquillian is its ability to provide services like injection to the test.  Here we're going to interact with persistent storage via the JPA +EntityManager+:
+Another feature of Arquillian is its capability to provide services like injection to the test.  Here we're going to interact with persistent storage via the JPA +EntityManager+:
 
 [source,java]
 ----
@@ -481,21 +486,21 @@ The final important fixture of the Arquillian test anatomy is the +@Deployment+ 
     }
 ----
 
-Because Java EE application servers work off deployments like _Web Archives (WARs)_, _Java Archives (JARs)_, or _Enterprise Archives (EARs)_, we need to instruct Arquillian with the artifact to be deployed.  This method must be +static+ and return any ShrinkWrap +Archive+ type; for this first exercise we'll simply grab the output of the current project's build +feedback.war+, but as we'll soon see in later examples, we don't need to rely on flat files at all!  This will free us to skip the build entirely inbetween code changes and test runs, instead letting us rely ShrinkWrap's packaging of +.class+ files created from the IDE's incremental complication features.
+Because Java EE application servers work off deployments like _Web Archives (WARs)_, _Java Archives (JARs)_, or _Enterprise Archives (EARs)_, we need to instruct Arquillian with the artifact to be deployed.  This method must be +static+ and return any ShrinkWrap +Archive+ type; for this first exercise we'll simply grab the output of the current project's build _feedback.war_, but as we'll soon see in later examples, we don't need to rely on flat files at all!  This will free us to skip the build entirely in between code changes and test runs, instead letting us rely ShrinkWrap's packaging of _.class_ files created from the IDE's incremental complication features.
 
-The rest of the file is all test logic!  Remember, the focus of the Arquillian programming model is to allow you to write less boilerplate and setup, and focus on the bits of code that only you as the developer can write.  It's not your job to deal with bootstrapping an application server or calling upon vendor-specific deployment hooks; Arquillian will handle all of that for us behind the scenes.
+The rest of the file is all test logic!  Remember, the focus of the Arquillian programming model is to allow you to write less boilerplate and setup, and focus on the bits of code that only you as the developer can write.  It's not your job to deal with bootstrapping an application server or calling upon vendor-specific deployment hooks; Arquillian will handle all of that for you behind the scenes.
 
 === Running the Application Locally
 
-Time to see our generated application in action.  First we should run the build to package our flat-file deployable +feedback.war+ for manual deployment into JBoss AS7.  We can trigger Maven from the Forge console:
+Time to see our generated application in action.  First we should run the build to package our flat-file deployable _feedback.war_ for manual deployment into JBoss AS7.  We can trigger Maven from the Forge Console:
 
 ----
 $> build --notest --profile arq-jboss_as_remote_7.x;
 ----
 
-After a series of informative build output messages from Maven, you should see +BUILD SUCCESS+, indicating that the WAR has been properly built from sources.
+After a series of informative build output messages from Maven, we should see +BUILD SUCCESS+, indicating that the WAR has been properly built from sources.
 
-The missing bit is that we need a server into which we can deploy our webapp!  JBossAS7 has a simple installation process (simply download and unzip onto the filesystem), but again Forge can help automate this for us so we don't need to locate the JBossAS binaries.  For this we'll turn to the Forge JBossAS7 Plugin, which is installed similarly to the Arquillian plugin we put in place in the last section.
+The missing bit is that we need a server into which we can deploy our web app!  JBossAS7 has a simple installation process (simply download and unzip onto the filesystem), but again Forge can help automate this for us so we don't need to locate the JBossAS binaries.  For this we'll turn to the Forge JBossAS7 plug-in, which is installed similarly to the Arquillian plug-in we put in place in the previous section:
 
 ----
 $> forge install-plugin jboss-as-7
