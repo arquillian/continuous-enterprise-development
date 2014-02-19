@@ -718,20 +718,20 @@ Maven.resolver().loadPomFromFile(
 
 ShrinkWrap Resolvers allows you to override any programmatic configuration via System Properties. See <<table2-8>>.
 
-.System Properties altering behavior of ShrinkWrap Resolvers
+.System Properties that alter the behavior of ShrinkWrap Resolvers
 [[table2-8]]
 [cols="1,2"]
 [options="header"]
 |====
 |Name|Description
 | +org.apache.maven.user.settings+ |
-Path to user  _settings.xml_ file. In case both settings are provided, they are merged, user one has the priority.
+Path to the user  _settings.xml_ file. If both settings are provided, they are merged; user one has the priority.
 
 | +org.apache.maven.global-settings+ |
-Path to global _settings.xml_ file. In case both settings are provided, they are merged, user one has the priority.
+Path to the global _settings.xml_ file. If both settings are provided, they are merged; user one has the priority.
 
 | +org.apache.maven.security-settings+ |
-Path to _settings-security.xml_, that contains encrypted master password for password protected Maven repositories.
+Path to _settings-security.xml_, which contains encrypted master password for password-protected Maven repositories.
 
 | +org.apache.maven.offline+ |
 Flag there to work in offline mode.
@@ -745,7 +745,7 @@ Path to local repository with cached artifacts. Overrides value defined in any o
 
 [WARNING]
 ====
-The following features are in their early development stages. However, they should work for the most common use cases. Feel free to report a bug in https://issues.jboss.org/browse/SHRINKRES[SHRINKRES] project if that is not your case.
+The following features are in their early development stages. However, they should work for the most common use cases. Feel free to report a bug in the https://issues.jboss.org/browse/SHRINKRES[SHRINKRES project] if you encounter problems.
 ====
 
 ===== ShrinkWrap Resolver Maven Plugin
