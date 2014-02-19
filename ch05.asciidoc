@@ -146,18 +146,19 @@ Person person = new Person();
 person.setName("Dick Hoyt");
 ----
 
-OK, so very clearly we've created a new +Person+ instance and set his name.  The beauty of the POJO programming model is also its drawback; this is just a regular object.  Without some additional magic, there's no link to the persistence layer.  This coupling is done transparently to us, and the machine providing the voodoo is the JPA +EntityManager+.
+OK, so very clearly we've created a new +Person+ instance and set his name.  The beauty of the POJO programming model is also its drawback; this is just a regular object.  Without some additional magic, there's no link to the persistence layer.  This coupling is done transparently for us, and the machine providing the voodoo is the JPA +EntityManager+.
 
-The http://docs.oracle.com/javaee/6/api/javax/persistence/EntityManager.html[+javax.persistence.EntityManager+] is our hook to a defined _persistence unit_, our abstraction above the database.  By associating POJO entities with the +EntityManager+, they become monitored for changes such that any state differences which take place in the object will be reflected in persistent storage.  An object under such supervision is called _managed_.  Perhaps this is best illustrated by some examples:
+http://bit.ly/MAXk9G[+javax.persistence.EntityManager+] is our hook to a defined _persistence unit_, our abstraction above the database.  By associating POJO entities with the +EntityManager+, they become monitored for changes such that any state differences that take place in the object will be reflected in persistent storage.  An object under such supervision is called _managed_.  Perhaps this is best illustrated by some examples:
 
 [source,java]
 ----
-Person person = entityManager.find(Person.class, 1L); // Look up "Person" with Primary Key of 1
+Person person = entityManager.find(Person.class, 1L); // Look up "Person" with 
+                                                      // Primary Key of 1
 System.out.println("Got " + person); // This "person" instance is managed
 person.setName("New Name"); // By changing the name of the person, 
                             // the database will be updated when 
-                            // the EntityManager is flushed (likely when the current 
-                            // transaction commits)
+                            // the EntityManager is flushed (likely when the  
+                            // current transaction commits)
 ----
 
 Above we perform a lookup of the entity by its primary key, modify its properties just as we would any other object, then let the +EntityManager+ worry about synchronizing the state changes with the underlying database.  Alternatively, we could manually attach and detach the POJO from being _managed_:
