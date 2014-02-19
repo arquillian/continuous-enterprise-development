@@ -83,7 +83,7 @@ What we want to do here is easily explore _transitive relationships_ without a g
 
 Graphs are data structures comprised from _nodes_ or _vertices_ and edges; the node/vertex represents our data, while the edge defines the relationship.
 
-Using this view of our data points and the relationships between them, we may apply much more efficient algorithms for:
+Using this view of our data points and the relationships between them, we can apply much more efficient algorithms for:
 
 * Calculating the shortest distance between two nodes
 * Determining a path from one node to another
@@ -91,13 +91,13 @@ Using this view of our data points and the relationships between them, we may ap
 
 We'll be using a graph database to represent some of the relationships between the data held in our RDBMS; we can think of this as a "relationship layer" atop our pure data storage model.
 
-===== Neo4j
+==== Neo4j
 
-Neo4j is is an open source, transactional graph database that *does* adhere to the ACID properties.  Both its user view and its backing storage engine use underlying graph structures, so it achieves the performance we'd expect from applying graph theory to queries it's suited to serve.  Because of this the Neo4j documentation touts performance one thousand times faster than possible by RDBMS for connected data problems.
+Neo4j is is an open source, transactional graph database that _does_ adhere to the ACID properties.  Both its user view and its backing storage engine use underlying graph structures, so it achieves the performance we'd expect from applying graph theory to queries it's suited to serve.  Because of this, the Neo4j documentation touts performance one thousand times faster than possible by RDBMS for connected data problems.
 
 [NOTE]
 ====
-For those looking to understand Graph Databases and Neo4j in greater detail, we recommend http://graphdatabases.com/[Graph Databases] by Robinson/Webber/Eifrem from http://shop.oreilly.com/product/0636920028246.do[O'Reilly Media].
+For those looking to understand graph databases and Neo4j in greater detail, we recommend http://graphdatabases.com/[_Graph Databases_] by Robinson, Webber, and Eifrem (O'Reilly, 2013).
 ====
 
 As our GeekSeek application has a social component (who is attending which conferences, who is following speakers and attendees, etc), we'd like to put in place a solution that will enable us to augment the data in our RDBMS to:
