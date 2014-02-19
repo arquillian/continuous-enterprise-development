@@ -121,9 +121,9 @@ It's nice that a DBMS allows us to relieve ourselves of the details involving pe
 * The details of interacting with a database are vendor-dependent, though there are connection-only abstractions (drivers) in Java (for instance, Java Database Connectivity, or JDBC).
 * The relational model used by the database doesn't map on its own to the object model we use in Java; this is called the _object/relational impedance mismatch_.
 
-To address each of these problems, Java EE6 provides a specification called the _Java Persistence API_ (JPA), defined by http://bit.ly/1e84urW[JSR 317].  JPA is comprised of both an http://bit.ly/1e84sjL[API] for defining and interacting with entity objects and an SQL-like query language called _Java Persistence Query Language_ (JPQL) for portable interaction with a variety of database implementations.  Because JPA is itself a spec, there are a variety of open-source compliant implementations available, including http://hibernate.org/[Hibernate], http://www.eclipse.org/eclipselink/[EclipseLink], and http://openjpa.apache.org/[OpenJPA].
+To address each of these problems, Java EE6 provides a specification called the _Java Persistence API_ (JPA), defined by http://bit.ly/1e84urW[JSR 317].  JPA is comprised of both an http://bit.ly/1e84sjL[API] for defining and interacting with entity objects and an SQL-like query language called _Java Persistence Query Language_ (JPQL) for portable interaction with a variety of database implementations.  Because JPA is itself a spec, a variety of open source–compliant implementations are available, including http://hibernate.org/[Hibernate], http://www.eclipse.org/eclipselink/[EclipseLink], and http://openjpa.apache.org/[OpenJPA].
 
-So now our tiered data architecture may look something like this:
+So now our tiered data architecture may look something like <<Figure5-3>>.
 
 .Needs a caption
 [[Figure5-3]]
