@@ -240,16 +240,17 @@ GenericArchive myArchive = ShrinkWrap.create
 
 That's it!  You've got your first ShrinkWrap archive!
 
-Of course, an object representing an empty archive is pretty useless.  So let's have a look at adding in some content.  As we noted before, content is modeled by the +Asset+ class, so let's first take a look at some of the +Asset+ implementations provided by ShrinkWrap:
+Of course, an object representing an empty archive is pretty useless.  So let's have a look at adding in some content.  As we noted before, content is modeled by the +Asset+ class, so let's first take a look at some of the +Asset+ implementations provided by ShrinkWrap (as listed in <<table2-3>>).
 
 .Needs a caption
+[[table2-3]]
 [options="header"]
 |=====================
 |Asset|Represents
 |+org.jboss.shrinkwrap.api.asset.ArchiveAsset+|Nested +Archive+ content
 |+org.jboss.shrinkwrap.api.asset.ByteArrayAsset+|+byte[]+ or +InputStream+ content 
 |+org.jboss.shrinkwrap.api.asset.ClassAsset+|Java +Class+ content
-|+org.jboss.shrinkwrap.api.asset.ClassLoaderAsset+|A resource which can be loaded by an optionally-specified +ClassLoader+
+|pass:[<phrase role='keep-together'><literal>org.jboss.shrinkwrap.api.asset.ClassLoaderAsset</literal></phrase>]|A resource which can be loaded by an optionally-specified +ClassLoader+
 |+org.jboss.shrinkwrap.api.asset.FileAsset+|+File+ content
 |+org.jboss.shrinkwrap.api.asset.StringAsset+|+String+ content
 |+org.jboss.shrinkwrap.api.asset.UrlAsset+|Content located at a given +URL+
