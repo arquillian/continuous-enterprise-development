@@ -266,9 +266,9 @@ We'll also want to fulfill the contract of +org.cedj.app.domain.model.Identifiab
 String getId();
 ----
 
-Objects of type +Identifiable+ simply have an ID, a primary key.
+Objects of type +Identifiable+ simply have an ID, which is a primary key.
 
-Simmilarly, we'll be +org.cedj.geekseek.domain.model.Timestampable+, which notes that we provide support for the following timestamps:
+Similarly, we'll be +org.cedj.geekseek.domain.model.Timestampable+, which notes that we provide support for the following timestamps:
 
 [source,java]
 ----
@@ -304,7 +304,7 @@ You'll notice a few interesting bits in play here.
 
 We denote the +id+ field as our primary key by use of the +@javax.persistence.Id+ annotation.
 
-+@javax.persistence.Temporal+ is required by JPA upon +Date+ and +Calendar+ fields which are persistent.
++@javax.persistence.Temporal+ is required by JPA upon +Date+ and +Calendar+ fields that are persistent.
 
 We're primarily concerned with the introduction of our +Conference+ and +Session+ entities; a +Conference+ may have many +Session+ objects associated with it.  So +org.cedj.app.domain.conference.model.Conference+ looks a bit like this:
 
@@ -329,7 +329,8 @@ Next we can put in place the fields holding the state for +Conference+:
     @Embedded
     private Duration duration;
 
-    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "conference", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, 
+    mappedBy = "conference", cascade = CascadeType.ALL)
     private Set<Session> sessions;
 
     public Conference() {
@@ -337,7 +338,7 @@ Next we can put in place the fields holding the state for +Conference+:
     }
 ----
 
-The +duration+ field is +@javax.persistence.Embedded+, used to signal a complex object type which will decompose into further fields (columns) when mapped to relational persistence.  +org.cedj.app.domain.conference.model.Duration+ looks like:
+The +duration+ field is +@javax.persistence.Embedded+, used to signal a complex object type that will decompose into further fields (columns) when mapped to relational persistence.  +org.cedj.app.domain.conference.model.Duration+ looks like:
 
 [source,java]
 ----
@@ -381,9 +382,9 @@ public class Duration implements Serializable {
 }
 ----
 
-+Conference+ also has a relationship with +Session+ as denoted by the +@OneToMany+ annotation.  This is a bi-directional relationship; we perform the object association in both the +Conference+ and +Session+ classes.
++Conference+ also has a relationship with +Session+ as denoted by the +@OneToMany+ annotation.  This is a bidirectional relationship; we perform the object association in both the +Conference+ and +Session+ classes.
 
-Let's define the constructors which will be used to create new instances:
+Let's define the constructors that will be used to create new instances:
 
 [source,java]
 ----
@@ -403,7 +404,7 @@ Let's define the constructors which will be used to create new instances:
 
 A no-argument constructor is required by JPA, so we'll provide one, albeit with +protected+ visibility so we won't encourage users to call upon it.  
 
-Now we may flush out the accessors/mutators of this POJO entity, applying some intelligent defaults along the way:
+Now we can flush out the accessors/mutators of this POJO entity, applying some intelligent defaults along the way:
 
 [source,java]
 ----
@@ -498,9 +499,9 @@ We've also introduced a _callback handler_ to ensure that before a +Session+ ent
 
 ==== Repository EJBs
 
-The "Repository" EJBs are where we'll define the operations that may be taken by the user with respect to our entities.  Strictly speaking, they define the verbs: "Store", "Get" and "Remove".
+The "Repository" EJBs are where we'll define the operations that may be taken by the user with respect to our entities.  Strictly speaking, they define the verbs "Store," "Get," and "Remove."
 
-Because we want to completely decouple these persistent actions from JPA, we'll define an interface to abstract out the verbs from the implementations.  Later on, we'll want to provide mechanisms which fulfill these responsibilities in both RDBMS and other NoSQL varients.  Our contract is in +org.cedj.geekseek.domain.Repository+:
+Because we want to completely decouple these persistent actions from JPA, we'll define an interface to abstract out the verbs from the implementations.  Later on, we'll want to provide mechanisms that fulfill these responsibilities in both RDBMS and other NoSQL variants.  Our contract is in +org.cedj.geekseek.domain.Repository+:
 
 [source,java]
 ----
@@ -516,7 +517,7 @@ public interface Repository<T extends Identifiable> {
 }
 ----
 
-This means that for any +Identifiable+ type, we'll be able to obtain the concrete class type, store the entity, get and remove it from the database.  In JPA, this is done via an +EntityManager+, so we can write a base class to support these operations for all JPA entities.  From +org.cedj.geekseek.domain.persistence.PersistenceRepository+:
+This means that for any +Identifiable+ type, we'll be able to obtain the concrete class type, store the entity, and get and remove it from the database.  In JPA, we do this via an +EntityManager+, so we can write a base class to support these operations for all JPA entities.  From +org.cedj.geekseek.domain.persistence.PersistenceRepository+:
 
 [source,java]
 ----
