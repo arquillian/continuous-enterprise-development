@@ -628,20 +628,20 @@ Accepts all dependencies of artifacts. Equals +TransitiveStrategy+.
 Accepts only dependencies that have a defined scope type.
 
 | +CombinedStrategy+ |
-This allows you to combine multiple strategies together. The behaviour defined as logical AND between combined strategies.
+Allows you to combine multiple strategies together. The behavior is defined as logical AND between combined strategies.
 
 | +NonTransitiveStrategy+ |
 Rejects all dependencies that were not directly specified for resolution. This means that all transitive dependencies of artifacts for resolution are rejected.
 
 | pass:[<phrase role='keep-together'><literal>RejectDependenciesStrategy</literal></phrase>] |
-Rejects dependencies defined by +G:A+ (version is not important for comparison, so it can be omitted altogether). By default, it is transitive: +RejectDependenciesStrategy("G:A", "G:B")+ means that all dependencies that origin at +G:A+ or +G:B+ are removed as well. If you want to change that behavior to reject defined dependencies but to keep their descendants, instantiate strategy as following: +RejectDependenciesStrategy(false, "G:A", "G:B")+
+Rejects dependencies defined by +G:A+ (version is not important for comparison, so it can be omitted altogether). By default, it is transitive: +RejectDependenciesStrategy("G:A", "G:B")+ means that all dependencies that originate at +G:A+ or +G:B+ are removed as well. If you want to change that behavior to reject defined dependencies but to keep their descendants, instantiate the following strategy: +RejectDependenciesStrategy(false, "G:A", "G:B")+
 
 | +TransitiveStrategy+ | 
 Acceps all dependencies of artifacts. Equals +AcceptAllStrategy+.
 
 |====
 
-* Control sources of resolution. ShrinkWrap Resolvers allows you to specify where do you want to resolve artifacts from. By default, it uses classpath (also known as Maven Reactor) and Maven Central repository, however you can programmatically alter the behavior.
+* Control sources of resolution. ShrinkWrap Resolvers allows you to specify where you want to resolve artifacts from. By default, it uses a classpath (also known as Maven Reactor) and Maven Central repository; however, you can alter the behavior programmatically:
 +
 [source,java]
 ----
@@ -653,9 +653,9 @@ Maven.resolver().offline().resolve("G:A:V")
   .withTransitivity().asFile();
 ----
 + 
-While classpath resolution is handy for testing SNAPSHOT artifacts that are not yet installed in any of the Maven repository, making ShrinkWrap Resolvers offline avoids accessing any repositories but local cache.
+Although classpath resolution is handy for testing snapshot artifacts that are not yet installed in any Maven repository, making ShrinkWrap Resolvers offline lets you avoid accessing any repositories but local cache.
 
-* While controlling classpath resolution and Maven Central comes handy, sometimes you might want to specify completely different _settings.xml_ file than default for your test execution. This can be done via following API calls:
+* Controlling classpath resolution and Maven Central comes in handy, but sometimes you might want to specify a completely different _settings.xml_ file than THE default for your test execution. You can do this via the following API calls:
 +
 [source,java]
 ---- 
@@ -668,16 +668,16 @@ Maven.configureResolver().fromClassloaderResource("path/to/settings.xml")
 +
 [WARNING]
 ====
-ShrinkWrap Resolvers will not consume settings.xml specified on command line (+-s settings.xml+) or in the IDE. It reads settings.xml files at their standard locations, which are +~/.m2/settings.xml+ and +$M2_HOME/conf/settings.xml+ unless overridden in the API or via a System Property.
+ShrinkWrap Resolvers will not consume _settings.xml_ files specified on the command line (+-s settings.xml+) or in the IDE. It reads _settings.xml_ files at their standard locations, which are _~/.m2/settings.xml_ and _$M2_HOME/conf/settings.xml_ unless overridden in the API or via a system property.
 ====
 
-===== Resolution of Artifacts Defined in POM Files
+===== Resolution of artifacts defined in POM files
 
-While previous calls allow you to manually define what you want to resolve, in Maven projects, you have very likely specified this information already in your _pom.xml_ file. ShrinkWrap Resolver allows you to follow _DRY_ principles and it is able to load metadata included there.
+While previous calls allow you to manually define what you want to resolve, in Maven projects, you have very likely specified this information already in your _pom.xml_ file. ShrinkWrap Resolver allows you to follow _DRY_ (Don't Repeat Yourself) principles and can load metadata included there.
 
-ShrinkWrap Resolvers constructs so called effective POM model (simplified, that is your _pom.xml_ file plus parent hierarchy and Super POM, Maven default POM file). In order to construct the model, it uses all local repository, classpath repository and remote repositories. Once the model is loaded, you can use the metadata in there to be automatically added to artifacts to be resolved.
+ShrinkWrap Resolvers construct the so-called _effective POM model_ (i.e., your _pom.xml_ file plus the parent hierarchy and Super POM, or the Maven default POM file). In order to construct the model, it uses all local repositories, classpath repositories, and remote repositories. Once the model is loaded, you can automatically add the metadata in there to artifacts you want to resolve:
 
-1. Resolving an artifact with version defined in effective POM. In case, you want to resolve +G:A:V+, you can simply specify +G:A+ instead. For artifacts with non JAR packaging type or classifier, you must use alternative syntax with question mark '+?+', such as +G:A:P:?+ or +G:A:P:C:?+.
+* Resolving an artifact with the version defined in effective POM. If you want to resolve +G:A:V+, you can simply specify +G:A+ instead. For artifacts with a non-JAR packaging type or classifier, you must use alternative syntax with a question mark +?+, such as +G:A:P:?+ or +G:A:P:C:?+:
 +
 [source,java]
 ----
@@ -688,7 +688,7 @@ Maven.resolver().loadPomFromClassLoaderResource("/path/to/pom.xml")
   .resolve("G:A:P:?").withTransitivity().asFile();
 ----
 
-2. Resolving artifacts defined in effective POM. ShrinkWrap Resolvers allows you to artifacts defined with specific scope into list of artifacts to be resolved. This way, you don't need to alter your tests if you change dependencies of your application. You can either use +importDependencies(ScopeType...)+ or convenience methods, that cover the most frequent usages (+importRuntimeDependencies()+, +importTestDependencies()+ and +importRuntimeAndTestDependencies()+:
+* Resolving artifacts defined in effective POM. ShrinkWrap Resolvers allows you to artifacts defined with a specific scope into list of artifacts to be resolved. This way, you don't need to alter your tests if you change dependencies of your application. You can either use +importDependencies(ScopeType...)+ or convenience methods that cover the most frequent usages (+importRuntimeDependencies()+, +importTestDependencies()+, and +importRuntimeAndTestDependencies()+:
 +
 [source,java]
 ----
@@ -696,16 +696,16 @@ Maven.resolver().loadPomFromFile("/path/to/pom.xml")
   .importDependencies(ScopeType.TEST, ScopeType.PROVIDED)
   .resolve().withTransitivity().asFile();
 
-Maven.resolver().loadPomFromFile("/path/to/pom.xml").importRuntimeDependencies()
-  .resolve().withTransitivity().asFile();
+Maven.resolver().loadPomFromFile("/path/to/pom.xml").
+  importRuntimeDependencies().resolve().withTransitivity().asFile();
 ----
 +
 [TIP]
 ====
-"Runtime" in convenience methods means all the Maven scopes that are used in application runtime, which are +compile+, +runtime+, +import+ and +system+. If you need to select according to Maven scopes, go for +importDependencies(ScopeType...)+ instead.
+"Runtime" in convenience methods means all the Maven scopes that are used in the application runtime, which are +compile+, +runtime+, +import+, and +system+. If you need to select according to Maven scopes, go for +importDependencies(ScopeType...)+ instead.
 ====
 
-3. Specifying plugins to be activated. By default, ShrinkWrap Resolvers activates profiles based on property value, file presence, active by default profiles, operating system and JDK. However, you can force profiles in same way as you would do via +-P+ in Maven.
+* Specifying plug-ins to be activated. By default, ShrinkWrap Resolvers activates profiles based on property value, file presence, active by default profiles, operating system, and JDK. However, you can force profiles in the same way as you would do via +-P+ in Maven:
 +
 [source,java]
 ----
@@ -714,13 +714,16 @@ Maven.resolver().loadPomFromFile(
   .importRuntimeAndTestDependencies().resolve().withTransitivity().asFile();
 ----
 
-===== System Properties
+===== System properties
 
-ShrinkWrap Resolvers allows you to override any programmatic configuration via System Properties.
+ShrinkWrap Resolvers allows you to override any programmatic configuration via System Properties. See <<table2-8>>.
 
 .System Properties altering behavior of ShrinkWrap Resolvers
+[[table2-8]]
 [cols="1,2"]
+[options="header"]
 |====
+|Name|Description
 | +org.apache.maven.user.settings+ |
 Path to user  _settings.xml_ file. In case both settings are provided, they are merged, user one has the priority.
 
