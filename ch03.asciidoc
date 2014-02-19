@@ -97,7 +97,7 @@ Additionally, our project has appeared in the Project View, as shown in <<Figure
 [[Figure3-4]]
 image::images/cedj_04in04.png["Project Created"]
 
-Users of http://maven.apache.org/guides/introduction/introduction-to-archetypes.html[Maven Archetypes] may be familiar with this type of technique to create a new project, but as Forge is an _incremental_ tool, it's capable of reading a project's state and adding behaviors after creation.
+Users of http://bit.ly/MABuTN[Maven Archetypes] may be familiar with this type of technique to create a new project, but because Forge is an _incremental_ tool, it's capable of reading a project's state and adding behaviors after creation.
 
 Let's add support for Java Persistence (JPA) to our project, a task that typically would involve some searching for the correct dependencies for the spec APIs (as well as those for any vendor-specific extensions).  Forge is helpful here as well, via its +persistence+ plugin:
 
