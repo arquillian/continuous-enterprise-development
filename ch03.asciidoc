@@ -5,27 +5,27 @@ ____
 The way to get started is to quit talking and begin doing.
 ____
 
-Enterprise Java has long suffered the (possibly correct) critique that it's difficult to bootstrap a new project.  Couple the lack of definitive jumpstart documentation with vendor-specific techniques for application deployment, throw a mess of 3rd-party dependencies into the mix, and we've got a prime recipe yielding barriers to entry for programmers new to web development in Java.
+Enterprise Java has long suffered the (possibly correct) critique that it's difficult to bootstrap a new project.  Couple the lack of definitive jumpstart documentation with vendor-specific techniques for application deployment, throw a mess of third-party dependencies into the mix, and we've got a prime recipe yielding barriers to entry for programmers new to web development in Java.
 
-Of course, this all runs contrary to the mission of Java EE: to make our experience with enterprise features _easier_.  So while the programming model has certainly evolved past the days of confusingly verbose and explicitly-required metadata, the warts which lead to frustrating stack traces and unexpected deployment behaviors unfortunately persist.
+Of course, this all runs contrary to the mission of Java EE: to make our experience with enterprise features _easier_.  So while the programming model has certainly evolved past the days of confusingly verbose and explicitly required metadata, the warts that lead to frustrating stack traces and unexpected deployment behaviors unfortunately persist.
 
-Some of this is by design.  The Specifications which comprise the Java EE Platform intentionally leave room for vendors to implement features like server startup and deployment at their discretion.footnote:[While there is some limited facility to, for instance, create an EJB container in a running JVM and bring EJB deployments on the classpath into service, a full-scale deployment is still typically achieved in a vendor-specific manner]   
+Some of this is by design.  The specifications that comprise the Java EE Platform intentionally leave room for vendors to implement features like server startup and deployment at their discretion. (Although there is some limited facility to, for instance, create an EJB container in a running JVM and bring EJB deployments on the classpath into service, a full-scale deployment is still typically achieved in a vendor-specific manner.)
 
-In the interest of providing a uniformly-workable solution to the reader, this text will routinely opt for vendor-specific approaches in favor of generic guidelines.  By the end of this chapter, you should be comfortable creating a new Java EE Web Application and pushing it live to production using a few tools and services offered by the JBoss Community.
+In the interest of providing a uniformly workable solution to the reader, this text will routinely opt for vendor-specific approaches in favor of generic guidelines.  By the end of this chapter, you should be comfortable creating a new Java EE web application and pushing it live to production using a few tools and services offered by the JBoss Community.
 
 === The Development Environment
 
-While all projects used here are ultimately standalone and require no plugins or special environments aside from a Java runtime, we're going to make our lives easier by taking advantage of the integration facilities provided by JBoss Developer Studio (JBDS).
+Although all projects used here are ultimately standalone and require no plug-ins or special environments aside from a Java runtime, we're going to make our lives easier by taking advantage of the integration facilities provided by JBoss Developer Studio (JBDS).
 
-The JBDS plugins atop the Eclipse Integrated Development Environment (IDE) will unify our development experience and allow us to stay inside one window.  Installation is via an executable JAR available from the https://devstudio.jboss.com/download/7.x.html[JBDS Site].
+The JBDS plug-ins atop the Eclipse Integrated Development Environment (IDE) will unify our development experience and allow us to stay inside one window.  Installation is via an executable JAR available from the http://bit.ly/MAzyup[JBDS site] (see <<Figure3-1>>).
 
-To kick off the installation process, either double-click the icon (if your environment has the ".jar" extension correctly associated as a Java executable) or launch the installer from the command line via the Java runtime:
+To kick off the installation process, either double-click the icon (if your environment has the _.jar_ extension correctly associated as a Java executable) or launch the installer from the command line via the Java runtime:
 
 ----
 $> java -jar jbdevstudio-product-universal-7.0.0.GA-v20130720-0044-B364.jar
 ----
 
-.JBoss Developer Studio Installation
+.JBoss Developer Studio installation
 [[Figure3-1]]
 image::images/cedj_04in01.png["JBoss Developer Studio Installation"]
 
