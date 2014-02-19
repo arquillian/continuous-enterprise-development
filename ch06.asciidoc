@@ -1,3 +1,4 @@
+[[ch06]]
 == NoSQL: Data Grids and Graph Databases
 
 [quote, Bob Dylan]
