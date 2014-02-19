@@ -311,9 +311,9 @@ archive.jar:
 
 Using this mechanism is central to keeping ShrinkWrap's usage clean and intuitive, while providing for a versatility typically found in true multiple-inheritance languages.
 
-While ShrinkWrap has its roots in Java EE and close ties to the Arquillian Testing Platform, it's certainly not limited to these domains.  In fact, ShrinkWrap on its own intentionally scoped to go no further than act as a virtual filesystem for archives.  As such, it provides a simple mechanism for playing nicely with flat-file structures.
+Although ShrinkWrap has its roots in Java EE and close ties to the Arquillian Testing Platform, it's certainly not limited to these domains.  In fact, ShrinkWrap on its own intentionally scoped to go no further than act as a virtual filesystem for archives.  As such, it provides a simple mechanism for playing nicely with flat-file structures.
 
-Borrowing from our example above, perhaps we'd like to use ShrinkWrap to package up all of the @.class@ files in the current package and output these as a standard JAR in ZIP format.  The code for that would actually be pretty simple:
+Borrowing from the previous example, perhaps we'd like to use ShrinkWrap to package up all of the @.class@ files in the current package and output these as a standard JAR in ZIP format.  The code for that would actually be pretty simple:
 
 [source,java]
 ----
