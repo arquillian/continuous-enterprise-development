@@ -846,12 +846,12 @@ The resulting deployment should have structure that looks similar to:
 /WEB-INF/classes/org/cedj/geekseek/domain/attachment/test/TestUtils.class
 ----
 
-As we can see, Infinispan and all of its dependencies have made their way to +WEB-INF/lib+; our own libraries are not explicitly-named, so they're assigned a UUID filename.
+As we can see, Infinispan and all of its dependencies have made their way to _WEB-INF/lib_; our own libraries are not explicitly named, so they're assigned a UUID filename.
 
 [NOTE]
 ====
 It's useful to debug your deployments by simply printing out a listing of your archive; this is easily accomplished by throwing a statement like +System.out.println(archive.toString(true));+ in your +@Deployment+ method before returning the archive.
-If you want to debug the content of the final deployment as seen by the Container, you can set the +deploymentExportPath+ property under the +engine+ element in +arquillian.xml+ to the path where you want Arquillian to output the deployments. This is useful if you're having deployment problems that you suspect is related to how Arquillian enriches the deployment, or if you're generating file content dynamically.
+If you want to debug the content of the final deployment as seen by the container, you can set the +deploymentExportPath+ property under the +engine+ element in _arquillian.xml_ to the path where you want Arquillian to output the deployments. This is useful if you're having deployment problems that you suspect are related to how Arquillian enriches the deployment, or if you're generating file content dynamically.
 ====
 
 
@@ -863,7 +863,7 @@ Now let's give our test a hook to the +Repository+ we'll use to perform CRUD ope
     private Repository<Attachment> repository;
 ----
 
-With the deployment and injection of the +Repository+ done, we're now free to implement our tests.
+With the deployment and injection of the +Repository+ done, we're now free to implement our tests:
 
 [source,java]
 ----
