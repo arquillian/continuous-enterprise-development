@@ -341,7 +341,7 @@ Each chapter from here on out will address a set of related technical and user-c
 
 Our feature set demands a variety of operations that depend upon persistent data; information that must be saved longer than a user's session or even the application's startup/shutdown lifecycle.  It's likely we won't be able to hold all of our data in memory either, so we'll need to tackle issues like serialization and concurrent, multiuser access.
 
-As our logical data analysis has exposed, we have plenty of data types that might work well arranged in a table/row/column structure provided by the _relational_ model, and that's exactly what we'll cover in Chapter 5.
+As our logical data analysis has exposed, we have plenty of data types that might work well arranged in a table/row/column structure provided by the _relational_ model, and that's exactly what we'll cover in <<>>.
 
 We'll also give a brief overview of mapping from a relational database to an object model that's more familiar and friendly using the _Java Persistence API_ and transactional support via _Enterprise JavaBeans_, and we'll be sure to test that our domain layer is properly tested against known data sets using the handy _Arquillian Persistence Extension_.
 
