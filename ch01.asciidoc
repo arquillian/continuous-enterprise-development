@@ -325,7 +325,8 @@ public class WelcomeTestNGTest {
     @Test
     public void welcome() {
         /// .. Omitting logic for brevity
-        Assert.assertEquals(receivedResult, expectedResult, "Did not welcome " + name + " correctly");
+        Assert.assertEquals(receivedResult, expectedResult, "Did not welcome " + 
+            name + " correctly");
     }
 
     @Test
@@ -338,7 +339,7 @@ public class WelcomeTestNGTest {
 
 Some of the parameter orders and API names for the annotations have changed, but the concept remains: write less, and let the framework wire up the call stack.
 
-IDE Integration, while not standard for Eclipse Juno, is http://testng.org/doc/download.html[simple enough to install] and provides a GUI runner as we've seen with JUnit:
+IDE integration, while not standard for Eclipse Juno, is http://testng.org/doc/download.html[simple enough to install] and provides a GUI runner as we've seen with JUnit (see <<Figure1-6>>).
 
 .TestNG IDE runner integration
 [[Figure1-6]]
