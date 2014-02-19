@@ -183,11 +183,11 @@ This is the first chapter in which we'll be dealing with the companion GeekSeek 
 
 As we proceed, we'll note each file so that you can draw references between the text and the deployable example.  We're firm believers that you best learn by doing (or at least exploring real code), so we invite you to dig in and run the examples as we go along.
 
-Testing is a first-class citizen in verifying that our development is done correctly, so, for instance, in this chapter we'll be focusing on interactions with persistent data.  Before we can hope to arrive at any solutions, it's important to clearly identify the problem domain.  Each chapter will first outline the goals we're looking to address.
+Testing is a first-class citizen in verifying that our development is done correctly, so, for instance, in this chapter we'll be focusing on interactions with persistent data.  Before we can hope to arrive at any solutions, it's important to clearly identify the problem domain.  Each subsequent chapter will first outline the goals we're looking to address.
 
 ==== User Perspective
 
-Our users are going to have to perform a series of _CRUD_ (Create, Read, Update, Delete) operations upon the entities which drive our application's data.  As such, we've defined a set of user-centric requirements:
+Our users are going to have to perform a series of _CRUD_ (Create, Read, Update, Delete) operations upon the entities that drive our application's data.  As such, we've defined a set of user-centric requirements:
 
 ----
 As a User, I should be able to:
@@ -201,7 +201,7 @@ As a User, I should be able to:
 ...remove a Session.
 ----
 
-Quite simple (and maybe even redundant!) when put in these terms, especially for this persistence example.  However, it's wise to get into the habit of thinking about features from a user perspective; this technique will come in quite handy later on when in more complex cases it'll be easy to get mired in the implementation specifics of providing a feature, and we don't want to lose track of the _real_ goal we're aiming to deliver.
+Quite simple (and maybe even redundant!) when put in these terms, especially for this persistence example.  However, it's wise to get into the habit of thinking about features from a user perspective; this technique will come in quite handy later on when, in more complex cases, it'll be easy to get mired in the implementation specifics of providing a feature, and we don't want to lose track of the _real_ goal we're aiming to deliver.
 
 To state even more generally:
 
