@@ -621,33 +621,33 @@ In the Explorer, we can sign into OpenShift from JBDS using the Connect to OpenS
 [[Figure3-12]]
 image::images/cedj_04in12.png["OpenShift Explorer"]
 
-This will open a prompt for us to enter our authentication information; simply provide the same credentials used to log into the OpenShift site.
+This will open the prompt shown in <<Figure3-13>> for us to enter our authentication information; simply provide the same credentials you used to log in to the OpenShift site.
 
-.Sign In to OpenShift
+.Sign in to OpenShift
 [[Figure3-13]]
 image::images/cedj_04in13.png["Sign In to OpenShift"]
 
-Right-clicking our account will allow us to create a "New OpenShift Application..."  Here we'll supply a name ("feedback" seems appropriate) and choose the target cartridge or "type" as "JBoss Application Server 7 (jbossas-7)"
+Right-clicking our account will allow us to create a "New OpenShift Application..."  As shown in <<Figure3-14>>, here we'll supply a name ("feedback" seems appropriate) and choose the target cartridge or "type" as "JBoss Application Server 7 (jbossas-7)."
 
-.New OpenShift Application
+.New OpenShift application
 [[Figure3-14]]
 image::images/cedj_04in14.png["New OpenShift Application"]
 
-Next we'll be asked to set up a new project to back the application on OpenShift.  As we've just created the project above, we may "Use existing project" and select the "feedback" project from our JBDS workspace.
+Next we'll be asked to set up a new project to back the application on OpenShift. Because we just created the project, we can choose "Use existing project" and select the _feedback_ project from our JBDS workspace (see <<Figure3-15>>).
 
-.Project for OpenShift Application
+.Project for OpenShift application
 [[Figure3-15]]
 image::images/cedj_04in15.png["Project for OpenShift Application"]
 
-As the OpenShift deployment mechanism is powered by Git, JBDS will now prompt us to accept some defaults for the Git metadata it'll write into our local project directory.  You may tailor thees as you see fit, though we use the defaults in this example.
+Because the OpenShift deployment mechanism is powered by Git, JBDS will now prompt us to accept some defaults for the Git metadata it'll write into our local project directory (see <<Figure3-16>>).  You can tailor these as you see fit, though we use the defaults in this example.
 
-.Import Existing OpenShift Application
+.Import existing OpenShift application
 [[Figure3-16]]
 image::images/cedj_04in16.png["Import Existing OpenShift Application"]
 
-Finishing this setup will trigger the deployment of our built artifacts from our project, and JBDS will report this for us.
+Finishing this setup will trigger the deployment of our built artifacts from our project, and JBDS will report this for us (see <<Figure3-17>>).
 
-.Embedded Cartridges
+.Embedded cartridges
 [[Figure3-17]]
 image::images/cedj_04in17.png["Embedded Cartridges"]
 
