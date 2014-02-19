@@ -23,6 +23,7 @@ Anyone who's rifled through a database's binary logfile to restore data to a con
 
 Clearly, the reactive model is not our best option if it can be avoided.
 
+[[proactive-section]]
 ==== Proactive Quality Policies
 
 "Only YOU can prevent ... fires" has been the plea of the United States Forest Service since 1947, underscoring the importance of limiting factors that contribute to disaster _before_ they happen.  
@@ -165,19 +166,19 @@ Although mocks absolutely have their place in the testing arsenal, in the contex
 
 ==== Integration
 
-Imagine we'd like to build a pipe to carry water from a nearby reservoir to a treatment and purification facility.  The unit tests we'd described above would be responsible for ensuring that each section of the tube was free of leaks and generally of good quality.  But the whole is more than the sum of its parts: the opportunity for water escaping between the cracks still exists.
+Imagine we'd like to build a pipe to carry water from a nearby reservoir to a treatment and purification facility.  The unit tests we described previously would be responsible for ensuring that each section of the tube was free of leaks and generally of good quality.  But the whole is more than the sum of its parts: the opportunity for water escaping between the cracks still exists.
 
 And so it is with software; we must check that our components play nicely with one another.  This is especially true for Java EE where _dependency injection_ is a commonplace tool.  It's great that one bean not be explicitly bound to another, but eventually we rely upon a container to do the wiring for us.  If our metadata or configuration is incorrect, our injection points may not be filled as we're expecting.  This could result in a deployment-time exception or worse, making it imperative that we have test coverage for the interaction between components.
 
-When we talk about _integration testing_ in this book, it's within the context of a _container_.  Historically, interaction with an application server has been notoriously difficult to test.  For many, Java EE has become a dirty term as a result.  It's the goal of this text to clearly delineate techniques for building enterprise applications in a testable manner.  While many may view this discussion as related to integration testing, instead we feel that it's more about _development_ and integration testing is a valued part of that equation.
+When we talk about _integration testing_ in this book, it's within the context of a _container_.  Historically, interaction with an application server has been notoriously difficult to test.  For many, Java EE has become a dirty term as a result.  It's the goal of this text to clearly delineate techniques for building enterprise applications in a testable manner.  Though many may view this discussion as related to integration testing, instead we feel that it's more about _development_, and integration testing is a valued part of that equation.
 
 In that sense, testing _is_ development.
 
 === Foundation Test Frameworks
 
-As you might imagine, _container services_ really help us to cut down on the complexity in our application code.  Dependency Injection frees us from manual wiring while features like _declarative security_ and _transaction management_ keep us from weaving technical concerns into our business logic.  Unfortunately, nothing comes for free; the cost of enlisting an framework or application server's help is that we've now added another integration point.  And every integration point must be validated by an integration test.
+As you might imagine, _container services_ really help us to cut down on the complexity in our application code.  Dependency injection frees us from manual wiring, while features like _declarative security_ and _transaction management_ keep us from weaving technical concerns into our business logic.  Unfortunately, nothing comes for free; the cost of enlisting a framework or an application server's help is that we've now added another integration point.  And every integration point must be validated by an integration test.
 
-Java has built-in support for +java.lang.Assertion+ error and the +assert+ keyword, and these are fine tools when used in the right context.  Because assertions using +assert+ are only analyzed in the presence of the +-ea+ switch at launch of the Java runtime, you need not worry about the performance implications of running extra checks in a production environment with this support disabled.  For that reason, it makes sense to use +assert+ for testing internal code, for instance:
+Java has built-in support for the +java.lang.Assertion+ error and the +assert+ keyword, and these are fine tools when used in the right context.  Because assertions using +assert+ are only analyzed in the presence of the +-ea+ switch at launch of the Java runtime, you need not worry about the performance implications of running extra checks in a production environment with this support disabled.  For that reason, it makes sense to use +assert+ for testing internal code. For instance:
 
 [source,java]
 ----
@@ -187,9 +188,9 @@ private String welcome(String name) {
 }
 ----
 
-Because the visibility of this code is +private+, we do not need to worry about doing precondition checks on end-user input; the parameter +username+ must be supplied by something _we_ have written.  Therefore this need not be tested in production.
+Because the visibility of this code is +private+, we do not need to worry about doing precondition checks on end-user input; the parameter +username+ must be supplied by something _we_ have written.  Therefore, this need not be tested in production.
 
-Of course, assertions may help us along the way, but they're not _tests_.  Tests exercise a code path and validate one or more _post-conditions_.  For instance we might write the following client to validate that the public +welcome(String)+ example from the _Proactive Quality Policies_ section is working as we'd expect:
+Of course, assertions may help us along the way, but they're not _tests_.  Tests exercise a code path and validate one or more _post-conditions_.  For instance, we might write the following client to validate that the public +welcome(String)+ example from <<proactive-section>> is working as we'd expect:
 
 [source,java]
 ----
@@ -241,9 +242,9 @@ But our signal-to-noise ratio is way off when we write our own +main(String[])+-
 
 ==== JUnit
 
-The http://www.junit.org/[JUnit] Test Framework is one of the most widely-known testing frameworks for Java.  Initially ported from http://en.wikipedia.org/wiki/Kent_Beck[Kent Beck's] work in testing the Smalltalk programming language, JUnit is the most-downloaded artifact in the http://search.maven.org/[Maven Central Repository] outside of libraries used to run Maven itself (as of August 2012).
+The http://www.junit.org/[JUnit Test Framework] is one of the most widely known testing frameworks for Java.  Initially ported from http://en.wikipedia.org/wiki/Kent_Beck[Kent Beck's work in testing the Smalltalk programming language], JUnit is the most-downloaded artifact in the http://search.maven.org/[Maven Central Repository] outside of libraries used to run Maven itself (as of August 2012).
 
-Refactoring our +WelcomeJDKTest+ above to use JUnit might look a little like this:
+Refactoring our +WelcomeJDKTest+ to use JUnit might look a little like this:
 
 [source,java]
 ----
@@ -263,7 +264,8 @@ public class WelcomeJUnitTest {
         final String name = "ALR";
         final String expectedResult = "Hello, " + name;
         final String receivedResult = welcomer.welcome(name);
-        Assert.assertEquals("Did not welcome " + name + " correctly", expectedResult, receivedResult);
+        Assert.assertEquals("Did not welcome " + name + " correctly",
+            expectedResult, receivedResult);
     }
 
     @Test
@@ -279,16 +281,16 @@ public class WelcomeJUnitTest {
 }
 ----
 
-The first benefit we get is that we don't need a +main(String[])+ method, and we don't need to manually call upon our test methods.  Instead, JUnit will dutifully execute for us any lifecycle (ie. +@Before+) or test (annotated with +@Test+) methods and report the results back to its initial runner.  Secondly, we're given access to the JUnit library, for instance a set of convenience methods in +org.junit.Assert+, to help us reduce the amount of code we'll need to write assertions.
+The first benefit we get is that we don't need a +main(String[])+ method, and we don't need to manually call upon our test methods.  Instead, JUnit will dutifully execute for us any lifecycle (i.e., +@Before+) or test (annotated with +@Test+) methods and report the results back to its initial runner.  Secondly, we're given access to the JUnit library (for instance, a set of convenience methods in +org.junit.Assert+) to help us reduce the amount of code we'll need to write assertions.
 
-JUnit also has widespread IDE support, making test execution during development much easier.  For instance, consider the context menu available in Eclipse:
+JUnit also has widespread IDE support, making test execution during development much easier.  For instance, consider the context menu available in Eclipse, as shown in <<Figure1-3>>.
 
 
 .JUnit IDE runner integration
 [[Figure1-3]]
 image::images/cedj_02in01.png["JUnit IDE Runner Integration"]
 
-As opposed to our homebrewed +main(String[])+ test client, JUnit supports reporting.  In the IDE this may appear graphically:
+As opposed to our homebrewed +main(String[])+ test client, JUnit supports reporting.  In the IDE this may appear graphically, as shown in <<Figure1-4>>.
 
 
 .JUnit IDE reporting integration
