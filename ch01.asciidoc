@@ -297,7 +297,7 @@ As opposed to our homebrewed +main(String[])+ test client, JUnit supports report
 [[Figure1-4]]
 image::images/cedj_02in02.png["JUnit IDE Reporting Integration"]
 
-Often we'll make use of a _continuous integration server_ to handle our builds and provide an auditable view of the codebase over time.  During this more formal build process, output may be directed to an XML file for analysis by plugins.  This can be very helpful in tracking progress of the failing and total number of tests, for instance graphically on the http://jenkins-ci.org/[Jenkins Continuous Integration Server]:
+Often we'll make use of a _continuous integration server_ to handle our builds and provide an auditable view of the codebase over time.  During this more formal build process, output may be directed to an XML file for analysis by plug-ins.  This can be very helpful in tracking progress of the failing and total number of tests graphically using the http://jenkins-ci.org/[Jenkins Continuous Integration Server] shown in <<Figure1-5>>.
 
 .Continuous integration test reporting
 [[Figure1-5]]
@@ -307,7 +307,7 @@ Of course, JUnit is not the only kid on the block when it comes to test framewor
 
 ==== TestNG
 
-If JUnit sets the standard for simplicity in Java testing, http://testng.org/doc/index.html[TestNG] touts greater flexibility to the developer by offering an arguably greater featureset.  While the differences between the two frameworks are beyond the scope of this text, there's quite a bit of overlap in concept.  Refactoring our test for TestNG should look familiar:
+If JUnit sets the standard for simplicity in Java testing, http://testng.org/doc/index.html[TestNG] touts greater flexibility to the developer by offering an arguably greater featureset.  Although the differences between the two frameworks are beyond the scope of this text, there's quite a bit of overlap in concept.  Refactoring our test for TestNG should look familiar:
 
 [source,java]
 ----
