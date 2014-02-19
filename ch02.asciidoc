@@ -233,7 +233,8 @@ To create an +Archive+, simply choose your desired archive type and optionally s
 
 [source,java]
 ----
-GenericArchive myArchive = ShrinkWrap.create(GenericArchive.class,"myArchive.jar");
+GenericArchive myArchive = ShrinkWrap.create
+    (GenericArchive.class,"myArchive.jar");
 ----
 
 That's it!  You've got your first ShrinkWrap archive!
