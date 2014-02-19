@@ -313,7 +313,7 @@ Using this mechanism is central to keeping ShrinkWrap's usage clean and intuitiv
 
 Although ShrinkWrap has its roots in Java EE and close ties to the Arquillian Testing Platform, it's certainly not limited to these domains.  In fact, ShrinkWrap on its own intentionally scoped to go no further than act as a virtual filesystem for archives.  As such, it provides a simple mechanism for playing nicely with flat-file structures.
 
-Borrowing from the previous example, perhaps we'd like to use ShrinkWrap to package up all of the @.class@ files in the current package and output these as a standard JAR in ZIP format.  The code for that would actually be pretty simple:
+Borrowing from the previous example, perhaps we'd like to use ShrinkWrap to package up all of the _.class_ files in the current package and output these as a standard JAR in ZIP format.  The code for that would actually be pretty simple:
 
 [source,java]
 ----
@@ -332,11 +332,12 @@ myPackage.jar:
 /org/alr/test/TestClass.class
 ----
 
-So let's see what's going on here.  First we create a +JavaArchive+ and add all contents of the current +Class+ 's +Package+ . Then we dump the output to the console, just to see what's included.  In the final line, we again use the +Assignable+ facilities of the +JavaArchive+ view to get us into a new view: one capable of exporting to ZIP format.  In this case we use the appropriately-named +ZipExporter+, allowing us to export to a +File+, +OutputStream+, or even get the contents as an +InputStream+ so we can deal with the bytes ourselves.
+So let's see what's going on here.  First we create a +JavaArchive+ and add all contents of the current ++Class++'s +Package+ . Then we dump the output to the console, just to see what's included.  In the final line, we again use the +Assignable+ facilities of the +JavaArchive+ view to get us into a new view: one capable of exporting to ZIP format.  In this case we use the appropriately named +ZipExporter+, allowing us to export to a +File+, +OutputStream+, or even get the contents as an +InputStream+ so we can deal with the bytes ourselves.
 
-There are 3 types of exporters which ship with ShrinkWrap:
+<<table2-4>> lists the three types of exporters that ship with ShrinkWrap.
 
 .Needs a caption
+[[table2-4]]
 [options="header"]
 |==========================
 |Exporter|Output format
@@ -345,9 +346,10 @@ There are 3 types of exporters which ship with ShrinkWrap:
 |+org.jboss.shrinkwrap.api.exporter.ZipExporter+|ZIP
 |==========================
 
-Of course, we can also obtain a ShrinkWrap archive from a flat-file in a similar fashion by using one of the standard importers:
+Of course, we can also obtain a ShrinkWrap archive from a flat-file in a similar fashion by using one of the standard importers shown in <<table2-5>>.
 
 .Needs a caption
+[[table2-5]]
 [options="header"]
 |==========================
 |Importer|Output format
