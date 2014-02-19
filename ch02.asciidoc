@@ -95,15 +95,15 @@ In this text, we'll be using the open source DVCS _Git_.
 
 ==== Git
 
-Originally developed to coordinate development of the Linux Kernel, Git is a DVCS whose usage has taken off in recent years, arguably due to the user-friendliness of the socially-aware hosting site http://www.github.com[GitHub].  In fact, this book's text and examples are http://bit.ly/1e7o0ox[hosted on GitHub] for all to participate.
+Originally developed to coordinate development of the Linux Kernel, Git is a DVCS whose usage has taken off in recent years, arguably due to the user-friendliness of the socially aware hosting site http://www.github.com[GitHub].  In fact, this book's text and examples are http://bit.ly/1e7o0ox[hosted on GitHub] for all to participate.
 
-From a high-level, we've chosen Git for our projects as it enables:
+From a high level, we've chosen Git for our projects because it enables:
 
-* True feature (topic) development.  Branching is quick, easy, and cheap.  You may work on feature X in isolation with the ability to put your changes _on top of_ development that may be occurring in the mainline branch.
-* Integration with 3rd-party systems built to respond to Git events.  For instance, we'll be able to trigger builds and production deployments by pushing our local changes to a remote repository.
+* True feature (topic) development.  Branching is quick, easy, and cheap.  You can work on feature X in isolation with the ability to put your changes _on top of_ development that may be occurring in the mainline branch.
+* Integration with third-party systems built to respond to Git events.  For instance, we'll be able to trigger builds and production deployments by pushing our local changes to a remote repository.
 * Rewriting of local history.  Often it's handy to commit liberally, giving yourself many "save" points along the way.  However, before making these (sometimes breaking) changes visible to the rest of the world, it's good practice to "squash" the mini-changes into a cohesive, singular commit.  This helps keep the version history sane and facilitates later auditing if a bug should arise.
 
-Again, it is not our aim to fully delve into the mechanics of each tool we'll be employing.  However, we will be issuing Git commands and explaining their use along the way.  A very good reference on the myriad Git subroutines can be found in the http://git-scm.com/book[Pro Git Book] by Scott Chacon, available for free in digital editions and in print via online retailers.
+Again, it is not our aim to fully delve into the mechanics of each tool we'll be employing.  However, we will be issuing Git commands and explaining their use along the way.  You can find a very good reference on the myriad Git subroutines in http://git-scm.com/book[_Pro Git_] by Scott Chacon (Apress, 2009), available for free in digital editions and in print via online retailers.
 
 === A Test Platform for Java EE
 
