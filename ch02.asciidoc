@@ -620,6 +620,7 @@ Strategies are composed of an array of +MavenResolutionFilter+ instances and +Tr
 [cols="1,3"]
 [options="header"]
 |====
+|Name|Description
 | +AcceptAllStrategy+ | 
 Accepts all dependencies of artifacts. Equals +TransitiveStrategy+.
 
