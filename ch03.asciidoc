@@ -268,7 +268,7 @@ public class FeedbackEntry implements Serializable
 }
 ----
 
-Our +FeedbackEntry+ entity should be capable of recording feedback for some user with a Twitter ID, so let's add fields to represent that data (as well as some validation constraints dictating that these may not be +null+).
+Our +FeedbackEntry+ entity should be capable of recording feedback for some user with a Twitter ID, so let's add fields to represent that data (as well as some validation constraints dictating that these cannot be +null+):
 
 ----
 field string --named twitterHandle;
@@ -277,7 +277,7 @@ field string --named feedback;
 constraint NotNull --onProperty feedback;
 ----
 
-It's worth noting now that our Forge prompt reads that the current location is _inside_ our Entity, as that's where we're currently working.  Forge's +ls+ command is handy for seeing the current state of our Entity as we build.
+It's worth noting now that our Forge prompt reads that the current location is _inside_ our entity, because that's where we're currently working.  Forge's +ls+ command is handy for seeing the current state of our entity as we build:
 
 ----
 [feedback] FeedbackEntry.java $ ls
@@ -302,7 +302,7 @@ public::setVersion(final int version)::void
 public::toString()::String
 ----
 
-With our sole Entity in place, it's time to let Forge generate a UI layer for us as a starting point for the view in our web application.  The "+scaffold+" command makes short work of this.
+With our sole entity in place, it's time to let Forge generate a UI layer for us as a starting point for the view in our web application.  The +scaffold+ command makes short work of this:
 
 ----
 $> scaffold setup 
@@ -334,7 +334,7 @@ Wrote ./feedback/src/main/webapp/resources/true.png
 Wrote ./feedback/src/main/webapp/WEB-INF/web.xml
 ----
 
-As shown by the somewhat lengthy output, we're now equipped with a +src/main/webapp+ folder laid out with a nice starting point from which we can build our own UI.  With just one more command, we can generate a CRUD (Create, Read, Update, Delete) interface to our entities:
+As shown by the somewhat lengthy output, we're now equipped with a _src/main/webapp_ folder laid out with a nice starting point from which we can build our own UI.  With just one more command, we can generate a CRUD (Create, Read, Update, Delete) interface to our entities:
 
 ----
 $> scaffold from-entity org.cedj.feedback.model.*;
