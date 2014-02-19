@@ -171,11 +171,11 @@ We mentioned earlier that we'd be using the distributed version control system _
 
 ===== Obtaining the source
 
-The first step toward obtaining the source is to sign up for a GitHub account.  While it's absolutely possible to clone the authoritative repo locally, without an account either here or at some other writable host you won't have an avenue to push changes of your own or contribute ideas.  As signing up for an account is free for our uses and has become commonplace espeically in open-source development, it's the avenue we'll advise.
+The first step toward obtaining the source is to sign up for a GitHub account.  Though it's absolutely possible to clone the authoritative repo locally, without an account either here or at some other writable host you won't have an avenue to push changes of your own or contribute ideas.  Because signing up for an account is free for our uses and has become commonplace especially in open source development, it's the avenue we'll advise.
 
-Signup is fairly simple and the process starts at https://github.com.
+As shown in <<Figure4-3>>, signup is fairly simple and the process starts at https://github.com.
 
-.GitHub Signup
+.GitHub signup
 [[Figure4-3]]
 image::images/cedj_05in01.png["GitHub Signup"]
 
