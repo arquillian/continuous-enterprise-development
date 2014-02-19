@@ -168,7 +168,8 @@ We should also be sure that these +Attachment+ objects are in valid state, so we
           title, mimeType, url, new Date());
     }
 
-    private Attachment(String id, String title, String mimeType, URL url, Date created) {
+    private Attachment(String id, String title, String mimeType, URL url, Date 
+    created) {
         requireNonNull(title, "Title must be specified)");
         requireNonNull(mimeType, "MimeType must be specified)");
         requireNonNull(url, "Url must be specified)");
@@ -190,7 +191,8 @@ We should also be sure that these +Attachment+ objects are in valid state, so we
     }
 
     public Attachment setTitle(String title) {
-        return new Attachment(this.id, title, this.mimeType, this.url, this.created);
+        return new Attachment(this.id, title, this.mimeType, this.url, 
+        this.created);
     }
 
     public String getMimeType() {
@@ -198,7 +200,8 @@ We should also be sure that these +Attachment+ objects are in valid state, so we
     }
 
     public Attachment setMimeType(String mimeType) {
-        return new Attachment(this.id, this.title, mimeType, this.url, this.created);
+        return new Attachment(this.id, this.title, mimeType, this.url, 
+        this.created);
     }
 
     public URL getUrl() {
@@ -206,7 +209,8 @@ We should also be sure that these +Attachment+ objects are in valid state, so we
     }
 
     public Attachment setUrl(URL url) {
-        return new Attachment(this.id, this.title, this.mimeType, url, this.created);
+        return new Attachment(this.id, this.title, this.mimeType, url, 
+        this.created);
     }
 
     public Date getLastUpdated() {
@@ -227,7 +231,7 @@ We should also be sure that these +Attachment+ objects are in valid state, so we
 
 Of note are the calls to our +updated+ method, which will set the timestamp to the current time on any state change operation.
 
-Recall that our persistence layer for objects, whether through JPA or other means, operates through the +Repository+ abstraction; this provides hooks for all CRUD operations.  The last chapter illustrated a +Repository+ backed by JPA and the +EntityManager+, but because we'll be storing +Attachment+ objects in a data grid, we need an implementation which will delegate those operations to Infinispan.  +org.cedj.geekseek.domain.attachment.AttachmentRepository+ handles this for us:
+Recall that our persistence layer for objects, whether through JPA or other means, operates through the +Repository+ abstraction; this provides hooks for all CRUD operations.  The previous chapter illustrated a +Repository+ backed by JPA and the +EntityManager+, but because we'll be storing +Attachment+ objects in a data grid, we need an implementation that will delegate those operations to Infinispan.  +org.cedj.geekseek.domain.attachment.AttachmentRepository+ handles this for us:
 
 [source,java]
 ----
@@ -238,7 +242,7 @@ Recall that our persistence layer for objects, whether through JPA or other mean
 public class AttachmentRepository implements Repository<Attachment> {
 ----
 
-We're implementing this +AttachmentRepository+ as a Stateless Session EJB, where all business methods are executed inside the context of a transaction.  If a transaction is already in flight, it will be used, else a new one will be started at the onset of the method invocation and committed when complete.
+We're implementing this +AttachmentRepository+ as a Stateless Session EJB, where all business methods are executed inside the context of a transaction.  If a transaction is already in flight, it will be used; else a new one will be started at the onset of the method invocation and committed when complete.
 
 Our storage engine will be accessed via the Infinispan API's +org.infinispan.AdvancedCache+, so we'll inject this using CDI:
 
@@ -266,7 +270,8 @@ Armed with a hook to the Infinispan grid, we can then implement the methods of t
                 .put(entity.getId(), entity);
             return entity;
         } catch (Exception e) {
-            throw new RuntimeException("Could not store Attachment with id " + entity.getId(), e);
+            throw new RuntimeException("Could not store Attachment with id " + 
+            entity.getId(), e);
         }
     }
 
@@ -314,7 +319,8 @@ public class CacheProducer {
     }
 
     @Produces @ApplicationScoped
-    public AdvancedCache<String, Attachment> createAdvanced(EmbeddedCacheManager manager) {
+    public AdvancedCache<String, Attachment> createAdvanced(
+    EmbeddedCacheManager manager) {
         Cache<String, Attachment> cache = 
           manager.getCache();
         return cache.getAdvancedCache();
@@ -334,7 +340,7 @@ This should be enough to fulfill our requirements to perform CRUD operations on 
 
 ==== Relation
 
-With our +Attachment+ now modeled and capable of persistence in the data grid, we can move on to the task of associating it with a +Session+ or +Conference+.  Because we'll handle relationships in a separate layer over the RDBMS, we can do this in a generic fashion which will also grant us the ability to let a +User+ attend or speak at a +Conference+.  The model for a relationship is reflected by +org.cedj.geekseek.domain.relation.model.Relation+:
+With our +Attachment+ now modeled and capable of persistence in the data grid, we can move on to the task of associating it with a +Session+ or +Conference+.  Because we'll handle relationships in a separate layer over the RDBMS, we can do this in a generic fashion that will also grant us the ability to let a +User+ attend or speak at a +Conference+.  The model for a relationship is reflected by +org.cedj.geekseek.domain.relation.model.Relation+:
 
 [source,java]
 ----
@@ -364,8 +370,10 @@ private static class Key implements Serializable {
         public int hashCode() {
             final int prime = 31;
             int result = 1;
-            result = prime * result + ((sourceId == null) ? 0 : sourceId.hashCode());
-            result = prime * result + ((targetId == null) ? 0 : targetId.hashCode());
+            result = prime * result + ((sourceId == null) ? 0 : 
+            sourceId.hashCode());
+            result = prime * result + ((targetId == null) ? 0 : 
+            targetId.hashCode());
             result = prime * result + ((type == null) ? 0 : type.hashCode());
             return result;
         }
@@ -396,7 +404,7 @@ private static class Key implements Serializable {
     }
 ----
 
-The +Reference.Key+ very simply draws a link between a source primary key and a target primary key, the IDs of the entities it is linking.  Additionally, we assign a +type+ to note what the relationship is reflecting.  Because we want to determine _value equality_ using the +Object.equals+ method, we override the +equals+ and +hashCode+ methods (by +Object+ contract, objects with equal values *must* have equal hashCodes).
+The +Reference.Key+ very simply draws a link between a source primary key and a target primary key, the IDs of the entities it is linking.  Additionally, we assign a +type+ to note what the relationship is reflecting.  Because we want to determine _value equality_ using the +Object.equals+ method, we override the +equals+ and +hashCode+ methods (by +Object+ contract, objects with equal values _must_ have equal ++hashCode++s).
 
 The rest of the +Relation+ class is straightforward:
 
@@ -425,7 +433,7 @@ The rest of the +Relation+ class is straightforward:
 }
 ----
 
-Now we need a mechanism to persist and remove +Relation+ instances.  Our +Repository+ interface used on other objects doesn't really fit the operations we need; relationships are not true entities but instead pointers from one entity to another.  So in +org.cedj.geekseek.domain.relation.RelationRepository+ we'll define a more fitting contract.
+Now we need a mechanism to persist and remove +Relation+ instances.  Our +Repository+ interface used on other objects doesn't really fit the operations we need; relationships are not true entities, but are instead pointers from one entity to another.  So in +org.cedj.geekseek.domain.relation.RelationRepository+ we'll define a more fitting contract:
 
 [source,java]
 ----
