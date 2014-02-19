@@ -368,13 +368,13 @@ The code for running an import to roundtrip the previous example might look like
   .as(JavaArchive.class);
 ----
 
-Note how we can pass +ZipImporter+ into the +ShrinkWrap.create+ method, as it's +Assignable+ as well!  Beginning to notice a theme here?
+Note how we can pass +ZipImporter+ into the +ShrinkWrap.create+ method, because it's +Assignable+ as well!  Beginning to notice a theme here?
 
 This concludes our brief introduction into manipulating archive content with ShrinkWrap.
 
 ==== ShrinkWrap Resolvers
 
-While ShrinkWrap is ideally-suited to creating new archives containing byte-based resources, often our applications are composed from pre-built libraries into more complex deployments.  These may bundle other archives together, for instance in the following example _Web application ARchive_ (WAR):
+Although ShrinkWrap is ideally suited for creating new archives containing byte-based resources, often our applications are composed of prebuilt libraries and used in more complex deployments.  These may bundle other archives together, as shown in the following example _Web application ARchive_ (WAR):
 
 ----
 $> jar -tvf myApplication.war
@@ -388,9 +388,9 @@ $> jar -tvf myApplication.war
   4015 Tue Apr 23 17:00:44 MST 2013 WEB-INF/lib/myEjbModule.jar
 ----
 
-As we can see, under +WEB-INF/lib+ there are a couple of thirdparty libraries used as dependencies by our own code, and an _Enterprise JavaBeans_ (EJB) module that we've written for our application.  This packaging structure is consistent with the final deployments used by most WARs and _Enterprise application ARchives_ (EARs).
+As you can see, under _WEB-INF/lib_ are a couple of third-party libraries used as dependencies by our own code, and an _Enterprise JavaBeans_ (EJB) module that we've written for our application.  This packaging structure is consistent with the final deployments used by most WARs and _Enterprise application ARchives_ (EARs).
 
-Often we don't control the construction of these libraries, and we certainly shouldn't be in the business of re-assembling them (and hence further differentiating our tests from the our production runtime deployments).  With the advent of Maven and other build systems, typically thirdparty libraries and our own dependent modules are obtained from a backing software _repository_.  In this case we supply a series of coordinates which uniquely identifies an artifact in the repository, and resolve the target files from there.
+Often we don't control the construction of these libraries, and we certainly shouldn't be in the business of reassembling them (and hence further differentiating our tests from the our production runtime deployments).  With the advent of Maven and other build systems, typically thirdparty libraries and our own dependent modules are obtained from a backing software _repository_.  In this case we supply a series of coordinates which uniquely identifies an artifact in the repository, and resolve the target files from there.
 
 That is precisely the aim of the ShrinkWrap Resolvers project; it is a Java API to obtain artifacts from a repository system.  Currently implemented are grammars and support for Maven-based repository structures (this is separate from the use of Maven as a project management system or build tool; it's possible to use a Maven repository layout with other build systems).
 
