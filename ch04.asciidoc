@@ -272,7 +272,7 @@ Default locale: en_US, platform encoding: UTF-8
 OS name: "linux", version: "3.8.0-19-generic", arch: "amd64", family: "unix"
 ----
 
-You build and test GeekSeek by invoking the +package+ phase of Maven on the +pom.xml+ file located in +code/application+:
+You build and test GeekSeek by invoking the +package+ phase of Maven on the _pom.xml_ file located in _code/application_:
 
 ----
 application $> mvn package
@@ -280,9 +280,9 @@ application $> mvn package
 [INFO] BUILD SUCCESS
 ----
 
-The first run is likely to take some time as Maven will resolve all dependencies of the project (including the application servers in which it will run), and download them onto your local disk.  Subsequent runs will not require this initial "downloading the internet" step and will execute much faster.  
+The first run is likely to take some time because Maven will resolve all dependencies of the project (including the application servers in which it will run), and download them onto your local disk.  Subsequent runs will not require this initial "downloading the Internet" step and will execute much faster.  
 
-The +test+ phase will instruct Maven to fire up the application servers and run all tests to ensure that everything is working as expected.  If you'd like to save some time and simply fetch the dependencies, build the sources, and package the application, execute +mvn package -DskipTests=true+.  For a full list of the Maven lifecycles, consult:  http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html[http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html].
+The +test+ phase will instruct Maven to fire up the application servers and run all tests to ensure that everything is working as expected.  If you'd like to save some time and simply fetch the dependencies, build the sources, and package the application, execute +mvn package -DskipTests=true+.  Here's a full list of the http://bit.ly/1e7xH6o[Maven lifecycles].
 
 Packaging the full application will result in a WAR (Web Archive) file located at +application/target/geekseek-(version).war+.  It's this file which may be deployed into an application server to run GeekSeek locally; by default we'll be using _WildFly_ from the JBoss Community.
 
