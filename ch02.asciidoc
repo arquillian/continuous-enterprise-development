@@ -40,20 +40,20 @@ At the core of the Maven engine is a sophisticated _dependency management_ solut
 [[Figure2-1]]
 image::images/cedj_0201.png[]
 
-Maven is not without its detractors, however.  It's been criticized for a few points, among them:
+Maven is not without its detractors, however.  It's been criticized for a few points. Among them are:
 
-* Maven Plugins versions are not bound to Maven Core versions, making guaranteed reproducible builds between different environments difficult to guarantee.
-* Project Object Model (POM, ie. +pom.xml+) syntax, the metadata describing a project's makeup, is verbose.
+* Maven Plug-ins versions are not bound to Maven Core versions, making guaranteed reproducible builds between different environments difficult to guarantee.
+* Project Object Model (POM, i.e., _pom.xml_) syntax, which is the metadata describing a project's makeup, is verbose.
 * Transitive dependencies as a default trigger a lot of downloading on first build.  Without care, a project may inherit more dependencies than are necessary or desired.
 * Deviation from the defined Maven standard is often difficult to reconcile.
 
 It _is_ possible to use Maven-structured repositories from outside Maven.  In fact, standalone dependency manager http://ant.apache.org/ivy/[Apache Ivy] (often used in concert with task-based tool http://ant.apache.org/[Apache Ant]), does just that.  Groovy-based http://www.gradle.org/[Gradle] seeks to provide the flexibility of Ant with the dependency management of Maven.
 
-That said, Maven continues to be a popular and widely-used tool in Java development, and will satisfy our requirements to build our examples.
+That said, Maven continues to be a popular and widely used tool in Java development, and will satisfy our requirements to build our examples.
 
 ==== JBoss Forge
 
-If you've spent any time developing Java EE-based projects (or any nontrivial application, for that matter!), you've likely invested a good amount of energy in creating the project layout, defining dependencies, and informing the build system of the relevant ClassPaths to be used in compilation and execution.  While Maven enables us to reduce that load as compared with undertaking project setup manually, there's typically quite a bit of boilerplate involved in the +pom.xml+ defining your requirements.
+If you've spent any time developing Java EE–based projects (or any nontrivial application, for that matter!), you've likely invested a good amount of energy in creating the project layout, defining dependencies, and informing the build system of the relevant class paths to be used in compilation and execution.  Although Maven enables us to reduce that load as compared with undertaking project setup manually, there's typically quite a bit of boilerplate involved in the _pom.xml_ defining your requirements.
 
 http://forge.jboss.org/[JBoss Forge] offers "incremental project enhancement for Java EE."  Implemented as a command shell, Forge gives us the ability to alter project files and folders.  Some concrete tasks we might use Forge to handle are:
 
@@ -63,13 +63,13 @@ http://forge.jboss.org/[JBoss Forge] offers "incremental project enhancement for
 * Generating a view layer, reversed-engineered from a domain model
 * Deploying to an application server
 
-Because Forge is built atop a _modular_, http://forge.jboss.org/plugins.html[_plugin-based architecture_], it's extensible to additional tasks that may be specific to your application.
+Because Forge is built atop a _modular_, http://forge.jboss.org/plugins.html[_plug-in-based architecture_], it's extensible to additional tasks that may be specific to your application.
 
 Overall, the goal of Forge is to ease project setup at all stages of development, so we'll be employing it in this text to speed along the construction of our examples.
 
 === Version Control
 
-From the moment we collaborate on a project with others or would like to inspect the evolution of our code over time, we need some form of _version control_.  Until recently, the most common paradigm for synchronizing access to a shared codebase was the _client/server_ model wherein developers may keep a local working copy and check their changes into a centralized server.  
+From the moment we collaborate on a project with others or would like to inspect the evolution of our code over time, we need some form of _version control_.  Until recently, the most common paradigm for synchronizing access to a shared codebase was the _client/server_ model wherein developers can keep a local working copy and check their changes into a centralized server (see <<Figure2-2>>).  
 
 .Need a caption
 [[Figure2-2]]
@@ -77,7 +77,7 @@ image::images/cedj_0202.png[]
 
 Some systems utilize file-level locking to ensure that no conflicts arise during development; others allow concurrent access at the file granularity but cue the developer to resolve line-level conflicts upon committing changes upstream.
 
-Likely the widest-deployed client/server version control system (VCS) from the 1990s through the 2000s has been http://savannah.nongnu.org/projects/cvs[Concurrent Versions Systems], most often referred by its acronym _CVS_.  While CVS has enabled teams to freely work on all files in the tree through _unreserved checkouts_, its shortcomings including non-atomic commits and absent tracking for file renames prompted the development of http://subversion.apache.org/[Subversion] (SVN), hier apparent to CVS.  Boasting a wider featureset and greater stability as contrasted with CVS, SVN has enjoyed its reign from the mid- to late-2000s.
+Likely the most widely deployed client/server version control system (VCS) from the 1990s through the 2000s has been http://savannah.nongnu.org/projects/cvs[Concurrent Versions Systems], most often referred to by its acronym _CVS_.  Although CVS has enabled teams to freely work on all files in the tree through _unreserved checkouts_, its shortcomings including non-atomic commits and absent tracking for file renames prompted the development of http://subversion.apache.org/[Subversion] (SVN), hier apparent to CVS.  Boasting a wider featureset and greater stability as contrasted with CVS, SVN has enjoyed its reign from the mid- to late-2000s.
 
 These days, the centralized model has been superseded by _distributed version control systems_ (DVCS), which is differentiated by its ability to store the full repository including all history in any number of nodes.
 
