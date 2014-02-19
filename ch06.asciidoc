@@ -100,7 +100,7 @@ Neo4j is is an open source, transactional graph database that _does_ adhere to t
 For those looking to understand graph databases and Neo4j in greater detail, we recommend http://graphdatabases.com/[_Graph Databases_] by Robinson, Webber, and Eifrem (O'Reilly, 2013).
 ====
 
-As our GeekSeek application has a social component (who is attending which conferences, who is following speakers and attendees, etc), we'd like to put in place a solution that will enable us to augment the data in our RDBMS to:
+Because our GeekSeek application has a social component (who is attending which conferences, who is following speakers and attendees, etc), we'd like to put in place a solution that will enable us to augment the data in our RDBMS to:
 
 * Draw relationships between data unrelated in the RDBMS schema
 * Quickly query recursive relationships
@@ -110,7 +110,7 @@ As our GeekSeek application has a social component (who is attending which confe
 
 We've already seen the domain model for our GeekSeek application in the previous chapter; this encompasses all of our +Conference+, +Session+, +User+, and +Venue+ entities.  The link between +Conference+ and +Session+ is fairly restricted, so we use an RBDMS relationship to handle this.
 
-We'd also like to be able to introduce the notion of an +Attachment+; this can be any bit of supporting documentation which may be associated with a +Conference+ or +Session+.  Therefore we have the requirement:
+We'd also like to be able to introduce the notion of an +Attachment+; this can be any bit of supporting documentation that may be associated with a +Conference+ or +Session+.  Therefore we have the requirement:
 
 ----
 As a User I should be able to Add/Change/Delete an Attachment.
@@ -157,9 +157,9 @@ public class Attachment implements Identifiable, Timestampable, Serializable {
     private final Date updated;
 ----
 
-This class declaration will adhere to the contracts we've seen before in +Identifiable+ and +Timestampable+, and has no JPA annotations or metadata as we'll be delegating the persistent operations of this class to Infinispan.
+This class declaration will adhere to the contracts we've seen before in +Identifiable+ and +Timestampable+, and has no JPA annotations or metadata because we'll be delegating the persistent operations of this class to Infinispan.
 
-We should also be sure that these +Attachment+ objects are in valid state, so we'll add some assertion checks and intelligent defaults along the way.
+We should also be sure that these +Attachment+ objects are in valid state, so we'll add some assertion checks and intelligent defaults along the way:
 
 [source,java]
 ----
