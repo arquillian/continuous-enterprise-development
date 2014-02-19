@@ -6,7 +6,7 @@ ____
 Whatever pursuit you undertake, the requirements should start with a love of what it is that you are pursuing.
 ____
 
-While the previous chapter provides decent proof that it's possible to jumpstart development on a greenfield Java EE project without too much hassle, we all recognize how this may be a far cry from how applications are built in the real world.  The benefits of quickly going from a blank canvas to a deployed, functioning application are largely educational or handy in rapid prototyping, but in the majority of cases we're likely looking to:
+Although the previous chapter provides decent proof that it's possible to jumpstart development on a greenfield Java EE project without too much hassle, we all recognize how this may be a far cry from how applications are built in the real world.  The benefits of quickly going from a blank canvas to a deployed, functioning application are largely educational or handy in rapid prototyping, but in the majority of cases we're likely looking to:
 
 * Have greater control over the architectural design of our program
 * Augment an existing application with new features
@@ -15,34 +15,34 @@ While the previous chapter provides decent proof that it's possible to jumpstart
 
 In short, the preceding chapter introduced us to some potentially new technologies and is capable of getting us up and running, but the end result is a toy that would need a lot more work before it became a viable product.
 
-This book will aim to address some of the common issues encountered during enterprise development.  Our primary goal is education, and that will inform some of the design choices we make in building our application; for instance we may expose more technologies than necessary to fulfill our objectives.  But just as a guide on design patterns doesn't advocate usage of every technique at the same time, neither should these examples.  It's your responsibility as developer to choose appropriate tools for the job, and we'll aspire to help you make informed decisions.
+This book will aim to address some of the common issues encountered during enterprise development.  Our primary goal is education, and that will inform some of the design choices we make in building our application; for instance, we may expose more technologies than necessary to fulfill our objectives.  But just as a guide on design patterns doesn't advocate usage of every technique at the same time, neither should these examples.  It's your responsibility as developer to choose appropriate tools for the job, and we'll aspire to help you make informed decisions.
 
 === Introducing GeekSeek
 
-Our example application will be a software conference tracker, roughly modeled after the excellent http://lanyrd.com/[Lanyrd] service.  Its purpose will be to expose information to aid conference-goers in planning their experience around technical sessions and related activities.  The goal is to provide a single example with all layers working in concert to showcase how various technologies interact, and each use case detailed in the book will dig into various slices of the application.  We've lovingly named this example: _GeekSeek_.
+Our example application will be a software conference tracker, roughly modeled after the excellent http://lanyrd.com/[Lanyrd] service.  Its purpose will be to expose information to aid conference-goers in planning their experience around technical sessions and related activities.  The goal is to provide a single example with all layers working in concert to showcase how various technologies interact, and each use case detailed in the book will dig into various slices of the application.  We've lovingly named this example _GeekSeek_.
 
-Reading this book should not be a passive endeavor; we've designed the example application to be an executable proof of the approaches we'll use to satisfy our broad uses cases.  Readers will likely get the greatest benefit by pulling down the GeekSeek source, building, testing, and running the application locally.
+Reading this book should not be a passive endeavor; we've designed the example application to be an executable proof of the approaches we'll use to satisfy our broad use cases.  Readers will likely get the greatest benefit by pulling down the GeekSeek source, building, testing, and running the application locally.
 
-The live "production" GeekSeek site is hosted at http://geekseek.continuousdev.org[http://geekseek.continuousdev.org]; let's first have a look at the requirements comprising this application.
+The live "production" GeekSeek site is hosted at http://geekseek.continuousdev.org; let's first have a look at the requirements comprising this application.
 
 ==== Feature Set
 
 We'll start by outlining in broad strokes the features provided by GeekSeek.  This will provide a high-level view of the actions users may take, and from these we can start to drill down into more technical requirements.
 
-* Account-Centric Actions
-** Users may sign up by associating the site with their http://www.twitter.com[Twitter] account
-** Users may track others whom they follow on Twitter
-** Users may see others whom may be interested in their activity (their Twitter followers).
-** Users may get updates on the activity of their followee's followees (transitively, the people followed by the people you follow).
-* Directory View
-** Users may display upcoming and prior Conferences in the system
-* Conferences and Sessions
-** Users may add Conference and Session data, additionally associating them with a Venue and Room.
-** Users may define who is speaking at or attending a Session
-** Users may add arbitrary Attachments (media) information to a Conference, Session, Venue or Room
-** Users may track Conferences and Sessions to receive alerts for updates and changes
-* Search
-** Search for a Conference, Session, or User by some criteria
+Account-Centric Actions::
+* Users may sign up by associating the site with their http://www.twitter.com[Twitter] account
+* Users may track others whom they follow on Twitter
+* Users may see others whom may be interested in their activity (their Twitter followers)
+* Users may get updates on the activity of their followee's followees (transitively, the people followed by the people you follow)
+Directory View::
+* Users may display upcoming and prior Conferences in the system
+Conferences and Sessions::
+* Users may add Conference and Session data, additionally associating them with a Venue and Room
+* Users may define who is speaking at or attending a Session
+* Users may add arbitrary Attachments (media) information to a Conference, Session, Venue, or Room
+* Users may track Conferences and Sessions to receive alerts for updates and changes
+Search::
+* Users may search for a Conference, Session, or User by some criteria
 
 ==== Conceptual Data Model
 
