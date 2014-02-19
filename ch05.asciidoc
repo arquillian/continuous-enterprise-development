@@ -626,17 +626,17 @@ Our tests will be taking advantage of the http://bit.ly/MB0wCg[_Arquillian Persi
 
 * Wrapping each test in the separated transaction.
 * Seeding database using:
-** DBUnit with XML, XLS, YAML and JSON supported as data sets format.
+** DBUnit with XML, XLS, YAML, and JSON supported as data set formats.
 ** Custom SQL scripts.
 ** Comparing database state at the end of the test using given data sets (with column exclusion).
 
 Creating ad-hoc object graphs in the test code is often too verbose and makes it harder to read the tests themselves.  The Arquillian Persistence Extension provides alternatives to set database fixtures to be used for the given test.
 
-Adding transactional support to these tests is fairly straightforward.  If that's only what you need simply put a +@Transactional+ annotation either on the test which you want be wrapped in transaction or on the test class (which will result in all tests running in their own transactions).  The following modes are supported:
+Adding transactional support to these tests is fairly straightforward.  If that's all you need, simply put a +@Transactional+ annotation either on the test you want to be wrapped in the transaction or on the test class (which will result in all tests running in their own transactions).  The following modes are supported:
 
 +COMMIT+:: Each test will be finished with commit operation. This is default behavior.
-+ROLLBACK+:: At the end of the test execution rollback will be performed.
-+DISABLED+:: If you have enabled transactional support at the test class level, marking given test with this mode will simply run it without the transaction.
++ROLLBACK+:: At the end of the test execution, rollback will be performed.
++DISABLED+:: If you have enabled transactional support at the test class level, marking a given test with this mode will simply run it without the transaction.
 
 We'll start by defining the Arquillian Persistence Extension in the +dependencyManagement+ section of our parent POM:
 
@@ -678,7 +678,7 @@ And we'll also enable this in the +dependencies+ section of the POMs of the proj
   </dependencies>
 ----
 
-Database configuration for tests powered by the Persistence Extension is done via the same mechanism as is used for the runtime: the +persistence.xml+ configuration file.  For instance, we supply a persistence descriptor in +org.cedj.geekseek.domain.persistence.test.integration.PersistenceDeployments+:
+Database configuration for tests powered by the Persistence Extension is done via the same mechanism as is used for the runtime: the _persistence.xml_ configuration file.  For instance, we supply a persistence descriptor in +org.cedj.geekseek.domain.persistence.test.integration.PersistenceDeployments+:
 
 [source,java]
 ----
@@ -699,7 +699,7 @@ public static PersistenceDescriptor descriptor() {
 
 ==== CRUD Tests
 
-With our setup and objectives clearly in place, we'd like to assert that the CRUD operations against our +Repository+ implementations hold up.  For instance, the +org.cedj.geekseek.domain.conference.test.integration.ConferenceTestCase+ contains a series of tests which aim to do just that, and are backed by the Arquillian Persistence Extension.  
+With our setup and objectives clearly in place, we'd like to assert that the CRUD operations against our +Repository+ implementations hold up.  For instance, the +org.cedj.geekseek.domain.conference.test.integration.ConferenceTestCase+ contains a series of tests that aim to do just that, and are backed by the Arquillian Persistence Extension.  
 
 First, the test class definition:
 
@@ -710,11 +710,11 @@ First, the test class definition:
 public class ConferenceTestCase {
 ----
 
-This is a plain class with no parent, and will be executed by Arquillian by using the JUnit +@RunWith+ annotation, passing along +Arquillian.class+ as the test runner.
+This is a plain class with no parent, and will be executed by Arquillian using the JUnit +@RunWith+ annotation, passing along +Arquillian.class+ as the test runner.
 
-The +@Transactional+ annotation from the Arquillian Transaction Extension (a dependency of the Persistence extension) notes that we'll be running each test method in a transaction, and committing the result upon completion.
+The +@Transactional+ annotation from the Arquillian Transaction Extension (a dependency of the Persistence Extension) notes that we'll be running each test method in a transaction, and committing the result upon completion.
 
-Next we'll define a ShrinkWrap +@Deployment+ which will be deployed onto the backing server as our application under test:
+Next we'll define a ShrinkWrap +@Deployment+ that will be deployed onto the backing server as our application under test:
 
 [source,java]
 ----
@@ -744,9 +744,9 @@ a23508c0-974e-4ae3-a609-cc532828e6c4.war:
 /WEB-INF/beans.xml
 ----
 
-The nested JAR in +WEB-INF/lib+ are our own libraries under test, which include the core deployments, the +ConferenceRepository+, and their dependencies.
+The nested JAR in _WEB-INF/lib_ are our own libraries under test, which include the core deployments, the +ConferenceRepository+, and their dependencies.
 
-We'll now be able to use Arquillian to inject the +ConferenceRepository+ right into the test instance, which will be executed inside the deployment on the server.  This makes it a local reference to the runtime code.
+We'll now be able to use Arquillian to inject the +ConferenceRepository+ right into the test instance, which will be executed inside the deployment on the server.  This makes it a local reference to the runtime code:
 
 [source,java]
 ----
@@ -756,7 +756,7 @@ We'll now be able to use Arquillian to inject the +ConferenceRepository+ right i
 
 Our tests will use this repository to interact with persistent storage.
 
-We may also set a few flags to note whether our create and remove JPA events are fired:
+We can also set a few flags to note whether our create and remove JPA events are fired:
 
 [source,java]
 ----
@@ -766,7 +766,7 @@ We may also set a few flags to note whether our create and remove JPA events are
     private static boolean removedEventFired = false;
 ----
 
-And we'll put some methods in place to observe the JPA create events and set the flags.  Because our test is _itself_ a CDI bean, we may use the CDI +@Observes+ annotation to listen in:
+And we'll put some methods in place to observe the JPA create events and set the flags.  Because our test is _itself_ a CDI bean, we can use the CDI +@Observes+ annotation to listen in:
 
 [source,java]
 ----
@@ -779,7 +779,7 @@ And we'll put some methods in place to observe the JPA create events and set the
     }
 ----
 
-+@Created+ and +@Removed+ our own CDI qualifiers, defined like so:
++@Created+ and +@Removed+ are our own CDI qualifiers, defined like so:
 
 [source,java]
 ----
@@ -794,7 +794,7 @@ public @interface Created {
 }
 ----
 
-Now we're set to run some tests.  The first one will ensure we may create a conference.
+Now we're set to run some tests.  The first one will ensure we can create a conference:
 
 [source,java]
 ----
@@ -819,7 +819,7 @@ Now we're set to run some tests.  The first one will ensure we may create a conf
     }
 ----
 
-Because we'll check that the flag was set based upon the CDI +@Observes+ support, we can be sure that the conference was in fact created.  Additionally, we use the +@ShouldMatchDataSet+ annotation from the Arquillian Persistence Extension to check that the values in the DB are in the expected form, given the contents of the +conference.yml+ file, which looks like:
+Because we'll check that the flag was set based upon the CDI +@Observes+ support, we can be sure that the conference was in fact created.  Additionally, we use the +@ShouldMatchDataSet+ annotation from the Arquillian Persistence Extension to check that the values in the DB are in the expected form, given the contents of the _conference.xml_ file, which looks like:
 
 ----
 conference:
@@ -830,7 +830,7 @@ conference:
     end: 2013-11-15 00:00:00.0
 ----
 
-In this manner, we can more easily check that data is making its way to and from the persistence layer intact, with an easier syntax to define the values we'll expect to find.  This also frees us from writing a lot of assertions on each individual field of every entry in the DB, and makes for much easier automated checking of large datasets.
+In this manner, we can more easily check that data is making its way to and from the persistence layer intact, with an easier syntax to define the values we'll expect to find.  This also frees us from writing a lot of assertions on each individual field of every entry in the DB, and makes for much easier automated checking of large data sets.
 
 Our test class has similar methods to enforce related behaviors mandated by our requirements:
 
