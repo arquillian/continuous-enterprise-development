@@ -222,11 +222,11 @@ The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.a
 [options="header"]
 |=============================
 |Archive type|Description
-|+org.jboss.shrinkwrap.api.GenericArchive+|Simplest type of concrete user-view of an +Archive+; supports generic operations
-|+org.jboss.shrinkwrap.api.spec.JavaArchive+|JAR type; allows addition of +Class+ es, +Package+ s, and Manifest operations
-|+org.jboss.shrinkwrap.api.spec.EnterpriseArchive+|Java EE EAR type; supports Manifest and related spec operations
-|+org.jboss.shrinkwrap.api.spec.WebArchive+|Java EE WAR type; supports operations common to web application deployments
-|+org.jboss.shrinkwrap.api.spec.ResourceAdaptorArchive+|Java EE RAR type; supports operations common to resource adaptor deployments
+|+org.jboss.shrinkwrap.api.+pass:[<phrase role='keep-together'><literal>GenericArchive</literal></phrase>]|Simplest type of concrete user-view of an +Archive+; supports generic operations
+|+org.jboss.shrinkwrap.api.spec.+pass:[<phrase role='keep-together'><literal>JavaArchive</literal></phrase>]|JAR type; allows addition of ++Class++es, ++Package++s, and Manifest operations
+|+org.jboss.shrinkwrap.api.spec.+pass:[<phrase role='keep-together'><literal>EnterpriseArchive</literal></phrase>]|Java EE EAR type; supports Manifest and related spec operations
+|+org.jboss.shrinkwrap.api.spec.+pass:[<phrase role='keep-together'><literal>WebArchive</literal></phrase>]|Java EE WAR type; supports operations common to web application deployments
+|+org.jboss.shrinkwrap.api.spec.+pass:[<phrase role='keep-together'><literal>ResourceAdaptorArchive</literal></phrase>]|Java EE RAR type; supports operations common to resource adaptor deployments
 |=============================
 
 To create an +Archive+, simply choose your desired archive type and optionally supply a name to the static +ShrinkWrap:create+ method:
