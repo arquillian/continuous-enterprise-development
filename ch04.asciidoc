@@ -259,11 +259,12 @@ This will pull the current upstream version of the application into your local d
 
 ===== Building and testing GeekSeek
 
-We'll be using the Maven software management tool to handle our build, test, and packaging needs.  The Java 7 JDK is a prerequisite we'll assume is installed on your system, referenced by the environment variable +JAVA_HOME+, and the executables in _$JAVA_HOME/bin_ available on the system +PATH+; Maven may be simply downloaded and extracted on your drive to _MAVEN_HOME_ from http://maven.apache.org/download.cgi.  Ensure that _MAVEN_HOME/bin_ is on your +PATH+, and you'll be good to go:
+We'll be using the Maven software management tool to handle our build, test, and packaging needs.  The Java 7 JDK is a prerequisite we'll assume is installed on your system, referenced by the environment variable +JAVA_HOME+, and the executables in _$JAVA_HOME/bin_ available on the system +PATH+; you can simply download and extract Maven on your drive to _MAVEN_HOME_ from http://maven.apache.org/download.cgi.  Ensure that _MAVEN_HOME/bin_ is on your +PATH+, and you'll be good to go:
 
 ----
 $> mvn -version
-Apache Maven 3.0.5 (r01de14724cdef164cd33c7c8c2fe155faf9602da; 2013-02-19 08:51:28-0500)
+Apache Maven 3.0.5 (r01de14724cdef164cd33c7c8c2fe155faf9602da; 
+2013-02-19 08:51:28-0500)
 Maven home: /home/alr/opt/apache/maven/apache-maven-3.0.5
 Java version: 1.7.0_25, vendor: Oracle Corporation
 Java home: /home/alr/opt/oracle/java/jdk1.7.0_25/jre
@@ -271,7 +272,7 @@ Default locale: en_US, platform encoding: UTF-8
 OS name: "linux", version: "3.8.0-19-generic", arch: "amd64", family: "unix"
 ----
 
-Building and testing GeekSeek is done by invoking the +package+ phase of Maven on the +pom.xml+ file located in +code/application+:
+You build and test GeekSeek by invoking the +package+ phase of Maven on the +pom.xml+ file located in +code/application+:
 
 ----
 application $> mvn package
