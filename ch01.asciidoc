@@ -347,7 +347,7 @@ image::images/cedj_02in04.png["TestNG IDE Runner Integration"]
 
 === Continuous Development
 
-Followers of Extreme Programming and Agile methodologies are likely to be familiar with http://martinfowler.com/articles/continuousIntegration.html[Continuous Integration], a practice which advocates frequent patching of the upstream development branch in order to catch errors as they're introduced.  Such an approach involves:
+Followers of Extreme Programming and Agile methodologies are likely to be familiar with http://bit.ly/1e7nG9j[Continuous Integration], a practice that advocates frequent patching of the upstream development branch in order to catch errors as they're introduced.  Such an approach involves:
 
 * An authoritative source repository (which is *not* at odds with decentralized version control systems, as we'll soon see)
 * A comprehensive test suite
