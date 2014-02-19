@@ -161,21 +161,25 @@ The generated _validation.xml_ should be fine for our uses without any modificat
 [source,xml]
 ----
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<validation-config xmlns="http://jboss.org/xml/ns/javax/validation/configuration" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<validation-config xmlns="http://jboss.org/xml/ns/javax/validation/configuration" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <default-provider>org.hibernate.validator.HibernateValidator</default-provider>
-  <message-interpolator>org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator</message-interpolator>
-  <traversable-resolver>org.hibernate.validator.engine.resolver.DefaultTraversableResolver</traversable-resolver>
-  <constraint-validator-factory>org.hibernate.validator.engine.ConstraintValidatorFactoryImpl</constraint-validator-factory>
+  <message-interpolator>org.hibernate.validator.messageinterpolation.
+   ResourceBundleMessageInterpolator</message-interpolator>
+  <traversable-resolver>org.hibernate.validator.engine.resolver.
+   DefaultTraversableResolver</traversable-resolver>
+  <constraint-validator-factory>org.hibernate.validator.engine.
+   ConstraintValidatorFactoryImpl</constraint-validator-factory>
 </validation-config>
 ----
 
-Now we're all set to add some entities to our project.  For the uninitiated, this will be our interface to accessing persistent (ie. database-backed) data as an object.  For now we'll just create one simple bean to represent a database table, and we'll call it "FeedbackEntry".
+Now we're all set to add some entities to our project.  For the uninitiated, this will be our interface to accessing persistent (i.e., database-backed) data as an object.  For now we'll just create one simple bean to represent a database table, and we'll call it `FeedbackEntry`:
 
 ----
 $> entity --named FeedbackEntry;
 ----
 
-Forge will create a new Java class for us, adding the proper +@Entity+ annotation, an ID field to represent our primary key, a version field for optimistic locking, and stubbed out methods for value-based +equals(Object)+ and +hashCode()+.
+Forge will create a new Java class for us, adding the proper +@Entity+ annotation, an ID field to represent our primary key, a version field for optimistic locking, and stubbed-out methods for the value-based +equals(Object)+ and +hashCode()+:
 
 [source,java]
 ----
