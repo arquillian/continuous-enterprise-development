@@ -939,18 +939,18 @@ So here we have our CRUD tests using the injected +Repository+ to perform their 
 
 While we're confident that the CRUD operations of our +Attachment+ entity are in place, we should ensure that the transactional semantics are upheld if a transaction is in-flight.  This will essentially validate that Infinispan is respectful of the _Java Transactions API_ (JTA), a specification under the direction of the http://jcp.org/en/jsr/detail?id=907[JSR-907] Expert Group.
 
-To accomplish this, we're going to directly interact with JTA's +UserTransaction+ in our test.  In fact, the +Attachment+ entity is not the only one we should be verifying, so we'll code this test in a way that will enable us to extend it to ensure that +Conference+, +Session+, and other entities may be exercised for transactional compliance.
+To accomplish this, we're going to directly interact with JTA's +UserTransaction+ in our test.  In fact, the +Attachment+ entity is not the only one we should be verifying, so we'll code this test in a way that will enable us to extend it to ensure that +Conference+, +Session+, and other entities can be exercised for transactional compliance.
 
 Our goals are to assert that for any entity type +T+:
 
 * +T+ is Stored on commit and can be read from another transaction
 * +T+ is Updated on commit and can be read from another transaction
 * +T+ is Removed on commit and can not be read by another transaction
-* +T+ is not Stored on rollback and can not be read by another transaction
-* +T+ is not Updated on rollback and can not be read by another transaction
+* +T+ is not Stored on rollback and cannot be read by another transaction
+* +T+ is not Updated on rollback and cannot be read by another transaction
 * +T+ is not Removed on rollback and can be read by another transaction
 
-Therefore we'll attempt to centralize these operations in a base test class which will, when provided a +T+ and a +Repository<T>+, verify that +T+ is committed and rolled back as required.  Thus we introduce +org.cedj.geekseek.domain.test.integration.BaseTransactionalSpecification+:
+Therefore we'll attempt to centralize these operations in a base test class that will, when provided a +T+ and a +Repository<T>+, verify that +T+ is committed and rolled back as required.  Thus we introduce +org.cedj.geekseek.domain.test.integration.BaseTransactionalSpecification+:
 
 [source,java]
 ----
@@ -995,7 +995,7 @@ Because this class is to be extended for each entity type we'd like to test, we'
       DOMAIN domain);
 ----
 
-And now we're free to write the tests backing the points listed above; we want to validate that objects are either accessible or not based on commit or rollback operations to the transaction in play.  For instance, this test ensures that an object is stored after a commit:
+And now we're free to write the tests backing the points listed earlier; we want to validate that objects are either accessible or not based on commit or rollback operations to the transaction in play.  For instance, this test ensures that an object is stored after a commit:
 
 [source,java]
 ----
@@ -1015,7 +1015,8 @@ And now we're free to write the tests backing the points listed above; we want t
         return commit(getDomainClass(), callable);
     }
 
-    protected <T> T commit(Class<T> type, Callable<T> callable) throws Exception {
+    protected <T> T commit(Class<T> type, Callable<T> callable) throws 
+    Exception {
         try {
             tx.begin();
             return callable.call();
@@ -1073,7 +1074,7 @@ We have similar tests in place to validate the other conditions:
     @Test public void shouldSetUpdatedDate() throws Exception {...}
 ----
 
-With our base class containing most of our support for the transactional specification tests, now we can provide a concrete implementation for our +Attachment+ entities.  This is done in +org.cedj.geekseek.domain.attachment.test.integration.AttachmentRepositoryTransactionalTestCase+:
+With our base class containing most of our support for the transactional specification tests, now we can provide a concrete implementation for our +Attachment+ entities.  We do this in +org.cedj.geekseek.domain.attachment.test.integration.AttachmentRepositoryTransactionalTestCase+:
 
 [source,java]
 ----
@@ -1114,7 +1115,7 @@ We'll extend +BaseTransactionalSpecification+ and close the generic context to b
     }
 ----
 
-With these tests passing, we're now satisfied that our Infinispan backend is complying with the semantics of a backing application transaction.  We therefore have nicely abstracted the data grid from the perspective of the caller; it's just another transactionally-aware persistence engine representing itself as a +Repository+.
+With these tests passing, we're now satisfied that our Infinispan backend is complying with the semantics of a backing application transaction.  We therefore have nicely abstracted the data grid from the perspective of the caller; it's just another transactionally aware persistence engine representing itself as a +Repository+.
 
 ==== Validating Relationships
 
