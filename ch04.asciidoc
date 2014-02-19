@@ -359,11 +359,11 @@ With our persistence layers covered, we need to expose some way of allowing user
 
 EJBs and CDI beans are very handy for either direct calling or via a _remote procedure call_ (RPC) style, but they don't do much to inform us as users about the possible state transitions and available operations as we navigate the application.
 
-Our use case will explore the testable development of an SMTP service and interacting with an external, asynchronous, non-transactional resource.
+Our use case will explore the testable development of an SMTP service and interacting with an external, asynchronous, nontransactional resource.
 
 ==== Chapter 8: REST and Addressable Services
 
-REST (_Re_ presentational _S_ tate _T_ ransfer) is an architecture of patterns that reveal services as resources in a fashion consistent with the guiding concepts behind the web itself.  Chapter 7 will introduce the exposition of enterprise services using REST guidelines, and will be implemented with Java EE's JAX-RS framework.  Additionally, we'll test our endpoints using _Arquillian Warp_ and the http://code.google.com/p/rest-assured/[REST-assured] project.
+REST (__Re__presentational __S__tate __T__ransfer) is an architecture of patterns that reveal services as resources in a fashion consistent with the guiding concepts behind the web itself.  Chapter 7 will introduce the exposition of enterprise services using REST guidelines, and will be implemented with Java EE's JAX-RS framework.  Additionally, we'll test our endpoints using _Arquillian Warp_ and the http://code.google.com/p/rest-assured/[REST-assured] project.
 
 ==== Chapter 9: Security
 
