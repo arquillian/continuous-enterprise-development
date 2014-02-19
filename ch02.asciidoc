@@ -835,7 +835,7 @@ The online User Guide for WildFly is located at http://bit.ly/MAyZAR.
 
 Although getting our applications running on our own machine is a great step in developing, the beauty of the Internet is that we can expose our content and services to the world at large.  Until very recently, Java EE hosting typically involved a dedicated and expensive server colocated in a data center.  With the rapid advent of virtualization and the Cloud, we're now able to gain public access much more easily, and at far reduced cost.
 
-http://www.openshift.com[_OpenShift_] is Red Hat's free Platform as a Service (PaaS) for applications.  Although it supports a variety of frameworks bundled as "cartridges", we'll be using OpenShift's built-in JBossAS7 support.  With just a little bit of initial setup, pushing changes from our local Git repository to the OpenShift remote will trigger a build and deployment of our application for all to see.  We'll be relieved of the responsibility to obtain a server, install JBossAS, configure the networking and firewalls, or manually deploy new versions.
+http://www.openshift.com[_OpenShift_] is Red Hat's free Platform as a Service (PaaS) for applications.  Although it supports a variety of frameworks bundled as "cartridges," we'll be using OpenShift's built-in JBossAS7 support.  With just a little bit of initial setup, pushing changes from our local Git repository to the OpenShift remote will trigger a build and deployment of our application for all to see.  We'll be relieved of the responsibility of obtaining a server, installing JBossAS, configuring the networking and firewalls, or manually deploying new versions.
 
 === On to the Code
 
