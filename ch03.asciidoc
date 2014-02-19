@@ -99,13 +99,13 @@ image::images/cedj_04in04.png["Project Created"]
 
 Users of http://bit.ly/MABuTN[Maven Archetypes] may be familiar with this type of technique to create a new project, but because Forge is an _incremental_ tool, it's capable of reading a project's state and adding behaviors after creation.
 
-Let's add support for Java Persistence (JPA) to our project, a task that typically would involve some searching for the correct dependencies for the spec APIs (as well as those for any vendor-specific extensions).  Forge is helpful here as well, via its +persistence+ plugin:
+Let's add support for Java Persistence API (JPA) to our project, a task that typically would involve some searching for the correct dependencies for the spec APIs (as well as those for any vendor-specific extensions).  Forge is helpful here as well, via its +persistence+ plug-in:
 
 ----
 $> persistence setup --provider HIBERNATE --container JBOSS_AS7;
 ----
 
-In this case we've chosen http://www.hibernate.org/[Hibernate] as our persistence provider, and have targeted JBoss AS7 as our container.  Forge will equip our POM with the proper dependencies and supply us with a default +persistence.xml+ preconfigured to work with the AS7 runtime.  Remember, for a list of supported options, look to +TAB+ completion.
+In this case we've chosen http://www.hibernate.org/[Hibernate] as our persistence provider, and have targeted JBoss AS7 as our container.  Forge will equip our POM with the proper dependencies and supply us with a default _persistence.xml_ preconfigured to work with the AS7 runtime (remember, for a list of supported options, look to tab completion):
 
 ----
 ***SUCCESS*** Installed [forge.spec.jpa] successfully.
@@ -116,12 +116,14 @@ Wrote ./feedback/src/main/resources/META-INF/persistence.xml
 Wrote ./feedback/pom.xml
 ----
 
-A peek into the generated +persistence.xml+ will show us a decent default configuration:
+A peek into the generated _persistence.xml_ will show us a decent default configuration:
 
 [source,xml]
 ----
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
+xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
   <persistence-unit name="forge-default" transaction-type="JTA">
     <description>Forge Persistence Unit</description>
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
@@ -131,7 +133,8 @@ A peek into the generated +persistence.xml+ will show us a decent default config
       <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
-      <property name="hibernate.transaction.flush_before_completion" value="true"/>
+      <property name="hibernate.transaction.flush_before_completion" 
+                      value="true"/>
     </properties>
   </persistence-unit>
 </persistence>
