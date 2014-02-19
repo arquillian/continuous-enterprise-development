@@ -105,9 +105,9 @@ We've taken the first step in describing our data types by acknowledging the inf
 * How much data are we expecting in each entity?
 * What features will be demanded of our entities?
 
-It's questions like these that will help us to arrive at a _logical data model_, a representation of our data that isn't yet tied to any specific storage mechanism but still addresses the preceding questions.  Decisions at this step are instrumental in our later choices which will have heavy impact in areas like efficiency and performance.
+It's questions like these that will help us to arrive at a _logical data model_, a representation of our data that isn't yet tied to any specific storage mechanism but still addresses the preceding questions.  Decisions at this step are instrumental in our later choices, which will have heavy impact in areas like efficiency and performance.
 
-This is because database systems have varying strengths when we couple data representation with the requests we may make.  Actions like searching and sorting can take milliseconds or days, depending only upon the backing data structures and implementation used!  Therefore it's very important for us to define the relationships required between our data, and recognize cases where we could have potentially large result sets; it's here that we'll need to design efficiently.
+This is because database systems have varying strengths when we couple data representation with the requests we may make.  Actions like searching and sorting can take milliseconds or days, depending only upon the backing data structures and implementation used!  Therefore, it's very important for us to define the relationships required between our data, and recognize cases where we could have potentially large result sets; it's here that we'll need to design efficiently.
 
 ===== Relationships
 
@@ -134,40 +134,40 @@ So in the case of the entities for our application as defined by our desired fea
 |6|Session|Attachment|1:N|A session may have many attachments
 |7|Venue|Attachment|1:N|A venue may have many attachments
 |8|Room|Attachment|1:N|A room may have many attachments
-|9|User|User|N:N|A user may follow many other users on Twitter, and may also have many followers.
+|9|User|User|N:N|A user may follow many other users on Twitter, and may also have many followers
 |======
 
-In graphical terms, this may look a little like:
+In graphical terms, this may look a little like <<Figure4-1>>.
 
 .Needs a caption
 [[Figure4-1]]
 image::images/cedj_0401.png[]
 
-===== Intended Use
+===== Intended use
 
-When considering the efficiency of operations like database lookups, we should attempt to strike a balance between premature optimization and planning for performance.  For instance, it really wouldn't matter how complex the relationships between these entities are if we were only expecting a small, finite number of records; these would likely be cached at some level and held in memory, avoiding the need for lengthy tasks like full table scans.  At the other end of the spectrum, it'd be an oversight to recognize that we're expecting lots of data in a _normalized_ form, and anticipate that querying against this model has time complexity of linear (_O(n)_), geometric (_O(n^2^)_) or worse.
+When considering the efficiency of operations like database lookups, we should attempt to strike a balance between premature optimization and planning for performance.  For instance, it really wouldn't matter how complex the relationships between these entities are if we were only expecting a small, finite number of records; these would likely be cached at some level and held in memory, avoiding the need for lengthy tasks like full table scans.  At the other end of the spectrum, it'd be an oversight to recognize that we're expecting lots of data in a _normalized_ form, and anticipate that querying against this model has time complexity of linear (_O(n)_), geometric (_O(n^2^)_), or worse.
 
-Unfortunately, a pick peek at our data types and featureset shows that given enough time and interest in the application, we could reasonably expect entries for each of our main data types to grow, unbounded.
+Unfortunately, a quick peek at our data types and featureset shows that given enough time and interest in the application, we could reasonably expect entries for each of our main data types to grow, unbounded.
 
 Of particular note is the many-to-many relationship among users.  Because a user may have both many followers and may follow many people, we have two unidirectional relationships; a follower of mine is not necessarily someone I follow.  This is in contrast to a mutual "friend" model employed by, say, the http://www.facebook.com[Facebook] social networking site.
 
-In effect this relationship has a graph structure:
+In effect, this relationship has a graph structure, as shown in <<Figure4-2>>.
 
 .Needs a caption
 [[Figure4-2]]
 image::images/cedj_0402.png[]
 
-While there are any number of ways we might store and model this structure, it's worth noting that requesting transient relationships can be a problem with geometric time complexity.  That is: we'd need one query to find all of a user's followers.  Then, *for each* of the results in that set, we'd need another query to find *their* followers.  With each level we drill in to find followers, the problem gets prohibitively complex and unsolvable when organized in standard tables and rows.
+Although we might store and model this structure in any number of ways, it's worth noting that requesting transient relationships can be a problem with geometric time complexity.  That is, we'd need one query to find all of a user's followers.  Then, _for each_ of the results in that set, we'd need another query to find _their_ followers.  With each level we drill in to find followers, the problem gets prohibitively complex and unsolvable when organized in standard tables and rows.
 
 Because the relationship is naturally a graph, it will likely make sense to store our relationship data in this fashion.  That way, instead of querying standard records, we can walk the graph (simply obtaining a value from a pointer is an operation with constant time complexity, and thus will perform many factors better when we compound the process in a loop).
 
-Another interesting area revolves around the system's attachments.  An attachment can be associated with a conference, session, venue, or room, and ultimately consists of some arbitrary series of bytes.  This amounts to a natural "key/value" store really, where we can add a bunch of content, associate some metadata with it, and draw a relationship to its "owner".  Again, we might tackle this in a standard table representation, but perhaps the problem domain suggests a native solution more in tune with the key/value model.
+Another interesting area revolves around the system's attachments.  An attachment can be associated with a conference, session, venue, or room, and ultimately consists of some arbitrary series of bytes.  This amounts to a natural "key/value" store, where we can add a bunch of content, associate some metadata with it, and draw a relationship to its "owner."  Again, we might tackle this in a standard table representation, but perhaps the problem domain suggests a native solution more in tune with the key/value model.
 
 Now that we've developed a better understanding of our data, what requests we'll make of it, and how much we might have, we can move on to designing some user-based and technical use cases to drive the construction of our application.
 
 ==== Obtaining, Building, Testing, and Running GeekSeek
 
-We'd mentioned earlier that we'd be using the distributed version control system _Git_ to store the source for this book and its examples, and our friends at http://www.github.com[GitHub] kindly host our _authoritative repository_ at https://github.com/arquillian/continuous-enterprise-development[https://github.com/arquillian/continuous-enterprise-development].  Unlike centralized version control systems, Git stores the full repository history in each clone; when you "fork" or "copy" our repo, you'll get the entire history with every commit made since the book's inception.  The _authoritative repository_ refers to the one we elect to act as the _upstream_; changes that are approved to make it into new releases go here.
+We mentioned earlier that we'd be using the distributed version control system _Git_ to store the source for this book and its examples, and our _authoritative repository_ is kindly hosted http://bit.ly/1e7o0ox[at GitHub].  Unlike centralized version control systems, Git stores the full repository history in each clone; when you "fork" or "copy" our repo, you'll get the entire history with every commit made since the book's inception.  The _authoritative repository_ refers to the one we elect to act as the _upstream_; changes that are approved to make it into new releases go here.
 
 ===== Obtaining the Source
 
