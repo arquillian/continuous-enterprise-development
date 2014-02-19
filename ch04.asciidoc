@@ -288,7 +288,7 @@ Packaging the full application will result in a WAR (Web Archive) file located a
 
 ===== Running GeekSeek
 
-Although we've configured the build to obtain and use WildFly for use in testing GeekSeek automatically as part of the build, you may prefer to have an installation on your local disk to use manually.  This is useful for testing with remote containers (as covered in <<>>) as well as poking around the running application locally.
+Although we've configured the build to obtain and use WildFly for use in testing GeekSeek automatically as part of the build, you may prefer to have an installation on your local disk to use manually.  This is useful for testing with remote containers (as covered in <<ch11>>) as well as poking around the running application locally.
 
 WildFly is available for http://www.wildfly.org/download/[free download], and should be extracted to a location we'll call _JBOSS_HOME_.  By executing _JBOSS_HOME/bin/standalone.sh_, the server will start:
 
