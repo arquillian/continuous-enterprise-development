@@ -816,10 +816,10 @@ The latest community edition of the application server offered by JBoss has rece
 
 Speed:: Startup, deployment, and request processing demands leverage a concurrent state machine and constant-time class loading.
 Efficiency:: Memory usage is kept to a minimum.
-Modularity::  Application libraries and server libraries are isolated from one another to avoid runtime conflicts
-Administration::  Centralized settings via Web Interface, HTTP, Java, and Command-Line APIs
-Compliance::  http://bit.ly/MAyPcP[Java EE6 Full Profile Certification]
-Testable:: Uses Arquillian and ShrinkWrap in its own internal test suite
+Modularity::  Application libraries and server libraries are isolated from one another to avoid runtime conflicts.
+Administration::  Centralized settings via Web Interface, HTTP, Java, and Command-Line APIs.
+Compliance::  http://bit.ly/MAyPcP[Java EE6 Full Profile Certification].
+Testable:: Uses Arquillian and ShrinkWrap in its own internal test suite.
 
 Because a quick feedback loop is important in testing during development, the speed afforded by WildFly makes it a compelling candidate for our target runtime:
 
@@ -829,13 +829,13 @@ Because a quick feedback loop is important in testing during development, the sp
  Started 153 of 189 services (56 services are lazy, passive or on-demand)
 ----
 
-The online User Guide for WildFly is located at https://docs.jboss.org/author/display/WFLY8/Documentation[https://docs.jboss.org/author/display/WFLY8/Documentation].
+The online User Guide for WildFly is located at http://bit.ly/MAyZAR.
 
 ==== OpenShift
 
-While getting our applications running on our own machine is a great step in developing, the beauty of the internet is that we can expose our content and services to the world at large.  Until very recently, Java EE hosting typically involved a dedicated and expensive server colocated in a data center.  With the rapid advent of virtualization and the Cloud, we're now able to gain public access much more easily, and at far reduced cost.
+Although getting our applications running on our own machine is a great step in developing, the beauty of the Internet is that we can expose our content and services to the world at large.  Until very recently, Java EE hosting typically involved a dedicated and expensive server colocated in a data center.  With the rapid advent of virtualization and the Cloud, we're now able to gain public access much more easily, and at far reduced cost.
 
-http://www.openshift.com[_OpenShift_] is Red Hat's free Platform as a Service (PaaS) for applications.  While it supports a variety of frameworks bundled as "cartridges", we'll be using OpenShift's built-in JBossAS7 support.  With just a little bit of initial setup, pushing changes from our local Git repository to the OpenShift remote will trigger a build and deployment of our application for all to see.  We'll be relieved of the responsibility to obtain a server, install JBossAS, configure the networking and firewalls, or manually deploy new versions.
+http://www.openshift.com[_OpenShift_] is Red Hat's free Platform as a Service (PaaS) for applications.  Although it supports a variety of frameworks bundled as "cartridges", we'll be using OpenShift's built-in JBossAS7 support.  With just a little bit of initial setup, pushing changes from our local Git repository to the OpenShift remote will trigger a build and deployment of our application for all to see.  We'll be relieved of the responsibility to obtain a server, install JBossAS, configure the networking and firewalls, or manually deploy new versions.
 
 === On to the Code
 
