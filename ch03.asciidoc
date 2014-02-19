@@ -659,13 +659,13 @@ image::images/cedj_04in18.png["Adding Git Repo Information to Project"]
 
 Because OpenShift is using Git under the covers, and by extension SSH authentication, there may be some system-specific confirmation needed to continue.  For instance, we may need to confirm that it's OK to connect, as shown in <<Figure3-19>>.
 
-.Establishing SSH Keys
+.Establishing SSH keys
 [[Figure3-19]]
 image::images/cedj_04in19.png["Establishing SSH Keys"]
 
-And if you have a passphrase enabled on your SSH key, you will be asked to provide this as well:
+And if you have a passphrase enabled on your SSH key, you will be asked to provide this as well, as shown in <<Figure3-20>>.
 
-.Unlocking SSH Keys
+.Unlocking SSH keys
 [[Figure3-20]]
 image::images/cedj_04in20.png["Unlocking SSH Keys"]
 
@@ -676,7 +676,8 @@ Deploying JBoss
 Starting jbossas cartridge
 Found 127.13.6.1:8080 listening port
 Found 127.13.6.1:9999 listening port
-/var/lib/openshift/52390eb55973cafc7000008a/jbossas/standalone/deployments /var/lib/openshift/52390eb55973cafc7000008a/jbossas
+/var/lib/openshift/52390eb55973cafc7000008a/jbossas/standalone/deployments 
+/var/lib/openshift/52390eb55973cafc7000008a/jbossas
 CLIENT_MESSAGE: Artifact: ./ROOT.war is still deploying
 /var/lib/openshift/52390eb55973cafc7000008a/jbossas
 CLIENT_RESULT: Artifacts deployed: ./ROOT.war
@@ -684,4 +685,4 @@ CLIENT_RESULT: Artifacts deployed: ./ROOT.war
 
 This indicates success, and we can find our application running in the browser at +http://feedback-${openShiftAccountName}.rhcloud.com+.
 
-While this is not indicitive of the steps we'd traditionally take to develop a more realistic application, we've found that Forge, JBossAS7 (WildFly support forthcoming) and OpenShift make a powerful team in quickly prototyping or learning the components involved in bringing a blank slate to a fully-deployed, live, Java EE application.
+Although this is not indicitive of the steps we'd traditionally take to develop a more realistic application, we've found that Forge, JBossAS7 (WildFly support forthcoming), and OpenShift make a powerful team in quickly prototyping or learning the components involved in bringing a blank slate to a fully deployed, live, Java EE application.
