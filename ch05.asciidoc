@@ -181,9 +181,9 @@ managedPerson.setName("Just a POJO");  // This state change will *not* be
 
 This is the first chapter in which we'll be dealing with the companion GeekSeek example application for the book; its purpose is to highlight all layers working in concert to fulfill the _user requirements_ dictated by each chapter.  From here out, we'll be pointing to selections from the GeekSeek application in order to showcase how we wire together the domain, application, view, and test layers in a cohesive, usable project.
 
-As we proceed, we'll note each file so that you may draw references between the text and the deployable example.  We're firm believers that you best learn by doing (or at least exploring real code), so we invite you to dig in and run the examples as we go along.
+As we proceed, we'll note each file so that you can draw references between the text and the deployable example.  We're firm believers that you best learn by doing (or at least exploring real code), so we invite you to dig in and run the examples as we go along.
 
-Testing is a first-class citizen in verifying that our development is done correctly, so for instance in this chapter we'll be focusing on interactions with persistent data.  Before we can hope to arrive at any solutions, it's important to clearly identify the problem domain.  Each chapter will first outline the goals we're looking to address.
+Testing is a first-class citizen in verifying that our development is done correctly, so, for instance, in this chapter we'll be focusing on interactions with persistent data.  Before we can hope to arrive at any solutions, it's important to clearly identify the problem domain.  Each chapter will first outline the goals we're looking to address.
 
 ==== User Perspective
 
