@@ -140,15 +140,15 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/x
 </persistence>
 ----
 
-Let's make one tweak; the property +hibernate.hbm2ddl.auto+ is set to automatically drop the database tables such that they won't be able to be reused across deployments.  While this might be handy in development to ensure you're always coding from a clean slate, we'd actually like to use some real persistence later on, so let's change that property to a value of +update+.
+Let's make one tweak; the property +hibernate.hbm2ddl.auto+ is set to automatically drop the database tables such that they can't be reused across deployments.  Though this might be handy in development to ensure we're always coding from a clean slate, we'd actually like to use some real persistence later on, so let's change that property to a value of +update+.
 
-Java EE6 introduced the http://jcp.org/en/jsr/detail?id=303[Bean Validation] Specification which allows for validation constraints at the database, application, and view layers all with a single declaration.  Let's enable BV for our project, similar to how we put in place support for persistence:
+Java EE6 introduced the http://jcp.org/en/jsr/detail?id=303[Bean Validation Specification], which allows for validation constraints at the database, application, and view layers all with a single declaration.  Let's enable BV for our project, similar to how we put in place support for persistence:
 
 ----
 $> validation setup --provider HIBERNATE_VALIDATOR
 ----
 
-Once again we're given the appropriate dependencies in our POM, as well as a valid +validation.xml+ configuration file such that we don't have to apply any boilerplate XML on our own.
+Once again we're given the appropriate dependencies in our POM, as well as a valid _validation.xml_ configuration file such that we don't have to apply any boilerplate XML on our own:
 
 ----
 ***SUCCESS*** Installed [forge.spec.validation] successfully.
@@ -156,7 +156,7 @@ Wrote ./feedback/src/main/resources/META-INF/validation.xml
 Wrote ./feedback/pom.xml
 ----
 
-The generated +validation.xml+ should be fine for our uses without any modification.
+The generated _validation.xml_ should be fine for our uses without any modification:
 
 [source,xml]
 ----
