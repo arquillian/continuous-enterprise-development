@@ -284,13 +284,13 @@ The first run is likely to take some time because Maven will resolve all depende
 
 The +test+ phase will instruct Maven to fire up the application servers and run all tests to ensure that everything is working as expected.  If you'd like to save some time and simply fetch the dependencies, build the sources, and package the application, execute +mvn package -DskipTests=true+.  Here's a full list of the http://bit.ly/1e7xH6o[Maven lifecycles].
 
-Packaging the full application will result in a WAR (Web Archive) file located at +application/target/geekseek-(version).war+.  It's this file which may be deployed into an application server to run GeekSeek locally; by default we'll be using _WildFly_ from the JBoss Community.
+Packaging the full application will result in a WAR (Web Archive) file located at _application/target/geekseek-(version).war_.  It's this file that can be deployed into an application server to run GeekSeek locally; by default, we'll be using _WildFly_ from the JBoss Community.
 
 ===== Running GeekSeek
 
-While we've configured the build to obtain and use WildFly for use in testing GeekSeek automatically as part of the build, you may prefer to have an installation on your local disk to use manually.  This is useful for testing with remote containers (as covered later in the "Assembly and Deployment" Chapter) as well as poking around the running application locally.
+Although we've configured the build to obtain and use WildFly for use in testing GeekSeek automatically as part of the build, you may prefer to have an installation on your local disk to use manually.  This is useful for testing with remote containers (as covered in <<>>) as well as poking around the running application locally.
 
-WildFly is available for free download at http://www.wildfly.org/download/[http://www.wildfly.org/download/], and should be extracted to a location we'll call _JBOSS_HOME_.  By executing +JBOSS_HOME/bin/standalone.sh+, the server will start:
+WildFly is available for http://www.wildfly.org/download/[free download], and should be extracted to a location we'll call _JBOSS_HOME_.  By executing _JBOSS_HOME/bin/standalone.sh_, the server will start:
 
 ----
 wildfly-8.0.0.Alpha2 $> JBOSS_HOME=`pwd`
