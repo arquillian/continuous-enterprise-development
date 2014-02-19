@@ -13,13 +13,13 @@ Causes of potential failure are both infinite and inevitable.  As guardians of o
 
 ==== Reactive Error Handling
 
-Colloquially referred to as "firefighting", a reactive position calls us to action.  In most cases, an undesirable situation has already presented itself, and now we're charged with fixing:
+Colloquially referred to as "firefighting," a reactive position calls us to action.  In most cases, an undesirable situation has already presented itself, and now we're charged with fixing:
 
-. The initial cause of the error, if under our control
-. The unprotected areas of code which allowed the cause to wreck greater havoc
-. Any resultant artifacts which persist after the error is encountered
+. The initial cause of the error, if under our control.
+. The unprotected areas of code that allowed the cause to wreak greater havoc.
+. Any resultant artifacts that persist after the error is encountered.
 
-Anyone who's rifled through a database's binary log file to restore data to a consistent state can attest to the stressful waste of time incurred in handling emergency situations after a breach in expected execution. Dealing with issues as they arise also imposes a sense of immediacy; the activities of a normal workday may be suspended to address more pressing concerns.
+Anyone who's rifled through a database's binary logfile to restore data to a consistent state can attest to the stressful waste of time incurred in handling emergency situations after a breach in expected execution. Dealing with issues as they arise also imposes a sense of immediacy; the activities of a normal workday may be suspended to address more pressing concerns.
 
 Clearly, the reactive model is not our best option if it can be avoided.
 
@@ -36,11 +36,11 @@ public String welcome(String name) {
 }
 ----
 
-Assume a user were to accidentally pass +null+ into the +welcome(String)+ method above.  The +String+ returned would be:
+Assume a user were to accidentally pass +null+ into the +welcome(String)+ method.  The +String+ returned would be:
 
 +Hello, null+
 
-This is because the http://docs.oracle.com/javase/specs/jls/se7/html/[_Java Language Specification Version 7_] states in http://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.18.1[15.18.1] that concatenation with a single +String+ operand will result in String Conversion upon the other operand.  The +null+ pointer is therefore represented as the +String+ "null" according to the rules dictated by http://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html#jls-5.1.11[5.1.11].
+This is because the http://bit.ly/1e7kLNX[_Java Language Specification Version 7_] states in http://bit.ly/1e7kJW5[15.18.1] that concatenation with a single +String+ operand will result in string conversion upon the other operand.  The +null+ pointer is therefore represented as the +String+ "null" according to the rules dictated by http://bit.ly/1e7kMBr[5.1.11].
 
 Likely this isn't the result we'd been expecting, but we've put ourselves in this position because we didn't _code defensively_.  Enhancing the +welcome(String)+ method to perform a _precondition check_ would raise an +Exception+ to the user and prohibit further normal execution flow:
 
