@@ -107,33 +107,33 @@ Again, it is not our aim to fully delve into the mechanics of each tool we'll be
 
 === A Test Platform for Java EE
 
-Java EE 5 introduced a _POJO_ (Plain Old Java Object) programming model which freed developers from having to adhere to any particular class hierarchy for its business objects.  The introduction of http://jcp.org/en/jsr/detail?id=299[Contexts and Dependency Injection] (CDI) in Java EE 6 further pushed the notion of simple business objects by providing _typesafe injection_.  
+Java EE 5 introduced a _POJO_ (Plain Old Java Object) programming model, which freed developers from having to adhere to any particular class hierarchy for its business objects.  The introduction of http://bit.ly/MAgJYs[Contexts and Dependency Injection] (CDI) in Java EE 6 further pushed the notion of simple business objects by providing _typesafe injection_.  
 
-The benefit to objects that can be easily created using the +new+ operator is the same as their drawback; when we manually instantiate objects for use in testing, we're not dealing with the same enterprise components we have in the target runtime.  An EJB becomes such only in the context of an EJB container; a Servlet is a Servlet only when created by a Servlet Container.  Any time we circumvent the target runtime environment to handle object creation and wiring on our own, we're using _mock objects_.
+The benefit to objects that can be easily created using the +new+ operator is the same as their drawback; when we manually instantiate objects for use in testing, we're not dealing with the same enterprise components we have in the target runtime.  An EJB becomes such only in the context of an EJB container; a Servlet is a Servlet only when created by a Servlet container.  Any time we circumvent the target runtime environment to handle object creation and wiring on our own, we're using _mock objects_.
 
-While many will advocate on the usefulness of mocks, by definition they provide an approximation of how your application will behave in a production environment.  Remember that you're responsible for validating that the full bevy of code running on your servers is working as expected, including the bits you _did not write_.  There are many not-so-subtle errors that may arise while leveraging the full potential of the application server in production, and it's best to be testing in an environment as close to the real thing as possible.
+Although many will advocate on the usefulness of mocks, by definition they provide an approximation of how your application will behave in a production environment.  Remember that you're responsible for validating that the full bevy of code running on your servers is working as expected, including the bits you _did not write_.  Many not-so-subtle errors may arise while leveraging the full potential of the application server in production, and it's best to be testing in an environment as close to the real thing as possible.
 
 True Java EE testing in this sense is an area left largely unspecified by the EE Platform, and we'll be examining some tools to help bridge this divide.
 
 ==== Arquillian
 
-http://arquillian.org[Arquillian] is an innovative and highly extensible testing platform for the JVM that enables developers to easily create automated integration, functional and acceptance tests for Java middleware.
+http://arquillian.org[Arquillian] is an innovative and highly extensible testing platform for the JVM that enables developers to easily create automated integration, functional, and acceptance tests for Java middleware.
 
-Picking up where unit tests leave off, Arquillian handles all the plumbing of container management, deployment and framework initialization so you can focus on the business of writing test logic.  Instead of configuring a potentially-complex test harness, Arquillian abstracts out the target runtime by:
+Picking up where unit tests leave off, Arquillian handles all the plumbing of container management, deployment, and framework initialization so you can focus on the business of writing test logic.  Instead of configuring a potentially complex test harness, Arquillian abstracts out the target runtime by:
 
 * Managing the lifecycle of the container (or containers)
-* Bundling the test case, dependent classes and resources into a ShrinkWrap archive (or archives)
+* Bundling the test case, dependent classes, and resources into a ShrinkWrap archive (or archives)
 * Deploying the archive (or archives) to the container (or containers)
 * Enriching the test case by providing dependency injection and other declarative services
 * Executing the tests inside (or against) the container
 * Capturing the results and returning them to the test runner for reporting
-* To avoid introducing unnecessary complexity into the developer’s build environment, Arquillian integrates seamlessly with familiar testing frameworks (e.g., JUnit 4, TestNG 5), allowing tests to be launched using existing IDE, Ant and Maven test plugins--without any add-ons.
+* To avoid introducing unnecessary complexity into the developer’s build environment, Arquillian integrates seamlessly with familiar testing frameworks (e.g., JUnit 4, TestNG 5), allowing tests to be launched using existing IDE, Ant, and Maven test plug-ins--without any add-ons
 
 The Arquillian project adheres to three core principles:
 
 Tests should be portable to any supported container:: Keeping container-specific APIs out of the tests enables developers to verify application portability by running tests in a variety of containers. It also means that lightweight containers can be used as a substitute for full containers during development.
 Tests should be executable from both the IDE and the build tool::  By leveraging the IDE, the developer can skip the build for a faster turnaround and has a familiar environment for debugging. These benefits shouldn’t sacrifice the ability to run the tests in continuous integration using a build tool.
-The platform should extend or integrate existing test frameworks:: An extensible architecture encourages reuse of existing software and fosters a unified Java testing ecosystem.  Regardless of how complex it becomes, executing an Arquillian test is as simple as selecting Run As -> Test in the IDE or executing the “test” goal from the build tool.
+The platform should extend or integrate existing test frameworks:: An extensible architecture encourages reuse of existing software and fosters a unified Java testing ecosystem.  Regardless of how complex it becomes, executing an Arquillian test is as simple as selecting Run As -> Test in the IDE or executing the “test” goal from the build tool (see <<Figure2-4>>).
 
 .Run As -> JUnit
 [[Figure2-4]]
