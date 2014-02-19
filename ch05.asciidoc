@@ -76,9 +76,10 @@ Simple enough; this value object that explicitly declares the relationship betwe
 [[Figure5-2]]
 image::images/cedj_0502.png[]
 
-Now, let's take a look at how that same information might be represented in a relational database.  Much like a spreadsheet, classes from our object model are instead organized into tables:
+Now, let's take a look at how that same information might be represented in a relational database in <<table5-1>>.  Much like a spreadsheet, classes from our object model are instead organized into tables.
 
 .Needs a caption
+[[table5-1]]
 [options="header"]
 |============
 |*Data type*|*Field name*
