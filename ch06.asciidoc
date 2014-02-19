@@ -44,7 +44,7 @@ http://www.jboss.org/infinispan/[Infinispan] is an open source data grid from th
 
 [NOTE]
 ====
-Readers keen on gaining better insight into Infinispan and Data Grids are urged to check out http://www.packtpub.com/infinispan-data-grid-platform/book[_Infinispan Data Grid Platform_] by Francesco Marchioni and Manik Surtani from http://www.packtpub.com/[Packt Publishing].  A guide to the Infinispan User API is located at https://docs.jboss.org/author/display/ISPN/Using+the+Cache+API[https://docs.jboss.org/author/display/ISPN/Using+the+Cache+API].
+Readers keen on gaining better insight into Infinispan and data grids are urged to check out http://bit.ly/MB3l6r[_Infinispan Data Grid Platform_] by Francesco Marchioni and Manik Surtani (Packt Publishing, 2012).  A guide to the Infinispan User API is located at http://bit.ly/MB3ree.
 ====
 
 The general idea behind Infinispan is that it aims to provide unlimited heap to keep all objects available in memory.  For instance, if we have an environment of 50 servers each with 2GB available RAM, the total heap size is 100GB.  When the data set becomes too large for the currently-deployed nodes, new memory can be added in the form of new nodes.  This keeps all data quickly-accessible, though it may be partitioned across nodes.  This is not an issue, as every item remains accessible from every node in the grid, even though the current node may not be the one storing the data.
