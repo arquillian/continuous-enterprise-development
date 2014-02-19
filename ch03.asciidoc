@@ -651,13 +651,13 @@ Finishing this setup will trigger the deployment of our built artifacts from our
 [[Figure3-17]]
 image::images/cedj_04in17.png["Embedded Cartridges"]
 
-And we'll also want to confirm the Git metadata to be written into our project directory a final time; as JBDS notes, this cannot be undone (though you may manually delete the +.git+ directory from your project should you choose to disconnect your local workspace from any OpenShift or Git references).
+And we'll also want to confirm the Git metadata to be written into our project directory a final time (see <<Figure3-18>>). As JBDS notes, this cannot be undone (though you can manually delete the _.git_ directory from your project should you choose to disconnect your local workspace from any OpenShift or Git references).
 
-.Adding Git Repo Information to Project
+.Adding Git repo information to the project
 [[Figure3-18]]
 image::images/cedj_04in18.png["Adding Git Repo Information to Project"]
 
-As OpenShift is using Git under the covers, and by extension SSH authentication, there may be some system-specific confirmation needed to continue.  For instance, we may need to confirm that it's OK to connect:
+Because OpenShift is using Git under the covers, and by extension SSH authentication, there may be some system-specific confirmation needed to continue.  For instance, we may need to confirm that it's OK to connect, as shown in <<Figure3-19>>.
 
 .Establishing SSH Keys
 [[Figure3-19]]
