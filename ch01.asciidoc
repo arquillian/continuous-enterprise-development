@@ -54,15 +54,15 @@ public String welcome(String name) {
 }
 ----
 
-This _fail-fast_ policy is equally important at runtime as it is during development.  Knowing how to limit our exposure to error remains a topic of vast research and refinement.  Luckily, the study of _Software Development Process_ provides us with a number of models upon which we may base our own practices.
+This _fail-fast_ policy is equally as important at runtime as it is during development.  Knowing how to limit our exposure to error remains a topic of vast research and refinement.  Luckily, the study of the _software development process_ provides us with a number of models upon which we may base our own practices.
 
 === Software Development Processes
 
-_Methodology.  Doctrine.  Paradigm._  Whatever we call it, our process (or absence of one!) is the script we follow on a day-to-day basis which guides our approach to building software.  Typically inspired by the central themes we believe contribute to quality and efficiency, a model for development workflow may be a powerful tool in keeping you and your team from heading down an unproductive path.  Many well-documented approaches exist, and knowing their motivations can help inform your own decisions in choosing a sensible model for your project.
+_Methodology.  Doctrine.  Paradigm._  Whatever we call it, our process (or absence of one!) is the script we follow on a day-to-day basis that guides our approach to building software.  Typically inspired by the central themes we believe contribute to quality and efficiency, a model for development workflow may be a powerful tool in keeping you and your team from heading down an unproductive path.  Many well-documented approaches exist, and knowing their motivations can help inform your own decisions in choosing a sensible model for your project.
 
 ==== Serial Models
 
-A _serial_, or _sequential_, process follows a linear path from project inception to completion.  As each stage in the development lifecycle comes to a close, the next one in turn is started.  Prior stages are typically not revisited, and this model is often visualized as a series of steps:
+A _serial_, or _sequential_, process follows a linear path from project inception to completion.  As each stage in the development lifecycle comes to a close, the next one in turn is started.  Prior stages are typically not revisited, and this model is often visualized as a series of steps, as illustrated in <<Figure1-1>>.
 
 .Need a caption
 [[Figure1-1]]
