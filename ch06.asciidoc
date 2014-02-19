@@ -47,13 +47,13 @@ http://www.jboss.org/infinispan/[Infinispan] is an open source data grid from th
 Readers keen on gaining better insight into Infinispan and data grids are urged to check out http://bit.ly/MB3l6r[_Infinispan Data Grid Platform_] by Francesco Marchioni and Manik Surtani (Packt Publishing, 2012).  A guide to the Infinispan User API is located at http://bit.ly/MB3ree.
 ====
 
-The general idea behind Infinispan is that it aims to provide unlimited heap to keep all objects available in memory.  For instance, if we have an environment of 50 servers each with 2GB available RAM, the total heap size is 100GB.  When the data set becomes too large for the currently-deployed nodes, new memory can be added in the form of new nodes.  This keeps all data quickly-accessible, though it may be partitioned across nodes.  This is not an issue, as every item remains accessible from every node in the grid, even though the current node may not be the one storing the data.
+The general idea behind Infinispan is that it aims to provide unlimited heap to keep all objects available in memory.  For instance, if we have an environment of 50 servers each with 2GB of available RAM, the total heap size is 100GB.  When the data set becomes too large for the currently deployed nodes, new memory can be added in the form of new nodes.  This keeps all data quickly accessible, though it may be partitioned across nodes.  This is not an issue, because every item remains accessible from every node in the grid, even though the current node may not be the one storing the data.
 
-This makes Infinispan well-suited to holding large objects that may have otherwise been baked into a traditional RDBMS model.  Its implementation is versatile enough to be used in other applications, for instance as a local cache, but for the purposes of our GeekSeek application we'll be leveraging it to handle the storage and retrieval of our binary data.
+This makes Infinispan well-suited to holding large objects that may have otherwise been baked into a traditional RDBMS model.  Its implementation is versatile enough to be used in other applications (for instance, as a local cache), but for the purposes of our GeekSeek application we'll be leveraging it to handle the storage and retrieval of our binary data.
 
-=== RDBMS: Bad At Relationships
+=== RDBMS: Bad at Relationships
 
-The greatest irony of the _Relational_ Database Management System is that they start to break down when we need to model complex _relationships_.  As we've seen, a traditional RDBMS will associate data types by drawing pointers between tables using foreign-key relationships:
+The greatest irony of the _Relational_ Database Management System is that it starts to break down when we need to model complex _relationships_.  As we've seen, a traditional RDBMS will associate data types by drawing pointers between tables using foreign-key relationships, as shown in <<Figure6-1>>.
 
 .Needs a caption
 [[Figure6-1]]
@@ -61,7 +61,7 @@ image::images/cedj_0601.png[]
 
 When we go to query for these relationships we often perform an operation called an +_SQL JOIN_+ to return a result of rows from two or more tables.  This process involves resolving any foreign keys to provide a _denormalized_ view; one that combines all relevant data into a form that's useful for us as humans to interpret, but might not be the most efficient for storage or searching purposes.
 
-The problem is that running joins between data types is an inherently expensive operation, and often we need to join more than two tables.  Sometimes we even need to join _results_.  Consider the following example which has now become a commonplace feature among social media:
+The problem is that running joins between data types is an inherently expensive operation, and often we need to join more than two tables.  Sometimes we even need to join _results_.  Consider the following example, which has now become a commonplace feature among social media.
 
 Andy has a set of friends.  His friends also each have a set of friends.  To find all of the people who are friends with both Andy and his friends, we might do something like:
 
@@ -69,19 +69,19 @@ Andy has a set of friends.  His friends also each have a set of friends.  To fin
 * For each of those friends, find their friends (3rd-degree friends)
 * For each of the 3rd-degree friends, determine who is also friends directly with Andy
 
-That amounts to a lot of querying and joining.  What makes this approach unworkable from a computer science standpoint is the use of the term _for each_, which indicates a loop.  The above example has two of these, creating a computational problem with _geometric complexity_ at best.  As the size of the friend network increases linearly, the time it will take to determine a result increases by factors of magnitude.  Eventually (and it don't take a very large social network size), our system will be unable to perform these calculations in a reasonable amount of time, if at all.
+That amounts to a lot of querying and joining.  What makes this approach unworkable from a computer science standpoint is the use of the term _for each_, which indicates a loop.  The preceding example has two of these, creating a computational problem with _geometric complexity_ at best.  As the size of the friend network increases linearly, the time it will take to determine a result increases by factors of magnitude.  Eventually (and it doesn't take a very large social network size), our system will be unable to perform these calculations in a reasonable amount of time, if at all.
 
-Additionally, the approach outlined in the above example will need to either search entire tables for the correct foreign key relationships or maintain a separate index for each type of query.  Indexing adds some overhead to write operations; whenever a row is updated or added, the index must reflect that.  And working devoid of an index will require the database to do a full table scan.  If the size of the table is large enough that it cannot be contained in-memory (RAM) or the query cannot be held in a cache, now we introduce another serious roadblock as the system must resort to reading from physical disk, a far slower undertaking.
+Additionally, the approach outlined in the preceding example will need to either search entire tables for the correct foreign-key relationships or maintain a separate index for each type of query.  Indexing adds some overhead to write operations; whenever a row is updated or added, the index must reflect that.  And working devoid of an index will require the database to do a full table scan.  If the size of the table is large enough that it cannot be contained in-memory (RAM) or the query cannot be held in a cache, now we introduce another serious roadblock because the system must resort to reading from physical disk, which is a far slower undertaking.
 
 When it comes to complex relationships involving tables of any substantial size, the classic RDBMS approach is simply not the most intelligent way to model these resources.
 
 ==== Graph Theory
 
-The problem above illustrates that we're simply using the wrong tool for the job.  RDBMS excels at storage of tabular data, and even does a passable job of drawing simple relationships.  
+The preceding problem illustrates that we're simply using the wrong tool for the job.  RDBMS excels at storage of tabular data, and even does a passable job of drawing simple relationships.  
 
-What we want to do here is easily explore _transitive relationships_ without a geometric complexity problem, so we need to tackle the problem from a different angle.  Students of computer science will remember studying various data structures, their strengths and weaknesses.  In this case, we benefit from turning to the writings of  mathematician Leonhard Euler on the _Seven Bridges of Königsberg_, which in 1735 established the roots of _graph theory_.
+What we want to do here is easily explore _transitive relationships_ without a geometric complexity problem, so we need to tackle the problem from a different angle.  Students of computer science will remember studying various data structures, their strengths, and weaknesses.  In this case, we benefit from turning to the writings of  mathematician Leonhard Euler on the _Seven Bridges of Königsberg_, which in 1735 established the roots of _graph theory_.
 
-Graphs are data structures comprised from _nodes_ or _vertices_ and edges; the node/vertex may represent our data, while the edge defines the relationship.
+Graphs are data structures comprised from _nodes_ or _vertices_ and edges; the node/vertex represents our data, while the edge defines the relationship.
 
 Using this view of our data points and the relationships between them, we may apply much more efficient algorithms for:
 
