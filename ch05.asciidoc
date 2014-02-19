@@ -131,7 +131,7 @@ image::images/cedj_0503.png[]
 
 [NOTE]
 ====
-Though a full overview of this technology stack is beyond the scope of this book, we'll be sure to point you to enough resources and explain the basics of interacting with data via JPA that you'll be able to understand our application and test examples.  For readers interested in gaining better insight into JPA (and its parent, EJB), we recommend http://shop.oreilly.com/product/9780596158033.do[_Enterprise Java Beans 3.1 6th Edition_] by Andrew Lee Rubinger and Bill Burke from O'Reilly Media.
+Though a full overview of this technology stack is beyond the scope of this book, we'll be sure to point you to enough resources and explain the basics of interacting with data via JPA that you'll be able to understand our application and test examples.  For readers interested in gaining better insight into JPA (and its parent, EJB), we recommend pass:[<emphasis><ulink role="orm:hideurl" url="http://shop.oreilly.com/product/9780596158033.do">Enterprise Java Beans 3.1, 6th Edition</ulink></emphasis>] by Andrew Lee Rubinger and Bill Burke (O'Reilly, 2010).
 ====
 
 ==== POJO Entities
