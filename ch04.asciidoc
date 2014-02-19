@@ -341,15 +341,15 @@ Each chapter from here on out will address a set of related technical and user-c
 
 Our feature set demands a variety of operations that depend upon persistent data; information that must be saved longer than a user's session or even the application's startup/shutdown lifecycle.  It's likely we won't be able to hold all of our data in memory either, so we'll need to tackle issues like serialization and concurrent, multiuser access.
 
-As our logical data analysis has exposed, we have plenty of data types that might work well arranged in a table/row/column structure provided by the _relational_ model, and that's exactly what we'll cover in <<>>.
+As our logical data analysis has exposed, we have plenty of data types that might work well arranged in a table/row/column structure provided by the _relational_ model, and that's exactly what we'll cover in <<ch05>>.
 
 We'll also give a brief overview of mapping from a relational database to an object model that's more familiar and friendly using the _Java Persistence API_ and transactional support via _Enterprise JavaBeans_, and we'll be sure to test that our domain layer is properly tested against known data sets using the handy _Arquillian Persistence Extension_.
 
 ==== Chapter 6: NoSQL: Data Grids and Graph Databases
 
-While it enjoys popularity as the most widely-deployed database management system flavor, the relational model is not the only representation we have at our disposal.  In recent years a paradigm shift has been prevalent in the persistence space.
+Although it enjoys popularity as the most widely deployed database management system flavor, the relational model is not the only representation we have at our disposal.  In recent years a paradigm shift has been prevalent in the persistence space.
 
-NoSQL is a blanket term which has varied definitions, but generally refers to any number of database systems which do not employ the relational model.  Popular implementations include a document store (ie. http://www.mongodb.org/[MongoDB]), a key/value store (ie. http://www.jboss.org/infinispan/[Infinispan]), or a graph database (ie. http://www.neo4j.org/[Neo4j]).
+NoSQL is a blanket term which has varied definitions, but generally refers to any number of database systems which do not employ the relational model.  Popular implementations include a document store (i.e., http://www.mongodb.org/[MongoDB]), a key/value store (i.e., http://www.jboss.org/infinispan/[Infinispan]), or a graph database (i.e., http://www.neo4j.org/[Neo4j]).
 
 We've noted above that our user relationship model is a natural graph and that our attachments might be well-served from a key/value store, so Chapter 6 will take a look at implementing persistent storage through these mechanisms.
 
