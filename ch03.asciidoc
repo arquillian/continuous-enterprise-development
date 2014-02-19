@@ -506,21 +506,21 @@ The missing bit is that we need a server into which we can deploy our web app!  
 $> forge install-plugin jboss-as-7
 ----
 
-Once installation is complete, we may use the newly-acquired +as7+ command to set up our server.
+Once installation is complete, we can use the newly acquired +as7+ command to set up our server:
 
 ----
 $> as7 setup
 ----
 
-You'll be prompted for your +$JAVA_HOME+ location and JBossAS7 version; be sure to align the versions with the Arquillian Container Adaptor Version we'd chosen before.  Again, in this example we recommend +7.1.1.Final+.  Forge will additionally ask for the location to a JBossAS7 installation on the filesystem, but simply hitting +ENTER+ will download the server for us into the +target+ directory of our project.
+You'll be prompted for your +$JAVA_HOME+ location and JBossAS7 version; be sure to align the versions with the Arquillian Container Adaptor Version we'd chosen before.  Again, in this example we recommend +7.1.1.Final+.  Forge will additionally ask for the location to a JBossAS7 installation on the filesystem, but simply hitting Enter will download the server for us into the +target+ directory of our project.
 
-Now it's time to fire up the server.  First +cd+ into the root of your project in the Forge shell, then execute:
+Now it's time to fire up the server.  We'll first +cd+ into the root of our project in the Forge shell, then execute the following command:
 
 ----
 $> as7 start --jboss-home target/jboss-as-dist/jboss-as-7.1.1.Final/
 ----
 
-If you've opted for a different version of JBossAS7, you may have to make substitutions to point +JBOSS_HOME+ correctly.  Assuming all goes to plan, you should see the JBossAS7 startup sequence in the Forge shell, followed by:
+If you've opted for a different version of JBossAS7, you may have to make substitutions to point +JBOSS_HOME+ correctly.  Assuming all goes as planned, you should see the JBossAS7 startup sequence in the Forge shell, followed by:
 
 ----
 ***INFO*** JBoss AS 7.1.1.Final has successfully started.
@@ -538,21 +538,21 @@ Again, after a series of JBossAS7 deployment messages, you should see:
 The deployment operation (FORCE_DEPLOY) was successful.
 ----
 
-We're up and running!  Point your browser of choice to the root of the application at +http://localhost:8080/feedback+, and you should see the home screen of the UI that Forge has generated for us.
+We're up and running!  Point your browser of choice to the root of the application at +http://localhost:8080/feedback+, and you should see the home screen of the UI that Forge has generated for us, as shown in <<Figure3-5>>.
 
-.Feedback Application Home
+.Feedback application home page
 [[Figure3-5]]
 image::images/cedj_04in05.png["Feedback Application Home"]
 
-Selecting the "Feedback Entry" button will grant us access to the CRUD editor for this entity.  From here we can create a new row in the database table.
+Clicking the Feedback Entry button in <<Figure3-6>> will grant us access to the CRUD editor for this entity.  From here we can create a new row in the database table.
 
-.New Feedback Entry
+.New feedback entry
 [[Figure3-6]]
 image::images/cedj_04in06.png["New Feedback Entry"]
 
-While CRUD applications are little more than a UI frontend to an Entity, the benefit here is in having a fully-functioning application to use as a base from which to start.  For newcomers to Java EE, this is especially useful as a learning tool.
+Although CRUD applications are little more than a UI frontend to an entity, the benefit here is in having a fully functioning application to use as a base from which to start.  For newcomers to Java EE, this is especially useful as a learning tool.
 
-With our new entry now persisted into the database, let's undeploy the application in preparation to perform our first integration test run with Arquillian.
+With our new entry now persisted into the database, let's undeploy the application in preparation to perform our first integration test run with Arquillian:
 
 ----
 $> as7 undeploy
@@ -562,7 +562,7 @@ The deployment operation (UNDEPLOY_IGNORE_MISSING) was successful.
 
 === Running the Arquillian Integration Test
 
-At this point, we still have a running JBoss AS7 server and have undeployed the "feedback" application.  Because we'd chosen the +JBOSS_AS_REMOTE_7.X+ option as part of the Forge Arquillian Plugin +setup+ command above, our POM is equipped with a profile which enables a dependency on the JBoss AS7 Arquillian Container:
+At this point, we still have a running JBoss AS7 server and have undeployed the `feedback` application.  Because we'd chosen the +JBOSS_AS_REMOTE_7.X+ option as part of the Forge Arquillian plug-in +setup+ command, our POM is equipped with a profile that enables a dependency on the JBoss AS7 Arquillian container:
 
 ----
     <profile>
@@ -577,17 +577,17 @@ At this point, we still have a running JBoss AS7 server and have undeployed the 
     </profile>
 ----
 
-Let's inform JBDS that we should consider the metadata considered in this profile; this will impact our compilation and JUnit runtime classpaths.
+Let's inform JBDS that we should consider the metadata in this profile; this will impact our compilation and JUnit runtime classpaths.
 
 .Select Maven Profile
 [[Figure3-7]]
 image::images/cedj_04in07.png["Select Maven Profile"]
 
-Now the Arquillian test launcher will know to pick up the proper adaptor to a remote JVM instance of JBoss AS7 when running tests; it will connect to the currently-running instance, deploy the defined +@Deployment+, execute the tests, and undeploy to clean up.  If we'd like to allow Arquillian to automatically control the server start/stop lifecycle alongside each test suite, we could alternatively use the +JBOSS_AS_MANAGED_7.X+ setup option which defines +org.jboss.as:jboss-as-arquillian-container-managed+ as a dependency in a POM profile.
+Now the Arquillian test launcher will know to pick up the proper adaptor to a remote JVM instance of JBoss AS7 when running tests; it will connect to the currently running instance, deploy the defined +@Deployment+, execute the tests, and undeploy to clean up.  If we'd like to allow Arquillian to automatically control the server start/stop lifecycle alongside each test suite, we could alternatively use the +JBOSS_AS_MANAGED_7.X+ setup option, which defines +org.jboss.as:jboss-as-arquillian-container-managed+ as a dependency in a POM profile.
 
-With JBDS now configured with the proper +classpath+ for test execution, all that's left to do is launch the test.  A simple right-click on the test class in the Project Explorer yields the option Run As -> JUnit Test.  The IDE's JUnit launcher will create a new process, fire up JUnit, and yield control to Arquillian.  We'll receive results just as we'd expect from any other JUnit test.
+With JBDS now configured with the proper +classpath+ for test execution, all that's left to do is launch the test.  A simple right-click on the test class in the Project Explorer yields the option Run As -> JUnit Test.  The IDE's JUnit launcher will create a new process, fire up JUnit, and yield control to Arquillian.  We'll receive results just as we'd expect from any other JUnit test (see <<Figure3-8>>).
 
-.Passing the Tests
+.Passing the tests
 [[Figure3-8]]
 image::images/cedj_04in08.png["Passing the Tests"]
 
