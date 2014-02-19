@@ -591,21 +591,21 @@ With JBDS now configured with the proper +classpath+ for test execution, all tha
 [[Figure3-8]]
 image::images/cedj_04in08.png["Passing the Tests"]
 
-With assurance that our application has some minimal level of tested functionality, let's take a risk and move this off the isolation of our local machine and into the public realm, accessible from the world.
+With assurance that our application has some minimal level of tested functionality, let's take a risk and move this off the isolation of our local machine and into the public realm, accessible to the world.
 
 === Deploying to OpenShift via JBoss Developer Studio
 
-JBDS provides us a convenient user interface to the OpenShift cloud service, which will run our applications on the publicly-available web.  Complete information is available at the https://www.openshift.com/[OpenShift] site; for our purposes we'll be running the Java EE webapp we've created above in a JBossAS7 _cartridge_, OpenShift's moniker for a canned set of cloud services.
+JBDS provides us a convenient user interface to the OpenShift cloud service, which will run our applications on the publicly available Web.  Complete information is available at the https://www.openshift.com/[OpenShift] site; for our purposes we'll be running the Java EE web app we created earlier in a JBossAS7 _cartridge_, OpenShift's moniker for a canned set of cloud services.
 
-Before continuing, it's required to create an account; this can be achived by clicking on the "SIGN UP" button from the home page and completing the requisite form.
+Before continuing, we are required to create an account; we can do this by clicking the SIGN UP button from the home page and completing the requisite form, as shown in <<Figure3-9>>.
 
-.OpenShift Signup
+.OpenShift signup
 [[Figure3-9]]
 image::images/cedj_04in09.png["OpenShift Signup"]
 
-Existing users may simply log in to see active applications.
+Existing users can simply log in to see active applications, as shown in <<Figure3-10>>.
 
-.OpenShift Login
+.OpenShift login
 [[Figure3-10]]
 image::images/cedj_04in10.png["OpenShift Login"]
 
