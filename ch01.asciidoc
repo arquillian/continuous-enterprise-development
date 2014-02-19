@@ -349,18 +349,18 @@ image::images/cedj_02in04.png["TestNG IDE Runner Integration"]
 
 Followers of Extreme Programming and Agile methodologies are likely to be familiar with http://bit.ly/1e7nG9j[Continuous Integration], a practice that advocates frequent patching of the upstream development branch in order to catch errors as they're introduced.  Such an approach involves:
 
-* An authoritative source repository (which is *not* at odds with decentralized version control systems, as we'll soon see)
+* An authoritative source repository (which is _not_ at odds with decentralized version control systems, as we'll soon see)
 * A comprehensive test suite
 * An automated build system
 * Automated deployment
 
-These general rules are applicable in most any modern language, are tool-agnostic, and are widely-accepted throughout the development community.
+These general rules are applicable in most any modern language, are tool-agnostic, and are widely accepted throughout the development community.
 
 So why the _Continuous Development_ title of this book?
 
 In addition to the successful ideology and theory espoused by the Agile community, we'll be looking at concrete tools and projects both within and extending the Java Enterprise Platform to best address the real-world concerns of an Enterprise Java Developer.
 
-The authoritative Git repository containing the book and example application source for this text is hosted by our friends at http://www.github.com[GitHub] at https://github.com/arquillian/continuous-enterprise-development[https://github.com/arquillian/continuous-enterprise-development].  The accompanying book site is located at http://continuousdev.org[http://continuousdev.org], and the official Twitter channel is http://twitter.com/ContinuousDev[@ContinuousDev].  The authors may be reached at authors@continuousdev.org.
+The authoritative Git repository containing the book and example application source for this text is hosted by our friends http://bit.ly/1e7o0ox[at GitHub].  The accompanying book site is located at http://continuousdev.org, and the official Twitter channel is http://twitter.com/ContinuousDev[@ContinuousDev].  The authors may be reached at authors@continuousdev.org.
 
 All contents of the book's repository are licensed under http://creativecommons.org/licenses/by-sa/2.0/[Creative Commons Attribution-ShareAlike 2.0 Generic], and we invite the community at large to contribute work including feature requests, typographical error corrections, and enhancements via our https://github.com/arquillian/continuous-enterprise-development/issues[GitHub Issue Tracker].
 
