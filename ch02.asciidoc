@@ -5,13 +5,13 @@ ____
 I get by with a little help from my friends.
 ____
 
-There's a common misconception that the goal of a standard specification is to address _every_ problem.  This couldn't be further from the truth; creating a standard is meant to address the 80% case in a manner that's been proven through experience in the field.  The http://bit.ly/1e7xn7H[Java Enterprise Edition] and its subsystems, governed by the http://www.jcp.org/en/home/index[Java Community Process]  (JCP), is no exception.
+There's a common misconception that the goal of a standard specification is to address _every_ problem.  This couldn't be further from the truth; creating a standard is meant to address the 80% case in a manner that's been proven through experience in the field.  The http://bit.ly/1e7xn7H[Java Enterprise Edition] and its subsystems, governed by the http://www.jcp.org/en/home/index[Java Community Process] (JCP), is no exception.
 
 By its very makeup, the JCP is designed to strive for consensus among all participants in an Expert Group on a given technology.  Where corporate sponsors and individual contributors disagree or determine that a feature is not yet mature enough to be adequately standardized, latitude is given to specification implementors.  This helps to foster creativity and provides differentiation between vendors.  In fact, on a http://bit.ly/1e7xoIF[discussion regarding the Java EE7 Roadmap], Expert Group member David Blevins succinctly addressed the dynamic: "Vendors innovate, collectively we standardize."
 
-While it's not the goal of this book to provide exhaustive instruction on the complete featureset of Java EE, it is absolutely our intent to unify the development experience.  Helping us along the way are a set of enabling technologies intending to smooth the rough edges of the EE Platform and fill the gaps left open by its specifications.
+Though it's not the goal of this book to provide exhaustive instruction on the complete featureset of Java EE, it is absolutely our intent to unify the development experience.  Helping us along the way are a set of enabling technologies intended to smooth the rough edges of the EE Platform and fill the gaps left open by its specifications.
 
-The following open-source projects are all made freely-available for you to download, use, and modify (be sure to consult individual licensing terms).
+The following open source projects are all made freely available for you to download, use, and modify (be sure to consult individual licensing terms).
 
 === Bootstrapping
 
@@ -22,17 +22,17 @@ For all the documentation surrounding Java EE and its use, the seemingly simple 
 * How can my team best collaborate in parallel on the codebase?
 * What about libraries my code uses?  How do I get those?
 
-There are a number of valid answers to each of these questions, and the flexibility of choice can easily turn into a burden.  Because we'll be exploring fully-functioning examples which are intended to be reproduced in your own environment, by necessity we've had to make some decisions in the interest of keeping focus on the code as opposed to our development tools.  The projects below, when combined, work very well together but are certainly not the only solutions to the bullets raised above.
+There are a number of valid answers to each of these questions, and the flexibility of choice can easily turn into a burden.  Because we'll be exploring fully functioning examples that are intended to be reproduced in your own environment, by necessity we've had to make some decisions in the interest of keeping focus on the code as opposed to our development tools.  The following projects, when combined, work very well together but are certainly not the only solutions to the preceding bullet points.
 
-One approach to undertaking a new project is to first lay out the scaffolding on your local file system.  This will create the structure for your source code, build descriptors, and other resources used by your project.  Often this process is fairly rote, involving commands to make new directories and text files in some sensible layout.  While there's no formal rule dictating how your project tree is organized, some build systems employ a convention; others instead choose to allow you total control over your project's build by encouraging you to script or otherwise instruct each build task.
+One approach to undertaking a new project is to first lay out the scaffolding on your local filesystem.  This will create the structure for your source code, build descriptors, and other resources used by your project.  Often this process is fairly rote, involving commands to make new directories and text files in some sensible layout.  Although there's no formal rule dictating how your project tree is organized, some build systems employ a convention; others instead choose to allow you total control over your project's build by encouraging you to script or otherwise instruct each build task.
 
-Our examples will be built using a _declarative build tool_ which has standard commands that do not change from project to project.
+Our examples will be built using a _declarative build tool_, which has standard commands that do not change from project to project.
 
 ==== Apache Maven
 
-Perhaps the most prominent figure in the Java automated build tool landscape, http://maven.apache.org/[Apache Maven] positions itself as a "software project management and comprehension tool".  For simplicity's sake, we may view it as a build tool; it's capable of compiling, testing, and assembling.  
+Perhaps the most prominent figure in the Java automated build tool landscape, http://maven.apache.org/[Apache Maven] positions itself as a "software project management and comprehension tool."  For simplicity's sake, we may view it as a build tool; it's capable of compiling, testing, and assembling.  
 
-One very nice feature of Maven is that it strives for _"convention over configuration"_.  By following a set of recommended best practices, you're likely to trim down on the amount of metadata you'd otherwise need to explicitly define.  Additionally, Maven actions (called _goals_) are bound to a documented http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html[lifecycle] which are common to all Maven-based projects.  For instance, in order to compile, test, and package your project, the command +$> mvn package+ applies.  This standardization alleviates us from having to declare or learn different build commands for each project.
+One very nice feature of Maven is that it strives for _"convention over configuration"_.  By following a set of recommended best practices, you're likely to trim down on the amount of metadata you'd otherwise need to explicitly define.  Additionally, Maven actions (called _goals_) are bound to a documented http://bit.ly/1e7xH6o[lifecycle] which are common to all Maven-based projects.  For instance, in order to compile, test, and package your project, the command +$> mvn package+ applies.  This standardization alleviates us from having to declare or learn different build commands for each project.
 
 At the core of the Maven engine is a sophisticated _dependency management_ solution capable of resolving libraries by name from a http://search.maven.org/[Central Repository] (or additionally-configured repository) onto a user's local system.  This feature allows us to skip the manual process of adding dependencies into our version control system, and allows us to instead fetch them on-demand as part of the build process.  As an added bonus, the requisite dependencies for all projects consuming ours are well-documented and automatically fetched for us.
 
