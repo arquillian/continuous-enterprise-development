@@ -6,29 +6,27 @@ ____
 Energy and persistence conquer all things.
 ____
 
-If we really boil down the primary objective of most applications to bare metal, we'll find that nearly everything we do involves an interaction with _data_.  We supply it when we make a new online order.  We pull it out when we research on a Wiki.  We update it when we change our credit card's billing address.
+If we really boil down the primary objective of most applications to bare metal, we'll find that nearly everything we do involves an interaction with _data_.  We supply it when we make a new online order.  We pull it out when we research on a wiki.  We update it when we change our credit card's billing address.
 
 The information contained in a system at any point in time comprises the _state_ of the application, and state comes in a variety of _scopes_, including:
 
-|======================
-|Request|Limited access within one request/response cycle
-|Session|Limited access within one user session
-|Conversation/Sequence/Transaction|Limited access to a sequence of events (treated as one unit) within one user session
-|Application|Shared throughout the application
-|Environment|Shared throughout the host environment
-|======================
+Request:: Limited access within one request/response cycle
+Session:: Limited access within one user session
+Conversation/Sequence/Transaction:: Limited access to a sequence of events (treated as one unit) within one user session
+Application:: Shared throughout the application
+Environment:: Shared throughout the host environment
 
-Depending upon your view or framework of choice, there may be other ways to slice visibility, but the above table outlines some of the most commonly-used paradigms.
+Depending upon your view or framework of choice, there may be other ways to slice visibility, but this list outlines some of the most commonly used paradigms.
 
 As is thematic throughout the study of computer science, the rule of thumb is to limit ourselves to the smallest scope required.  Fine-grained access to data helps to ensure that we don't leak out state where it can cause security issues or difficult-to-debug behaviors.  Can you imagine what it'd be like if one user's access to his online bank account were to be replicated to all active sessions?
 
-In addition to the notion of scopes, which limit data's visibility, we also have the concept of _persistence_.  Persistence is a property which dictates whether or not state will survive outside of its confining scope.  For instance: we may allow a user to log in and change her online profile, but if we don't synchronize these updates with some sort of persistent storage, they'll be lost as soon as her user session which defines the scope of this data is closed.
+In addition to the notion of scopes, which limit data's visibility, we also have the concept of _persistence_.  Persistence is a property that dictates whether or not state will survive outside of its confining scope.  For instance, we may allow a user to log in and change her online profile, but if we don't synchronize these updates with some sort of persistent storage, they'll be lost as soon as her user session (which defines the scope of this data) is closed.
 
-Perhaps the simplest way to handle persistent storage is to directly serialize information to the file system.  At first glance, this looks like a nice approach; we open up a file, write whatever we want in there, and close it up.  Later we go in and read as needed.  Easy!
+Perhaps the simplest way to handle persistent storage is to directly serialize information to the filesystem.  At first glance, this looks like a nice approach; we open up a file, write whatever we want in there, and close it up.  Later we go in and read as needed.  Easy!
 
-Until we start to think through how this is going to play out in practice.  Our applications are multi-user; they support any number of operations going on in parallel.  How are we to ensure that we don't have two writes happening on the same file at once?  We could put a read/write lock in place to ensure that only one write happens at a time, but then we could potentially queue up lots of write requests while work is being done.  And what about auditing our changes, or ensuring that the integrity of our data model is preserved in case of an error?  Very quickly we'll discover that the task of persisting our data is a first-class problem in and of itself, and one that probably doesn't belong on our desks as application developers.
+...until we start to think through how this is going to play out in practice.  Our applications are multiuser; they support any number of operations going on in parallel.  How are we to ensure that we don't have two writes happening on the same file at once?  We could put a read/write lock in place to ensure that only one write happens at a time, but then we could potentially queue up lots of write requests while work is being done.  And what about auditing our changes, or ensuring that the integrity of our data model is preserved in case of an error?  Very quickly we'll discover that the task of persisting our data is a first-class problem in and of itself, and one that probably doesn't belong on our desks as application developers.
 
-It'd be much better to delegate the task of persistent storage to another component equipped to handle this efficiently and securely.  Luckily, we'll have our pick of any number of Database Management Systems (DBMS) which do just that.
+It'd be much better to delegate the task of persistent storage to another component equipped to handle this efficiently and securely.  Luckily, we'll have our pick of any number of Database Management Systems (DBMS) that do just that.
 
 .Needs a caption
 [[Figure5-1]]
@@ -36,14 +34,12 @@ image::images/cedj_0501.png[]
 
 The role of a DBMS is very generally to store and provide access to data.  They come in a variety of flavors which are differentiated in terms of how they internally organize information:
 
-|============
-|Relational (RDBMS)|Like data is grouped into tables where columns represent data types and rows represent records.  Most often employs a protocol language called _Structured Query Language_ (SQL) for interaction.  Examples: http://www.mysql.com/[MySQL], http://www.postgresql.org/[PostgreSQL].
-|Graph|Stores objects with relationships in a graph structure; ideal for traversing nodes.  Example: http://www.neo4j.org/[Neo4j]
-|Key/Value|Nested Map or document-oriented structure, becoming very popular in recent years.  Examples: http://www.jboss.org/infinispan/[Infinispan], http://www.mongodb.org/[MongoDB]
-|Column-oriented|Stores data in columns, as opposed to the RDBMS where the records are kept in rows.  Best-suited for very large tables.  Examples: http://hbase.apache.org/[Apache HBase], http://cassandra.apache.org/[Apache Cassandra].
-|============
+Relational (RDBMS):: Like data is grouped into tables where columns represent data types and rows represent records.  Most often employs a protocol language called _Structured Query Language_ (SQL) for interaction.  Examples: http://www.mysql.com/[MySQL], http://www.postgresql.org/[PostgreSQL].
+Graph:: Stores objects with relationships in a graph structure; ideal for traversing nodes.  Example: http://www.neo4j.org/[Neo4j].
+Key/Value:: Nested Map or document-oriented structure, becoming very popular in recent years.  Examples: http://www.jboss.org/infinispan/[Infinispan], http://www.mongodb.org/[MongoDB].
+Column-oriented:: Stores data in columns, as opposed to the RDBMS where the records are kept in rows.  Best-suited for very large tables.  Examples: http://hbase.apache.org/[Apache HBase], http://cassandra.apache.org/[Apache Cassandra].
 
-This chapter will focus on today's most commonly-used relational model (NoSQL will be covered next in Chapter 6).
+This chapter will focus on today's most commonly-used relational model (NoSQL will be covered next in <<ch06>>).
 
 === The Relational Database Model
 
