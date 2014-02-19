@@ -29,23 +29,19 @@ $> java -jar jbdevstudio-product-universal-7.0.0.GA-v20130720-0044-B364.jar
 [[Figure3-1]]
 image::images/cedj_04in01.png["JBoss Developer Studio Installation"]
 
-Following the graphical wizard will install the JDBS (and all requisite plugins we'll be using) IDE onto your local machine.
+Following the graphical wizard will install the JDBS IDE (and all requisite plug-ins we'll be using) onto your local machine.
 
 === A New Project
 
-The previous chapter introduced us to JBoss Forge, a tool that aims to make project creation and enhancement more declarative and less manual.  As we're starting fresh now, it makes sense to use Forge to create our project layout.  This will ultimately give us a functional skeleton from database to view layer which we can use either as a learning tool or a quick shortcut to writing some real code.
+The previous chapter introduced us to JBoss Forge, a tool that aims to make project creation and enhancement more declarative and less manual.  Because we're starting fresh now, it makes sense to use Forge to create our project layout.  This will ultimately give us a functional skeleton from database to view layer that we can use either as a learning tool or a quick shortcut to writing some real code.
 
-Forge's user interface is a shell, so it can be installed manually and used from the terminal like any other command-line application.  However, JBDS removes the need for us to do this setup.  Selecting Window -> Show View -> Other will give us immediate access to the Forge Console.
+Forge's user interface is a shell, so it can be installed manually and used from the terminal like any other command-line application.  However, JBDS removes the need for us to do this setup.  As shown in <<Figure3-2>>, selecting Window -> Show View -> Other will give us immediate access to the Forge Console.
 
-.Forge Console View Selection
+.Forge Console view selection
 [[Figure3-2]]
 image::images/cedj_04in02.png["Forge Console View Selection"]
 
-With our new _Forge Console_ view, we're now free to start up the Forge runtime, which came embedded with the JBDS installation.  Pressing the green "Play" button will give us access to the Forge shell.
-
-.Start Forge
-[[Figure3-3]]
-image::images/cedj_04in03.png["Start Forge"]
+With our new _Forge Console_ view, we're now free to start up the Forge runtime, which came embedded with the JBDS installation.  Clicking the green play button will give us access to the Forge shell (see <<Figure3-3>>):
 
 ----
     _____                    
@@ -55,9 +51,14 @@ image::images/cedj_04in03.png["Start Forge"]
    |_|  \___/|_|  \__, |\___| 
                    |___/      
 
-JBoss Forge, version [ 1.3.3.Final ] - JBoss, by Red Hat, Inc. [ http://forge.jboss.org ]
+JBoss Forge, version [ 1.3.3.Final ] - JBoss, by Red Hat, Inc. 
+[ http://forge.jboss.org ]
 [no project] workspace $ 
 ----
+
+.Click the play button to start Forge
+[[Figure3-3]]
+image::images/cedj_04in03.png["Start Forge"]
 
 JBDS integration with Forge is especially useful in this console as the IDE will automatically refresh any changes we make in Forge with our project view and open text editors.
 
