@@ -1,7 +1,7 @@
 [[ch08]]
 == REST and Addressable Services
 
-[quote, Inscription at a rest stop along pass:[<phrase role='keep-together'>Scotland's Highway A83</phrase>]]
+[quote, Inscription at a rest stop along <phrase role='keep-together'>Scotland's Highway A83</phrase>]
 ____
 Rest and be thankful.
 ____
