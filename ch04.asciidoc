@@ -298,32 +298,40 @@ wildfly-8.0.0.Alpha2 $> cd bin/
 bin $> ./standalone.sh 
 =========================================================================
   JBoss Bootstrap Environment
-  JBOSS_HOME: /home/alr/business/oreilly/git/continuous-enterprise-development/code/application/target/wildfly-8.0.0.Alpha2
+  JBOSS_HOME: /home/alr/business/oreilly/git/continuous-enterprise-development/
+  code/application/target/wildfly-8.0.0.Alpha2
   JAVA: /home/alr/opt/oracle/java/jdk7/bin/java
-  JAVA_OPTS:  -server -XX:+UseCompressedOops -Xms64m -Xmx512m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
+  JAVA_OPTS:  -server -XX:+UseCompressedOops -Xms64m -Xmx512m -XX:MaxPermSize=
+  256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.
+  byteman -Djava.awt.headless=true
 
 =========================================================================
 
 18:08:42,477 INFO  [org.jboss.modules] (main) JBoss Modules version 1.2.2.Final
 18:08:43,290 INFO  [org.jboss.msc] (main) JBoss MSC version 1.2.0.Beta1
    ...trimm output
-JBAS015874: WildFly 8.0.0.Alpha2 "WildFly" started in 8624ms - Started 153 of 189 services (56 services are lazy, passive or on-demand)
+JBAS015874: WildFly 8.0.0.Alpha2 "WildFly" started in 8624ms - Started 153 of 189 
+services (56 services are lazy, passive or on-demand)
 ----
 
-Copying the +application/target/geekseek-(version).war+ file into +$JBOSS_HOME/standalone/deployments+ will trigger deployment of the GeekSeek application:
+Copying the _application/target/geekseek-(version).war_ file into _JBOSS_HOME/standalone/deployments_ will trigger deployment of the GeekSeek application:
 
 ----
-$> cp code/application/application/target/geekseek-1.0.0-alpha-1-SNAPSHOT.war code/application/target/wildfly-8.0.0.Alpha2/standalone/deployments/geekseek.war -v
-‘code/application/application/target/geekseek-1.0.0-alpha-1-SNAPSHOT.war’ -> ‘code/application/target/wildfly-8.0.0.Alpha2/standalone/deployments/geekseek.war’
+$> cp code/application/application/target/geekseek-1.0.0-alpha-1-SNAPSHOT.war 
+code/application/target/wildfly-8.0.0.Alpha2/standalone/deployments/
+geekseek.war -v
+'code/application/application/target/geekseek-1.0.0-alpha-1-SNAPSHOT.war' -> 
+'code/application/target/wildfly-8.0.0.Alpha2/standalone/deployments/geekseek.war'
 ----
 
 This will trigger something similar to the following on the server console:
 
 ----
-18:11:46,839 INFO  [org.jboss.as.server] (DeploymentScanner-threads - 2) JBAS018559: Deployed "geekseek.war" (runtime-name : "geekseek.war")
+18:11:46,839 INFO  [org.jboss.as.server] (DeploymentScanner-threads - 2) 
+JBAS018559: Deployed "geekseek.war" (runtime-name : "geekseek.war")
 ----
 
-Once deployed, you'll be able to launch your web browser of choice, point it to +http://localhost:8080/geekseek+, and add explore the screens powering the featureset we've covered above.
+Once deployed, you'll be able to launch your web browser of choice, point it to +http://localhost:8080/geekseek+, and explore the screens powering the featureset we've covered here.
 
 === Use Cases and Chapter Guide
 
