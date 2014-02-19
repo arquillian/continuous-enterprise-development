@@ -39,13 +39,13 @@ Graph:: Stores objects with relationships in a graph structure; ideal for traver
 Key/Value:: Nested Map or document-oriented structure, becoming very popular in recent years.  Examples: http://www.jboss.org/infinispan/[Infinispan], http://www.mongodb.org/[MongoDB].
 Column-oriented:: Stores data in columns, as opposed to the RDBMS where the records are kept in rows.  Best-suited for very large tables.  Examples: http://hbase.apache.org/[Apache HBase], http://cassandra.apache.org/[Apache Cassandra].
 
-This chapter will focus on today's most commonly-used relational model (NoSQL will be covered next in <<ch06>>).
+This chapter will focus on today's most commonly used relational model (NoSQL will be covered next in <<ch06>>).
 
 === The Relational Database Model
 
 To best understand the relational model, let's highlight how it differs from the object model with which we're already familiar.  For this example we'll seek to describe a family.
 
-Each member of the family may be represented by a +Person+ object:
+Each member of the family can be represented by a +Person+ object:
 
 [source,java]
 ----
@@ -70,7 +70,7 @@ public class Person {
 }
 ----
 
-Simple enough; this value object which explicitly declares the relationship between a parent and child is sufficient for us to further infer siblings, grandparents, cousins, aunts, uncles, and so on.  If we populate a few of these objects and wire them together, we'll end up with a _graph_ representing our family:
+Simple enough; this value object that explicitly declares the relationship between a parent and child is sufficient for us to further infer siblings, grandparents, cousins, aunts, uncles, and so on.  If we populate a few of these objects and wire them together, we'll end up with a _graph_ representing our family, as shown in <<Figure5-2>>.
 
 .Needs a caption
 [[Figure5-2]]
