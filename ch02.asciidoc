@@ -153,7 +153,7 @@ $ mvn clean install
 [INFO] ------------------------------------------------------------------------
 ----
 
-But as developers, we live in our coding environments. Switching out of that mindset to run a build is wasteful.  So we asked: "What if we could declare, in Java, an object to represent that archive?"  What resulted was a Java API analogue to the "jar" tool, a virtual filesystem with an intuitive syntax.
+But as developers, we live in our coding environments. Switching out of that mindset to run a build is wasteful.  So we asked: "What if we could declare, in Java, an object to represent that archive?"  What resulted was a Java API analogue to the "jar" tool, a virtual filesystem with an intuitive syntax:
 
 [source,java]
 ----
@@ -162,7 +162,7 @@ JavaArchive archive = ShrinkWrap.create(JavaArchive.class,"myarchive.jar")
    .addResource("mystuff.properties");
 ----
 
-This enables us to take advantage of the IDE’s incremental compilation features, allowing us to skip the build.
+This enables us to take advantage of the IDE’s incremental compilation features, allowing us to skip the build (see <<Figure2-5>>).
 
 .ShrinkWrap incremental compilation
 [[Figure2-5]]
@@ -170,22 +170,23 @@ image::images/cedj_03in02.png["ShrinkWrap Incremental Compilation"]
 
 This piece fulfills the design goal of Arquillian to run tests based on full-fledged deployments directly from the IDE.
 
-While ShrinkWrap is a standalone virtual filesystem, in our examples we'll be primarily exercising it as the deployment mechanism for Arquillian.  Let's take a moment to review its usage.
+Although ShrinkWrap is a standalone virtual filesystem, in our examples we'll be primarily exercising it as the deployment mechanism for Arquillian.  Let's take a moment to review its usage.
 
-The first step is getting your hands on the ShrinkWrap binaries. The Core is composed of three pieces:
+The first step is getting your hands on the ShrinkWrap binaries. The Core is composed of three pieces, as outlined in <<table2-1>>.
 
 .Needs a caption
+[[table2-1]]
 [options="header"]
 |=========================
 |Name|Maven coordinates
-|API|org.jboss.shrinkwrap:shrinkwrap-api
-|SPI|org.jboss.shrinkwrap:shrinkwrap-spi
-|Implementation|org.jboss.shrinkwrap:shrinkwrap-impl-base
+|API|+org.jboss.shrinkwrap:shrinkwrap-api+
+|SPI|+org.jboss.shrinkwrap:shrinkwrap-spi+
+|Implementation|+org.jboss.shrinkwrap:shrinkwrap-impl-base+
 |=========================
 
-Only the API should be available upon your compilation ClassPath, while the SPI and the Implementation modules are both required for the runtime. This is to enforce good separation between classes intended for direct use and the project’s internals.
+Only the API should be available upon your compilation class path, while the SPI and the Implementation modules are both required for the runtime. This is to enforce good separation between classes intended for direct use and the project’s internals.
 
-In Maven, these may be brought in under the proper scopes easily by using the ShrinkWrap Dependency Chain POM, available in Maven Central:
+In Maven, these can be brought in under the proper scopes easily by using the ShrinkWrap Dependency Chain POM, available in Maven Central:
 
 [source,xml]
 ----
@@ -207,16 +208,17 @@ In Maven, these may be brought in under the proper scopes easily by using the Sh
 </project>
 ----
 
-For projects outside use of the Maven repository system, the ShrinkWrap Distribution makes all modules available as a download, and you may set up the dependencies manually to suit your needs. Here are the prerequisites:
+For projects outside of the Maven repository system, the ShrinkWrap Distribution makes all modules available as a download, and you can set up the dependencies manually to suit your needs. Here are the prerequisites:
 
 * JRE5+ Runtime
 * No additional dependencies
 
-ShrinkWrap may run on any Java5 runtime or higher, but requires at least JDK6 for compilation.
+ShrinkWrap can run on any Java5 runtime or higher, but requires at least JDK6 for compilation.
 
-The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.api.ShrinkWrap+ class.  From here you may call the +create+ method to make a new +Archive+, the a generic view of the virtual filesystem which allows the addition of content called +Asset+ s into a location called an +ArchivePath+.  The following table more easily shows ShrinkWrap nomenclature next to more common terms:
+The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.api.ShrinkWrap+ class.  From here you can call the +create+ method to make a new +Archive+, the a generic view of the virtual filesystem that allows the addition of content called ++Asset++s into a location called an +ArchivePath+. <<table2-2>> more easily shows ShrinkWrap nomenclature next to more common terms.
 
 .Needs a caption
+[[table2-2]]
 [options="header"]
 |=============================
 |Archive type|Description
