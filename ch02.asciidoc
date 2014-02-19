@@ -511,7 +511,7 @@ Let's cover some of the most popular use cases for ShrinkWrap Resolver.
 
 Maven coordinates, in their canonical form, are specified as follows: +groupId:artifactId:[packagingType:[classifier]]:version+. Often, those are referred as +G+ (groupId), +A+ (artifactId), +P+ (packagingType), +C+ (classifier), and +V+ (version). If you omit +P+ and +C+, you will get the default value, which uses +jar+ as the packaging type and an empty classifier. ShrinkWrap Resolver additionally allows you to skip +V+ and add the version information later:
 
-* The most simple use case is to resolve a file using coordinates. Here, the resolver locates an artifact defined by +G:A:V+ and resolves it including all transitive dependencies. The result is formatted as array of type +File+.
+* The most simple use case is to resolve a file using coordinates. Here, the resolver locates an artifact defined by +G:A:V+ and resolves it including all transitive dependencies. The result is formatted as array of type +File+:
 +
 [source,java]
 ----
@@ -519,21 +519,21 @@ File[] = Maven.resolver().resolve("G:A:V").withTransitivity().asFile();
 ----
 
 
-* You might want to change default Maven behavior and resolve only artifact specified by +G:A:V+, avoiding its transitive dependencies. For this use case, ShrinkWrap Resolvers provides a shorthand for changing resolution strategy, called +withoutTransitivity()+. Additionally, you might want to return a single +File+ instead of an array.
+* You might want to change default Maven behavior and resolve only artifacts specified by +G:A:V+, avoiding its transitive dependencies. For this use case, ShrinkWrap Resolvers provides a shorthand for changing resolution strategy, called +withoutTransitivity()+. Additionally, you might want to return a single +File+ instead of an array:
 +
 [source,java]
 ----
 Maven.resolver().resolve("G:A:V").withoutTransitivity().asSingleFile();
 ----
 
-* Very often, you need to resolve more than one artifact. The method +resolve(String...)+ allows you to specify many artifacts at the same time. The result of the call will be an array of +File+ composed by artifacts defined by +G1:A1:V1+ and +G2:A2:V2+ including their transitive dependencies.
+* Very often, you need to resolve more than one artifact. The method +resolve(String...)+ allows you to specify many artifacts at the same time. The result of the call will be an array of +File+ composed of artifacts defined by +G1:A1:V1+ and +G2:A2:V2+, including their transitive dependencies:
 +
 [source,java]
 ----
 Maven.resolver().resolve("G1:A1:V1", "G2:A1:V1").withTransitivity().asFile();
 ----
 
-* Resolving a dependency with specific packaging type. Packaging type is specified by +P+ in +G:A:P:V+ coordinates description.
+* Resolving a dependency with a specific packaging type. The packaging type is specified by +P+ in the +G:A:P:V+ coordinates description:
 +
 [source,java]
 ----
@@ -546,7 +546,7 @@ Packaging can be of any type; the most common are listed here:
 | jar | war | ear | ejb | rar | par | pom | test-jar | maven-plugin
 |====
 
-* Resolving a dependency with specific classifier. With a classifier, such as +tests+, you need to include all +G:A:P:C:V+ parts of coordinates string.
+* Resolving a dependency with a specific classifier. With a classifier, such as +tests+, you need to include all +G:A:P:C:V+ parts of the coordinates string:
 +
 [source,java]
 ----
