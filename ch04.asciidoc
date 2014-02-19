@@ -210,9 +210,9 @@ $> git --version
 git version 1.8.1.2
 ----
 
-With your Git client installed locally, now you're free to pull down the book's repository from your public fork on GitHub to your local machine.  This is done by first finding the URI to your repository on your GitHub repo's home page:
+With your Git client installed locally, now you're free to pull down the book's repository from your public fork on GitHub to your local machine. You do this by first finding the URI to your repository on your GitHub repo's home page, as shown in <<Figure4-5>>.
 
-.GitHub URI to Clone
+.GitHub URI to clone
 [[Figure4-5]]
 image::images/cedj_05in03.png["GitHub URI to Clone"]
 
@@ -228,7 +228,7 @@ Receiving objects: 100% (2661/2661), 1.19 MiB | 1.24 MiB/s, done.
 Resolving deltas: 100% (534/534), done.
 ----
 
-The above will create a new directory called +continuous-enterprise-development+, under which you'll be able to see the book's source in the root and all supporting code under the +code+ directory.  The _GeekSeek_ application root is housed under +code/application+.
+This will create a new directory called _continuous-enterprise-development_, under which you'll be able to see the book's source in the root and all supporting code under the _code_ directory.  The _GeekSeek_ application root is housed under _code/application_:
 
 ----
 $> ls -l
@@ -238,25 +238,28 @@ total 492
 -rw-r--r-- 1 alr alr 23634 Jun 28 18:03 Chapter01-Continuity.asciidoc
 -rw-r--r-- 1 alr alr 40527 Jun 28 18:03 Chapter02-EnablingTechnologies.asciidoc
 -rw-r--r-- 1 alr alr 29803 Jun 28 18:03 Chapter03-ScratchToProduction.asciidoc
--rw-r--r-- 1 alr alr 20772 Jul  7 17:29 Chapter04-RequirementsAndExampleApplication.asciidoc
--rw-r--r-- 1 alr alr 61834 Jul  7 17:29 Chapter04-RequirementsAndExampleApplication.html
--rw-r--r-- 1 alr alr 32765 Jun 28 18:03 Chapter05-JavaPersistenceAndRelationalData.asciidoc
+-rw-r--r-- 1 alr alr 20772 Jul  7 17:29 
+ Chapter04-RequirementsAndExampleApplication.asciidoc
+-rw-r--r-- 1 alr alr 61834 Jul  7 17:29 
+ Chapter04-RequirementsAndExampleApplication.html
+-rw-r--r-- 1 alr alr 32765 Jun 28 18:03 
+ Chapter05-JavaPersistenceAndRelationalData.asciidoc
  ...etc
 drwxr-xr-x 8 alr alr  4096 Jul  6 20:24 code
 drwxr-xr-x 6 alr alr  4096 Jun 26 03:20 images
 -rw-r--r-- 1 alr alr  2733 Jul  7 16:19 README.asciidoc
 ----
 
-This will pull the current upstream version of the application into your local disk.  If, for instance, you'd like to work against one of the authoritative repository's tags, you may:
+This will pull the current upstream version of the application into your local disk.  If, for instance, you'd like to work against one of the authoritative repository's tags, you can:
 
 * Create a +remote+ reference to the authoritative repo: +git remote add upstream https://github.com/arquillian/continuous-enterprise-development.git+
 * +fetch+ all the tags from the remote repo: +git fetch -t upstream+
 * +checkout+ the tag as a local branch: +git checkout -b remotes/upstream/1.0.0+ (For instance checks out tag +1.0.0+)
 * Work on your new branch, based off the tag you've specified: +git branch+
 
-===== Building and Testing GeekSeek
+===== Building and testing GeekSeek
 
-We'll be using the Maven software management tool to handle our build, test, and packaging needs.  The Java 7 JDK is a prerequisite we'll assume is installed on your system, referenced by the environment variable +JAVA_HOME+, and the executables in +$JAVA_HOME/bin+ available on the system +PATH+; Maven may be simply downloaded and extracted on your drive to _MAVEN_HOME_ from http://maven.apache.org/download.cgi[http://maven.apache.org/download.cgi].  Ensure that _MAVEN_HOME/bin_ is on your +PATH+, and you'll be good to go:
+We'll be using the Maven software management tool to handle our build, test, and packaging needs.  The Java 7 JDK is a prerequisite we'll assume is installed on your system, referenced by the environment variable +JAVA_HOME+, and the executables in _$JAVA_HOME/bin_ available on the system +PATH+; Maven may be simply downloaded and extracted on your drive to _MAVEN_HOME_ from http://maven.apache.org/download.cgi.  Ensure that _MAVEN_HOME/bin_ is on your +PATH+, and you'll be good to go:
 
 ----
 $> mvn -version
