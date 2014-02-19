@@ -60,9 +60,9 @@ JBoss Forge, version [ 1.3.3.Final ] - JBoss, by Red Hat, Inc.
 [[Figure3-3]]
 image::images/cedj_04in03.png["Start Forge"]
 
-JBDS integration with Forge is especially useful in this console as the IDE will automatically refresh any changes we make in Forge with our project view and open text editors.
+JBDS integration with Forge is especially useful in this console because the IDE will automatically refresh any changes we make in Forge with our project view and open text editors.
 
-As a decent shell, Forge support tab-complete of commands and known parameters; if you get stuck, feel free to use the +TAB+ key to see what's available.
+As a decent shell, Forge supports tab-completion of commands and known parameters; if you get stuck, feel free to use the Tab key to see what's available.
 
 To ease up on our configuration options, let's first start off by instructing Forge to accept defaults:
 
@@ -70,13 +70,14 @@ To ease up on our configuration options, let's first start off by instructing Fo
 $> set ACCEPT_DEFAULTS true;
 ----
 
-And now let's create the filesystem layout and +pom.xml+ for our new Maven-based Java EE project.  We'll be creating a simple application which will allow users to leave comments, so we'll name the application, "feedback":
+And now let's create the filesystem layout and _pom.xml_ for our new Maven-based Java EE project.  We'll be creating a simple application that will allow users to leave comments, so we'll name the application `feedback`:
 
 ----
-$> new-project --named feedback --topLevelPackage org.cedj.ch03.feedback --projectFolder feedback;
+$> new-project --named feedback --topLevelPackage org.cedj.ch03.feedback 
+   --projectFolder feedback;
 ----
 
-Once we hit enter, we'll see that Forge has dutifully created our new project's layout:
+Once we hit Enter, we'll see that Forge has dutifully created our new project's layout:
 
 ----
 ***SUCCESS*** Created project [feedback] in new working directory [./feedback]
@@ -90,9 +91,9 @@ Wrote ./feedback/src/main/java/org/cedj/feedback
 Wrote ./presentations/feedback/src/main/resources/META-INF/forge.xml
 ----
 
-Additionally, our project has appeared in the Project View:
+Additionally, our project has appeared in the Project View, as shown in <<Figure3-4>>.
 
-.Project Created
+.Our project created in Project View
 [[Figure3-4]]
 image::images/cedj_04in04.png["Project Created"]
 
