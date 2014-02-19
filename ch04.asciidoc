@@ -179,15 +179,15 @@ As shown in <<Figure4-3>>, signup is fairly simple and the process starts at htt
 [[Figure4-3]]
 image::images/cedj_05in01.png["GitHub Signup"]
 
-Once logged in, we'll _fork_ the authoritative repo into your own publicly-viewable repository.  This is done by visiting the book's repo and pressing the "Fork" button:
+Once logged in, you'll _fork_ the authoritative repo into your own publicly viewable repository. You do this by visiting the book's repo and clicking the Fork button, as shown in <<Figure4-4>>.
 
-.Forking a GitHub Repository
+.Forking a GitHub repository
 [[Figure4-4]]
 image::images/cedj_05in02.png["Forking a GitHub Repository"]
 
-With the fork in your account, now you'll be able to _clone_ this repository locally.  And because you have your own fork on GitHub, you'll be able to _push_ the _commits_ you make locally to your own fork, where you have write access.  This provides two important benefits; first, it serves as a backup in case of disk failure, loss of machine, or a synchronization point if you develop on many machines.  Second, it allows others to see the changes you've made an optionally bring them in for their own use.
+With the fork in your account, now you'll be able to _clone_ this repository locally.  And because you have your own fork on GitHub, you'll be able to _push_ the _commits_ you make locally to your own fork, where you have write access.  This provides two important benefits. First, it serves as a backup in case of disk failure, loss of machine, or a synchronization point if you develop on many machines.  Second, it allows others to see the changes you've made and optionally bring them in for their own use.
 
-Before bringing in your fork of the repository locally, we'll need to have a Git client installed.  This is a command-line tool available on many platforms, but there are also GUI wrappers, for instance included in many IDEs like Eclipse or IntelliJ IDEA.  We'll offer instructions based on the command-line.
+Before bringing in your fork of the repository locally, you'll need to have a Git client installed.  This is a command-line tool available on many platforms, but there are also GUI wrappers included in many IDEs like Eclipse or IntelliJ IDEA.  We'll offer instructions based on the command line.
 
 Installation is platform-specific, but in flavors of Linux, this is easily enough achived via your package manager of choice:
 
@@ -201,9 +201,9 @@ $> sudo apt-get install -y git
 $> sudo yum install -y git
 ----
 
-The Git Client for Windows can be obtained as an executable installer at http://git-scm.com/download/win[http://git-scm.com/download/win].  Similarly, the client for Mac is available at http://git-scm.com/download/mac[http://git-scm.com/download/mac].
+You can obtain the Git Client for Windows as an executable installer at http://git-scm.com/download/win.  Similarly, the client for Mac is available at http://git-scm.com/download/mac.
 
-You may verify your installation at the command prompt by executing:
+You can verify your installation at the command prompt by executing:
 
 ----
 $> git --version
