@@ -65,7 +65,7 @@ _Methodology.  Doctrine.  Paradigm._  Whatever we call it, our process (or absen
 
 A _serial_, or _sequential_, process follows a linear path from project inception to completion.  As each stage in the development lifecycle comes to a close, the next one in turn is started.  Prior stages are typically not revisited, and this model is often visualized as a series of steps, as illustrated in <<Figure1-1>>.
 
-.Need a caption
+.Waterfall model
 [[Figure1-1]]
 image::images/cedj_0101.png[]
 
