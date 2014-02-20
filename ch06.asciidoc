@@ -480,8 +480,8 @@ The +RelationRepository+ contract implementation looks like this:
 [source,java]
 ----
     @Override
-    public Relation add(Identifiable source, final String type, Identifiable 
-    target) {
+    public Relation add(Identifiable source, final String type, 
+    Identifiable target) {
 
         Transaction tx = graph.beginTx();
         try {
@@ -490,10 +490,10 @@ The +RelationRepository+ contract implementation looks like this:
             String targetTypeName = target.getClass().getSimpleName();
             Node sourceTypeNode = getOrCreateNodeType(sourceTypeName);
             Node targetTypeNode = getOrCreateNodeType(targetTypeName);
-            getOrCreateRelationship(root, sourceTypeNode, Named.relation(
-            sourceTypeName));
-            getOrCreateRelationship(root, targetTypeNode, Named.relation(
-            targetTypeName));
+            getOrCreateRelationship(root, sourceTypeNode, 
+            Named.relation(sourceTypeName));
+            getOrCreateRelationship(root, targetTypeNode, 
+            Named.relation(targetTypeName));
 
             Node sourceNode = getOrCreateNode(source, sourceTypeName);
             getOrCreateRelationship(sourceTypeNode, sourceNode, Named.relation(
