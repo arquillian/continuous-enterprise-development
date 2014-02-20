@@ -41,7 +41,7 @@ Forge's user interface is a shell, so it can be installed manually and used from
 [[Figure3-2]]
 image::images/cedj_04in02.png["Forge Console View Selection"]
 
-With our new _Forge Console_ view, we're now free to start up the Forge runtime, which came embedded with the JBDS installation.  Clicking the green play button will give us access to the Forge shell (see <<Figure3-3>>):
+With our new _Forge Console_ view, we're now free to start up the Forge runtime, which came embedded with the JBDS installation.  Clicking the green play button, as shown in <<Figure3-3>>, will give us access to the Forge shell:
 
 ----
     _____                    
