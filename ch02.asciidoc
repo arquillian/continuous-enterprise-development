@@ -43,7 +43,7 @@ image::images/cedj_0201.png[]
 
 Maven is not without its detractors, however.  It's been criticized for a few points. Among them are:
 
-* Maven Plug-ins versions are not bound to Maven Core versions, making guaranteed reproducible builds between different environments difficult to guarantee.
+* Maven plug-ins versions are not bound to Maven Core versions, making guaranteed reproducible builds between different environments difficult to guarantee.
 * Project Object Model (POM, i.e., _pom.xml_) syntax, which is the metadata describing a project's makeup, is verbose.
 * Transitive dependencies as a default trigger a lot of downloading on first build.  Without care, a project may inherit more dependencies than are necessary or desired.
 * Deviation from the defined Maven standard is often difficult to reconcile.
@@ -70,7 +70,7 @@ Overall, the goal of Forge is to ease project setup at all stages of development
 
 === Version Control
 
-From the moment we collaborate on a project with others or would like to inspect the evolution of our code over time, we need some form of _version control_.  Until recently, the most common paradigm for synchronizing access to a shared codebase was the _client/server_ model wherein developers can keep a local working copy and check their changes into a centralized server (see <<Figure2-2>>).  
+From the moment we collaborate on a project with others or would like to inspect the evolution of our code over time, we need some form of _version control_.  Until recently, the most common paradigm for synchronizing access to a shared codebase was the _client/server_ model wherein developers can keep a local working copy and check their changes into a centralized server, as shown in <<Figure2-2>>.  
 
 .Need a caption
 [[Figure2-2]]
@@ -110,7 +110,7 @@ Again, it is not our aim to fully delve into the mechanics of each tool we'll be
 
 Java EE 5 introduced a _POJO_ (Plain Old Java Object) programming model, which freed developers from having to adhere to any particular class hierarchy for its business objects.  The introduction of http://bit.ly/MAgJYs[Contexts and Dependency Injection] (CDI) in Java EE 6 further pushed the notion of simple business objects by providing _typesafe injection_.  
 
-The benefit to objects that can be easily created using the +new+ operator is the same as their drawback; when we manually instantiate objects for use in testing, we're not dealing with the same enterprise components we have in the target runtime.  An EJB becomes such only in the context of an EJB container; a Servlet is a Servlet only when created by a Servlet container.  Any time we circumvent the target runtime environment to handle object creation and wiring on our own, we're using _mock objects_.
+The benefit to objects that can be easily created using the +new+ operator is the same as their drawback; when we manually instantiate objects for use in testing, we're not dealing with the same enterprise components we have in the target runtime.  An EJB becomes such only in the context of an EJB container; a servlet is a servlet only when created by a servlet container.  Any time we circumvent the target runtime environment to handle object creation and wiring on our own, we're using _mock objects_.
 
 Although many will advocate on the usefulness of mocks, by definition they provide an approximation of how your application will behave in a production environment.  Remember that you're responsible for validating that the full bevy of code running on your servers is working as expected, including the bits you _did not write_.  Many not-so-subtle errors may arise while leveraging the full potential of the application server in production, and it's best to be testing in an environment as close to the real thing as possible.
 
