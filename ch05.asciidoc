@@ -28,7 +28,7 @@ Perhaps the simplest way to handle persistent storage is to directly serialize i
 
 It'd be much better to delegate the task of persistent storage to another component equipped to handle this efficiently and securely.  Luckily, we'll have our pick of any number of database management systems (DBMS) that do just that as <<Figure5-1>> illustrates many apps using centralized persistent storage.
 
-.Needs a caption
+.A series of applications backed by an RDMBS
 [[Figure5-1]]
 image::images/cedj_0501.png[]
 
@@ -36,7 +36,7 @@ The role of a DBMS is very generally to store and provide access to data.  They 
 
 Relational (RDBMS):: Like data is grouped into tables where columns represent data types and rows represent records.  Most often employs a protocol language called _Structured Query Language_ (SQL) for interaction.  Examples: http://www.mysql.com/[MySQL], http://www.postgresql.org/[PostgreSQL].
 Graph:: Stores objects with relationships in a graph structure; ideal for traversing nodes.  Example: http://www.neo4j.org/[Neo4j].
-Key/Value:: Nested Map or document-oriented structure, becoming very popular in recent years.  Examples: http://www.jboss.org/infinispan/[Infinispan], http://www.mongodb.org/[MongoDB].
+Key/value:: Nested Map or document-oriented structure, becoming very popular in recent years.  Examples: http://www.jboss.org/infinispan/[Infinispan], http://www.mongodb.org/[MongoDB].
 Column-oriented:: Stores data in columns, as opposed to the RDBMS where the records are kept in rows.  Best-suited for very large tables.  Examples: http://hbase.apache.org/[Apache HBase], http://cassandra.apache.org/[Apache Cassandra].
 
 This chapter will focus on today's most commonly used relational model (NoSQL will be covered next in <<ch06>>).
@@ -72,13 +72,13 @@ public class Person {
 
 Simple enough; this value object that explicitly declares the relationship between a parent and child is sufficient for us to further infer siblings, grandparents, cousins, aunts, uncles, and so on.  If we populate a few of these objects and wire them together, we'll end up with a _graph_ representing our family, as shown in <<Figure5-2>>.
 
-.Needs a caption
+.Family relationships represented as a graph
 [[Figure5-2]]
 image::images/cedj_0502.png[]
 
 Now, let's take a look at how that same information might be represented in a relational database in <<table5-1>>.  Much like a spreadsheet, classes from our object model are instead organized into tables.
 
-.Needs a caption
+.Data types representing a "person"
 [[table5-1]]
 [options="header"]
 |============
@@ -94,7 +94,7 @@ Already we see some differences here.  The +id+, +name+, and +male+ fields are a
 
 This is the defining characteristic of _relational_ in RDBMS.  These fields are in fact pointers to the _primary key_, or the identifying +id+ field of another record.  As such, they are called _foreign keys_.  So our data may look something like <<table5-2>>.
 
-.Needs a caption
+.Relationships among family members
 [[table5-2]]
 [options="header"]
 |==========
@@ -125,7 +125,7 @@ To address each of these problems, Java EE6 provides a specification called the 
 
 So now our tiered data architecture may look something like <<Figure5-3>>.
 
-.Needs a caption
+.Persistence layers of abstraction from user code to the database
 [[Figure5-3]]
 image::images/cedj_0503.png[]
 
@@ -206,8 +206,8 @@ Quite simple (and maybe even redundant!) when put in these terms, especially for
 To state even more generally:
 
 ----
-As a User, I should be able to Create, Read, Update, and Delete Conference and
-Session types.
+As a User, I should be able to Create, Read, Update, and 
+Delete Conference and Session types.
 ----
 
 Of course, we have some other requirements that do not pertain to the user perspective.
