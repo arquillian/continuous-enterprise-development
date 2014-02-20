@@ -38,7 +38,7 @@ Second, _clustering_ is an option where a number of database instances keep stat
 
 Data grids work a little bit differently.  They're designed to store pieces of data across available nodes; each node cannot contain the entire data set.  Because of this arrangement, they're built to scale out by simply adding more nodes to the network.  Configuration is typically available to control the amount of redundancy; should each piece of data live on two nodes, three, or four? If a node goes down, the system is built to re-distribute the information contained in the now-offline node.  This makes data grids especially fault-tolerant and _elastic_; nodes can be provisioned at runtime.  The key to a data grid lies in its capability to partition the data and distribute it across nodes on the network.
 
-==== Infinispan
+===== Infinispan
 
 http://www.jboss.org/infinispan/[Infinispan] is an open source data grid from the JBoss Community.  It's API centers around a +Cache+, a +Map+ structure that provides a mapping between a key and value (this does not actually extend the +java.util.Map+ interface from the Java Collections library).  The full +javax.cache+ API is defined by the Java Community Process in http://bit.ly/MB357k[JSR-107], and although Infinispan is not a direct implementor of this specification, it contains many ideas adjacent to and inspiring JSR-107 and the newer Data Grids Specification http://bit.ly/MB31Ve[JSR-347].  Infinispan bills itself as a "Transactional in-memory key/value NoSQL datastore & Data Grid."
 
@@ -53,7 +53,7 @@ This makes Infinispan well-suited to holding large objects that may have otherwi
 
 === RDBMS: Bad at Relationships
 
-The greatest irony of the _Relational_ Database Management System is that it starts to break down when we need to model complex _relationships_.  As we've seen, a traditional RDBMS will associate data types by drawing pointers between tables using foreign-key relationships, as shown in <<Figure6-1>>.
+The greatest irony of the _relational_ database management system is that it starts to break down when we need to model complex _relationships_.  As we've seen, a traditional RDBMS will associate data types by drawing pointers between tables using foreign-key relationships, as shown in <<Figure6-1>>.
 
 .Needs a caption
 [[Figure6-1]]
