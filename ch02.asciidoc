@@ -478,7 +478,7 @@ Alternatively, you can have finer-grained control over using ShrinkWrap Resolver
   </dependencies>
 ----
 
-[IMPORTANT]
+[TIP]
 ====
 If you happen to use Arquillian BOM in `<dependencyManagement>`, it already contains a ShrinkWrap Resolvers version. You must import ShrinkWrap Resolver BOMs preceding Arquillian BOMs in order to get 2.0.0-x version. Adding a ShrinkWrap BOM is recommended in any case.
 
