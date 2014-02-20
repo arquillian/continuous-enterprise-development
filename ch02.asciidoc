@@ -163,9 +163,9 @@ JavaArchive archive = ShrinkWrap.create(JavaArchive.class,"myarchive.jar")
    .addResource("mystuff.properties");
 ----
 
-This enables us to take advantage of the IDE’s incremental compilation features, allowing us to skip the build (see <<Figure2-5>>).
+This enables us to take advantage of the IDE’s incremental compilation features, allowing us to skip the build, as shown in <<Figure2-5>>.
 
-.ShrinkWrap incremental compilation
+.Incremental compilation in the Eclipse IDE
 [[Figure2-5]]
 image::images/cedj_03in02.png["ShrinkWrap Incremental Compilation"]
 
@@ -209,7 +209,7 @@ In Maven, these can be brought in under the proper scopes easily by using the Sh
 </project>
 ----
 
-For projects outside of the Maven repository system, the ShrinkWrap Distribution makes all modules available as a download, and you can set up the dependencies manually to suit your needs. Here are the prerequisites:
+For projects not using the Maven repository system, the ShrinkWrap Distribution makes all modules available as a download, and you can set up the dependencies manually to suit your needs. Here are the prerequisites:
 
 * JRE5+ Runtime
 * No additional dependencies
@@ -218,7 +218,7 @@ ShrinkWrap can run on any Java5 runtime or higher, but requires at least JDK6 fo
 
 The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.api.ShrinkWrap+ class.  From here you can call the +create+ method to make a new +Archive+, the a generic view of the virtual filesystem that allows the addition of content called ++Asset++s into a location called an +ArchivePath+. <<table2-2>> more easily shows ShrinkWrap nomenclature next to more common terms.
 
-.Needs a caption
+.ShrinkWrap archive types
 [[table2-2]]
 [options="header"]
 |=============================
@@ -234,15 +234,15 @@ To create an +Archive+, simply choose your desired archive type and optionally s
 
 [source,java]
 ----
-GenericArchive myArchive = ShrinkWrap.create
-    (GenericArchive.class,"myArchive.jar");
+GenericArchive myArchive = ShrinkWrap.create(GenericArchive.class,
+"myArchive.jar");
 ----
 
 That's it!  You've got your first ShrinkWrap archive!
 
 Of course, an object representing an empty archive is pretty useless.  So let's have a look at adding in some content.  As we noted before, content is modeled by the +Asset+ class, so let's first take a look at some of the +Asset+ implementations provided by ShrinkWrap (as listed in <<table2-3>>).
 
-.Needs a caption
+.ShrinkWrap asset types
 [[table2-3]]
 [options="header"]
 |=====================
@@ -336,7 +336,7 @@ So let's see what's going on here.  First we create a +JavaArchive+ and add all 
 
 <<table2-4>> lists the three types of exporters that ship with ShrinkWrap.
 
-.Needs a caption
+.ShrinkWrap exporter types
 [[table2-4]]
 [options="header"]
 |==========================
@@ -348,7 +348,7 @@ So let's see what's going on here.  First we create a +JavaArchive+ and add all 
 
 Of course, we can also obtain a ShrinkWrap archive from a flat-file in a similar fashion by using one of the standard importers shown in <<table2-5>>.
 
-.Needs a caption
+.ShrinkWrap importer types
 [[table2-5]]
 [options="header"]
 |==========================
@@ -374,7 +374,7 @@ This concludes our brief introduction into manipulating archive content with Shr
 
 ==== ShrinkWrap Resolvers
 
-Although ShrinkWrap is ideally suited for creating new archives containing byte-based resources, often our applications are composed of prebuilt libraries and used in more complex deployments.  These may bundle other archives together, as shown in the following example _Web application ARchive_ (WAR):
+Although ShrinkWrap is ideally suited for creating new archives containing byte-based resources, often our applications are composed with prebuilt libraries bundled alongside our code, making for more complex deployments.  These may bundle other archives together, as shown in the following example _Web application ARchive_ (WAR):
 
 ----
 $> jar -tvf myApplication.war
@@ -396,7 +396,7 @@ That is precisely the aim of the ShrinkWrap Resolvers project; it is a Java API 
 
 ShrinkWrap Resolvers is comprised of the modules listed in <<table2-6>>.
 
-.Needs a caption
+.ShrinkWrap modules
 [[table2-6]]
 [options="header"]
 |====
@@ -480,7 +480,7 @@ Alternatively, you can have finer-grained control over using ShrinkWrap Resolver
 
 [IMPORTANT]
 ====
-If you happen to use Arquillian BOM in +<dependencyManagement>+, it already contains a ShrinkWrap Resolvers version. You must import ShrinkWrap Resolver BOMs preceding Arquillian BOMs in order to get 2.0.0-x version. Adding a ShrinkWrap BOM is recommended in any case.
+If you happen to use Arquillian BOM in `<dependencyManagement>`, it already contains a ShrinkWrap Resolvers version. You must import ShrinkWrap Resolver BOMs preceding Arquillian BOMs in order to get 2.0.0-x version. Adding a ShrinkWrap BOM is recommended in any case.
 
 You can import the ShrinkWrap Resolver BOM via the following snippet:
 
