@@ -496,11 +496,11 @@ The +RelationRepository+ contract implementation looks like this:
             Named.relation(targetTypeName));
 
             Node sourceNode = getOrCreateNode(source, sourceTypeName);
-            getOrCreateRelationship(sourceTypeNode, sourceNode, Named.relation(
-            REL_TYPE_ALL));
+            getOrCreateRelationship(sourceTypeNode, sourceNode, 
+            Named.relation(REL_TYPE_ALL));
             Node targetNode = getOrCreateNode(target, targetTypeName);
-            getOrCreateRelationship(targetTypeNode, targetNode, Named.relation(
-            REL_TYPE_ALL));
+            getOrCreateRelationship(targetTypeNode, targetNode, 
+            Named.relation(REL_TYPE_ALL));
 
             getOrCreateRelationship(sourceNode, targetNode, Named.relation(type));
 
