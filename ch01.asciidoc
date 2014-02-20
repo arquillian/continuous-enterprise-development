@@ -77,11 +77,11 @@ Though this might fit the retail software mold, the never-go-back mentality of a
 
 In stark contrast to the linear workflow prescribed by the Waterfall Model, there exists a suite of well-known iterative designs built to encourage change and promote parallelism.  By decomposing a large problem into more manageable components, we grant ourselves the option to solve each piece independently.  Additionally, we might opt to take broad swipes on a first pass, further refining our solutions in repeated cycles; this is where "iterative" processes obtain their name.
 
-==== Extreme Programming
+===== Extreme Programming
 
 Also known simply as "XP," _Extreme Programming_ is a discipline that introduces a feedback loop into each phase of the development process.  A practice that rose to popularity especially in the late '90s and early 2000s, XP lauds communication and other social aspects as centrally important themes. <<Figure1-2>> illustrates a typical workflow.
 
-.Need a caption
+.Iterative feedback loops in Extreme Programming
 [[Figure1-2]]
 image::images/cedj_0102.png[]
 
