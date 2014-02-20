@@ -55,7 +55,7 @@ This makes Infinispan well-suited to holding large objects that may have otherwi
 
 The greatest irony of the _relational_ database management system is that it starts to break down when we need to model complex _relationships_.  As we've seen, a traditional RDBMS will associate data types by drawing pointers between tables using foreign-key relationships, as shown in <<Figure6-1>>.
 
-.Needs a caption
+.Foreign-key relationships in an RDBMS
 [[Figure6-1]]
 image::images/cedj_0601.png[]
 
@@ -91,7 +91,7 @@ Using this view of our data points and the relationships between them, we can ap
 
 We'll be using a graph database to represent some of the relationships between the data held in our RDBMS; we can think of this as a "relationship layer" atop our pure data storage model.
 
-==== Neo4j
+===== Neo4j
 
 Neo4j is is an open source, transactional graph database that _does_ adhere to the ACID properties.  Both its user view and its backing storage engine use underlying graph structures, so it achieves the performance we'd expect from applying graph theory to queries it's suited to serve.  Because of this, the Neo4j documentation touts performance one thousand times faster than possible by RDBMS for connected data problems.
 
