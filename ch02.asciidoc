@@ -480,9 +480,9 @@ Alternatively, you can have finer-grained control over using ShrinkWrap Resolver
 
 [TIP]
 ====
-If you happen to use Arquillian BOM in `<dependencyManagement>`, it already contains a ShrinkWrap Resolvers version. You must import ShrinkWrap Resolver BOMs preceding Arquillian BOMs in order to get 2.0.0-x version. Adding a ShrinkWrap BOM is recommended in any case.
+If you happen to use Arquillian BOM in `<dependencyManagement>`, it already contains a ShrinkWrap Resolvers version. You must import the ShrinkWrap Resolvers BOM preceding the Arquillian OM in order to attain the 2.0.0-x version. Adding a ShrinkWrap BOM is recommended in any case.
 
-You can import the ShrinkWrap Resolver BOM via the following snippet:
+You can import the ShrinkWrap Resolvers BOM via the following snippet:
 
 [source,xml]
 ----
@@ -509,7 +509,7 @@ Let's cover some of the most popular use cases for ShrinkWrap Resolver.
 
 ===== Resolution of artifacts specified by Maven coordinates
 
-Maven coordinates, in their canonical form, are specified as follows: +groupId:artifactId:[packagingType:[classifier]]:version+. Often, those are referred as +G+ (groupId), +A+ (artifactId), +P+ (packagingType), +C+ (classifier), and +V+ (version). If you omit +P+ and +C+, you will get the default value, which uses +jar+ as the packaging type and an empty classifier. ShrinkWrap Resolver additionally allows you to skip +V+ and add the version information later:
+Maven coordinates, in their canonical form, are specified as follows: +groupId:artifactId:[packagingType:[classifier]]:version+. Often, those are referred as +G+ (groupId), +A+ (artifactId), +P+ (packagingType), +C+ (classifier), and +V+ (version). If you omit +P+ and +C+, you will get the default value, which uses +jar+ as the packaging type and an empty classifier. ShrinkWrap Resolvers additionally allows you to skip +V+ in case it has version information available from the POM:
 
 * The most simple use case is to resolve a file using coordinates. Here, the resolver locates an artifact defined by +G:A:V+ and resolves it including all transitive dependencies. The result is formatted as array of type +File+:
 +
