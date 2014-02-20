@@ -1019,8 +1019,8 @@ And now we're free to write the tests backing the points listed earlier; we want
         return commit(getDomainClass(), callable);
     }
 
-    protected <T> T commit(Class<T> type, Callable<T> callable) throws 
-    Exception {
+    protected <T> T commit(Class<T> type, Callable<T> callable) 
+    throws Exception {
         try {
             tx.begin();
             return callable.call();
