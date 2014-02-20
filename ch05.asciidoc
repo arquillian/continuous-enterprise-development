@@ -26,7 +26,7 @@ Perhaps the simplest way to handle persistent storage is to directly serialize i
 
 ...until we start to think through how this is going to play out in practice.  Our applications are multiuser; they support any number of operations going on in parallel.  How are we to ensure that we don't have two writes happening on the same file at once?  We could put a read/write lock in place to ensure that only one write happens at a time, but then we could potentially queue up lots of write requests while work is being done.  And what about auditing our changes, or ensuring that the integrity of our data model is preserved in case of an error?  Very quickly we'll discover that the task of persisting our data is a first-class problem in and of itself, and one that probably doesn't belong on our desks as application developers.
 
-It'd be much better to delegate the task of persistent storage to another component equipped to handle this efficiently and securely.  Luckily, we'll have our pick of any number of Database Management Systems (DBMS) that do just that.
+It'd be much better to delegate the task of persistent storage to another component equipped to handle this efficiently and securely.  Luckily, we'll have our pick of any number of database management systems (DBMS) that do just that as <<Figure5-1>> illustrates many apps using centralized persistent storage.
 
 .Needs a caption
 [[Figure5-1]]
