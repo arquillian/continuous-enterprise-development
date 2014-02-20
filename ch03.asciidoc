@@ -377,8 +377,8 @@ This instructs Forge to connect to its plug-in repository, grab the latest versi
 With the Arquillian plug-in installed, we now have access to the +arquillian+ command.  Let's instruct Forge to equip our POM with the dependencies needed to run Arquillian tests on the JBoss AS7 container:
 
 ----
-$> arquillian setup --containerType REMOTE --containerName JBOSS_AS_REMOTE_7.X 
-   --testframework
+$> arquillian setup --containerType REMOTE 
+   --containerName JBOSS_AS_REMOTE_7.X --testframework
 ----
 
 You'll be prompted for the versions of Arquillian, JUnit, and JBoss AS7 that you'd like to use, and the available options will expand over time as new versions are released.  These instructions have been tested with:
@@ -392,8 +392,8 @@ You'll be prompted for the versions of Arquillian, JUnit, and JBoss AS7 that you
 With the POM config changes out of the way, let's ask Forge to now create for us a jumping-off point from which we'll write our test:
 
 ----
-$> arquillian create-test --class org.cedj.ch03.feedback.model.
-   FeedbackEntry.java
+$> arquillian create-test 
+   --class org.cedj.ch03.feedback.model.FeedbackEntry.java
 Picked up type <JavaResource>: org.cedj.feedback.model.FeedbackEntryTest
 Wrote ./feedback/src/test/java/org/cedj/feedback/model/FeedbackEntryTest.java
 ----
@@ -578,15 +578,15 @@ At this point, we still have a running JBoss AS7 server and have undeployed the 
     </profile>
 ----
 
-Let's inform JBDS that we should consider the metadata in this profile; this will impact our compilation and JUnit runtime classpaths.
+Let's inform JBDS that we should consider the metadata in this profile; this will impact our compilation and JUnit runtime classpaths. Right-clicking the _pom.xml_ file and using the Maven context menu will give us the option to select a Maven profile, as shown in <<Figure3-7>>.
 
-.Select Maven Profile
+.Selecting a Maven profile
 [[Figure3-7]]
 image::images/cedj_04in07.png["Select Maven Profile"]
 
 Now the Arquillian test launcher will know to pick up the proper adaptor to a remote JVM instance of JBoss AS7 when running tests; it will connect to the currently running instance, deploy the defined +@Deployment+, execute the tests, and undeploy to clean up.  If we'd like to allow Arquillian to automatically control the server start/stop lifecycle alongside each test suite, we could alternatively use the +JBOSS_AS_MANAGED_7.X+ setup option, which defines +org.jboss.as:jboss-as-arquillian-container-managed+ as a dependency in a POM profile.
 
-With JBDS now configured with the proper +classpath+ for test execution, all that's left to do is launch the test.  A simple right-click on the test class in the Project Explorer yields the option Run As -> JUnit Test.  The IDE's JUnit launcher will create a new process, fire up JUnit, and yield control to Arquillian.  We'll receive results just as we'd expect from any other JUnit test (see <<Figure3-8>>).
+With JBDS now configured with the proper +classpath+ for test execution, all that's left to do is launch the test.  A simple right-click on the test class in the Project Explorer yields the option Run As -> JUnit Test.  The IDE's JUnit launcher will create a new process, fire up JUnit, and yield control to Arquillian.  We'll receive results just as we'd expect from any other JUnit test; The standard JUnit Test Report for Eclipse is shown in <<Figure3-8>>.
 
 .Passing the tests
 [[Figure3-8]]
@@ -640,7 +640,7 @@ Next we'll be asked to set up a new project to back the application on OpenShift
 [[Figure3-15]]
 image::images/cedj_04in15.png["Project for OpenShift Application"]
 
-Because the OpenShift deployment mechanism is powered by Git, JBDS will now prompt us to accept some defaults for the Git metadata it'll write into our local project directory (see <<Figure3-16>>).  You can tailor these as you see fit, though we use the defaults in this example.
+Because the OpenShift deployment mechanism is powered by Git, JBDS will now prompt us to accept some defaults for the Git metadata it'll write into our local project directory.  You can tailor these as you see fit, though we use the defaults in this example. <<Figure3-16>> shows the dialog to import an existing OpenShift application.
 
 .Import existing OpenShift application
 [[Figure3-16]]
@@ -652,7 +652,7 @@ Finishing this setup will trigger the deployment of our built artifacts from our
 [[Figure3-17]]
 image::images/cedj_04in17.png["Embedded Cartridges"]
 
-And we'll also want to confirm the Git metadata to be written into our project directory a final time (see <<Figure3-18>>). As JBDS notes, this cannot be undone (though you can manually delete the _.git_ directory from your project should you choose to disconnect your local workspace from any OpenShift or Git references).
+And we'll also want to confirm the Git metadata to be written into our project directory a final time. As JBDS notes, this cannot be undone (though you can manually delete the _.git_ directory from your project should you choose to disconnect your local workspace from any OpenShift or Git references). <<Figure3-18>> displays the dialog allowing us to confirm the addition of git metadata.
 
 .Adding Git repo information to the project
 [[Figure3-18]]
