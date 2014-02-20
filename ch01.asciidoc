@@ -162,7 +162,7 @@ In cases where a unit test may require inputs from unrelated components, the use
 * Avoid dependence upon a mechanism that supplies nonidempotent (nonrepeatable) values
 ** For instance, a random-number generator or something that relies on the current time
 
-Although mocks absolutely have their place in the testing arsenal, in the context of Enterprise development it's our opinion that their use should be limited.  The Java Enterprise Edition is based on a _POJO_ (Plain Old Java Object) component model, which enables us to directly instantiate servlets, EJBs, and CDI beans; this is great for validating business logic in simple calls.  However, the true power of Java EE is in the _loose coupling_ between components, and mocks do not account for the linkage between these pieces that's provided by the container.  To fully test an application, you must test the whole runtime, not simply the code you've written on your own.  For that, we need a more comprehensive solution to validation than is allowed by unit tests.
+Although mocks absolutely have their place in the testing arsenal, in the context of Enterprise development it's our opinion that their use should be limited.  The Java Enterprise Edition is based on a _POJO_ (Plain Old Java Object) component model, which enables us to directly instantiate servlets, Enterprise Java beans (EJBs), and Context and Dependency Injection (CDI) beans; this is great for validating business logic in simple calls.  However, the true power of Java EE is in the _loose coupling_ between components, and mocks do not account for the linkage between these pieces that's provided by the container.  To fully test an application, you must test the whole runtime, not simply the code you've written on your own.  For that, we need a more comprehensive solution to validation than is allowed by unit tests.
 
 ==== Integration
 
@@ -265,7 +265,7 @@ public class WelcomeJUnitTest {
         final String expectedResult = "Hello, " + name;
         final String receivedResult = welcomer.welcome(name);
         Assert.assertEquals("Did not welcome " + name + " correctly",
-            expectedResult, receivedResult);
+        expectedResult, receivedResult);
     }
 
     @Test
@@ -297,7 +297,7 @@ As opposed to our homebrewed +main(String[])+ test client, JUnit supports report
 [[Figure1-4]]
 image::images/cedj_02in02.png["JUnit IDE Reporting Integration"]
 
-Often we'll make use of a _continuous integration server_ to handle our builds and provide an auditable view of the codebase over time.  During this more formal build process, output may be directed to an XML file for analysis by plug-ins.  This can be very helpful in tracking progress of the failing and total number of tests graphically using the http://jenkins-ci.org/[Jenkins Continuous Integration Server] shown in <<Figure1-5>>.
+Often we'll make use of a _continuous integration server_ to handle our builds and provide an auditable view of the codebase over time.  During this more formal build process, output may be directed to an XML file for analysis by plug-ins. This can be very helpful in tracking progress of the failing and total number of tests. For instance, we can use the http://jenkins-ci.org/[Jenkins Continuous Integration Server] shown in <<Figure1-5>> to track the progress graphically.
 
 .Continuous integration test reporting
 [[Figure1-5]]
@@ -326,7 +326,7 @@ public class WelcomeTestNGTest {
     public void welcome() {
         /// .. Omitting logic for brevity
         Assert.assertEquals(receivedResult, expectedResult, "Did not welcome " + 
-            name + " correctly");
+        name + " correctly");
     }
 
     @Test
@@ -339,9 +339,9 @@ public class WelcomeTestNGTest {
 
 Some of the parameter orders and API names for the annotations have changed, but the concept remains: write less, and let the framework wire up the call stack.
 
-IDE integration, while not standard for Eclipse Juno, is http://testng.org/doc/download.html[simple enough to install] and provides a GUI runner as we've seen with JUnit (see <<Figure1-6>>).
+IDE integration, while not standard for Eclipse Juno, is http://testng.org/doc/download.html[simple enough to install] and provides a GUI runner as we've seen in <<Figure1-6>>.
 
-.TestNG IDE runner integration
+.JUnit runner in Eclipse
 [[Figure1-6]]
 image::images/cedj_02in04.png["TestNG IDE Runner Integration"]
 
