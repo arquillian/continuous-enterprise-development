@@ -170,8 +170,8 @@ We should also be sure that these +Attachment+ objects are in valid state, so we
           title, mimeType, url, new Date());
     }
 
-    private Attachment(String id, String title, String mimeType, URL url, Date 
-    created) {
+    private Attachment(String id, String title, String mimeType, 
+    URL url, Date created) {
         requireNonNull(title, "Title must be specified)");
         requireNonNull(mimeType, "MimeType must be specified)");
         requireNonNull(url, "Url must be specified)");
@@ -373,9 +373,9 @@ private static class Key implements Serializable {
             final int prime = 31;
             int result = 1;
             result = prime * result + ((sourceId == null) ? 0 : 
-            sourceId.hashCode());
+                sourceId.hashCode());
             result = prime * result + ((targetId == null) ? 0 : 
-            targetId.hashCode());
+                targetId.hashCode());
             result = prime * result + ((type == null) ? 0 : type.hashCode());
             return result;
         }
