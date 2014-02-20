@@ -206,8 +206,8 @@ Quite simple (and maybe even redundant!) when put in these terms, especially for
 To state even more generally:
 
 ----
-As a User, I should be able to Create, Read, Update, and 
-Delete Conference and Session types.
+As a User, I should be able to Create, Read, Update, 
+and Delete Conference and Session types.
 ----
 
 Of course, we have some other requirements that do not pertain to the user perspective.
