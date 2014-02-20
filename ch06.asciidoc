@@ -140,6 +140,8 @@ Because this represents a potentially recursive situation ("I want to see all th
 
 === Implementation 
 
+We'll be introducing two domain objects here that are not reflected in our relational model: +Attachment+ and +Relation+.
+
 ==== Attachment
 
 We'll start by introducing the model for our +Attachment+.  Because this will not be stored in our RDBMS engine, we'll create a value object to hold the data describing this entity, and it will not be an +@Entity+ under the management of JPA.  We can accomplish this by making a simple class to hold our fields, +org.cedj.geekseek.domain.attachment.model.Attachment+:
