@@ -153,7 +153,7 @@ Of particular note is the many-to-many relationship among users.  Because a user
 
 In effect, this relationship has a graph structure, as shown in <<Figure4-2>>.
 
-.Needs a caption
+.Relationships modeled as a graph
 [[Figure4-2]]
 image::images/cedj_0402.png[]
 
@@ -240,8 +240,6 @@ total 492
 -rw-r--r-- 1 alr alr 29803 Jun 28 18:03 Chapter03-ScratchToProduction.asciidoc
 -rw-r--r-- 1 alr alr 20772 Jul  7 17:29 
  Chapter04-RequirementsAndExampleApplication.asciidoc
--rw-r--r-- 1 alr alr 61834 Jul  7 17:29 
- Chapter04-RequirementsAndExampleApplication.html
 -rw-r--r-- 1 alr alr 32765 Jun 28 18:03 
  Chapter05-JavaPersistenceAndRelationalData.asciidoc
  ...etc
