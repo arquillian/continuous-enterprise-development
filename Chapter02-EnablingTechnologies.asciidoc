@@ -206,7 +206,7 @@ _Prerequisites_
 
 ShrinkWrap may run on any Java5 runtime or higher, but requires at least JDK6 for compilation.
 
-The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.api.ShrinkWrap+ class.  From here you may call the +create+ method to make a new +Archive+, the a generic view of the virtual filesystem which allows the addition of content called +Asset+ s into a location called an +ArchivePath+.  The following table more easily shows ShrinkWrap nomenclature next to more common terms:
+The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.api.ShrinkWrap+ class.  From here you may call the +create+ method to make a new +Archive+, a generic view of the virtual filesystem which allows the addition of content called +Asset+ s into a location called an +ArchivePath+.  The following table more easily shows ShrinkWrap nomenclature next to more common terms:
 
 |=============================
 |_Archive Type_|_Description_
@@ -214,7 +214,7 @@ The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.a
 |+org.jboss.shrinkwrap.api.spec.JavaArchive+|JAR type; allows addition of +Class+ es, +Package+ s, and Manifest operations
 |+org.jboss.shrinkwrap.api.spec.EnterpriseArchive+|Java EE EAR type; supports Manifest and related spec operations
 |+org.jboss.shrinkwrap.api.spec.WebArchive+|Java EE WAR type; supports operations common to web application deployments
-|+org.jboss.shrinkwrap.api.spec.ResourceAdaptorArchive+|Java EE RAR type; supports operations common to resource adaptor deployments
+|+org.jboss.shrinkwrap.api.spec.ResourceAdapterArchive+|Java EE RAR type; supports operations common to resource adapter deployments
 |=============================
 
 To create an +Archive+, simply choose your desired archive type and optionally supply a name to the static +ShrinkWrap:create+ method:
@@ -483,7 +483,7 @@ Let's cover some of the most popular use cases for ShrinkWrap Resolver.
 
 ===== Resolution of Artifacts Specified by Maven Coordinates
 
-Maven coordinates, in their canonical form, are specified as following +groupId:artifactId:[packagingType:[classifier]]:version+. Often, those are referred as +G+ (groupId), +A+ (artifactId), +P+ (packagingType), +C+ (classifier) and +V+ (version). If you omit +P+ and +C+, they will get their default value, which is packaging of +jar+ and an empty classifier. ShrinWrap Resolver additionally allows you to skip +V+ in case it has version information available, that would be explained later on.
+Maven coordinates, in their canonical form, are specified as following +groupId:artifactId:[packagingType:[classifier]]:version+. Often, those are referred as +G+ (groupId), +A+ (artifactId), +P+ (packagingType), +C+ (classifier) and +V+ (version). If you omit +P+ and +C+, they will get their default value, which is packaging of +jar+ and an empty classifier. ShrinkWrap Resolver additionally allows you to skip +V+ in case it has version information available, that would be explained later on.
 
 1. The most simple use case is to resolve a file using coordinates. Here, the resolver locates an artifact defined by +G:A:V+ and resolves it including all transitive dependencies. The result is formatted as array of type +File+.
 +
@@ -493,7 +493,7 @@ File[] = Maven.resolver().resolve("G:A:V").withTransitivity().asFile();
 ----
 +
 
-2. You might want to change default Maven behavior and resolve only artifact specified by +G:A:V+, avoiding its transitive dependencies. For this use case, ShrinkWrap Resolvers provides a shorthand for changing resolution strategy, called +withoutTransitivity()+. Additionally, you might want to return a single +File+ instead of an array.
+2. You might want to change the default Maven behavior and resolve only one artifact specified by +G:A:V+, avoiding its transitive dependencies. For this use case, ShrinkWrap Resolvers provides a shorthand for changing resolution strategy, called +withoutTransitivity()+. Additionally, you might want to return a single +File+ instead of an array.
 +
 [source,java]
 ----
@@ -645,9 +645,9 @@ ShrinkWrap Resolvers will not consume settings.xml specified on command line (+-
 
 While previous calls allow you to manually define what you want to resolve, in Maven projects, you have very likely specified this information already in your _pom.xml_ file. ShrinkWrap Resolver allows you to follow _DRY_ principles and it is able to load metadata included there.
 
-ShrinkWrap Resolvers constructs so called effective POM model (simplified, that is your _pom.xml_ file plus parent hierarchy and Super POM, Maven default POM file). In order to construct the model, it uses all local repository, classpath repository and remote repositories. Once the model is loaded, you can use the metadata in there to be automatically added to artifacts to be resolved.
+ShrinkWrap Resolvers constructs a so called effective POM model (simplified, that is your _pom.xml_ file plus parent hierarchy and Super POM, Maven default POM file). In order to construct the model, it uses all local repositories, the classpath repository and all remote repositories. Once the model is loaded, you can use the metadata in there to be automatically added to artifacts to be resolved.
 
-1. Resolving an artifact with version defined in effective POM. In case, you want to resolve +G:A:V+, you can simply specify +G:A+ instead. For artifacts with non JAR packaging type or classifier, you must use alternative syntax with question mark '+?+', such as +G:A:P:?+ or +G:A:P:C:?+.
+1. Resolving an artifact with the version defined in effective POM. In case, you want to resolve +G:A:V+, you can simply specify +G:A+ instead. For artifacts with non JAR packaging type or classifier, you must use an alternative syntax with question mark '+?+', such as +G:A:P:?+ or +G:A:P:C:?+.
 +
 [source,java]
 ----
@@ -658,7 +658,7 @@ Maven.resolver().loadPomFromClassLoaderResource("/path/to/pom.xml")
   .resolve("G:A:P:?").withTransitivity().asFile();
 ----
 
-2. Resolving artifacts defined in effective POM. ShrinkWrap Resolvers allows you to artifacts defined with specific scope into list of artifacts to be resolved. This way, you don't need to alter your tests if you change dependencies of your application. You can either use +importDependencies(ScopeType...)+ or convenience methods, that cover the most frequent usages (+importRuntimeDependencies()+, +importTestDependencies()+ and +importRuntimeAndTestDependencies())+:
+2. Resolving artifacts defined in effective POM. ShrinkWrap Resolvers allows you to import artifacts defined with a specific scope into the list of artifacts to be resolved. This way, you don't need to alter your tests if you change dependencies of your application. You can either use +importDependencies(ScopeType...)+ or convenience methods, that cover the most frequent usages (+importRuntimeDependencies()+, +importTestDependencies()+ and +importRuntimeAndTestDependencies())+:
 +
 [source,java]
 ----
