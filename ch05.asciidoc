@@ -6,9 +6,9 @@ ____
 Energy and persistence conquer all things.
 ____
 
-If we really boil down the primary objective of most applications to bare metal, we'll find that nearly everything we do involves an interaction with _data_.  We supply it when we make a new online order.  We pull it out when we research on a wiki.  We update it when we change our credit card's billing address.
+((("data", id="ix_ch05-asciidoc0", range="startofrange")))If we really boil down the primary objective of most applications to bare metal, we'll find that nearly everything we do involves an interaction with _data_.  We supply it when we make a new online order.  We pull it out when we research on a wiki.  We update it when we change our credit card's billing address.
 
-The information contained in a system at any point in time comprises the _state_ of the application, and state comes in a variety of _scopes_, including:
+The ((("application states")))((("scopes")))information contained in a system at any point in time comprises the _state_ of the application, and state comes in a variety of _scopes_, including:
 
 Request:: Limited access within one request/response cycle
 Session:: Limited access within one user session
@@ -20,30 +20,30 @@ Depending upon your view or framework of choice, there may be other ways to slic
 
 As is thematic throughout the study of computer science, the rule of thumb is to limit ourselves to the smallest scope required.  Fine-grained access to data helps to ensure that we don't leak out state where it can cause security issues or difficult-to-debug behaviors.  Can you imagine what it'd be like if one user's access to his online bank account were to be replicated to all active sessions?
 
-In addition to the notion of scopes, which limit data's visibility, we also have the concept of _persistence_.  Persistence is a property that dictates whether or not state will survive outside of its confining scope.  For instance, we may allow a user to log in and change her online profile, but if we don't synchronize these updates with some sort of persistent storage, they'll be lost as soon as her user session (which defines the scope of this data) is closed.
+In addition((("persistence"))) to the notion of scopes, which limit data's visibility, we also have the concept of _persistence_.  Persistence is a property that dictates whether or not state will survive outside of its confining scope.  For instance, we may allow a user to log in and change her online profile, but if we don't synchronize these updates with some sort of persistent storage, they'll be lost as soon as her user session (which defines the scope of this data) is closed.
 
 Perhaps the simplest way to handle persistent storage is to directly serialize information to the filesystem.  At first glance, this looks like a nice approach; we open up a file, write whatever we want in there, and close it up.  Later we go in and read as needed.  Easy!
 
 ...until we start to think through how this is going to play out in practice.  Our applications are multiuser; they support any number of operations going on in parallel.  How are we to ensure that we don't have two writes happening on the same file at once?  We could put a read/write lock in place to ensure that only one write happens at a time, but then we could potentially queue up lots of write requests while work is being done.  And what about auditing our changes, or ensuring that the integrity of our data model is preserved in case of an error?  Very quickly we'll discover that the task of persisting our data is a first-class problem in and of itself, and one that probably doesn't belong on our desks as application developers.
 
-It'd be much better to delegate the task of persistent storage to another component equipped to handle this efficiently and securely.  Luckily, we'll have our pick of any number of database management systems (DBMS) that do just that as <<Figure5-1>> illustrates many apps using centralized persistent storage.
+It'd be ((("database management systems (DBMS)")))much better to delegate the task of persistent storage to another component equipped to handle this efficiently and securely.  Luckily, we'll have our pick of any number of database management systems (DBMS) that do just that as <<Figure5-1>> illustrates many apps using centralized persistent storage.
 
 .A series of applications backed by an RDMBS
 [[Figure5-1]]
 image::images/cedj_0501.png[]
 
-The role of a DBMS is very generally to store and provide access to data.  They come in a variety of flavors which are differentiated in terms of how they internally organize information:
+The role of((("database management systems (DBMS)","role of")))((("relational databases"))) a DBMS is very generally to store and provide access to data.  They come in a variety of flavors which are differentiated in terms of how they internally organize information:
 
-Relational (RDBMS):: Like data is grouped into tables where columns represent data types and rows represent records.  Most often employs a protocol language called _Structured Query Language_ (SQL) for interaction.  Examples: http://www.mysql.com/[MySQL], http://www.postgresql.org/[PostgreSQL].
-Graph:: Stores objects with relationships in a graph structure; ideal for traversing nodes.  Example: http://www.neo4j.org/[Neo4j].
-Key/value:: Nested Map or document-oriented structure, becoming very popular in recent years.  Examples: http://www.jboss.org/infinispan/[Infinispan], http://www.mongodb.org/[MongoDB].
-Column-oriented:: Stores data in columns, as opposed to the RDBMS where the records are kept in rows.  Best-suited for very large tables.  Examples: http://hbase.apache.org/[Apache HBase], http://cassandra.apache.org/[Apache Cassandra].
+Relational (RDBMS):: Like data is grouped into tables where columns represent data types and rows represent records.  Most often employs a protocol language called((("Structured Query Language (SQL)")) _Structured Query Language_ (SQL) for interaction.  Examples((("MySQL")))((("PostgreSQL"))): http://www.mysql.com/[MySQL], http://www.postgresql.org/[PostgreSQL].
+Graph:: Stores((("graph DBMS"))) objects with relationships in a graph structure; ideal for traversing nodes.  Example((("Neo4j"))): http://www.neo4j.org/[Neo4j].
+Key/value:: Nested ((("key DBMS")))((("value DBMS")))Map or document-oriented structure, becoming very popular in recent years.  Examples((("Infinispan")))((("MongoDB"))): http://www.jboss.org/infinispan/[Infinispan], http://www.mongodb.org/[MongoDB].
+Column-oriented:: Stores((("column-oriented DBMS"))) data in columns, as opposed to the RDBMS where the records are kept in rows.  Best-suited for very large tables.  Examples((("Apache HBase")))((("Apache Cassandra"))): http://hbase.apache.org/[Apache HBase], http://cassandra.apache.org/[Apache Cassandra].
 
-This chapter will focus on today's most commonly used relational model (NoSQL will be covered next in <<ch06>>).
+This chapter will focus on today's most commonly used relational model (NoSQL will be covered next in <<ch06>>).(((range="endofrange", startref="ix_ch05-asciidoc0")))
 
 === The Relational Database Model
 
-To best understand the relational model, let's highlight how it differs from the object model with which we're already familiar.  For this example we'll seek to describe a family.
+((("relational database management systems (RDBMS)")))To best understand the relational model, let's highlight how it differs from the object model with which we're already familiar.  For this example we'll seek to describe a family.
 
 Each member of the family can be represented by a +Person+ object:
 
@@ -92,7 +92,7 @@ Now, let's take a look at how that same information might be represented in a re
 
 Already we see some differences here.  The +id+, +name+, and +male+ fields are as we might expect; simple data types where a Java +Long+ is now represented as a database +UNSIGNED INTEGER+, a Java +String+ maps to a +VARCHAR(255)+ (variable-length character String with maximum length of 255), and a Java +Boolean+ becomes a +BIT+ type.  But instead of a direct reference to the +mother+ or +father+, instead we see the data type there is +UNSIGNED INTEGER+.  Why?
 
-This is the defining characteristic of _relational_ in RDBMS.  These fields are in fact pointers to the _primary key_, or the identifying +id+ field of another record.  As such, they are called _foreign keys_.  So our data may look something like <<table5-2>>.
+This is ((("foreign keys")))((("primary key")))the defining characteristic of _relational_ in RDBMS.  These fields are in fact pointers to the _primary key_, or the identifying +id+ field of another record.  As such, they are called _foreign keys_.  So our data may look something like <<table5-2>>.
 
 .Relationships among family members
 [[table5-2]]
@@ -115,13 +115,13 @@ Of course, the English language might be a bit more confusing than we'd like, so
 
 === The Java Persistence API
 
-It's nice that a DBMS allows us to relieve ourselves of the details involving persistence, but introducing this separate data layer presents a few issues:
+((("data","Java Persistence API")))((("Java Persistence API")))It's nice that a DBMS allows us to relieve ourselves of the details involving persistence, but introducing this separate data layer presents a few issues:
 
 * Though SQL is an ANSI Standard, its use is not truly portable between RDBMS vendors.  In truth, each database product has its own dialect and extensions.
 * The details of interacting with a database are vendor-dependent, though there are connection-only abstractions (drivers) in Java (for instance, Java Database Connectivity, or JDBC).
 * The relational model used by the database doesn't map on its own to the object model we use in Java; this is called the _object/relational impedance mismatch_.
 
-To address each of these problems, Java EE6 provides a specification called the _Java Persistence API_ (JPA), defined by http://bit.ly/1e84urW[JSR 317].  JPA is comprised of both an http://bit.ly/1e84sjL[API] for defining and interacting with entity objects and an SQL-like query language called _Java Persistence Query Language_ (JPQL) for portable interaction with a variety of database implementations.  Because JPA is itself a spec, a variety of open source–compliant implementations are available, including http://hibernate.org/[Hibernate], http://www.eclipse.org/eclipselink/[EclipseLink], and http://openjpa.apache.org/[OpenJPA].
+To address ((("Java Persistence Query Language (JPQL)")))each of these problems, Java EE6 provides a specification called the _Java Persistence API_ (JPA), defined by http://bit.ly/1e84urW[JSR 317].  JPA is comprised of both an http://bit.ly/1e84sjL[API] for defining and interacting with entity objects and an SQL-like query language called _Java Persistence Query Language_ (JPQL) for portable interaction with a variety of database implementations.  Because JPA is itself a spec, a variety of open source–compliant implementations are available, including((("Hibernate")))((("EclipseLink")))((("OpenJPA"))) http://hibernate.org/[Hibernate], http://www.eclipse.org/eclipselink/[EclipseLink], and http://openjpa.apache.org/[OpenJPA].
 
 So now our tiered data architecture may look something like <<Figure5-3>>.
 
@@ -131,14 +131,14 @@ image::images/cedj_0503.png[]
 
 [NOTE]
 ====
-Though a full overview of this technology stack is beyond the scope of this book, we'll be sure to point you to enough resources and explain the basics of interacting with data via JPA that you'll be able to understand our application and test examples.  For readers interested in gaining better insight into JPA (and its parent, EJB), we recommend pass:[<emphasis><ulink role="orm:hideurl" url="http://shop.oreilly.com/product/9780596158033.do">Enterprise Java Beans 3.1, 6th Edition</ulink></emphasis>] by Andrew Lee Rubinger and Bill Burke (O'Reilly, 2010).
+Though a full overview of this technology stack is beyond the scope of this book, we'll be sure to point you to enough resources and explain the basics of interacting with data via JPA that you'll be able to understand our application and test examples.  For readers interested in gaining better insight into JPA (and its parent, EJB), we recommend((("Enterprise Java Beans 3.1, 6E (Rubinger and Burke)"))) pass:[<emphasis><ulink role="orm:hideurl" url="http://shop.oreilly.com/product/9780596158033.do">Enterprise Java Beans 3.1, 6th Edition</ulink></emphasis>] by((("Rubinger, Andrew Lee"))) Andrew Lee Rubinger and((("Burke, Bill"))) Bill Burke (O'Reilly, 2010).
 ====
 
 ==== POJO Entities
 
-Again, as Java developers we're used to interacting with objects and the classes that define them.  Therefore, JPA allows us to design our object model as we wish, and by sprinkling on some additional metadata (typically in the form of annotations, though XML may also be applied), we can tell our JPA provider enough for it to take care of the _object/relational mapping_ for us.  For instance, applying the +javax.persistence.Entity+ annotation atop a value object like our +Person+ class is enough to denote a JPA entity.  The data type mapping is largely inferred from our source Java types (though this can be overridden), and we define relationship fields using the +@javax.persistence.OneToOne+, +@javax.persistence.OneToMany+, and +@javax.persistence.ManyToMany+ annotations.  We'll see examples of this later in our application.
+((("Java Persistence API","POJO entities")))((("POJO entities")))Again, as ((("object relational mapping")))((("relational mapping")))Java developers we're used to interacting with objects and the classes that define them.  Therefore, JPA allows us to design our object model as we wish, and by sprinkling on some additional metadata (typically in the form of annotations, though XML may also be applied), we can tell our JPA provider enough for it to take care of the _object/relational mapping_ for us.  For instance, applying the +javax.persistence.Entity+ annotation atop a value object like our +Person+ class is enough to denote a JPA entity.  The data type mapping is largely inferred from our source Java types (though this can be overridden), and we define relationship fields using the +@javax.persistence.OneToOne+, +@javax.persistence.OneToMany+, and +@javax.persistence.ManyToMany+ annotations.  We'll see examples of this later in our application.
 
-The important thing to keep in mind is the concept of _managed entities_.  Because JPA exposes a POJO programming model, consider the actions that this code might do upon an entity class +Person+:
+The important((("entities","managed")))((("managed","entities"))) thing to keep in mind is the concept of _managed entities_.  Because JPA exposes a POJO programming model, consider the actions that this code might do upon an entity class +Person+:
 
 [source,java]
 ----
@@ -148,7 +148,7 @@ person.setName("Dick Hoyt");
 
 OK, so very clearly we've created a new +Person+ instance and set his name.  The beauty of the POJO programming model is also its drawback; this is just a regular object.  Without some additional magic, there's no link to the persistence layer.  This coupling is done transparently for us, and the machine providing the voodoo is the JPA +EntityManager+.
 
-http://bit.ly/MAXk9G[+javax.persistence.EntityManager+] is our hook to a defined _persistence unit_, our abstraction above the database.  By associating POJO entities with the +EntityManager+, they become monitored for changes such that any state differences that take place in the object will be reflected in persistent storage.  An object under such supervision is called _managed_.  Perhaps this is best illustrated by some examples:
+http://bit.ly/MAXk9G[+javax.persistence.EntityManager+] is our((("managed","objects")))((("objects, managed")))((("persistence","unit"))) hook to a defined _persistence unit_, our abstraction above the database.  By associating POJO entities with the +EntityManager+, they become monitored for changes such that any state differences that take place in the object will be reflected in persistent storage.  An object under such supervision is called _managed_.  Perhaps this is best illustrated by some examples:
 
 [source,java]
 ----
@@ -179,7 +179,7 @@ managedPerson.setName("Just a POJO");  // This state change will *not* be
 
 === Use Cases and Requirements
 
-This is the first chapter in which we'll be dealing with the companion GeekSeek example application for the book; its purpose is to highlight all layers working in concert to fulfill the _user requirements_ dictated by each chapter.  From here out, we'll be pointing to selections from the GeekSeek application in order to showcase how we wire together the domain, application, view, and test layers in a cohesive, usable project.
+This is the ((("user requirements")))first chapter in which we'll be dealing with the companion GeekSeek example application for the book; its purpose is to highlight all layers working in concert to fulfill the _user requirements_ dictated by each chapter.  From here out, we'll be pointing to selections from the GeekSeek application in order to showcase how we wire together the domain, application, view, and test layers in a cohesive, usable project.
 
 As we proceed, we'll note each file so that you can draw references between the text and the deployable example.  We're firm believers that you best learn by doing (or at least exploring real code), so we invite you to dig in and run the examples as we go along.
 
@@ -187,7 +187,7 @@ Testing is a first-class citizen in verifying that our development is done corre
 
 ==== User Perspective
 
-Our users are going to have to perform a series of _CRUD_ (Create, Read, Update, Delete) operations upon the entities that drive our application's data.  As such, we've defined a set of user-centric requirements:
+((("data","user perspective on")))((("GeekSeek","user perspective")))((("user perspective")))Our users are ((("CRUD","operations")))going to have to perform a series of _CRUD_ (Create, Read, Update, Delete) operations upon the entities that drive our application's data.  As such, we've defined a set of user-centric requirements:
 
 ----
 As a User, I should be able to:
@@ -214,7 +214,7 @@ Of course, we have some other requirements that do not pertain to the user persp
 
 ==== Technical Concerns
 
-As noted in the introduction, the issue of data persistence is not trivial.  We must ensure that our solution will address:
+((("data","technical concerns with")))((("GeekSeek","technical concerns")))((("technical concerns")))As noted in the introduction, the issue of data persistence is not trivial.  We must ensure that our solution ((("concurrent access")))((("fault-tolerance")))((("multiuser access")))will address:
 
 * Concurrent access
 * Multiuser access
@@ -226,13 +226,13 @@ In GeekSeek, however, we'll want to ensure that users are seeing up-to-date info
 
 === Implementation
 
-Given our user and technical concerns, the Java EE stack using JPA described earlier will do a satisfactory job toward meeting our requirements.  And there's an added benefit: by using frameworks designed to relieve the application developer of complicated programming, we'll end up writing a lot less code.  This will help us to reduce the _conceptual weight_ of our code and ease maintenance over the long run.  The slices of Java EE that we'll use specifically include: 
+((("Java Persistence API","implementing", id="ix_ch05-asciidoc1", range="startofrange")))Given our ((("conceptual weight")))user and technical concerns, the Java EE stack using JPA described earlier will do a satisfactory job toward meeting our requirements.  And there's an added benefit: by using frameworks designed to relieve the application developer of complicated programming, we'll end up writing a lot less code.  This will help us to reduce the _conceptual weight_ of our code and ease maintenance over the long run.  The slices of Java EE that we'll use((("Enterprise JavaBeans (EJB)")))((("Java Transaction API (JTA)")))((("JPA"))) specifically include: 
 
 * Java Transaction API (JTA)
 * Enterprise JavaBeans (EJB, http://bit.ly/MAYJwZ[JSR 318])
 * JPA
 
-Transactions are a wide subject that merits its own book when dealing with the mechanics of implementing a viable transactional engine.  For us as users, however, the rules are remarkably simple.  We'll imagine a transaction is a set of code that runs within a block.  The instructions that are executed within this block must adhere to the _ACID_ properties--Atomicity, Consistency, Isolation, and Durability:
+((("transactions, database")))Transactions((("ACID properties"))) are a wide subject that merits its own book when dealing with the mechanics of implementing a viable transactional engine.  For us as users, however, the rules are remarkably simple.  We'll imagine a transaction is a set of code that runs within a block.  The instructions that are executed within this block must adhere to the _ACID_ properties--Atomicity, Consistency, Isolation, and Durability:
 
 Atomicity:: The instructions in the block act as one unit; they either succeed (_commit_) or fail (_rollback_) together.
 Consistency:: All resources associated with the transaction (in this case, our database) will always be in a legal, viable state.  For instance, a foreign key field will always point to a valid primary key.  These rules are typically enforced by the transactional resource (again, our database).
@@ -245,7 +245,7 @@ Persistence is a case that's well-understood by and lives at the heart of most J
 
 ==== Entity Objects
 
-There are a few common fields we'll want from each of our entities and ultimately the tables they represent.  All will have a primary key (ID), a created and last modified +Date+.  To avoid duplication of code, we'll create a base class from which our entities may extend; this is provided by +org.cedj.geekseek.domain.persistence.model.BaseEntity+:
+((("entities","objects", id="ix_ch05-asciidoc2", range="startofrange")))((("GeekSeek","entity objects in", id="ix_ch05-asciidoc3", range="startofrange")))((("Java Persistence API","entity objects in", id="ix_ch05-asciidoc4", range="startofrange")))There are a few common fields we'll want from each of our entities and ultimately the tables they represent.  All will have a primary key (ID), a created and last modified +Date+.  To avoid duplication of code, we'll create a base class from which our entities may extend; this is provided by +org.cedj.geekseek.domain.persistence.model.BaseEntity+:
 
 [source,java]
 ----
@@ -494,12 +494,12 @@ We'll allow an outline for the session of arbitrary size, permitted by the +@Lob
 
 At this end of the relationship between +Session+ and +Conference+, you'll see that a +Session+ is associated with a +Conference+ via the +ManyToOne+ annotation.
 
-We've also introduced a _callback handler_ to ensure that before a +Session+ entity is removed, we also remove the association it has with a +Conference+ so that we aren't left with _orphan_ references.
+We've also introduced a _callback handler_ to ensure that before a +Session+ entity is removed, we also remove the association it has with a +Conference+ so that we aren't left with _orphan_ references.(((range="endofrange", startref="ix_ch05-asciidoc4")))(((range="endofrange", startref="ix_ch05-asciidoc3")))(((range="endofrange", startref="ix_ch05-asciidoc2")))
 
 
 ==== Repository EJBs
 
-The "Repository" EJBs are where we'll define the operations that may be taken by the user with respect to our entities.  Strictly speaking, they define the verbs "Store," "Get," and "Remove."
+((("Enterprise JavaBeans (EJB)","repository", id="ix_ch05-asciidoc5", range="startofrange")))((("GeekSeek","repository EJBs", id="ix_ch05-asciidoc6", range="startofrange")))((("Java Persistence API","repository EJBs", id="ix_ch05-asciidoc7", range="startofrange")))((("repository EJBs", id="ix_ch05-asciidoc8", range="startofrange")))The "Repository" EJBs are where we'll define the operations that may be taken by the user with respect to our entities.  Strictly speaking, they define the verbs "Store," "Get," and "Remove."
 
 Because we want to completely decouple these persistent actions from JPA, we'll define an interface to abstract out the verbs from the implementations.  Later on, we'll want to provide mechanisms that fulfill these responsibilities in both RDBMS and other NoSQL variants.  Our contract is in +org.cedj.geekseek.domain.Repository+:
 
@@ -589,7 +589,8 @@ The +Stateless+ annotation defines this class as an EJB, a Stateless Session Bea
 
 The +TransactionAttribute+ annotation and its +REQUIRED+ value on the class level notes that every method invocation upon one of the business methods exposed by the EJB will run in a transaction.  That means that if a transaction does not exist one will be created, and if there's currently a transaction in flight, it will be used.
 
-The +@Typed+ annotation from CDI is explained best by the +ConferenceRepository+ JavaDocs:
+The +@Typed+ annotation from CDI is explained best by the +ConferenceRepository+ JavaDocs:(((range="endofrange", startref="ix_ch05-asciidoc8")))(((range="endofrange", startref="ix_ch05-asciidoc7")))(((range="endofrange", startref="ix_ch05-asciidoc6")))(((range="endofrange", startref="ix_ch05-asciidoc5"))) 
+(((range="endofrange", startref="ix_ch05-asciidoc1")))
 
 [source,java]
 ----
@@ -610,7 +611,7 @@ The +@Typed+ annotation from CDI is explained best by the +ConferenceRepository+
 
 === Requirement Test Scenarios
 
-Of course the runtime will be the executable code of our application.  However, the theme of this book is in _testable development_, and we'll be focusing on proof through automated tests.  To that end, every user and technical requirement we identify will be matched to a test that will ensure that functions are producing the correct results during the development cycle.
+((("application requirements","testing", id="ix_ch05-asciidoc9", range="startofrange")))((("data","requirement test scenarios", id="ix_ch05-asciidoc10", range="startofrange")))((("requirement test scenarios", id="ix_ch05-asciidoc11", range="startofrange")))((("testing","requirements", id="ix_ch05-asciidoc12", range="startofrange")))Of course ((("testable development")))the runtime will be the executable code of our application.  However, the theme of this book is in _testable development_, and we'll be focusing on proof through automated tests.  To that end, every user and technical requirement we identify will be matched to a test that will ensure that functions are producing the correct results during the development cycle.
 
 In this case, we need to create coverage to ensure that we can:
 
@@ -622,7 +623,7 @@ In this case, we need to create coverage to ensure that we can:
 
 ==== Test Setup
 
-Our tests will be taking advantage of the http://bit.ly/MB0wCg[_Arquillian Persistence Extension_], which is created to aid in writing tests where the persistence layer is involved.  It supports the following features:
+((("requirement test scenarios","setting up")))Our tests will be taking advantage of the http://bit.ly/MB0wCg[_Arquillian Persistence Extension_], which is created to aid in writing tests where the persistence layer is involved.  It supports the following features:
 
 * Wrapping each test in the separated transaction.
 * Seeding database using:
@@ -699,7 +700,7 @@ public static PersistenceDescriptor descriptor() {
 
 ==== CRUD Tests
 
-With our setup and objectives clearly in place, we'd like to assert that the CRUD operations against our +Repository+ implementations hold up.  For instance, the +org.cedj.geekseek.domain.conference.test.integration.ConferenceTestCase+ contains a series of tests that aim to do just that, and are backed by the Arquillian Persistence Extension.  
+((("CRUD","testing", id="ix_ch05-asciidoc13", range="startofrange")))((("requirement test scenarios","CRUD functions", id="ix_ch05-asciidoc14", range="startofrange")))((("testing","CRUD functions", id="ix_ch05-asciidoc15", range="startofrange")))With our setup and objectives clearly in place, we'd like to assert that the CRUD operations against our +Repository+ implementations hold up.  For instance, the +org.cedj.geekseek.domain.conference.test.integration.ConferenceTestCase+ contains a series of tests that aim to do just that, and are backed by the Arquillian Persistence Extension.  
 
 First, the test class definition:
 
@@ -877,4 +878,5 @@ Our test class has similar methods to enforce related behaviors mandated by our 
     public void shouldBeAbleToChangeSession() {...}
 ----
 
-By using Arquillian's injection facilities along with the additional transactions and data-checking support offered by the Persistence Extension, we can, with very little test logic, perform powerful assertions that validate our data is making its way to the real persistence layer without the use of mock objects.
+By using Arquillian's injection facilities along with the additional transactions and data-checking support offered by the Persistence Extension, we can, with very little test logic, perform powerful assertions that validate our data is making its way to the real persistence layer without the use of mock objects.(((range="endofrange", startref="ix_ch05-asciidoc15")))(((range="endofrange", startref="ix_ch05-asciidoc14")))(((range="endofrange", startref="ix_ch05-asciidoc13"))) (((range="endofrange", startref="ix_ch05-asciidoc12")))(((range="endofrange", startref="ix_ch05-asciidoc11")))(((range="endofrange", startref="ix_ch05-asciidoc10")))(((range="endofrange", startref="ix_ch05-asciidoc9")))
+

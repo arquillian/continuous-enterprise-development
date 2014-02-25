@@ -6,17 +6,17 @@ ____
 The best way to find yourself is to lose yourself in the service of others.
 ____
 
-The code we’ve developed and tested up to this point has dealt with data: organizing, accessing, mutating, and transforming it into formats more comfortable to us as application developers. We’ve mentioned that these are the nouns of our GeekSeek project; now it’s time to put these to some good use and take _action_.
+((("business logic", id="ix_ch07-asciidoc0", range="startofrange")))((("development process","encoding business logic", id="ix_ch07-asciidoc1", range="startofrange")))((("services layer", id="ix_ch07-asciidoc2", range="startofrange")))The code we’ve developed and tested up to this point has dealt with data: organizing, accessing, mutating, and transforming it into formats more comfortable to us as application developers. We’ve mentioned that these are the nouns of our GeekSeek project; now it’s time to put these to some good use and take _action_.
 
-_Business logic_ governs the behaviors that power our applications. As compared with more generic (and _cross-cutting_) concerns that can be abstracted--security, transactions, object-relational mapping, resource management--business logic lies at the heart of our projects. It is unique to our needs, and no one else can write it for us.
+_Business logic_ governs ((("cross-cutting")))the behaviors that power our applications. As compared with more generic (and _cross-cutting_) concerns that can be abstracted--security, transactions, object-relational mapping, resource management--business logic lies at the heart of our projects. It is unique to our needs, and no one else can write it for us.
 
 That said, the cross-cutting concerns just mentioned (and many more!) are all commonly demanded by our business needs. For instance, imagine we have a series of services, each of which needs to be accessed by an authenticated and authorized user, and in the context of a transaction. If we were diligently applying proper modularization and encapsulation, we might implement separate functions for the transactional and security enforcement, and then call these from our services.
 
-A glaring problem with this approach is that, although we’ve nicely extracted out the logic for our security and transactions for reuse, we must still manually _invoke_ them, sprinkling these method calls at the head and foot of every function requiring their use. Additionally, we may have to pass around contextual objects that know about the state of the current user or transactional registration (though in practice, these are commonly associated with a +Thread+, and thus able to fly under the visible API radar in an obfuscated context).
+A glaring((("transactions","invoking"))) problem with this approach is that, although we’ve nicely extracted out the logic for our security and transactions for reuse, we must still manually _invoke_ them, sprinkling these method calls at the head and foot of every function requiring their use. Additionally, we may have to pass around contextual objects that know about the state of the current user or transactional registration (though in practice, these are commonly associated with a +Thread+, and thus able to fly under the visible API radar in an obfuscated context).
 
-Things get more complicated when we introduce _dependent_ services. A +UserRegistration+ function may in turn call many finer-grained services like +SendEmail+, +PutUserInDatabase+, and +GenerateHashOfPassword+. This composition is desirable because it separates concerns, but we’re left with the problem of _looking up_ or locating each of these disparate services from +UserRegistration+. Ultimately this adds to the "plumbing" code, which provides no benefit to us aside from hooking our cleanly decoupled modules together. Although this has historically been addressed by employing a technique known as the _Service Locator Pattern_, for reasons we’ll soon see, this is a largely outdated and inferior approach.
+Things get ((("dependent services")))more complicated when we introduce _dependent_ services. A +UserRegistration+ function may in turn call many finer-grained services like +SendEmail+, +PutUserInDatabase+, and +GenerateHashOfPassword+. This composition is desirable because it separates concerns, but we’re left with the problem of _looking up_ or locating each of these disparate services from +UserRegistration+. Ultimately this adds to the "plumbing" code, which provides no benefit to us aside from hooking our cleanly decoupled modules together. Although this has historically been addressed by employing a technique known as the _Service Locator Pattern_, for reasons we’ll soon see, this is a largely outdated and((("Service Locater Pattern"))) inferior approach.
 
-A more subtle, yet very important, issue that arises with pure POJO programming in a multiuser environment is one of _shared state_. Consider the following code:
+A more ((("shared state in multiuser environments")))subtle, yet very important, issue that arises with pure POJO programming in a multiuser environment is one of _shared state_. Consider the following code:
 
 [source,java]
 ----
@@ -42,7 +42,7 @@ public class UserService {
 }
 ----
 
-This +UserService+ is clearly meant to be associated with a current user session, and thus has what we call _conversational scope_ confined to that session. When writing manual POJO services, the onus is upon us as developers to ensure that this is enforced; imagine if UserB were to come along and receive the object for which UserA had already set +isLoggedIn+ to +true+? Scope confinement is vitally important to the integrity of our system, and we have to be very careful when rolling our own solutions.
+This +UserService+ is ((("conversational scope")))clearly meant to be associated with a current user session, and thus has what we call _conversational scope_ confined to that session. When writing manual POJO services, the onus is upon us as developers to ensure that this is enforced; imagine if UserB were to come along and receive the object for which UserA had already set +isLoggedIn+ to +true+? Scope confinement is vitally important to the integrity of our system, and we have to be very careful when rolling our own solutions.
 
 In this chapter we'll be examining each of these complications and a proposed solution when tackling the testable development of a common, and seemingly innocuous, business requirement: sending email from a Java EE-based application.
 
@@ -50,13 +50,13 @@ In this chapter we'll be examining each of these complications and a proposed so
 
 ==== Send Email On New User Signup
 
-Web-based applications offer few avenues to push information to their users once offline; perhaps the most prevalent is through the use of email.  We see this in a variety of user stories: "Confirm Email Address," "Reset Password," and "Welcome New User" are all subject lines we've grown to expect from the sites we use.  It's fitting, then, that we devise a simple strategy to send email from our application that can be easily reused by the more coarsely grained operations.
+((("GeekSeek","business logic, encoding")))((("GeekSeek","services layer in")))Web-based applications offer few avenues to push information to their users once offline; perhaps the most prevalent is through the use of email.  We see this in a variety of user stories: "Confirm Email Address," "Reset Password," and "Welcome New User" are all subject lines we've grown to expect from the sites we use.  It's fitting, then, that we devise a simple strategy to send email from our application that can be easily reused by the more coarsely grained operations.
 
 Our GeekSeek application will therefore introduce the requirement: "Send an Email to the New User Upon Successful Signup."
 
-At first blush, this seems like a farily trivial problem to solve.  The http://www.oracle.com/technetwork/java/javamail/index.html[JavaMail] API is straightforward enough to use (though a bit dated), and is included as part of the Java EE Platform.
+At first blush, this seems like a farily trivial problem to solve.  The((("JavaMail API"))) http://www.oracle.com/technetwork/java/javamail/index.html[JavaMail] API is straightforward enough to use (though a bit dated), and is included as part of the Java EE Platform.
 
-Unfortunately, there are many issues to consider beyond the boilerplate code required to send the email itself:
+Unfortunately, there ((("GeekSeek","issues to consider")))are many issues to consider beyond the boilerplate code required to send the email itself:
 
 Should we block (wait) while the mail message is sent to the SMTP server?:: Connecting to an external service can take some time, depending on how it handles open connections.  The delivery of the email isn't designed to be immediate, so there's not much sense forcing the user to wait while we connect to an SMTP server, construct a +MimeMessage+, and send.
 
@@ -66,7 +66,7 @@ How do we test to ensure that the emails we've sent are received?  How do we val
 
 === Implementation
 
-We'll begin our example with the construction of a generic +SMTPMailService+.  As the name implies, its job will be to act as our Java interface to perform SMTP operations.  Specifically, we'll write this to send email.
+((("business logic","implementing", id="ix_ch07-asciidoc3", range="startofrange")))((("services layer","implementing", id="ix_ch07-asciidoc4", range="startofrange")))((("SMTPMailService, implementing", id="ix_ch07-asciidoc5", range="startofrange")))We'll begin our example with the construction of a generic +SMTPMailService+.  As the name implies, its job will be to act as our Java interface to perform SMTP operations.  Specifically, we'll write this to send email.
 
 First we'll make a self-explanatory value object to encapsulate the fields needed to send an email message.  This is implemented as a mutable builder for ease of use:
 
@@ -179,9 +179,9 @@ public interface SMTPMailServiceConstants {
 
 Note that we have put into place a field called +smtpQueue+, of type +javax.jms.Queue+.  This is how we'll handle two of the "hidden" problems with testable development of sending email raised earlier.
 
-First, sending a message to a JMS `Queue` is a "fire and forget" operation.  Once the message is received by the queue (which is in-process, unlike our production SMTP server), control is returned to the caller and the handling of the message is processed asynchronously.  If we create a listener to pull messages off the queue and send emails, we won't have to wait for this process to complete.  This gives us asynchrony for free.
+First, sending((("fire and forget"))) a message to a JMS `Queue` is a "fire and forget" operation.  Once the message is received by the queue (which is in-process, unlike our production SMTP server), control is returned to the caller and the handling of the message is processed asynchronously.  If we create a listener to pull messages off the queue and send emails, we won't have to wait for this process to complete.  This gives us asynchrony for free.
 
-The other tangible benefit to using a JMS `Queue` to send messages is in the guaranteed processing afforded by JMS.  If there's a temporary error in sending the email, for instance a connection problem to the remote SMTP server, the messaging server will dutifully retry (as configured) a number of times.  This process will even survive server restarts; if for some reason all of these retries fail to yield a successful result (again, after some configured number of tries or timeout), messages can be forwarded to the DLQ (dead-letter queue) for manual inspection by system administrators later.  This gives us some assurance that we won't lose messages we intended to send, and we also won't have to fail our user registration process entirely if there's some issue with sending the welcome email.
+The other ((("JMS Queue")))tangible benefit to using a JMS `Queue` to send messages is in the guaranteed processing afforded by JMS.  If there's a temporary error in sending the email, for instance a connection problem to the remote SMTP server, the messaging server will dutifully retry (as configured) a number of times.  This process will even survive server restarts; if for some reason all of these retries fail to yield a successful result (again, after some configured number of tries or timeout), messages can be forwarded to the DLQ (dead-letter queue) for manual inspection by system administrators later.  This gives us some assurance that we won't lose messages we intended to send, and we also won't have to fail our user registration process entirely if there's some issue with sending the welcome email.
 
 In WildFly / JBossAS7 / JBoss EAP, we deploy a JMS Queue with the deployment descriptor +geekseek-smtp-queue-jms.xml+ (the filename may be anything located in the EJB JAR's +META-INF+ and ending with the suffix +-jms.xml+):
 
@@ -262,7 +262,7 @@ public void queueMailForDelivery(final MailMessageBuilder.MailMessage mailMessag
 }
 ----
 
-Sending the JMS message doesn't fully get our mail delivered, however; it just sends it to a JMS `Queue`.  We still need a component to pull this JMS message off the queue, unwrap the +MailMessage+ it contains, and call upon our +sendMail+ method to send the mail.  For this we can again turn to EJB, which provides listeners to any JCA (Java Connector Architecture) backend by means of the _Message-Driven Bean_ (MDB).  Our MDB will be configured as a JMS +Queue+ listener, and is defined as:
+Sending((("Message-Driven Bean (MDB)"))) the JMS message doesn't fully get our mail delivered, however; it just sends it to a JMS `Queue`.  We still need a component to pull this JMS message off the queue, unwrap the +MailMessage+ it contains, and call upon our +sendMail+ method to send the mail.  For this we can again turn to EJB, which provides listeners to any((("Java Connector Architecture (JCA)"))) JCA (Java Connector Architecture) backend by means of the((("Message-Driven Bean (MDB)"))) _Message-Driven Bean_ (MDB).  Our MDB will be configured as a JMS +Queue+ listener, and is defined as:
 
 +org.cedj.geekseek.service.smtp.SMTPMessageConsumer+
 [source,java]
@@ -317,15 +317,15 @@ public void onMessage(final javax.jms.Message message) {
 }
 ----
 
-These compose all the working pieces of the business logic supporting this feature.  However, the true challenge lies in verifying that everything works as expected.
+These compose all the working pieces of the business logic supporting this feature.  However, the true challenge lies in verifying that everything works as expected.(((range="endofrange", startref="ix_ch07-asciidoc5")))(((range="endofrange", startref="ix_ch07-asciidoc4")))(((range="endofrange", startref="ix_ch07-asciidoc3")))
 
 === Requirement Test Scenarios
 
 ==== A Test-Only SMTP Server
 
-The JavaMail API nicely abstracts out connections to an SMTP server, and we've built our +SMTPMailService+ to pull _any_ configured JavaMail +Session+ from JNDI.  This gives us the option to provide a test-only SMTP server for use in development and staging environments with only configuration changes differing between these and the production setup.  Although it's true that this text has generally discouraged the use of mock objects and services, that's a guideline.  In this instance, we'll absolutely need a hook that differs from production in order to validate that emails are being delivered as expected.  Otherwise, we'd be using a real SMTP service that could send emails out to real email addresses.
+((("requirement test scenarios","of business logic", id="ix_ch07-asciidoc6", range="startofrange")))((("requirement test scenarios","of services layer", id="ix_ch07-asciidoc7", range="startofrange"))) ((("GeekSeek","SMTP server, testing", id="ix_ch07-asciidoc8", range="startofrange")))((("SMTP server, testing", id="ix_ch07-asciidoc9", range="startofrange")))The JavaMail API nicely abstracts out connections to an SMTP server, and we've built our +SMTPMailService+ to pull _any_ configured JavaMail +Session+ from JNDI.  This gives us the option to provide a test-only SMTP server for use in development and staging environments with only configuration changes differing between these and the production setup.  Although it's true that this text has generally discouraged the use of mock objects and services, that's a guideline.  In this instance, we'll absolutely need a hook that differs from production in order to validate that emails are being delivered as expected.  Otherwise, we'd be using a real SMTP service that could send emails out to real email addresses.
 
-For our own testing, we'll aim to change not the code in our +SMTPMailService+, but configure it to point to an embeddable SMTP server; one that will allow us to see what messages were received and do some assertion checking to be sure the contents are as expected.  For this we look to the https://code.google.com/p/subetha/[SubEtha project], an open source Java SMTP server that fulfills our requirements nicely.
+For our own testing, we'll aim to change not the code in our +SMTPMailService+, but configure it to point to an embeddable SMTP server; one that will allow us to see what messages were received and do some assertion checking to be sure the contents are as expected.  For this we look to the((("SubEtha project"))) https://code.google.com/p/subetha/[SubEtha project], an open source Java SMTP server that fulfills our requirements nicely.
 
 We'll let our SMTP server run in the same process as our application server and tests; this will allow us to use shared memory and set guards to handle the asynchrony implicit in dispatching messages to an SMTP server.
 
@@ -442,7 +442,7 @@ private class PluggableReceiveHandlerMessageListener
 
 ==== The Test
 
-Our test will again use Arquillian for the container interaction as we've seen before, but will require no extra extensions.  Therefore, the declaration here is fairly simple:
+(((range="endofrange", startref="ix_ch07-asciidoc9")))(((range="endofrange", startref="ix_ch07-asciidoc8"))) ((("business logic","testing", id="ix_ch07-asciidoc10", range="startofrange")))((("services layer","testing", id="ix_ch07-asciidoc11", range="startofrange")))Our test will again use Arquillian for the container interaction as we've seen before, but will require no extra extensions.  Therefore, the declaration here is fairly simple:
 
 +org.cedj.geekseek.service.smtp.SMTPMailServiceTestCase+
 [source,java]
@@ -689,4 +689,5 @@ public void resetAppServerConfig()
  }
 ----
 
-This example serves to illustrate a common and often undertested aspect of enterprise development.  Though the techniques we've applied here deal with external, non-transactional resources, asynchronous calling, and server configurations, this should serve as proof that even difficult cases can be adequately tested given a little thought and effort.  It's our belief that this will pay off dividends in avoiding production runtime errors and peace-of-mind in being armed with one more weapon in the battle to maintain a comprehensive, automated test suite.
+This example serves to illustrate a common and often undertested aspect of enterprise development.  Though the techniques we've applied here deal with external, non-transactional resources, asynchronous calling, and server configurations, this should serve as proof that even difficult cases can be adequately tested given a little thought and effort.  It's our belief that this will pay off dividends in avoiding production runtime errors and peace-of-mind in being armed with one more weapon in the battle to maintain a comprehensive, automated test suite.(((range="endofrange", startref="ix_ch07-asciidoc11")))(((range="endofrange", startref="ix_ch07-asciidoc10"))) (((range="endofrange", startref="ix_ch07-asciidoc7")))(((range="endofrange", startref="ix_ch07-asciidoc6"))) (((range="endofrange", startref="ix_ch07-asciidoc2")))(((range="endofrange", startref="ix_ch07-asciidoc1")))(((range="endofrange", startref="ix_ch07-asciidoc0")))
+

@@ -6,7 +6,7 @@ ____
 Whatever pursuit you undertake, the requirements should start with a love of what it is pass:[<phrase role='keep-together'>that you are pursuing.</phrase>]
 ____
 
-Although the previous chapter provides decent proof that it's possible to jumpstart development on a greenfield Java EE project without too much hassle, we all recognize how this may be a far cry from how applications are built in the real world.  The benefits of quickly going from a blank canvas to a deployed, functioning application are largely educational or handy in rapid prototyping, but in the majority of cases we're likely looking to:
+((("application requirements", id="ix_ch04-asciidoc0", range="startofrange")))((("GeekSeek","requirements for, defining", id="ix_ch04-asciidoc1", range="startofrange")))Although the previous chapter provides decent proof that it's possible to jumpstart development on a greenfield Java EE project without too much hassle, we all recognize how this may be a far cry from how applications are built in the real world.  The benefits of quickly going from a blank canvas to a deployed, functioning application are largely educational or handy in rapid prototyping, but in the majority of cases we're likely looking to:
 
 * Have greater control over the architectural design of our program
 * Augment an existing application with new features
@@ -19,7 +19,7 @@ This book will aim to address some of the common issues encountered during enter
 
 === Introducing GeekSeek
 
-Our example application will be a software conference tracker, roughly modeled after the excellent http://lanyrd.com/[Lanyrd] service.  Its purpose will be to expose information to aid conference-goers in planning their experience around technical sessions and related activities.  The goal is to provide a single example with all layers working in concert to showcase how various technologies interact, and each use case detailed in the book will dig into various slices of the application.  We've lovingly named this example _GeekSeek_.
+Our example ((("Lanyrd service")))application will be a software conference tracker, roughly modeled after the excellent http://lanyrd.com/[Lanyrd] service.  Its purpose will be to expose information to aid conference-goers in planning their experience around technical sessions and related activities.  The goal is to provide a single example with all layers working in concert to showcase how various technologies interact, and each use case detailed in the book will dig into various slices of the application.  We've lovingly named this example _GeekSeek_.
 
 Reading this book should not be a passive endeavor; we've designed the example application to be an executable proof of the approaches we'll use to satisfy our broad use cases.  Readers will likely get the greatest benefit by pulling down the GeekSeek source, building, testing, and running the application locally.
 
@@ -27,14 +27,14 @@ The live "production" GeekSeek site is hosted at http://geekseek.continuousdev.o
 
 ==== Featureset
 
-We'll start by outlining in broad strokes the features provided by GeekSeek.  This will provide a high-level view of the actions users may take, and from these we can start to drill down into more technical requirements.
+((("application requirements","featureset, defining")))((("featuresets, defining")))We'll start by ((("GeekSeek","features")))outlining in broad strokes the features provided by GeekSeek.  This will provide a high-level view of the actions users may take, and from these we can start to drill down into more technical requirements.
 
-Account-centric actions::
+Account-centric ((("account-centric actions")))((("Twitter")))actions::
 * Users may sign up by associating the site with their http://www.twitter.com[Twitter] account
 * Users may track others whom they follow on Twitter
 * Users may see others whom may be interested in their activity (their Twitter followers)
 * Users may get updates on the activity of their followee's followees (transitively, the people followed by the people you follow)
-Directory view::
+Directory ((("directory views")))view::
 * Users may display upcoming and prior Conferences in the system
 Conferences and sessions::
 * Users may add Conference and Session data, additionally associating them with a Venue and Room
@@ -46,13 +46,13 @@ Search::
 
 ==== Conceptual Data Model
 
-Because we're still in the process of defining what our application does and the types of data it'll be dealing with, this is not the place to delve into database design just yet.  This is the stage where we describe our _conceptual data model_;  first we need to understand:
+((("application requirements","conceptual data models")))((("conceptual data models")))((("data models","conceptual")))Because we're still in the process of defining what our application does and the types of data it'll be dealing with, this is not the place to delve into database design just yet.  This is the stage where we describe our _conceptual data model_;  first we need to understand:
 
 * What kind of data is to be represented?
 * Who are the major players (entities), and what are their fields?
 
 
-Here we speak at a very coarse level of granularity, and we seek to define from a business perspective the _nouns_ of our application.  In our case, we have:
+Here we speak ((("application nouns")))at a very coarse level of granularity, and we seek to define from a business perspective the _nouns_ of our application.  In our case, we have:
 
 ===== User
 |==========
@@ -99,19 +99,19 @@ Once we've got a solid understanding of the kinds of data we'll be addressing, w
 
 ==== Logical Data Model
 
-We've taken the first step in describing our data types by acknowledging the information we'll need to capture.  Now we need to take into account some additional concerns:
+((("application requirements","logical data models", id="ix_ch04-asciidoc2", range="startofrange")))((("data models","logical", id="ix_ch04-asciidoc3", range="startofrange")))((("logical data models", id="ix_ch04-asciidoc4", range="startofrange")))We've taken the first step in describing our data types by acknowledging the information we'll need to capture.  Now we need to take into account some additional concerns:
 
 * What are the relationships inherent between entities?
 * How much data are we expecting in each entity?
 * What features will be demanded of our entities?
 
-It's questions like these that will help us to arrive at a _logical data model_, a representation of our data that isn't yet tied to any specific storage mechanism but still addresses the preceding questions.  Decisions at this step are instrumental in our later choices, which will have heavy impact in areas like efficiency and performance.
+It's questions ((("logical data models")))like these that will help us to arrive at a _logical data model_, a representation of our data that isn't yet tied to any specific storage mechanism but still addresses the preceding questions.  Decisions at this step are instrumental in our later choices, which will have heavy impact in areas like efficiency and performance.
 
 This is because database systems have varying strengths when we couple data representation with the requests we may make.  Actions like searching and sorting can take milliseconds or days, depending only upon the backing data structures and implementation used!  Therefore, it's very important for us to define the relationships required between our data, and recognize cases where we could have potentially large result sets; it's here that we'll need to design efficiently.
 
 ===== Relationships
 
-_Relationships_ are the bonds that tie our entities together, and come in three flavors of _cardinality_:
+((("logical data models","relationships")))((("relationships between entities")))_Relationships_ are the bonds that tie((("cardinality of relationships")))((("many-to-many relationships")))((("one-to-many relationships")))((("one-to-one relationships")))((("relationships","cardinality of")))((("relationships","many-to-many")))((("relationships","one-to-many")))((("relationships","one-to-one"))) our entities together, and come in three flavors of _cardinality_:
 
 [options="header"]
 |======
@@ -145,11 +145,11 @@ image::images/cedj_0401.png[]
 
 ===== Intended use
 
-When considering the efficiency of operations like database lookups, we should attempt to strike a balance between premature optimization and planning for performance.  For instance, it really wouldn't matter how complex the relationships between these entities are if we were only expecting a small, finite number of records; these would likely be cached at some level and held in memory, avoiding the need for lengthy tasks like full table scans.  At the other end of the spectrum, it'd be an oversight to recognize that we're expecting lots of data in a _normalized_ form, and anticipate that querying against this model has time complexity of linear (_O(n)_), geometric (_O(n^2^)_), or worse.
+((("logical data models","intended use")))When considering the efficiency of operations like database lookups, we should attempt to strike a balance between premature optimization and planning for performance.  For instance, it really wouldn't matter how complex the relationships between these entities are if we were only expecting a small, finite number of records; these would likely be cached at some level and held in memory, avoiding the need for lengthy tasks like full table scans.  At the other ((("normalized forms")))end of the spectrum, it'd be an oversight to recognize that we're expecting lots of data in a _normalized_ form, and anticipate that querying against this model has time complexity of linear (_O(n)_), geometric (_O(n^2^)_), or worse.
 
 Unfortunately, a quick peek at our data types and featureset shows that given enough time and interest in the application, we could reasonably expect entries for each of our main data types to grow, unbounded.
 
-Of particular note is the many-to-many relationship among users.  Because a user may have both many followers and may follow many people, we have two unidirectional relationships; a follower of mine is not necessarily someone I follow.  This is in contrast to a mutual "friend" model employed by, say, the http://www.facebook.com[Facebook] social networking site.
+Of particular ((("Facebook")))note is the many-to-many relationship among users.  Because a user may have both many followers and may follow many people, we have two unidirectional relationships; a follower of mine is not necessarily someone I follow.  This is in contrast to a mutual "friend" model employed by, say, the http://www.facebook.com[Facebook] social networking site.
 
 In effect, this relationship has a graph structure, as shown in <<Figure4-2>>.
 
@@ -161,17 +161,17 @@ Although we might store and model this structure in any number of ways, it's wor
 
 Because the relationship is naturally a graph, it will likely make sense to store our relationship data in this fashion.  That way, instead of querying standard records, we can walk the graph (simply obtaining a value from a pointer is an operation with constant time complexity, and thus will perform many factors better when we compound the process in a loop).
 
-Another interesting area revolves around the system's attachments.  An attachment can be associated with a conference, session, venue, or room, and ultimately consists of some arbitrary series of bytes.  This amounts to a natural "key/value" store, where we can add a bunch of content, associate some metadata with it, and draw a relationship to its "owner."  Again, we might tackle this in a standard table representation, but perhaps the problem domain suggests a native solution more in tune with the key/value model.
+Another ((("attachments")))interesting area revolves around the system's attachments.  An attachment can be associated with a conference, session, venue, or room, and ultimately consists of some arbitrary series of bytes.  This amounts to a natural "key/value" store, where we can add a bunch of content, associate some metadata with it, and draw a relationship to its "owner."  Again, we might tackle this in a standard table representation, but perhaps the problem domain suggests a native solution more in tune with the key/value model.
 
-Now that we've developed a better understanding of our data, what requests we'll make of it, and how much we might have, we can move on to designing some user-based and technical use cases to drive the construction of our application.
+Now that we've developed a better understanding of our data, what requests we'll make of it, and how much we might have, we can move on to designing some user-based and technical use cases to drive the construction of our application.(((range="endofrange", startref="ix_ch04-asciidoc4")))(((range="endofrange", startref="ix_ch04-asciidoc3")))(((range="endofrange", startref="ix_ch04-asciidoc2")))
 
 ==== Obtaining, Building, Testing, and Running GeekSeek
 
-We mentioned earlier that we'd be using the distributed version control system _Git_ to store the source for this book and its examples, and our _authoritative repository_ is kindly hosted http://bit.ly/1e7o0ox[at GitHub].  Unlike centralized version control systems, Git stores the full repository history in each clone; when you "fork" or "copy" our repo, you'll get the entire history with every commit made since the book's inception.  The _authoritative repository_ refers to the one we elect to act as the _upstream_; changes that are approved to make it into new releases go here.
+We mentioned ((("authoritative repositories")))((("copying repos")))((("forking repos")))((("upstream repos")))earlier that we'd be using the distributed version control system _Git_ to store the source for this book and its examples, and our _authoritative repository_ is kindly hosted http://bit.ly/1e7o0ox[at GitHub].  Unlike centralized version control systems, Git stores the full repository history in each clone; when you "fork" or "copy" our repo, you'll get the entire history with every commit made since the book's inception.  The _authoritative repository_ refers to the one we elect to act as the _upstream_; changes that are approved to make it into new releases go here.
 
 ===== Obtaining the source
 
-The first step toward obtaining the source is to sign up for a GitHub account.  Though it's absolutely possible to clone the authoritative repo locally, without an account either here or at some other writable host you won't have an avenue to push changes of your own or contribute ideas.  Because signing up for an account is free for our uses and has become commonplace especially in open source development, it's the avenue we'll advise.
+((("GeekSeek","obtaining", id="ix_ch04-asciidoc5", range="startofrange")))The first step toward obtaining the source is to sign up for a GitHub account.  Though it's absolutely possible to clone the authoritative repo locally, without an account either here or at some other writable host you won't have an avenue to push changes of your own or contribute ideas.  Because signing up for an account is free for our uses and has become commonplace especially in open source development, it's the avenue we'll advise.
 
 As shown in <<Figure4-3>>, signup is fairly simple and the process starts at https://github.com.
 
@@ -185,7 +185,7 @@ Once logged in, you'll _fork_ the authoritative repo into your own publicly view
 [[Figure4-4]]
 image::images/cedj_05in02.png["Forking a GitHub Repository"]
 
-With the fork in your account, now you'll be able to _clone_ this repository locally.  And because you have your own fork on GitHub, you'll be able to _push_ the _commits_ you make locally to your own fork, where you have write access.  This provides two important benefits. First, it serves as a backup in case of disk failure, loss of machine, or a synchronization point if you develop on many machines.  Second, it allows others to see the changes you've made and optionally bring them in for their own use.
+With the((("cloning repos")))((("committing repos")))((("pushing repos"))) fork in your account, now you'll be able to _clone_ this repository locally.  And because you have your own fork on GitHub, you'll be able to _push_ the _commits_ you make locally to your own fork, where you have write access.  This provides two important benefits. First, it serves as a backup in case of disk failure, loss of machine, or a synchronization point if you develop on many machines.  Second, it allows others to see the changes you've made and optionally bring them in for their own use.
 
 Before bringing in your fork of the repository locally, you'll need to have a Git client installed.  This is a command-line tool available on many platforms, but there are also GUI wrappers included in many IDEs like Eclipse or IntelliJ IDEA.  We'll offer instructions based on the command line.
 
@@ -228,7 +228,7 @@ Receiving objects: 100% (2661/2661), 1.19 MiB | 1.24 MiB/s, done.
 Resolving deltas: 100% (534/534), done.
 ----
 
-This will create a new directory called _continuous-enterprise-development_, under which you'll be able to see the book's source in the root and all supporting code under the _code_ directory.  The _GeekSeek_ application root is housed under _code/application_:
+This will((("continuous enterprise development"))) create a new directory called _continuous-enterprise-development_, under which you'll be able to see the book's source in the root and all supporting code under the _code_ directory.  The _GeekSeek_ application root is housed under _code/application_:
 
 ----
 $> ls -l
@@ -253,11 +253,11 @@ This will pull the current upstream version of the application into your local d
 * Create a +remote+ reference to the authoritative repo: +git remote add upstream https://github.com/arquillian/continuous-enterprise-development.git+
 * +fetch+ all the tags from the remote repo: +git fetch -t upstream+
 * +checkout+ the tag as a local branch: +git checkout -b remotes/upstream/1.0.0+ (For instance checks out tag +1.0.0+)
-* Work on your new branch, based off the tag you've specified: +git branch+
+* Work on your new branch, based off the tag you've specified: +git branch+ (((range="endofrange", startref="ix_ch04-asciidoc5")))
 
 ===== Building and testing GeekSeek
 
-We'll be using the Maven software management tool to handle our build, test, and packaging needs.  The Java 7 JDK is a prerequisite we'll assume is installed on your system, referenced by the environment variable +JAVA_HOME+, and the executables in _$JAVA_HOME/bin_ available on the system +PATH+; you can simply download and extract Maven on your drive to _MAVEN_HOME_ from http://maven.apache.org/download.cgi.  Ensure that _MAVEN_HOME/bin_ is on your +PATH+, and you'll be good to go:
+((("GeekSeek","building")))((("GeekSeek","testing")))We'll be using the Maven software management tool to handle our build, test, and packaging needs.  The Java 7 JDK is a prerequisite we'll assume is installed on your system, referenced by the environment variable +JAVA_HOME+, and the executables in _$JAVA_HOME/bin_ available on the system +PATH+; you can simply download and extract Maven on your drive to _MAVEN_HOME_ from http://maven.apache.org/download.cgi.  Ensure that _MAVEN_HOME/bin_ is on your +PATH+, and you'll be good to go:
 
 ----
 $> mvn -version
@@ -286,7 +286,7 @@ Packaging the full application will result in a WAR (Web Archive) file located a
 
 ===== Running GeekSeek
 
-Although we've configured the build to obtain and use WildFly for use in testing GeekSeek automatically as part of the build, you may prefer to have an installation on your local disk to use manually.  This is useful for testing with remote containers (as covered in <<ch11>>) as well as poking around the running application locally.
+((("GeekSeek","running")))Although we've configured the build to obtain and use WildFly for use in testing GeekSeek automatically as part of the build, you may prefer to have an installation on your local disk to use manually.  This is useful for testing with remote containers (as covered in <<ch11>>) as well as poking around the running application locally.
 
 WildFly is available for http://www.wildfly.org/download/[free download], and should be extracted to a location we'll call _JBOSS_HOME_.  By executing _JBOSS_HOME/bin/standalone.sh_, the server will start:
 
@@ -329,7 +329,7 @@ This will trigger something similar to the following on the server console:
 JBAS018559: Deployed "geekseek.war" (runtime-name : "geekseek.war")
 ----
 
-Once deployed, you'll be able to launch your web browser of choice, point it to +http://localhost:8080/geekseek+, and explore the screens powering the featureset we've covered here.
+Once deployed, you'll be able to launch your web browser of choice, point it to +http://localhost:8080/geekseek+, and explore the screens powering the featureset we've covered here.(((range="endofrange", startref="ix_ch04-asciidoc1")))(((range="endofrange", startref="ix_ch04-asciidoc0")))
 
 === Use Cases and Chapter Guide
 
@@ -339,39 +339,39 @@ Each chapter from here on out will address a set of related technical and user-c
 
 Our featureset demands a variety of operations that depend upon persistent data; information that must be saved longer than a user's session or even the application's startup/shutdown lifecycle.  It's likely we won't be able to hold all of our data in memory either, so we'll need to tackle issues like serialization and concurrent, multiuser access.
 
-As our logical data analysis has exposed, we have plenty of data types that might work well arranged in a table/row/column structure provided by the _relational_ model, and that's exactly what we'll cover in <<ch05>>.
+As our ((("relational","models")))logical data analysis has exposed, we have plenty of data types that might work well arranged in a table/row/column structure provided by the _relational_ model, and that's exactly what we'll cover in <<ch05>>.
 
-We'll also give a brief overview of mapping from a relational database to an object model that's more familiar and friendly using the _Java Persistence API_ and transactional support via _Enterprise JavaBeans_, and we'll be sure to test that our domain layer is properly tested against known data sets using the handy _Arquillian Persistence Extension_.
+We'll also((("Arquillian Persistence Extension")))((("Java Persistence API"))) give a brief overview of mapping from a relational database to an object model that's more familiar and friendly using the _Java Persistence API_ and transactional support via _Enterprise JavaBeans_, and we'll be sure to test that our domain layer is properly tested against known data sets using the handy _Arquillian Persistence Extension_.
 
 ==== Chapter 6: NoSQL: Data Grids and Graph Databases
 
 Although it enjoys popularity as the most widely deployed database management system flavor, the relational model is not the only representation we have at our disposal.  In recent years a paradigm shift has been prevalent in the persistence space.
 
-NoSQL is a blanket term that has varied definitions, but generally refers to any number of database systems that do not employ the relational model.  Popular implementations include a document store (i.e., http://www.mongodb.org/[MongoDB]), a key/value store (i.e., http://www.jboss.org/infinispan/[Infinispan]), or a graph database (i.e., http://www.neo4j.org/[Neo4j]).
+NoSQL is a blanket term that has varied definitions, but generally refers to any number of database systems that do not employ the relational model.  Popular implementations include a document store (i.e.,((("document store")))((("MongoDB"))) http://www.mongodb.org/[MongoDB]), a key/value store((("key/value store")))((("Infinispan"))) (i.e., http://www.jboss.org/infinispan/[Infinispan]), or a graph database((("graph database")))((("Neo4j"))) (i.e., http://www.neo4j.org/[Neo4j]).
 
 We noted earlier that our user relationship model is a natural graph and that our attachments might be well-served from a key/value store, so <<ch06>> will take a look at implementing persistent storage through these mechanisms.
 
 ==== Chapter 7: Business Logic and the Services Layer
 
-With our persistence layers covered, we need to expose some way of allowing users to interact with the data and carry out the business logic demanded by our requirements.  Java EE recommends encapsulating business logic in components such as _Enterprise JavaBeans (EJBs)_ or _Contexts and Dependency Injection (CDI)_ beans; we'll be using primarily EJBs.
+With our ((("Context and Dependency Injection (CDI)")))((("Enterprise JavaBeans (EJB)")))persistence layers covered, we need to expose some way of allowing users to interact with the data and carry out the business logic demanded by our requirements.  Java EE recommends encapsulating business logic in components such as _Enterprise JavaBeans (EJBs)_ or _Contexts and Dependency Injection (CDI)_ beans; we'll be using primarily EJBs.
 
-EJBs and CDI beans are very handy for either direct calling or via a _remote procedure call_ (RPC) style, but they don't do much to inform us as users about the possible state transitions and available operations as we navigate the application.
+EJBs and ((("Remote Procedure Call (RPC)")))CDI beans are very handy for either direct calling or via a _remote procedure call_ (RPC) style, but they don't do much to inform us as users about the possible state transitions and available operations as we navigate the application.
 
 Our use case will explore the testable development of an SMTP service and interacting with an external, asynchronous, nontransactional resource.
 
 ==== Chapter 8: REST and Addressable Services
 
-REST (__Re__presentational __S__tate __T__ransfer) is an architecture of patterns that reveal services as resources in a fashion consistent with the guiding concepts behind the Web itself. <<ch08>> will introduce the exposition of enterprise services using REST guidelines, and will be implemented with Java EE's JAX-RS framework.  Additionally, we'll test our endpoints using _Arquillian Warp_ and the http://code.google.com/p/rest-assured/[REST-assured project].
+((("Representational State Transfer", see "REST")))REST (__Re__presentational __S__tate __T__ransfer) is((("Arquillian Warp"))) an architecture of patterns that reveal services as resources in a fashion consistent with the guiding concepts behind the Web itself. <<ch08>> will introduce the exposition of enterprise services using REST guidelines, and will be implemented with Java EE's JAX-RS framework.  Additionally, we'll test our endpoints using _Arquillian Warp_ and the http://code.google.com/p/rest-assured/[REST-assured project].
 
 ==== Chapter 9: Security
 
 Our featureset requirements clearly couple user registration with an existing Twitter account, so we'll need plenty of implementation and testing to ensure that the integrity of our users is not compromised.
 
-<<ch09>> will involve OAuth authentication using security and identify management from the http://www.jboss.org/picketlink[PicketLink project].  We'll again look to REST-assured to help us with our client testing strategy.
+<<ch09>> will involve OAuth authentication using security and identify management from the((("PicketLink project"))) http://www.jboss.org/picketlink[PicketLink project].  We'll again look to REST-assured to help us with our client testing strategy.
 
 ==== Chapter 10: UI
 
-The user interface represents the visible elements with which end users will interact to submit form data and view our domain objects in a unified aggregate view.  We test the UI through _Arquillian Drone_, _Arquillian Warp_, and hooks into the http://www.seleniumhq.org/[Selenium project].  
+The user ((("Arquillian Drone")))((("Arquillian Warp")))interface represents the visible elements with which end users will interact to submit form data and view our domain objects in a unified aggregate view.  We test the UI through _Arquillian Drone_, _Arquillian Warp_, and hooks into the http://www.seleniumhq.org/[Selenium project].  
 
 In this fashion we automate and emulate real user input by writing tests to push data into the browser and reading the response after it's been rendered.
 
@@ -405,3 +405,4 @@ Chapter 13 will cover the SPI and explain the construction of your own Arquillia
 ////
 
 With our bird's-eye view of the GeekSeek example application complete, it's time to dig into some code.
+

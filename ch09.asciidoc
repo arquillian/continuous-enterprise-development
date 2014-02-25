@@ -6,19 +6,19 @@ ____
 There is no real security except for whatever you build inside yourself.
 ____
 
-In a Utopian society, we'd leave our homes unlocked in the morning.  We'd park our cars at the office with the windows open, and after dark we'd be free to walk unlit alleyways without concern.
+((("development process","security", id="ix_ch09-asciidoc0", range="startofrange")))((("security", id="ix_ch09-asciidoc1", range="startofrange")))In a Utopian society, we'd leave our homes unlocked in the morning.  We'd park our cars at the office with the windows open, and after dark we'd be free to walk unlit alleyways without concern.
 
 Unfortunately, the small percentage of those looking to take advantage of others necessitates taking some measures to protect ourselves.  We look after our belongings and each other.  In the digital arena, our vulnerable currency is __data__—not everyone is entitled to see or edit everything.  Although our systems are built to support a large number of users, we cannot simply allow anyone to take any action they please.  In software and life, security amounts to controlling access.
 
-The process by which we grant or restrict access is reflected in our _security model_; this defines the criteria by which we judge access attempts.  If someone is asking to enter the office, should we ensure they're an employee?  Is it after business hours, and how does that affect our decision?  Access may be permitted or denied based on _contextual_ information, and the way we value those contexts is what comprises our security model.
+The process ((("security","models")))by which we grant or restrict access is reflected in our _security model_; this defines the criteria by which we judge access attempts.  If someone is asking to enter the office, should we ensure they're an employee?  Is it after business hours, and how does that affect our decision?  Access may be permitted or denied based on _contextual_ information, and the way we value those contexts is what comprises our security model.
 
-When we permit access to a resource, this is the process of _authorization_.  A commonly employed approach involves _role-based security_, where functions and actions on the system are linked to a _role_.  For instance, the task of unlocking an office's front doors may be permitted to someone with the "janitor" role.  A staffer, Jim, may in turn be assigned to the "janitor" role; thus Jim will have permission to unlock the office's front doors.  Role-based security decouples the _user_ from the _task_; if Jim leaves the company and no longer is noted as the janitor, the permissions he'd had when assigned to that role would disappear as well.  
+When we((("authorization")))((("rose-based security")))((("tasks")))((("users","security and"))) permit access to a resource, this is the process of _authorization_.  A commonly employed approach involves _role-based security_, where functions and actions on the system are linked to a _role_.  For instance, the task of unlocking an office's front doors may be permitted to someone with the "janitor" role.  A staffer, Jim, may in turn be assigned to the "janitor" role; thus Jim will have permission to unlock the office's front doors.  Role-based security decouples the _user_ from the _task_; if Jim leaves the company and no longer is noted as the janitor, the permissions he'd had when assigned to that role would disappear as well.  
 
-Coupled with authorization, which is the act of granting or denying access, is ensuring that the requesting party is who they say they are.  Surely the CEO of a company is privy to all sorts of details that wouldn't be available to the general public; if anyone could claim to be CEO, they'd be permitted to browse the whole system!  The process of validating identity is called _authentication_.
+Coupled ((("authentication")))with authorization, which is the act of granting or denying access, is ensuring that the requesting party is who they say they are.  Surely the CEO of a company is privy to all sorts of details that wouldn't be available to the general public; if anyone could claim to be CEO, they'd be permitted to browse the whole system!  The process of validating identity is called _authentication_.
 
 === Use Cases and Requirements
 
-Because GeekSeek is intended to communicate its users' conference schedules publicly, we're not concerned with locking down read operations.  However, it's still important that writes are done by authorized users, so our requirements will generally state "limit unauthorized users' access to create or change data":
+((("GeekSeek","security in")))((("security","in GeekSeek")))Because GeekSeek is intended to communicate its users' conference schedules publicly, we're not concerned with locking down read operations.  However, it's still important that writes are done by authorized users, so our requirements will generally state "limit unauthorized users' access to create or change data":
 
 * As a third-party integrator, I should not be able to:
 ** Add/Change/Delete a Conference without being authorized
@@ -32,17 +32,17 @@ In practice, this means we'll need to lock down the resources for these actions 
 
 ==== Supporting Software
 
-It likely doesn't benefit us much to build bespoke solutions for generalized and important layers such as security, so we'll be relying on integration with a few frameworks to help us fulfill our requirements.
+((("security","implementing", id="ix_ch09-asciidoc2", range="startofrange")))It likely doesn't benefit us much to build bespoke solutions for generalized and important layers such as security, so we'll be relying on integration with a few frameworks to help us fulfill our requirements.
 
 ===== PicketLink: application-level security
 
-http://www.picketlink.org[PicketLink] is an umbrella project for security and identity management for Java applications.  It provides the backbone of security for a variety of JBoss products, but also can be used standalone, as we'll do with GeekSeek. PicketLink components are available to support the following:
+((("application level security", id="ix_ch09-asciidoc3", range="startofrange")))((("authentication","social", id="ix_ch09-asciidoc4", range="startofrange")))((("PicketLink", id="ix_ch09-asciidoc5", range="startofrange")))((("security","application level", id="ix_ch09-asciidoc6", range="startofrange")))((("security","PicketLink", id="ix_ch09-asciidoc7", range="startofrange")))http://www.picketlink.org[PicketLink] is an ((("PicketLink")))umbrella project for security and identity management for Java applications.  It provides the backbone of security for a variety of JBoss products, but also can be used standalone, as we'll do with GeekSeek. PicketLink components are available to support the following:
 
-http://www.jboss.org/picketlink/IDM.html[IDM]:: Universal identity management with pluggable backends like LDAP or RDBMS
-http://www.jboss.org/picketlink/Fed[Federation]:: Federated Identity and Single-Sign-On (SSO)
-http://www.jboss.org/picketlink/XACML.html[XACML]:: Oasis XACML v2.0–compliant access control engine
+http://www.jboss.org/picketlink/IDM.html[IDM]:: Universal ((("IDM")))identity management with pluggable backends like LDAP or RDBMS
+http://www.jboss.org/picketlink/Fed[Federation]:: Federated ((("Federation")))Identity and Single-Sign-On (SSO)
+http://www.jboss.org/picketlink/XACML.html[XACML]:: Oasis((("XACML"))) XACML v2.0–compliant access control engine
 
-We'll be leveraging PicketLink in GeekSeek to supply us with an _identity manager_ that we can use for authentication.  This comes in the form of the PicketLink API's +org.picketlink.Identity+, which has operations to support checking the current login state, logging in, logging out, and checking access permission:
+We'll be ((("identity managers")))leveraging PicketLink in GeekSeek to supply us with an _identity manager_ that we can use for authentication.  This comes in the form of the PicketLink API's +org.picketlink.Identity+, which has operations to support checking the current login state, logging in, logging out, and checking access permission:
 
 [source,java]
 ----
@@ -194,21 +194,21 @@ public class CurrentUserProducer {
 
 This class will supply a +User+ to fields annotated with +@Current+, or null if no one is logged in.  As we've seen, our +UserAccount+ implementation will allow us to call +getUser()+ on the current +Identity+.
 
-Here we've shown the use of PicketLink as a handy security abstraction, but we haven't done any real authentication or authorization yet.  For that, we'll need to implement a provider that will power the IDM requirements we have to enable social login via Twitter.
+Here we've shown the use of PicketLink as a handy security abstraction, but we haven't done any real authentication or authorization yet.  For that, we'll need to implement a provider that will power the IDM requirements we have to enable social login via Twitter.(((range="endofrange", startref="ix_ch09-asciidoc7")))(((range="endofrange", startref="ix_ch09-asciidoc6")))(((range="endofrange", startref="ix_ch09-asciidoc5")))(((range="endofrange", startref="ix_ch09-asciidoc4")))(((range="endofrange", startref="ix_ch09-asciidoc3")))
 
 ===== Agorava and social authentication
 
-http://agorava.org/[Agorava] is a library consisting of CDI beans and extensions for interaction with the predominant social networks.  Its featureset touts:
+((("Agorava", id="ix_ch09-asciidoc8", range="startofrange")))((("security","Agorava", id="ix_ch09-asciidoc9", range="startofrange")))((("security","social authentication", id="ix_ch09-asciidoc10", range="startofrange")))((("social authentication", id="ix_ch09-asciidoc11", range="startofrange")))http://agorava.org/[Agorava] is a library consisting of CDI beans and extensions for interaction with the predominant social networks.  Its featureset touts:
 
 * A generic and portable REST client API
 * A generic API to work with OAuth 1.0a and 2.0 services
 * A generic API to interact with JSON serialization and deserialization
 * A generic identification API to retrieve basic user information from a social service
-* Specific APIs for Twitter, Facebook, and LinkedIn
+* Specific APIs for((("Twitter", "Agorva and")))((("Facebook", "Agorva and")))((("LinkedIn", "Agorva and"))) Twitter, Facebook, and LinkedIn
 
-In short, we'll be using Agorava to handle our _authentication_ process and do the behind-the-scenes interaction with Twitter, powering our sign-in integration.
+In short, we'll ((("authentication","process")))be using Agorava to handle our _authentication_ process and do the behind-the-scenes interaction with Twitter, powering our sign-in integration.
 
-Because the Twitter authentication mechanism is via OAuth, it'll benefit us to produce an Agorava +OAuthSession+ to represent the current user.  Again, we turn to a CDI producer method to handle the details in +org.cedj.geekseek.service.security.oauth.SessionProducer+:
+((("OAuth","Agorva and")))Because the Twitter authentication mechanism is via OAuth, it'll benefit us to produce an Agorava +OAuthSession+ to represent the current user.  Again, we turn to a CDI producer method to handle the details in +org.cedj.geekseek.service.security.oauth.SessionProducer+:
 
 [source,java]
 ----
@@ -290,7 +290,7 @@ public class SettingsProducer implements Serializable {
 }
 ----
 
-This +@Singleton+ EJB is scoped application-wide and available to all sessions needing configuration to create OAuth sessions.  We store the config data in environment variables to not couple secrets into our application, and allow our various deployment targets (local dev, staging, production, etc) to have independent configurations.
+This +@Singleton+ EJB ((("authentication","OAuth")))((("OAuth","sessions")))is scoped application-wide and available to all sessions needing configuration to create OAuth sessions.  We store the config data in environment variables to not couple secrets into our application, and allow our various deployment targets (local dev, staging, production, etc) to have independent configurations.
 
 Now we can move to the business of authenticating a user via the Twitter OAuth service via Agorava.  We can extend PicketLink's +BaseAuthenticator+ to provide the necessary logic in our +org.cedj.geekseek.service.security.picketlink.OAuthAuthenticator+:
 
@@ -422,11 +422,11 @@ public class UserRegistration {
 }
 ----
 
-When the +SuccessfulAuthentication+ event is fired from the +OAuthAuthenticator+, our +UserRegistration+ bean will set the appropriate fields in our own data model, then persist via the injected +Repository+.
+When the +SuccessfulAuthentication+ event is fired from the +OAuthAuthenticator+, our +UserRegistration+ bean will set the appropriate fields in our own data model, then persist via the injected +Repository+.(((range="endofrange", startref="ix_ch09-asciidoc11")))(((range="endofrange", startref="ix_ch09-asciidoc10")))(((range="endofrange", startref="ix_ch09-asciidoc9")))(((range="endofrange", startref="ix_ch09-asciidoc8"))) (((range="endofrange", startref="ix_ch09-asciidoc2")))
 
 === Requirement Test Scenarios
 
-With our resources secured by URL patterns, it's time to ensure that the barriers we've put in place are protecting us as we'd expect.  
+((("requirement test scenarios","for security", id="ix_ch09-asciidoc12", range="startofrange")))((("security","requirement test scenarios for", id="ix_ch09-asciidoc13", range="startofrange")))((("testing","security", id="ix_ch09-asciidoc14", range="startofrange")))With our resources secured by URL patterns, it's time to ensure that the barriers we've put in place are protecting us as we'd expect.  
 
 ==== Overview
 
@@ -481,7 +481,7 @@ public class SetupAuth extends Inspection {
 
 ===== Secured options
 
-The whole picture comes together in +org.cedj.geekseek.service.security.test.integration.SecuredOptionsTestCase+.  This will test that the +Allow+ HTTP header is not returned for unauthorized users issuing state-changing requests upon a protected URL.  Additionally, it'll ensure that if a user _is_ logged in, the state-changing methods will be allowed and the +Allow+ header will be present:
+((("security","secured options", id="ix_ch09-asciidoc15", range="startofrange")))The whole picture comes together in +org.cedj.geekseek.service.security.test.integration.SecuredOptionsTestCase+.  This will test that the +Allow+ HTTP header is not returned for unauthorized users issuing state-changing requests upon a protected URL.  Additionally, it'll ensure that if a user _is_ logged in, the state-changing methods will be allowed and the +Allow+ header will be present:
 
 [source,java]
 ----
@@ -642,11 +642,11 @@ public class SecurityInterceptor implements RESTInterceptor {
 }
 ----
 
-This interceptor prohibits access and returns an HTTP +401+ if the request is for a state-changing method and there is no currently logged-in user.
+This interceptor prohibits access and returns an HTTP +401+ if the request is for a state-changing method and there is no currently logged-in user.(((range="endofrange", startref="ix_ch09-asciidoc15")))
 
 ===== Testing the current user
 
-Our user interface will be using the +WhoAmIResource+ to determine the login information; it issues an HTTP `302` redirect to a +User+ resource if authorized and an HTTP `401` "Unauthorized" response if not.  The +org.cedj.geekseek.service.security.test.integration.WhoAmIResourceTestCase+ asserts this behavior, with test methods:
+((("security","testing current user")))Our user interface will be using the +WhoAmIResource+ to determine the login information; it issues an HTTP `302` redirect to a +User+ resource if authorized and an HTTP `401` "Unauthorized" response if not.  The +org.cedj.geekseek.service.security.test.integration.WhoAmIResourceTestCase+ asserts this behavior, with test methods:
 
 [source,java]
 ----
@@ -692,7 +692,7 @@ Again we use Warp in the +shouldReponseWithNotAuthorizedWhenNoUserFound+ and +sh
 
 ===== OAuth
 
-Assuming a successful OAuth login, we should redirect back to the user's initial entry point.  Additionally, we must handle exceptional cases and authorization responses from our PicketLink +Authenticator+ implementation.
+((("authentication","OAuth", id="ix_ch09-asciidoc16", range="startofrange")))((("OAuth", id="ix_ch09-asciidoc17", range="startofrange")))((("security","OAuth, testing", id="ix_ch09-asciidoc18", range="startofrange")))Assuming a successful OAuth login, we should redirect back to the user's initial entry point.  Additionally, we must handle exceptional cases and authorization responses from our PicketLink +Authenticator+ implementation.
 
 Our test case will use a custom +Authenticator+ to control the various scenarios; we implement these in +org.cedj.geekseek.service.security.test.integration.ControllableAuthenticator+:
 
@@ -828,4 +828,4 @@ public class AuthServletTestCase {
 
 Here we have two test methods, +shouldRedirectToRefererOnAuthSuccess+ and +shouldReturnUnAuthorizedOnAuthFailure+, which issue plain HTTP requests and assert that the response code returned is correct depending on how we've configured the +ControllableAuthenticator+.
 
-Although it's thematic that this text does not promote the usage of mocks in situations where real runtime components may be used, these test fixtures give us a hook into the greater runtime and allow how tests to control backend responses normally out of their reach.  In this case, we advocate on behalf of their utility.
+Although it's thematic that this text does not promote the usage of mocks in situations where real runtime components may be used, these test fixtures give us a hook into the greater runtime and allow how tests to control backend responses normally out of their reach.  In this case, we advocate on behalf of their utility.(((range="endofrange", startref="ix_ch09-asciidoc18")))(((range="endofrange", startref="ix_ch09-asciidoc17")))(((range="endofrange", startref="ix_ch09-asciidoc16"))) (((range="endofrange", startref="ix_ch09-asciidoc14")))(((range="endofrange", startref="ix_ch09-asciidoc13")))(((range="endofrange", startref="ix_ch09-asciidoc12"))) (((range="endofrange", startref="ix_ch09-asciidoc1")))(((range="endofrange", startref="ix_ch09-asciidoc0")))

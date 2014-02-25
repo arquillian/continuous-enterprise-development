@@ -6,7 +6,7 @@ ____
 I get by with a little help from my friends.
 ____
 
-There's a common misconception that the goal of a standard specification is to address _every_ problem.  This couldn't be further from the truth; creating a standard is meant to address the 80% case in a manner that's been proven through experience in the field.  The http://bit.ly/1e7xn7H[Java Enterprise Edition] and its subsystems, governed by the http://www.jcp.org/en/home/index[Java Community Process] (JCP), is no exception.
+((("tools", id="ix_ch02-asciidoc0", range="startofrange")))There's a common misconception that the goal of a standard specification is to address _every_ problem.  This couldn't be further from the truth; creating a standard is meant to address the 80% case in a manner that's been proven through experience in the field.  The http://bit.ly/1e7xn7H[Java Enterprise Edition] and its subsystems, governed by the http://www.jcp.org/en/home/index[Java Community Process] (JCP), is no exception.
 
 By its very makeup, the JCP is designed to strive for consensus among all participants in an Expert Group on a given technology.  Where corporate sponsors and individual contributors disagree or determine that a feature is not yet mature enough to be adequately standardized, latitude is given to specification implementors.  This helps to foster creativity and provides differentiation between vendors.  In fact, on a http://bit.ly/1e7xoIF[discussion regarding the Java EE7 Roadmap], Expert Group member David Blevins succinctly addressed the dynamic: "Vendors innovate, collectively we standardize."
 
@@ -16,7 +16,7 @@ The following open source projects are all made freely available for you to down
 
 === Bootstrapping
 
-For all the documentation surrounding Java EE and its use, the seemingly simple act of getting started gets quickly muddled:
+((("tools","bootstrapping", id="ix_ch02-asciidoc1", range="startofrange")))((("tools","for building file systems", id="ix_ch02-asciidoc2", range="startofrange")))For all the documentation surrounding Java EE and its use, the seemingly simple act of getting started gets quickly muddled:
 
 * How am I going to build my sources into deployments?
 * How should I organize my codebase?
@@ -27,15 +27,15 @@ There are a number of valid answers to each of these questions, and the flexibil
 
 One approach to undertaking a new project is to first lay out the scaffolding on your local filesystem.  This will create the structure for your source code, build descriptors, and other resources used by your project.  Often this process is fairly rote, involving commands to make new directories and text files in some sensible layout.  Although there's no formal rule dictating how your project tree is organized, some build systems employ a convention; others instead choose to allow you total control over your project's build by encouraging you to script or otherwise instruct each build task.
 
-Our examples will be built using a _declarative build tool_, which has standard commands that do not change from project to project.
+Our examples ((("declarative build tool")))will be built using a _declarative build tool_, which has standard commands that do not change from project to project.
 
 ==== Apache Maven
 
-Perhaps the most prominent figure in the Java automated build tool landscape, http://maven.apache.org/[Apache Maven] positions itself as a "software project management and comprehension tool."  For simplicity's sake, we can view it as a build tool; it's capable of compiling, testing, and assembling.  
+((("Apache Maven")))((("tools","Apache Maven")))Perhaps the most prominent figure in the Java automated build tool landscape, http://maven.apache.org/[Apache Maven] positions itself as a "software project management and comprehension tool."  For simplicity's sake, we can view it as a build tool; it's capable of compiling, testing, and assembling.  
 
-One very nice feature of Maven is that it strives for "_convention over configuration_."  By following a set of recommended best practices, you're likely to trim down on the amount of metadata you'd otherwise need to explicitly define.  Additionally, Maven actions (called _goals_) are bound to a http://bit.ly/1e7xH6o[documented lifecycle] that are common to all Maven-based projects.  For instance, in order to compile, test, and package your project, the command +$> mvn package+ applies.  This standardization alleviates us from having to declare or learn different build commands for each project.
+One very ((("goals")))((("Maven actions")))nice feature of Maven is that it strives for "_convention over configuration_."  By following a set of recommended best practices, you're likely to trim down on the amount of metadata you'd otherwise need to explicitly define.  Additionally, Maven actions (called _goals_) are bound to a http://bit.ly/1e7xH6o[documented lifecycle] that are common to all Maven-based projects.  For instance, in order to compile, test, and package your project, the command +$> mvn package+ applies.  This standardization alleviates us from having to declare or learn different build commands for each project.
 
-At the core of the Maven engine is a sophisticated _dependency management_ solution capable of resolving libraries by name from a http://search.maven.org/[Central Repository] (or additionally configured repository) onto a user's local system.  This feature allows us to skip the manual process of adding dependencies into our version control system, and allows us to instead fetch them on-demand as part of the build process.  As an added bonus, the requisite dependencies for all projects consuming ours are well-documented and automatically fetched for us, as shown in <<Figure2-1>>.
+At the ((("dependency management solutions")))core of the Maven engine is a sophisticated _dependency management_ solution capable of resolving libraries by name from a http://search.maven.org/[Central Repository] (or additionally configured repository) onto a user's local system.  This feature allows us to skip the manual process of adding dependencies into our version control system, and allows us to instead fetch them on-demand as part of the build process.  As an added bonus, the requisite dependencies for all projects consuming ours are well-documented and automatically fetched for us, as shown in <<Figure2-1>>.
 
 .Project dependencies as fetched from an external repository
 [[Figure2-1]]
@@ -54,7 +54,7 @@ That said, Maven continues to be a popular and widely used tool in Java developm
 
 ==== JBoss Forge
 
-If you've spent any time developing Java EE–based projects (or any nontrivial application, for that matter!), you've likely invested a good amount of energy in creating the project layout, defining dependencies, and informing the build system of the relevant class paths to be used in compilation and execution.  Although Maven enables us to reduce that load as compared with undertaking project setup manually, there's typically quite a bit of boilerplate involved in the _pom.xml_ defining your requirements.
+((("JBoss Forge")))((("tools","JBoss Forge")))If you've spent any time developing Java EE–based projects (or any nontrivial application, for that matter!), you've likely invested a good amount of energy in creating the project layout, defining dependencies, and informing the build system of the relevant class paths to be used in compilation and execution.  Although Maven enables us to reduce that load as compared with undertaking project setup manually, there's typically quite a bit of boilerplate involved in the _pom.xml_ defining your requirements.
 
 http://forge.jboss.org/[JBoss Forge] offers "incremental project enhancement for Java EE."  Implemented as a command shell, Forge gives us the ability to alter project files and folders.  Some concrete tasks we might use Forge to handle are:
 
@@ -64,13 +64,13 @@ http://forge.jboss.org/[JBoss Forge] offers "incremental project enhancement for
 * Generating a view layer, reversed-engineered from a domain model
 * Deploying to an application server
 
-Because Forge is built atop a _modular_, http://forge.jboss.org/plugins.html[_plug-in-based architecture_], it's extensible to additional tasks that may be specific to your application.
+Because Forge((("modulars"))) is built atop a _modular_, http://forge.jboss.org/plugins.html[_plug-in-based architecture_], it's extensible to additional tasks that may be specific to your application.
 
-Overall, the goal of Forge is to ease project setup at all stages of development, so we'll be employing it in this text to speed along the construction of our examples.
+Overall, the goal of Forge is to ease project setup at all stages of development, so we'll be employing it in this text to speed along the construction of our examples.(((range="endofrange", startref="ix_ch02-asciidoc2")))(((range="endofrange", startref="ix_ch02-asciidoc1")))
 
 === Version Control
 
-From the moment we collaborate on a project with others or would like to inspect the evolution of our code over time, we need some form of _version control_.  Until recently, the most common paradigm for synchronizing access to a shared codebase was the _client/server_ model wherein developers can keep a local working copy and check their changes into a centralized server, as shown in <<Figure2-2>>.  
+((("tools","version control")))((("version control systems")))From the moment we collaborate on a project with others or would like to inspect the evolution of our code over time, we need some form of _version control_.  Until recently, the most common paradigm for synchronizing access to a shared codebase was the _client/server_ model wherein developers can keep a local working copy and check their changes into a centralized server, as shown in <<Figure2-2>>.  
 
 .Need a caption
 [[Figure2-2]]
@@ -78,11 +78,11 @@ image::images/cedj_0202.png[]
 
 Some systems utilize file-level locking to ensure that no conflicts arise during development; others allow concurrent access at the file granularity but cue the developer to resolve line-level conflicts upon committing changes upstream.
 
-Likely the most widely deployed client/server version control system (VCS) from the 1990s through the 2000s has been http://savannah.nongnu.org/projects/cvs[Concurrent Versions Systems], most often referred to by its acronym _CVS_.  Although CVS has enabled teams to freely work on all files in the tree through _unreserved checkouts_, its shortcomings (including nonatomic commits and absent tracking for file renames) prompted the development of http://subversion.apache.org/[Subversion] (SVN), hier apparent to CVS.  Boasting a wider featureset and greater stability as contrasted with CVS, SVN has enjoyed its reign from the mid- to late-2000s.
+Likely the ((("Concurrent Versions Systems")))((("Subversion (SVN)")))((("unreserved checkouts")))((("version control systems")))most widely deployed client/server version control system (VCS) from the 1990s through the 2000s has been http://savannah.nongnu.org/projects/cvs[Concurrent Versions Systems], most often referred to by its acronym _CVS_.  Although CVS has enabled teams to freely work on all files in the tree through _unreserved checkouts_, its shortcomings (including nonatomic commits and absent tracking for file renames) prompted the development of http://subversion.apache.org/[Subversion] (SVN), hier apparent to CVS.  Boasting a wider featureset and greater stability as contrasted with CVS, SVN has enjoyed its reign from the mid- to late-2000s.
 
-These days, the centralized model has been superseded by _distributed version control systems_ (DVCS), which are differentiated by their ability to store the full repository including all history in any number of nodes.
+These ((("distributed version control systems (DVCSs)")))days, the centralized model has been superseded by _distributed version control systems_ (DVCS), which are differentiated by their ability to store the full repository including all history in any number of nodes.
 
-This layout creates a "pull model," where developers on a common project are given the authority over their own repository, free to incorporate changes from others (or not!).  At first, this can be a confusing topic to grasp for users vested in the centralized "push model," but it's our opinion that the benefits of this design easily justify the initial confusion inherent when considering many full-fledged repositories representing the same project.
+This layout ((("pull models")))((("push models")))creates a "pull model," where developers on a common project are given the authority over their own repository, free to incorporate changes from others (or not!).  At first, this can be a confusing topic to grasp for users vested in the centralized "push model," but it's our opinion that the benefits of this design easily justify the initial confusion inherent when considering many full-fledged repositories representing the same project.
 
 Some immediate gains to consider:
 
@@ -96,7 +96,7 @@ In this text, we'll be using the open source DVCS _Git_.
 
 ==== Git
 
-Originally developed to coordinate development of the Linux Kernel, Git is a DVCS whose usage has taken off in recent years, arguably due to the user-friendliness of the socially aware hosting site http://www.github.com[GitHub].  In fact, this book's text and examples are http://bit.ly/1e7o0ox[hosted on GitHub] for all to participate.
+((("Git")))((("version control systems","Git")))Originally developed to coordinate development of the Linux Kernel, Git is a DVCS whose usage has taken off in recent years, arguably due to the user-friendliness of the socially aware hosting site http://www.github.com[GitHub].  In fact, this book's text and examples are http://bit.ly/1e7o0ox[hosted on GitHub] for all to participate.
 
 From a high level, we've chosen Git for our projects because it enables:
 
@@ -108,9 +108,9 @@ Again, it is not our aim to fully delve into the mechanics of each tool we'll be
 
 === A Test Platform for Java EE
 
-Java EE 5 introduced a _POJO_ (Plain Old Java Object) programming model, which freed developers from having to adhere to any particular class hierarchy for its business objects.  The introduction of http://bit.ly/MAgJYs[Contexts and Dependency Injection] (CDI) in Java EE 6 further pushed the notion of simple business objects by providing _typesafe injection_.  
+((("test platforms", id="ix_ch02-asciidoc5a", range="startofrange")))Java EE 5 introduced a _POJO_ (Plain Old Java Object) programming ((("POJO (Plain Old Java Object)","programming model")))model, which freed developers from having to adhere to any particular class hierarchy for its business objects.  The introduction of http://bit.ly/MAgJYs[Contexts and Dependency Injection] (CDI) in Java EE 6 further pushed the notion of simple ((("Context and Dependency Injection (CDI)")))((("typesafe injection")))business objects by providing _typesafe injection_.  
 
-The benefit to objects that can be easily created using the +new+ operator is the same as their drawback; when we manually instantiate objects for use in testing, we're not dealing with the same enterprise components we have in the target runtime.  An EJB becomes such only in the context of an EJB container; a servlet is a servlet only when created by a servlet container.  Any time we circumvent the target runtime environment to handle object creation and wiring on our own, we're using _mock objects_.
+The benefit to objects that can be easily created using the +new+ operator is the same as their drawback; when we manually instantiate objects for use in testing, we're not dealing with the same enterprise components we have in the target runtime.  An EJB becomes such only in the context of an EJB container; a servlet is a servlet only when created by a servlet container.  Any time we circumvent the target runtime environment to handle object creation and wiring on our own, we're((("mock objects"))) using _mock objects_.
 
 Although many will advocate on the usefulness of mocks, by definition they provide an approximation of how your application will behave in a production environment.  Remember that you're responsible for validating that the full bevy of code running on your servers is working as expected, including the bits you _did not write_.  Many not-so-subtle errors may arise while leveraging the full potential of the application server in production, and it's best to be testing in an environment as close to the real thing as possible.
 
@@ -118,7 +118,7 @@ True Java EE testing in this sense is an area left largely unspecified by the EE
 
 ==== Arquillian
 
-http://arquillian.org[Arquillian] is an innovative and highly extensible testing platform for the JVM that enables developers to easily create automated integration, functional, and acceptance tests for Java middleware.
+((("Arquillian")))((("test platforms","Arquillian")))http://arquillian.org[Arquillian] is an innovative and highly extensible testing platform for the JVM that enables developers to easily create automated integration, functional, and acceptance tests for Java middleware.
 
 Picking up where unit tests leave off, Arquillian handles all the plumbing of container management, deployment, and framework initialization so you can focus on the business of writing test logic.  Instead of configuring a potentially complex test harness, Arquillian abstracts out the target runtime by:
 
@@ -130,7 +130,7 @@ Picking up where unit tests leave off, Arquillian handles all the plumbing of co
 * Capturing the results and returning them to the test runner for reporting
 * To avoid introducing unnecessary complexity into the developer’s build environment, Arquillian integrates seamlessly with familiar testing frameworks (e.g., JUnit 4, TestNG 5), allowing tests to be launched using existing IDE, Ant, and Maven test plug-ins--without any add-ons
 
-The Arquillian project adheres to three core principles:
+The Arquillian project ((("Arquillian","core principles")))adheres to three core principles:
 
 Tests should be portable to any supported container:: Keeping container-specific APIs out of the tests enables developers to verify application portability by running tests in a variety of containers. It also means that lightweight containers can be used as a substitute for full containers during development.
 Tests should be executable from both the IDE and the build tool::  By leveraging the IDE, the developer can skip the build for a faster turnaround and has a familiar environment for debugging. These benefits shouldn’t sacrifice the ability to run the tests in continuous integration using a build tool.
@@ -142,7 +142,7 @@ image::images/cedj_03in01.png["RunAs > JUnit"]
 
 ==== ShrinkWrap
 
-From the onset, ShrinkWrap was born from a need to more easily test Java Enterprise deployments. Traditionally defined as flat-file archives adhering to the ZIP standard, these have necessitated the introduction of some build step to package up all application resources. And a build step takes time:
+((("ShrinkWrap", id="ix_ch02-asciidoc3", range="startofrange")))((("test platforms","ShrinkWrap", id="ix_ch02-asciidoc4", range="startofrange")))From the onset, ShrinkWrap was born from a need to more easily test Java Enterprise deployments. Traditionally defined as flat-file archives adhering to the ZIP standard, these have necessitated the introduction of some build step to package up all application resources. And a build step takes time:
 
 ----
 $ mvn clean install
@@ -216,7 +216,7 @@ For projects not using the Maven repository system, the ShrinkWrap Distribution 
 
 ShrinkWrap can run on any Java5 runtime or higher, but requires at least JDK6 for compilation.
 
-The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.api.ShrinkWrap+ class.  From here you can call the +create+ method to make a new +Archive+, the a generic view of the virtual filesystem that allows the addition of content called ++Asset++s into a location called an +ArchivePath+. <<table2-2>> more easily shows ShrinkWrap nomenclature next to more common terms.
+The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.api.ShrinkWrap+ class.  From here you can call the +create+ method to make a new +Archive+, the a generic view of the virtual filesystem that allows the addition of content called ++Asset++s into a location called an +ArchivePath+. <<table2-2>> more easily shows ShrinkWrap nomenclature next to more((("ShrinkWrap","archive types"))) common terms.
 
 .ShrinkWrap archive types
 [[table2-2]]
@@ -240,7 +240,7 @@ GenericArchive myArchive = ShrinkWrap.create(GenericArchive.class,
 
 That's it!  You've got your first ShrinkWrap archive!
 
-Of course, an object representing an empty archive is pretty useless.  So let's have a look at adding in some content.  As we noted before, content is modeled by the +Asset+ class, so let's first take a look at some of the +Asset+ implementations provided by ShrinkWrap (as listed in <<table2-3>>).
+Of course, an object representing an empty archive is pretty useless.  So let's have a look at adding in some content.  As we noted before, content is modeled by the +Asset+ class, so let's first take a look at some of the +Asset+ implementations provided by((("ShrinkWrap","asset types"))) ShrinkWrap (as listed in <<table2-3>>).
 
 .ShrinkWrap asset types
 [[table2-3]]
@@ -332,7 +332,7 @@ myPackage.jar:
 /org/alr/test/TestClass.class
 ----
 
-So let's see what's going on here.  First we create a +JavaArchive+ and add all contents of the current ++Class++'s +Package+ . Then we dump the output to the console, just to see what's included.  In the final line, we again use the +Assignable+ facilities of the +JavaArchive+ view to get us into a new view: one capable of exporting to ZIP format.  In this case we use the appropriately named +ZipExporter+, allowing us to export to a +File+, +OutputStream+, or even get the contents as an +InputStream+ so we can deal with the bytes ourselves.
+So let's((("Assignable facilities"))) see what's going on here.  First we create a +JavaArchive+ and add all contents of the current ++Class++'s +Package+ . Then we dump the output to the console, just to see what's included.  In the final line, we again use the +Assignable+ facilities of the +JavaArchive+ view to get us into a new view: one capable of exporting to ZIP format.  In this case we use the appropriately named +ZipExporter+, allowing us to export to a +File+, +OutputStream+, or even get the contents as an +InputStream+ so we can deal with the bytes ourselves.
 
 <<table2-4>> lists the three types of exporters that ship with ShrinkWrap.
 
@@ -370,11 +370,11 @@ The code for running an import to roundtrip the previous example might look like
 
 Note how we can pass +ZipImporter+ into the +ShrinkWrap.create+ method, because it's +Assignable+ as well!  Beginning to notice a theme here?
 
-This concludes our brief introduction into manipulating archive content with ShrinkWrap.
+This concludes our brief introduction into manipulating archive content with ShrinkWrap.(((range="endofrange", startref="ix_ch02-asciidoc4")))(((range="endofrange", startref="ix_ch02-asciidoc3")))
 
 ==== ShrinkWrap Resolvers
 
-Although ShrinkWrap is ideally suited for creating new archives containing byte-based resources, often our applications are composed with prebuilt libraries bundled alongside our code, making for more complex deployments.  These may bundle other archives together, as shown in the following example _Web application ARchive_ (WAR):
+((("ShrinkWrap Resolvers", id="ix_ch02-asciidoc5", range="startofrange")))Although ShrinkWrap is ideally suited for creating new archives containing byte-based resources, often our applications are composed with prebuilt libraries bundled alongside our code, making for more complex deployments.  These may bundle other archives together, as shown in the following example _Web application ARchive_ (WAR):
 
 ----
 $> jar -tvf myApplication.war
@@ -388,9 +388,9 @@ $> jar -tvf myApplication.war
   4015 Tue Apr 23 17:00:44 MST 2013 WEB-INF/lib/myEjbModule.jar
 ----
 
-As you can see, under _WEB-INF/lib_ are a couple of third-party libraries used as dependencies by our own code, and an _Enterprise JavaBeans_ (EJB) module that we've written for our application.  This packaging structure is consistent with the final deployments used by most WARs and _Enterprise application ARchives_ (EARs).
+As you((("Enterprise Application Archives (EARs)")))((("Enterprise JavaBeans (EJB)"))) can see, under _WEB-INF/lib_ are a couple of third-party libraries used as dependencies by our own code, and an _Enterprise JavaBeans_ (EJB) module that we've written for our application.  This packaging structure is consistent with the final deployments used by most WARs and _Enterprise application ARchives_ (EARs).
 
-Often we don't control the construction of these libraries, and we certainly shouldn't be in the business of reassembling them (and hence further differentiating our tests from the our production runtime deployments).  With the advent of Maven and other build systems, typically third-party libraries and our own dependent modules are obtained from a backing software _repository_.  In this case we supply a series of coordinates that uniquely identifies an artifact in the repository, and resolve the target files from there.
+Often((("software repositories"))) we don't control the construction of these libraries, and we certainly shouldn't be in the business of reassembling them (and hence further differentiating our tests from the our production runtime deployments).  With the advent of Maven and other build systems, typically third-party libraries and our own dependent modules are obtained from a backing software _repository_.  In this case we supply a series of coordinates that uniquely identifies an artifact in the repository, and resolve the target files from there.
 
 That is precisely the aim of the ShrinkWrap Resolvers project; it is a Java API to obtain artifacts from a repository system. Grammars and support for Maven-based repository structures are currently implemented (this is separate from the use of Maven as a project management system or build tool; it's possible to use a Maven repository layout with other build systems).
 
@@ -413,7 +413,7 @@ The separation between the Maven and non-Maven modules is there to enforce modul
 
 ===== Adding ShrinkWrap Resolvers to your project
 
-You can obtain ShrinkWrap Resolvers for use in your system in a single pass by declaring a dependency upon the +depchain+ module in a Maven _pom.xml_ file:
+((("ShrinkWrap Resolvers","adding to project")))You can obtain ShrinkWrap Resolvers for use in your system in a single pass by declaring a dependency upon the +depchain+ module in a Maven _pom.xml_ file:
 
 [source,xml]
 ----
@@ -509,7 +509,7 @@ Let's cover some of the most popular use cases for ShrinkWrap Resolvers.
 
 ===== Resolution of artifacts specified by Maven coordinates
 
-Maven coordinates, in their canonical form, are specified as follows: +groupId:artifactId:[packagingType:[classifier]]:version+. Often, those are referred as +G+ (groupId), +A+ (artifactId), +P+ (packagingType), +C+ (classifier), and +V+ (version). If you omit +P+ and +C+, you will get the default value, which uses +jar+ as the packaging type and an empty classifier. ShrinkWrap Resolvers additionally allows you to skip +V+ in case it has version information available from the POM; here are some use cases:
+((("Apache Maven","resolving coordinates with ShrinkWrap", id="ix_ch02-asciidoc6", range="startofrange")))((("ShrinkWrap Resolvers","Maven coordinates, resolving with", id="ix_ch02-asciidoc7", range="startofrange")))Maven coordinates, in their canonical form, are specified as follows: +groupId:artifactId:[packagingType:[classifier]]:version+. Often, those are referred as +G+ (groupId), +A+ (artifactId), +P+ (packagingType), +C+ (classifier), and +V+ (version). If you omit +P+ and +C+, you will get the default value, which uses +jar+ as the packaging type and an empty classifier. ShrinkWrap Resolvers additionally allows you to skip +V+ in case it has version information available from the POM; here are some use cases:
 
 * The most simple use case is to resolve a file using coordinates. Here, the resolver locates an artifact defined by +G:A:V+ and resolves it including all transitive dependencies. The result is formatted as array of type +File+:
 +
@@ -613,7 +613,7 @@ Maven.resolver().resolve("G:A:V").using(
 +withTransitivity()+ and +withoutTransitivity()+ are just convenience methods you can use to avoid writing down strategy names. The first one calls +TransitiveStrategy+ and the second one calls +NotTransitiveStrategy+.
 ====
 +
-Strategies are composed of an array of +MavenResolutionFilter+ instances and +TransitiveExclusionPolicy+ instances. Defining the former allows you to transform a dependency graph of resolved artifacts, and defining the latter allows you to change default behavior when resolving transitive dependencies. By default, Maven does not resolve any dependencies in _provided_ and _test_ scope and it also skips _optional_ dependencies. ShrinkWrap Resolvers behaves the same way by default, but allows you to change that behavior. This comes in handy especially when you want to, for instance, resolve all provided dependencies of +G:A:V+. For your convenience, ShrinkWrap Resolvers ships with the strategies described in <<table2-7>>.
+Strategies((("optional dependencies")))((("provided scopes")))((("test scopes"))) are composed of an array of +MavenResolutionFilter+ instances and +TransitiveExclusionPolicy+ instances. Defining the former allows you to transform a dependency graph of resolved artifacts, and defining the latter allows you to change default behavior when resolving transitive dependencies. By default, Maven does not resolve any dependencies in _provided_ and _test_ scope and it also skips _optional_ dependencies. ShrinkWrap Resolvers behaves the same way by default, but allows you to change that behavior. This comes in handy especially when you want to, for instance, resolve all provided dependencies of +G:A:V+. For your convenience, ShrinkWrap Resolvers ships with the strategies described in <<table2-7>>.
 +
 .Strategies available in ShrinkWrap Resolvers
 [[table2-7]]
@@ -668,14 +668,14 @@ Maven.configureResolver().fromClassloaderResource("path/to/settings.xml")
 +
 [WARNING]
 ====
-ShrinkWrap Resolvers will not consume _settings.xml_ files specified on the command line (+-s settings.xml+) or in the IDE. It reads _settings.xml_ files at their standard locations, which are _~/.m2/settings.xml_ and _$M2_HOME/conf/settings.xml_ unless overridden in the API or via a system property.
+ShrinkWrap Resolvers will not consume _settings.xml_ files specified on the command line (+-s settings.xml+) or in the IDE. It reads _settings.xml_ files at their standard locations, which are _~/.m2/settings.xml_ and _$M2_HOME/conf/settings.xml_ unless overridden in the API or via a system property.(((range="endofrange", startref="ix_ch02-asciidoc7")))(((range="endofrange", startref="ix_ch02-asciidoc6")))
 ====
 
 ===== Resolution of artifacts defined in POM files
 
-While previous calls allow you to manually define what you want to resolve, in Maven projects, you have very likely specified this information already in your _pom.xml_ file. ShrinkWrap Resolvers allows you to follow _DRY_ (Don't Repeat Yourself) principles and can load metadata included there.
+((("POM","files, resolving artifacts with ShrinkWrap")))((("ShrinkWrap Resolvers","POM files, resolving artifacts with")))While previous calls allow you to manually define what you want to resolve, in Maven projects, you have very likely specified this information already in your _pom.xml_ file. ShrinkWrap Resolvers allows you to follow _DRY_ (Don't Repeat Yourself) principles and can load metadata included there.
 
-ShrinkWrap Resolvers constructs an _effective POM model_ (your _pom.xml_ file plus all parent POMs, condensed into one file). In order to construct the model, it uses all local repositories, classpath repositories, and remote repositories. Once the model is loaded, you can automatically add the metadata in there to artifacts you want to resolve. The following use cases are supported:
+ShrinkWrap Resolvers((("POM","models"))) constructs an _effective POM model_ (your _pom.xml_ file plus all parent POMs, condensed into one file). In order to construct the model, it uses all local repositories, classpath repositories, and remote repositories. Once the model is loaded, you can automatically add the metadata in there to artifacts you want to resolve. The following use cases are supported:
 
 * Resolving an artifact with the version defined in effective POM. If you want to resolve +G:A:V+, you can simply specify +G:A+ instead. For artifacts with a non-JAR packaging type or classifier, you must use alternative syntax with a question mark +?+, such as +G:A:P:?+ or +G:A:P:C:?+:
 +
@@ -716,7 +716,7 @@ Maven.resolver().loadPomFromFile(
 
 ===== System properties
 
-ShrinkWrap Resolvers allows you to override any programmatic configuration via System Properties, which are defined in <<table2-8>>.
+((("ShrinkWrap Resolvers","system properties, overriding with")))((("system properties","overriding with ShrinkWrap Resolvers")))((("system properties, overriding")))ShrinkWrap Resolvers allows you to override any programmatic configuration via System Properties, which are((("ShrinkWrap","resolvers"))) defined in <<table2-8>>.
 
 .System Properties that alter the behavior of ShrinkWrap Resolvers
 [[table2-8]]
@@ -750,7 +750,7 @@ The following features are in their early development stages. However, they shou
 
 ===== ShrinkWrap Resolvers Maven plug-in
 
-The ShrinkWrap Resolvers Maven plug-in allows you to propagate settings specified on the command line into test execution. Settings include paths to the _pom.xml_ file and _settings.xml_ files, activated/disabled profiles, offline flag, and path to local repository. No support for IDE exists at this moment.
+((("Apache Maven","experimental ShrinkWrap Resolver interfaces for")))((("Apache Maven","ShrinkWrap Resolvers plug-in")))((("ShrinkWrap Resolvers","experimental Maven interfaces")))((("ShrinkWrap Resolvers","Maven plug-in")))The ShrinkWrap Resolvers Maven plug-in allows you to propagate settings specified on the command line into test execution. Settings include paths to the _pom.xml_ file and _settings.xml_ files, activated/disabled profiles, offline flag, and path to local repository. No support for IDE exists at this moment.
 
 To activate the plug-in, you need to add following snippet to the +<build>+ section of your _pom.xml_ file:
 
@@ -779,7 +779,7 @@ Maven.configureResolverViaPlugin().resolve("G:A").withTransitivity().asFile();
 
 ===== MavenImporter
 
-The +MavenImporter+ is the most advanced feature of ShrinkWrap Resolvers. Instead of the user being responsible for specifying how the testing archive should look, it reuses information defined in your _pom.xml_ to construct the archive. So, no matter how your project looks, you can get a full archive because you would deploy it into the application server within a single line of code.
+((("MavenImporter")))((("ShrinkWrap Resolvers","MavenImporter")))The +MavenImporter+ is the most advanced feature of ShrinkWrap Resolvers. Instead of the user being responsible for specifying how the testing archive should look, it reuses information defined in your _pom.xml_ to construct the archive. So, no matter how your project looks, you can get a full archive because you would deploy it into the application server within a single line of code.
 
 `MavenImporter` is able to compile sources, construct _manifest.mf_ files, fetch the dependencies, and construct archives as Maven would do. It does not require any data to be prepared by Maven; however, it can profit from those if they exist. For instance, the following example takes advantage of metadata defined in the POM file to determine the build output:
 
@@ -804,15 +804,15 @@ ShrinkWrap.create(MavenImporter.class).configureFromFile("/path/to/settings.xml"
 Additionally, using different JDKs for running tests and compiling sources is not supported. However, it should work if you are compiling sources targeting JDK6 while being bootstrapped on JDK7.
 ====
 
-By enabling resolution in a friendly, intuitive API, ShrinkWrap Resolvers arms ShrinkWrap archives with a powerful mechanism to create deployment units, which are applicable in real-world scenarios that require libraries and modules not owned by the current project.
+By enabling resolution in a friendly, intuitive API, ShrinkWrap Resolvers arms ShrinkWrap archives with a powerful mechanism to create deployment units, which are applicable in real-world scenarios that require libraries and modules not owned by the current project.(((range="endofrange", startref="ix_ch02-asciidoc5")))(((range="endofrange", startref="ix_ch02-asciidoc5a")))
 
 === Runtime
 
-Being simply a component model, Java EE needs a concrete implementation to provide the runtime services to our applications.
+((("application services","runtime")))((("runtime services")))((("services, application","runtime")))Being simply a component model, Java EE needs a concrete implementation to provide the runtime services to our applications.
 
 ==== WildFly
 
-The latest community edition of the application server offered by JBoss has recently been renamed to http://wildfly.org/[_WildFly_], and this will be the default target runtime for our examples.  Written from the ground up, WildFly (previously known as _JBoss Application Server 7_) was designed with the following goals at the core:
+((("application services","WildFly")))((("services, application","WildFly")))((("WildFly application service")))The latest community edition of the application server offered by JBoss has recently been renamed to http://wildfly.org/[_WildFly_], and this will be the default target runtime for our examples.  Written from the ground up, WildFly (previously known as _JBoss Application Server 7_) was designed with the following goals at the core:
 
 Speed:: Startup, deployment, and request processing demands leverage a concurrent state machine and constant-time class loading.
 Efficiency:: Memory usage is kept to a minimum.
@@ -833,10 +833,11 @@ The online User Guide for WildFly is located at http://bit.ly/MAyZAR.
 
 ==== OpenShift
 
-Although getting our applications running on our own machine is a great step in developing, the beauty of the Internet is that we can expose our content and services to the world at large.  Until very recently, Java EE hosting typically involved a dedicated and expensive server colocated in a data center.  With the rapid advent of virtualization and the Cloud, we're now able to gain public access much more easily, and at far reduced cost.
+((("application services","OpenShift")))((("OpenShift application service")))((("services, application","OpenShift")))Although getting our applications running on our own machine is a great step in developing, the beauty of the Internet is that we can expose our content and services to the world at large.  Until very recently, Java EE hosting typically involved a dedicated and expensive server colocated in a data center.  With the rapid advent of virtualization and the Cloud, we're now able to gain public access much more easily, and at far reduced cost.
 
-http://www.openshift.com[_OpenShift_] is Red Hat's free Platform as a Service (PaaS) for applications.  Although it supports a variety of frameworks bundled as "cartridges," we'll be using OpenShift's built-in JBossAS7 support.  With just a little bit of initial setup, pushing changes from our local Git repository to the OpenShift remote will trigger a build and deployment of our application for all to see.  We'll be relieved of the responsibility of obtaining a server, installing JBossAS, configuring the networking and firewalls, or manually deploying new versions.
+http://www.openshift.com[_OpenShift_] is Red Hat's free ((("Platform as a Service (PaaS)")))Platform as a Service (PaaS) for applications.  Although it supports a variety of frameworks bundled as "cartridges," we'll be using OpenShift's built-in JBossAS7 support.  With just a little bit of initial setup, pushing changes from our local Git repository to the OpenShift remote will trigger a build and deployment of our application for all to see.  We'll be relieved of the responsibility of obtaining a server, installing JBossAS, configuring the networking and firewalls, or manually deploying new versions.
 
 === On to the Code
 
-Now that we've familiarized ourselves with the technologies we'll be using throughout the exercises, let's dig in and create a new Java EE application, making it public to the world.
+Now that we've familiarized ourselves with the technologies we'll be using throughout the exercises, let's dig in and create a new Java EE application, making it public to the world.(((range="endofrange", startref="ix_ch02-asciidoc0")))
+

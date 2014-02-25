@@ -5,7 +5,7 @@ ____
 The way to get started is to quit talking and begin doing.
 ____
 
-Enterprise Java has long suffered the (possibly correct) critique that it's difficult to bootstrap a new project.  Couple the lack of definitive jumpstart documentation with vendor-specific techniques for application deployment, throw a mess of third-party dependencies into the mix, and we've got a prime recipe yielding barriers to entry for programmers new to web development in Java.
+((("development process", id="ix_ch03-asciidoc0", range="startofrange")))Enterprise Java has long suffered the (possibly correct) critique that it's difficult to bootstrap a new project.  Couple the lack of definitive jumpstart documentation with vendor-specific techniques for application deployment, throw a mess of third-party dependencies into the mix, and we've got a prime recipe yielding barriers to entry for programmers new to web development in Java.
 
 Of course, this all runs contrary to the mission of Java EE: to make our experience with enterprise features _easier_.  So while the programming model has certainly evolved past the days of confusingly verbose and explicitly required metadata, the warts that lead to frustrating stack traces and unexpected deployment behaviors unfortunately persist.
 
@@ -15,9 +15,9 @@ In the interest of providing a uniformly workable solution to the reader, this t
 
 === The Development Environment
 
-Although all projects used here are ultimately standalone and require no plug-ins or special environments aside from a Java runtime, we're going to make our lives easier by taking advantage of the integration facilities provided by JBoss Developer Studio (JBDS).
+((("development environment")))((("development process","environment for")))Although all projects used here are ultimately standalone and require no plug-ins or special environments aside from a Java runtime, we're going to make our lives easier by taking advantage of the integration facilities provided((("JBoss Developer Studio (JBDS)"))) by JBoss Developer Studio (JBDS).
 
-The JBDS plug-ins atop the Eclipse Integrated Development Environment (IDE) will unify our development experience and allow us to stay inside one window.  Installation is via an executable JAR available from the http://bit.ly/MAzyup[JBDS site] (see <<Figure3-1>>).
+The JBDS plug-ins ((("Eclipse IDE")))atop the Eclipse Integrated Development Environment (IDE) will unify our development experience and allow us to stay inside one window.  Installation is via an executable JAR available from the http://bit.ly/MAzyup[JBDS site] (see <<Figure3-1>>).
 
 To kick off the installation process, either double-click the icon (if your environment has the _.jar_ extension correctly associated as a Java executable) or launch the installer from the command line via the Java runtime:
 
@@ -33,7 +33,7 @@ Following the graphical wizard will install the JDBS IDE (and all requisite plug
 
 === A New Project
 
-The previous chapter introduced us to JBoss Forge, a tool that aims to make project creation and enhancement more declarative and less manual.  Because we're starting fresh now, it makes sense to use Forge to create our project layout.  This will ultimately give us a functional skeleton from database to view layer that we can use either as a learning tool or a quick shortcut to writing some real code.
+((("development process","projects, creating", id="ix_ch03-asciidoc1", range="startofrange")))((("JBoss Forge","projects, creating", id="ix_ch03-asciidoc2", range="startofrange")))((("projects, creating", id="ix_ch03-asciidoc3", range="startofrange")))The previous chapter introduced us to JBoss Forge, a tool that aims to make project creation and enhancement more declarative and less manual.  Because we're starting fresh now, it makes sense to use Forge to create our project layout.  This will ultimately give us a functional skeleton from database to view layer that we can use either as a learning tool or a quick shortcut to writing some real code.
 
 Forge's user interface is a shell, so it can be installed manually and used from the terminal like any other command-line application.  However, JBDS removes the need for us to do this setup.  As shown in <<Figure3-2>>, selecting Window -> Show View -> Other will give us immediate access to the Forge Console.
 
@@ -41,7 +41,7 @@ Forge's user interface is a shell, so it can be installed manually and used from
 [[Figure3-2]]
 image::images/cedj_04in02.png["Forge Console View Selection"]
 
-With our new _Forge Console_ view, we're now free to start up the Forge runtime, which came embedded with the JBDS installation.  Clicking the green play button, as shown in <<Figure3-3>>, will give us access to the Forge shell:
+With our((("Forge Console view")))((("Forge shell"))) new _Forge Console_ view, we're now free to start up the Forge runtime, which came embedded with the JBDS installation.  Clicking the green play button, as shown in <<Figure3-3>>, will give us access to the Forge shell:
 
 ----
     _____                    
@@ -99,7 +99,7 @@ image::images/cedj_04in04.png["Project Created"]
 
 Users of http://bit.ly/MABuTN[Maven Archetypes] may be familiar with this type of technique to create a new project, but because Forge is an _incremental_ tool, it's capable of reading a project's state and adding behaviors after creation.
 
-Let's add support for Java Persistence API (JPA) to our project, a task that typically would involve some searching for the correct dependencies for the spec APIs (as well as those for any vendor-specific extensions).  Forge is helpful here as well, via its +persistence+ plug-in:
+Let's add ((("Java Persistence API")))support for Java Persistence API (JPA) to our project, a task that typically would involve some searching for the correct dependencies for the spec APIs (as well as those for any vendor-specific extensions).  Forge is helpful here as well, via its +persistence+ plug-in:
 
 ----
 $> persistence setup --provider HIBERNATE --container JBOSS_AS7;
@@ -143,7 +143,7 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
 Let's make one tweak; the property +hibernate.hbm2ddl.auto+ is set to automatically drop the database tables such that they can't be reused across deployments.  Though this might be handy in development to ensure we're always coding from a clean slate, we'd actually like to use some real persistence later on, so let's change that property to a value of +update+.
 
-Java EE6 introduced the http://jcp.org/en/jsr/detail?id=303[Bean Validation Specification], which allows for validation constraints at the database, application, and view layers all with a single declaration.  Let's enable BV for our project, similar to how we put in place support for persistence:
+Java EE6 introduced((("Bean Validation Specification"))) the http://jcp.org/en/jsr/detail?id=303[Bean Validation Specification], which allows for validation constraints at the database, application, and view layers all with a single declaration.  Let's enable BV for our project, similar to how we put in place support for persistence:
 
 ----
 $> validation setup --provider HIBERNATE_VALIDATOR
@@ -335,7 +335,7 @@ Wrote ./feedback/src/main/webapp/resources/true.png
 Wrote ./feedback/src/main/webapp/WEB-INF/web.xml
 ----
 
-As shown by the somewhat lengthy output, we're now equipped with a _src/main/webapp_ folder laid out with a nice starting point from which we can build our own UI.  With just one more command, we can generate a CRUD (Create, Read, Update, Delete) interface to our entities:
+As shown ((("CRUD","interface")))by the somewhat lengthy output, we're now equipped with a _src/main/webapp_ folder laid out with a nice starting point from which we can build our own UI.  With just one more command, we can generate a CRUD (Create, Read, Update, Delete) interface to our entities:
 
 ----
 $> scaffold from-entity org.cedj.feedback.model.*;
@@ -351,11 +351,11 @@ Wrote ./feedback/src/main/webapp/WEB-INF/classes/META-INF/forge.taglib.xml
 Wrote ./feedback/src/main/java/org/cedj/feedback/model/FeedbackEntry.java
 ----
 
-And that's enough for now; we've created the skeleton for a fully functional application.  Of course, the thematic element of this book is _testable development_, so it's best we throw in the facility to run some integration tests on our little application.
+And ((("testable development")))that's enough for now; we've created the skeleton for a fully functional application.  Of course, the thematic element of this book is _testable development_, so it's best we throw in the facility to run some integration tests on our little application.(((range="endofrange", startref="ix_ch03-asciidoc3")))(((range="endofrange", startref="ix_ch03-asciidoc2")))(((range="endofrange", startref="ix_ch03-asciidoc1")))
 
 === Writing Our First Integration Test with Arquillian
 
-We've mentioned before that Forge is based on a plug-in architecture; all commands we've used thus far are actually plug-ins called by the Forge runtime when we request them in the console.  Up to this point, we've used support that comes standard with the Forge distribution.  Now we'd like to add some tests, and we'll use the Arquillian Test Platform as both the programming model and the JUnit test runner.  The first order of business is to install the Arquillian plug-in into our Forge runtime, and we do this by way of the +forge install-plugin+ command:
+((("Arquillian","writing integration tests", id="ix_ch03-asciidoc4", range="startofrange")))((("development process","integration tests", id="ix_ch03-asciidoc5", range="startofrange")))((("integration testing", id="ix_ch03-asciidoc6", range="startofrange")))((("integration tests", id="ix_ch03-asciidoc7", range="startofrange")))We've mentioned before that Forge is based on a plug-in architecture; all commands we've used thus far are actually plug-ins called by the Forge runtime when we request them in the console.  Up to this point, we've used support that comes standard with the Forge distribution.  Now we'd like to add some tests, and we'll use the Arquillian Test Platform as both the programming model and the JUnit test runner.  The first order of business is to install the Arquillian plug-in into our Forge runtime, and we do this by way of the +forge install-plugin+ command:
 
 ----
 $> forge install-plugin arquillian
@@ -453,7 +453,7 @@ The next point of interest is the class-level annotation:
 @RunWith(Arquillian.class)
 ----
 
-+@RunWith+ is a standard JUnit construct that directs control to a specified test runner.  This is Arquillian's entry point; from here Arquillian can receive lifecycle events from JUnit and perform its own handling.  The benefit to this design decision is that Arquillian requires no special plug-ins or configuration on the part of the user.  Anything that is capable of launching a JUnit test--be it a Maven build, an Ant task, a manual command, or an IDE--can take advantage of Arquillian without any additional handling.  For instance, you can use JBDS and Eclipse to launch a full-scale integration test with Arquillian by right-clicking on the class and selecting Run As -> JUnit Test.
++@RunWith+ is a standard((("@RunWith (construct)"))) JUnit construct that directs control to a specified test runner.  This is Arquillian's entry point; from here Arquillian can receive lifecycle events from JUnit and perform its own handling.  The benefit to this design decision is that Arquillian requires no special plug-ins or configuration on the part of the user.  Anything that is capable of launching a JUnit test--be it a Maven build, an Ant task, a manual command, or an IDE--can take advantage of Arquillian without any additional handling.  For instance, you can use JBDS and Eclipse to launch a full-scale integration test with Arquillian by right-clicking on the class and selecting Run As -> JUnit Test.
 
 Next up is the class declaration:
 
@@ -487,13 +487,13 @@ The final important fixture of the Arquillian test anatomy is the +@Deployment+ 
     }
 ----
 
-Because Java EE application servers work off deployments like _Web Archives (WARs)_, _Java Archives (JARs)_, or _Enterprise Archives (EARs)_, we need to instruct Arquillian with the artifact to be deployed.  This method must be +static+ and return any ShrinkWrap +Archive+ type; for this first exercise we'll simply grab the output of the current project's build _feedback.war_, but as we'll soon see in later examples, we don't need to rely on flat files at all!  This will free us to skip the build entirely in between code changes and test runs, instead letting us rely ShrinkWrap's packaging of _.class_ files created from the IDE's incremental complication features.
+Because ((("Enterprise Application Archives (EARs)")))((("Java Archives (JARs)")))((("Web Archives (WARs)")))Java EE application servers work off deployments like _Web Archives (WARs)_, _Java Archives (JARs)_, or _Enterprise Archives (EARs)_, we need to instruct Arquillian with the artifact to be deployed.  This method must be +static+ and return any ShrinkWrap +Archive+ type; for this first exercise we'll simply grab the output of the current project's build _feedback.war_, but as we'll soon see in later examples, we don't need to rely on flat files at all!  This will free us to skip the build entirely in between code changes and test runs, instead letting us rely ShrinkWrap's packaging of _.class_ files created from the IDE's incremental complication features.
 
-The rest of the file is all test logic!  Remember, the focus of the Arquillian programming model is to allow you to write less boilerplate and setup, and focus on the bits of code that only you as the developer can write.  It's not your job to deal with bootstrapping an application server or calling upon vendor-specific deployment hooks; Arquillian will handle all of that for you behind the scenes.
+The rest of the file is all test logic!  Remember, the focus of the Arquillian programming model is to allow you to write less boilerplate and setup, and focus on the bits of code that only you as the developer can write.  It's not your job to deal with bootstrapping an application server or calling upon vendor-specific deployment hooks; Arquillian will handle all of that for you behind the scenes.(((range="endofrange", startref="ix_ch03-asciidoc7")))(((range="endofrange", startref="ix_ch03-asciidoc6")))(((range="endofrange", startref="ix_ch03-asciidoc5")))(((range="endofrange", startref="ix_ch03-asciidoc4")))
 
 === Running the Application Locally
 
-Time to see our generated application in action.  First we should run the build to package our flat-file deployable _feedback.war_ for manual deployment into JBoss AS7.  We can trigger Maven from the Forge Console:
+((("development process","running applications locally", id="ix_ch03-asciidoc8", range="startofrange")))((("JBoss Forge","running applications locally", id="ix_ch03-asciidoc9", range="startofrange")))Time to see our generated application in action.  First we should run the build to package our flat-file deployable _feedback.war_ for manual deployment into JBoss AS7.  We can trigger Maven from the Forge Console:
 
 ----
 $> build --notest --profile arq-jboss_as_remote_7.x;
@@ -553,7 +553,7 @@ image::images/cedj_04in06.png["New Feedback Entry"]
 
 Although CRUD applications are little more than a UI frontend to an entity, the benefit here is in having a fully functioning application to use as a base from which to start.  For newcomers to Java EE, this is especially useful as a learning tool.
 
-With our new entry now persisted into the database, let's undeploy the application in preparation to perform our first integration test run with Arquillian:
+With our new entry now persisted into the database, let's undeploy the application in preparation to perform our first integration test run with Arquillian: (((range="endofrange", startref="ix_ch03-asciidoc9")))(((range="endofrange", startref="ix_ch03-asciidoc8")))
 
 ----
 $> as7 undeploy
@@ -563,7 +563,7 @@ The deployment operation (UNDEPLOY_IGNORE_MISSING) was successful.
 
 === Running the Arquillian Integration Test
 
-At this point, we still have a running JBoss AS7 server and have undeployed the `feedback` application.  Because we'd chosen the +JBOSS_AS_REMOTE_7.X+ option as part of the Forge Arquillian plug-in +setup+ command, our POM is equipped with a profile that enables a dependency on the JBoss AS7 Arquillian container:
+((("Arquillian","running integration tests")))((("development process","running integration tests")))At this point, we still have a running JBoss AS7 server and have undeployed the `feedback` application.  Because we'd chosen the +JBOSS_AS_REMOTE_7.X+ option as part of the Forge Arquillian plug-in +setup+ command, our POM is equipped with a profile that enables a dependency on the JBoss AS7 Arquillian container:
 
 ----
     <profile>
@@ -596,7 +596,7 @@ With assurance that our application has some minimal level of tested functionali
 
 === Deploying to OpenShift via JBoss Developer Studio
 
-JBDS provides us a convenient user interface to the OpenShift cloud service, which will run our applications on the publicly available Web.  Complete information is available at the https://www.openshift.com/[OpenShift] site; for our purposes we'll be running the Java EE web app we created earlier in a JBossAS7 _cartridge_, OpenShift's moniker for a canned set of cloud services.
+((("development process","deployment", id="ix_ch03-asciidoc10", range="startofrange")))((("JBoss Developer Studio","deployment", id="ix_ch03-asciidoc11", range="startofrange")))((("JBoss Developer Studio","OpenShift and", id="ix_ch03-asciidoc12", range="startofrange")))((("OpenShift application service","deploying to, via JBDS", id="ix_ch03-asciidoc13", range="startofrange")))JBDS provides us a convenient user interface to the OpenShift cloud service, which will run our applications on the publicly available Web.  Complete information is available at the https://www.openshift.com/[OpenShift] site; for our purposes we'll be running the Java EE web app we created earlier in a JBossAS7 _cartridge_, OpenShift's moniker for a canned set of cloud services.
 
 Before continuing, we are required to create an account; we can do this by clicking the SIGN UP button from the home page and completing the requisite form, as shown in <<Figure3-9>>.
 
@@ -686,4 +686,4 @@ CLIENT_RESULT: Artifacts deployed: ./ROOT.war
 
 This indicates success, and we can find our application running in the browser at +http://feedback-${openShiftAccountName}.rhcloud.com+.
 
-Although this is not indicitive of the steps we'd traditionally take to develop a more realistic application, we've found that Forge, JBossAS7 (WildFly support forthcoming), and OpenShift make a powerful team in quickly prototyping or learning the components involved in bringing a blank slate to a fully deployed, live, Java EE application.
+Although this is not indicitive of the steps we'd traditionally take to develop a more realistic application, we've found that Forge, JBossAS7 (WildFly support forthcoming), and OpenShift make a powerful team in quickly prototyping or learning the components involved in bringing a blank slate to a fully deployed, live, Java EE application.(((range="endofrange", startref="ix_ch03-asciidoc13")))(((range="endofrange", startref="ix_ch03-asciidoc12")))(((range="endofrange", startref="ix_ch03-asciidoc11")))(((range="endofrange", startref="ix_ch03-asciidoc10"))) (((range="endofrange", startref="ix_ch03-asciidoc0")))

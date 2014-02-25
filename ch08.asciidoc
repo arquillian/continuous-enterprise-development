@@ -6,9 +6,9 @@ ____
 Rest and be thankful.
 ____
 
-The concepts guiding the makeup of the modern Web could be considered a happy accident, or at least an implementation of ideas that had general applicability far beyond their initial design criteria.  In the late 1980s we had the hardware and software necessary for networking; these were low-level tools for transmitting data from one computer to another.  We even had some payload protocols and application layers available including IRC for chat, POP for email, and Usenet for general discussions.  We were communicating, albeit over relatively constrained channels.
+((("REST", id="ix_ch08-asciidoc0", range="startofrange"))) ((("addressable services", id="ix_ch08-asciidoc1", range="startofrange")))((("REST","as addressable service", id="ix_ch08-asciidoc2", range="startofrange")))The concepts guiding the makeup of the modern Web could be considered a happy accident, or at least an implementation of ideas that had general applicability far beyond their initial design criteria.  In the late 1980s we had the hardware and software necessary for networking; these were low-level tools for transmitting data from one computer to another.  We even had some payload protocols and application layers available including IRC for chat, POP for email, and Usenet for general discussions.  We were communicating, albeit over relatively constrained channels.
 
-Out of necessity for his own research, Tim Berners-Lee of the European Organization for Nuclear Research (CERN) concocted a small receipe for publishing documents in a manner that would make his findings more accessible between departments and encourage updates over time.  Called the "WorldWideWeb" (WWW), http://bit.ly/1e8h4rh[this project proposed a series of simple constructs]:
+Out of necessity for his own research,((("Berners-Lee, Tim"))) Tim Berners-Lee of the((("European Organization for Nuclear Research (CERN)"))) European Organization for Nuclear Research (CERN) concocted a small receipe for publishing documents in a manner that would make his findings more accessible between departments and encourage updates over time.  Called the((("world wide web, origins of"))) "WorldWideWeb" (WWW), http://bit.ly/1e8h4rh[this project proposed a series of simple constructs]:
 
 Addressable resources:: A unique key or address assigned to each document
 Hypertext:: A unidirectional pointer to an addressable resource
@@ -28,9 +28,9 @@ and
 
 +urn:example:animal:ferret:nose+
 
-In short time, Berners-Lee introduced the first version of the _HyperText Markup Language_ (HTML), aimed at providing a more concise vernacular for incorporating links into a common markup that browsers could format for viewing.  The WWW was built as a mechanism for _document exchange_, sharing of published material over a commonly understood protocol and payload format (commonly HTML).  
+In short time, Berners-Lee introduced the first version of the((("HyperText Markup Language (HTML)"))) _HyperText Markup Language_ (HTML), aimed at providing a more concise vernacular for incorporating links into a common markup that browsers could format for viewing.  The WWW was built as a mechanism for _document exchange_, sharing of published material over a commonly understood protocol and payload format (commonly HTML).  
 
-In 2000, University of California at Irvine's Roy Fielding published his dissertation http://bit.ly/1e8hbTD["Architectural Styles and the Design of Network-based Software Architectures"], which expanded the notion of addressing documents to include _services_ among the data exchanged on the Web, and defined a system of _REpresentational State Transfer_ (REST).  With his background in coauthoring http://bit.ly/1e8he1T[RFC-2616], which defined the HTTP/1.1 protocol, Fielding was in a position of expertise to rethink how the principles of the Web might be applied to services.
+In 2000, ((("University of California at Irvine")))University of California at Irvine's((("Fielding, Roy")))((("Architectural Styles and the Design of Network-based Software Architectures (Fielding)"))) Roy Fielding published his dissertation http://bit.ly/1e8hbTD["Architectural Styles and the Design of Network-based Software Architectures"], which expanded the notion of addressing documents to include _services_ among the data exchanged on the Web, and defined a system of((("REpresentational State Transfer (REST)"))) _REpresentational State Transfer_ (REST).  With his background in coauthoring http://bit.ly/1e8he1T[RFC-2616], which defined the HTTP/1.1 protocol, Fielding was in a position of expertise to rethink how the principles of the Web might be applied to services.
 
 By addressing services and applying a set of conventions to these URIs, we're able to compose a wide array of operations on services with the following key benefits:
 
@@ -45,9 +45,9 @@ By addressing services and applying a set of conventions to these URIs, we're ab
 Clearly the study of REST is worthy of its own text, and we'll recommend pass:[<emphasis><ulink role="orm:hideurl" url="http://shop.oreilly.com/product/9780596805838.do">REST in Practice</ulink></emphasis>] by Webber, et al. (O'Reilly, 2010) to those looking to explore in greater depth.
 ====
 
-REST is certainly not the first distributed architecture; _Remote Procedure Call_ (RPC) variants have been used in various forms (i.e., SOAP, XML-RPC) for a long while.  In recent years, the trend toward REST has been largely attributed to its ease-of-use and slim profile when coupled with the _HyperText Transfer Protocol_ (HTTP), an established communication protocol providing for _methods_, _headers_, and _return status codes_ that map well to the objectives of the caller.  In practice, the success of the WWW is inherently linked to HTTP, though this is only one protocol (scheme) that can be applied to the general guidelines of the Web.  Due to its widespread usage and versatility, we'll be employing HTTP throughout this chapter.
+((("Remote Procedure Call (RPC)")))REST is certainly not the first distributed architecture; _Remote Procedure Call_ (RPC) variants have been used in various forms (i.e., SOAP, XML-RPC) for a long while.  In recent years, the trend toward REST has been largely attributed to its ease-of-use and slim profile when coupled with the((("HyperText Transfer Protocol (HTTP)"))) _HyperText Transfer Protocol_ (HTTP), an established communication protocol providing for _methods_, _headers_, and _return status codes_ that map well to the objectives of the caller.  In practice, the success of the WWW is inherently linked to HTTP, though this is only one protocol (scheme) that can be applied to the general guidelines of the Web.  Due to its widespread usage and versatility, we'll be employing HTTP throughout this chapter.
 
-Because of its success, REST has become an abused buzzword in some circles.  It's helpful for us to clarify the stages of compliance with a truly RESTful system, and a maturity model developed by http://www.crummy.com/self/[Leonard Richardson] presents four rungs of evolution.  Martin Fowler ably sums these up in his http://bit.ly/1fh2AGt[blog post], and we'll outline them here:
+Because of its success, REST has become an abused buzzword in some circles.  It's helpful for us to clarify the stages of compliance with a truly RESTful system, and a maturity model developed by((("Richardson, Leonard"))) http://www.crummy.com/self/[Leonard Richardson] presents four rungs of evolution.  ((("Fowler, Martin")))Martin Fowler ably sums these up in his http://bit.ly/1fh2AGt[blog post], and we'll outline them here:
 
 |====
 |Stage 0|Using HTTP as a transport system for arbitrary payloads; typically used in plain RPC where a caller may wish to invoke upon a server over a network.
@@ -64,23 +64,23 @@ Server:: Your cart is saved.  Do you want to continue shopping?  Do you want to 
 
 It's important to consider that REST is an _architectural style_, agnostic of any particular programming model or language.  At its core, REST is most simply explained as an API for accessing services and domain objects over the Web.
 
-As the Java community has come to understand the REST principles, it has provided a mapping layer between requests and backend services: _JAX-RS_.
+As the Java community has come to understand the REST principles, it has provided a mapping layer between requests and backend services: _JAX-RS_.(((range="endofrange", startref="ix_ch08-asciidoc2")))(((range="endofrange", startref="ix_ch08-asciidoc1")))
 
 === REST in Enterprise Java: The JAX-RS Specification
 
-The _Java API for RESTful Web Services_, or JAX-RS, is a specification under the direction of the Java Community Process, defined by http://bit.ly/1e8hjT0[JSR-339] in its latest 2.0 version.  Java EE6 incorprates the 1.1 revision, as defined by http://bit.ly/1e8hkXe[JSR-311]; this is the version we'll be covering here.  From the specification document, its goals are to be/have:
+((("Java API for RESTful Web Services (JAX-RS)", id="ix_ch08-asciidoc3", range="startofrange")))((("JAX-RS specification", id="ix_ch08-asciidoc4", range="startofrange")))((("REST","in Enterprise Java", id="ix_ch08-asciidoc5", range="startofrange")))((("REST","JAX-RS specification", id="ix_ch08-asciidoc6", range="startofrange")))The _Java API for RESTful Web Services_, or JAX-RS, is a specification under the direction of the Java Community Process, defined by http://bit.ly/1e8hjT0[JSR-339] in its latest 2.0 version.  Java EE6 incorprates the 1.1 revision, as defined by http://bit.ly/1e8hkXe[JSR-311]; this is the version we'll be covering here.  From the specification document, its goals are to be/have:
 
-POJO-based:: The API will provide a set of annotations and associated classes/interfaces that may be used
+POJO-based:: API will provide a set of annotations and associated classes/interfaces that may be used
 with POJOs in order to expose them as Web resources. The specification will define object lifecycle
 and scope.
 HTTP-centric:: The specification will assume HTTP is the underlying network protocol and will provide a clear mapping between HTTP and URI elements and the corresponding API classes and
 annotations. The API will provide high-level support for common HTTP usage patterns and will be
 sufficiently flexible to support a variety of HTTP applications including WebDAV and the Atom
 Publishing Protocol.
-Format independence:: The API will be applicable to a wide variety of HTTP entity body content types. It
+Format independence:: The ((("format independence")))API will be applicable to a wide variety of HTTP entity body content types. It
 will provide the necessary pluggability to allow additional types to be added by an application in a
 standard manner.
-Container independence:: Artifacts using the API will be deployable in a variety of Web-tier containers.
+Container independence:: Artifacts ((("container independence")))using the API will be deployable in a variety of Web-tier containers.
 The specification will define how artifacts are deployed in a Servlet container and as a JAX-WS Provider.
 Inclusion in Java EE:: The specification will define the environment for a Web resource class hosted in a
 Java EE container and will specify how to use Java EE features and components within a Web resource
@@ -88,10 +88,10 @@ class.
 
 [NOTE]
 ====
-Because it's not our aim to provide a comprehensive overview of JAX-RS, we recommend pass:[<emphasis><ulink role="orm:hideurl" url="http://shop.oreilly.com/product/9780596158057.do">RESTful Java with JAX-RS</ulink></emphasis>] by Bill Burke (O'Reilly, 2009), member of the JSR-339 Expert Group and lead of the JBoss Community's http://www.jboss.org/resteasy[RESTEasy implementation].  The second revision of the book, covering the latest 2.0 version of the specification, is now http://shop.oreilly.com/product/0636920028925.do[on sale for pre-order].
+Because it's not our aim to provide a comprehensive overview of JAX-RS, we recommend((("RESTful Java with JAX-RS (Burke)")))((("Burke, Bill"))) pass:[<emphasis><ulink role="orm:hideurl" url="http://shop.oreilly.com/product/9780596158057.do">RESTful Java with JAX-RS</ulink></emphasis>] by Bill Burke (O'Reilly, 2009), member of the JSR-339 Expert Group and lead of the JBoss Community's http://www.jboss.org/resteasy[RESTEasy implementation].  The second revision of the book, covering the latest 2.0 version of the specification, is now http://shop.oreilly.com/product/0636920028925.do[on sale for pre-order].
 ====
 
-The http://jsr311.java.net/nonav/javadoc/[JAX-RS Specification API] provides a set of annotations helpful to developers seeking to map incoming HTTP-based requests to backend services.  From the docs, these include:
+The((("JAX-RS Specification API"))) http://jsr311.java.net/nonav/javadoc/[JAX-RS Specification API] provides a set of annotations helpful to developers seeking to map incoming HTTP-based requests to backend services.  From the docs, these include:
 
 |====
 |+ApplicationPath+|Identifies the application path that serves as the base URI for all resource URIs provided by `Path`.
@@ -139,7 +139,7 @@ public class WidgetResource {
 
 This defines an example of a business object that will receive requests to +$applicationRoot/widgets/$widgetid+, where +$widgetid+ is the identifier of the domain object to be acted upon.  HTTP +GET+ requests will be serviced by the +getWidget+ method, which will receive the +$widgetid+ as a method parameter; HTTP +PUT+ requests will be handled by the +updateWidget+ method.  The class-level +@Consumes+ and +@Produces+ annotations designate that all business methods of the class will expect and return a media type (content type) of +application/widgets+xml+.
 
-Because the specification supplies only a contract by which JAX-RS implementations must behave, the runtime will vary between application server vendors.  For instance, the Reference Implementation, http://jersey.java.net/[Jersey], can be found in the http://glassfish.java.net/[GlassFish Application Server], while http://www.wildfly.org/[WildFly] from the JBoss Community uses http://www.jboss.org/resteasy[RESTEasy].
+Because the specification supplies only a contract by which JAX-RS implementations must behave, the runtime will vary between application server vendors.  For instance, the Reference Implementation((("Reference Implementation (JAX-RS)"))), http://jersey.java.net/[Jersey], can be found in the http://glassfish.java.net/[GlassFish Application Server], while((("RESTEasy (JAX-RS)"))) http://www.wildfly.org/[WildFly] from the JBoss Community uses http://www.jboss.org/resteasy[RESTEasy].
 
 === Use Cases and Requirements
 
@@ -154,7 +154,7 @@ We'd like to encourage third-party integrators--clients about whom we may not ha
 ** Attachments within Conferences
 ** A Venue (and associate with a Conference and/or Session)
 
-Additionally, we want to lay out a map of the application as the client navigates through state changes.  For instance, at the root, a client should know what operations it's capable of performing.  Once that operation is complete, a series of possible next steps should be made available to the client such that it may continue execution.  This guide is known as the _Domain Application Protocol_ (DAP), and it acts as a slimming agent atop the wide array of possible HTTP operations in order to show the valid business processes that are available to a client as it progresses through the application's various state changes.  It's this DAP layer that grants us the final HATEOAS step of the Richardson Maturity Model.  Our DAP will define a series of addressable resources coupled with valid HTTP methods and media types to determine what actions are taken, and what links are to come next in the business process:
+Additionally, we ((("Domain Application Protocol (DAP)")))want to lay out a map of the application as the client navigates through state changes.  For instance, at the root, a client should know what operations it's capable of performing.  Once that operation is complete, a series of possible next steps should be made available to the client such that it may continue execution.  This guide is known as the _Domain Application Protocol_ (DAP), and it acts as a slimming agent atop the wide array of possible HTTP operations in order to show the valid business processes that are available to a client as it progresses through the application's various state changes.  It's this DAP layer that grants us the final HATEOAS step of the Richardson Maturity Model.  Our DAP will define a series of addressable resources coupled with valid HTTP methods and media types to determine what actions are taken, and what links are to come next in the business process:
 
 ** +/ application/vnd.ced+xml;type=root+
 *** +GET+ -> Links
@@ -204,11 +204,11 @@ Additionally, we want to lay out a map of the application as the client navigate
 *** +GET+ -> List
 *** +POST+ -> Add
 
-The preceding DAP can be conceptually understood as a site map for services, and it defines the API for users of the system.  By designing to the DAP, we provide clients with a robust mechanism by which the details of attaining each resource or invoking the application's services can be read as the client navigates from state to state.
+The preceding DAP can be conceptually understood as a site map for services, and it defines the API for users of the system.  By designing to the DAP, we provide clients with a robust mechanism by which the details of attaining each resource or invoking the application's services can be read as the client navigates from state to state.(((range="endofrange", startref="ix_ch08-asciidoc6")))(((range="endofrange", startref="ix_ch08-asciidoc5")))(((range="endofrange", startref="ix_ch08-asciidoc4")))(((range="endofrange", startref="ix_ch08-asciidoc3")))
 
 === Implementation
 
-With our requirements defined, we're free to start implementation.  Remember that our primary goal here is to create HTTP endpoints at the locations defined by our DAP, and we want to ensure that they perform the appropriate action and return the contracted response.  By using JAX-RS we'll be making business objects and defining the mapping between the path, query parameters, and media types of the request before taking action and supplying the correct response.
+((("JAX-RS specification","implementing", id="ix_ch08-asciidoc7", range="startofrange")))((("REST","implementing", id="ix_ch08-asciidoc8", range="startofrange")))With our requirements defined, we're free to start implementation.  Remember that our primary goal here is to create HTTP endpoints at the locations defined by our DAP, and we want to ensure that they perform the appropriate action and return the contracted response.  By using JAX-RS we'll be making business objects and defining the mapping between the path, query parameters, and media types of the request before taking action and supplying the correct response.
 
 The first step is to let the container know that we have a JAX-RS component in our application; we do this by defining a +javax.ws.rs.ApplicationPath+ annotation atop a subclass of +javax.ws.rs.core.Application+.  Here we provide this in +org.geekseek.rest.GeekSeekApplication+:
 
@@ -227,7 +227,7 @@ This will be picked up by the container and signal that requests to paths under 
 
 ==== Repository Resources
 
-Looking over our requirements, we see that all paths in our DAP are capable of performing CRUD operations.  Therefore, it makes sense for us to define a base upon which individual resources can build, while giving persistence capabilities to create, read, update, and delete.  In GeekSeek, we'll handle this by making a generic +RepositoryResource+ base to give us a hook into the +Repository+ abstractions detailed in <<ch05>>.  Let's walk through +org.cedj.geekseek.web.rest.core.RepositoryResource+:
+((("JAX-RS specification","repository resources", id="ix_ch08-asciidoc9", range="startofrange")))((("repostitory resources", id="ix_ch08-asciidoc10", range="startofrange")))((("REST","repostitory resources", id="ix_ch08-asciidoc11", range="startofrange")))Looking over our requirements, we see that all paths in our DAP are capable of performing CRUD operations.  Therefore, it makes sense for us to define a base upon which individual resources can build, while giving persistence capabilities to create, read, update, and delete.  In GeekSeek, we'll handle this by making a generic +RepositoryResource+ base to give us a hook into the +Repository+ abstractions detailed in <<ch05>>.  Let's walk through +org.cedj.geekseek.web.rest.core.RepositoryResource+:
 
 [source,java]
 ----
@@ -404,11 +404,11 @@ Because we inherit all of the support to interact with JPA from the parent +Repo
 * Supply the custom media types for user representations.
 * Set the resource type, the domain object type, and the representation type in the constructor.
 
-Now we can handle CRUD operations for +User+ domain objects; similar implementations to this are also in place for +Conference+, +Session+, etc.
+Now we can handle CRUD operations for +User+ domain objects; similar implementations to this are also in place for +Conference+, +Session+, etc.f811.240
 
 ==== The Representation Converter
 
-We've seen that the underlying domain model implemented in JPA is not the same as the REST model we're exposing to clients. Although EE allows us to annotate JPA models with JAX-B bindings etc., we likely would like to keep the two models separate because the REST model may:
+((("JAX-RS specification","representation converter for", id="ix_ch08-asciidoc12", range="startofrange")))((("representation converters", id="ix_ch08-asciidoc13", range="startofrange")))((("REST","representation converter for", id="ix_ch08-asciidoc14", range="startofrange")))We've seen that the underlying domain model implemented in JPA is not the same as the REST model we're exposing to clients. Although EE allows us to annotate JPA models with JAX-B bindings etc., we likely would like to keep the two models separate because the REST model may:
 
 * Contain less data
 * Combine JPA models into one unified view
@@ -487,12 +487,12 @@ private RepresentationConverter<SessionRepresentation,
     Session> sessionConverter;
 ----
 
-Through these converters we can easily delegate the messy business of parsing the media type payload formats to and from our own interal domain objects.
+Through these converters we can easily delegate the messy business of parsing the media type payload formats to and from our own interal domain objects.(((range="endofrange", startref="ix_ch08-asciidoc14")))(((range="endofrange", startref="ix_ch08-asciidoc13")))(((range="endofrange", startref="ix_ch08-asciidoc12")))
 
 [[resource-model]]
 ==== The @ResourceModel
 
-Because JAX-RS 1.x does not define an interceptor model, we need to apply these on our own in order to activate cross-cutting concerns such as security, validation, and resource linking to our JAX-RS endpoints.  This is easily enough accomplished by using the stereotype feature of CDI, where we can create our own annotation type (which itself has annotations); wherever our custom type is applied, the metadata we specify upon the stereotype will propagate.  So we can create an annotation to apply all of the features we'd like upon a +RepositoryResource+, and we call it +org.cedj.geekseek.web.rest.core.annotation.ResourceModel+:
+((("@Resource model for")))((("JAX-RS specification","@Resource model for")))Because JAX-RS 1.x does not define an interceptor model, we need to apply these on our own in order to activate cross-cutting concerns such as security, validation, and resource linking to our JAX-RS endpoints.  This is easily enough accomplished by using the stereotype feature of CDI, where we can create our own annotation type (which itself has annotations); wherever our custom type is applied, the metadata we specify upon the stereotype will propagate.  So we can create an annotation to apply all of the features we'd like upon a +RepositoryResource+, and we call it +org.cedj.geekseek.web.rest.core.annotation.ResourceModel+:
 
 [source,java]
 ----
@@ -550,7 +550,7 @@ In practice, this means that our +SecurityInterceptor+, +LinkedInterceptor+, and
 
 ==== LinkableRepresentation
 
-As you may have noticed from our DAP, we have a series of paths that accept a source media type and return another media type representing the data in question.  These are modeled by our +org.cedj.geekseek.web.rest.core.Representation+:
+((("GeekSeek","LinkableRepresentation", id="ix_ch08-asciidoc15", range="startofrange")))((("GeekSeek","REST implementation in", id="ix_ch08-asciidoc16", range="startofrange")))((("LinkableRepresentation (GeekSeek)", id="ix_ch08-asciidoc17", range="startofrange")))As you may have noticed from our DAP, we have a series of paths that accept a source media type and return another media type representing the data in question.  These are modeled by our +org.cedj.geekseek.web.rest.core.Representation+:
 
 
 [source,java]
@@ -685,7 +685,7 @@ public class LinkedInterceptor implements RESTInterceptor {
 
 ==== ResourceLink
 
-Recall from our DAP that many requests are to return a link to other resources as the client makes its way through state changes in the application.  A link is really a value object to encapsulate a media type, href (link), and relation.  We provide this in +org.cedj.geekseek.web.rest.core.ResourceLink+:
+(((range="endofrange", startref="ix_ch08-asciidoc17")))(((range="endofrange", startref="ix_ch08-asciidoc16")))(((range="endofrange", startref="ix_ch08-asciidoc15"))) ((("GeekSeek","ResourceLink")))((("ResourceLink (GeekSeek)")))Recall from our DAP that many requests are to return a link to other resources as the client makes its way through state changes in the application.  A link is really a value object to encapsulate a media type, href (link), and relation.  We provide this in +org.cedj.geekseek.web.rest.core.ResourceLink+:
 
 [source,java]
 ----
@@ -733,11 +733,11 @@ public class ResourceLink {
 }
 ----
 
-+LinkableRepresentation+ will use this value object in particular to handle its linking strategy between disparate entities that are not related in the JPA model.
++LinkableRepresentation+ will use this value object in particular to handle its linking strategy between disparate entities that are not related in the JPA model.(((range="endofrange", startref="ix_ch08-asciidoc11")))(((range="endofrange", startref="ix_ch08-asciidoc10")))
 
 === Requirement Test Scenarios
 
-With our implementation in place leveraging JAX-RS to map our DAP to business methods, we're set to test our endpoints.  The core areas we want to assert are the expected responses from requests to:
+((("requirement test scenarios","for JAX-RS", id="ix_ch08-asciidoc18", range="startofrange")))((("requirement test scenarios","for REST", id="ix_ch08-asciidoc19", range="startofrange")))With our implementation in place leveraging JAX-RS to map our DAP to business methods, we're set to test our endpoints.  The core areas we want to assert are the expected responses from requests to:
 
 * +PUT+ data
 * +GET+ data
@@ -747,7 +747,7 @@ With our implementation in place leveraging JAX-RS to map our DAP to business me
 
 ==== A Black-Box Test
 
-The general flow of our first test will be to model a user's actions as she navigates through the site.  To accomplish execution of the test methods in sequence, we'll use Arquillian's +@InSequence+ annotation to signal the order of test execution.  This will really position the test class as more of a "test scenario," with each test method acting as the separate tests that must maintain a proper order.  In this fashion, we will follow the normal REST client flow from point A to B to C and so on.  We're going to execute requests to:
+((("black box testing for JAX-RS", id="ix_ch08-asciidoc20", range="startofrange")))((("JAX-RS specification","black box testing for", id="ix_ch08-asciidoc21", range="startofrange")))((("REST","black box testing for", id="ix_ch08-asciidoc22", range="startofrange")))The general flow of our first test will be to model a user's actions as she navigates through the site.  To accomplish execution of the test methods in sequence, we'll use Arquillian's +@InSequence+ annotation to signal the order of test execution.  This will really position the test class as more of a "test scenario," with each test method acting as the separate tests that must maintain a proper order.  In this fashion, we will follow the normal REST client flow from point A to B to C and so on.  We're going to execute requests to:
 
 * +GET+ the Root resource 
 * Locate the +Conference+ link
@@ -784,7 +784,7 @@ public class CreateConferenceAndSessionStory {
     }
 ----
 
-The +@RunWith+ annotation should be familiar by now; Arquillian will be handling the test lifecycle for us.  As noted previously, it's good practice to allow Arquillian to inject the base URL of the application by using +@ArquillianResource+.  And because we're not bound to any frameworks in particular, we can also use the https://code.google.com/p/rest-assured/[REST-assured] project to provide us with a clean DSL to validate our REST services.
+((("REST services","validating")))The +@RunWith+ annotation should be familiar by now; Arquillian will be handling the test lifecycle for us.  As noted previously, it's good practice to allow Arquillian to inject the base URL of the application by using +@ArquillianResource+.  And because we're not bound to any frameworks in particular, we can also use the https://code.google.com/p/rest-assured/[REST-assured] project to provide us with a clean DSL to validate our REST services.
 
 Notably missing from this declaration is the +@Deployment+ method, which we supply in +CreateConferenceAndSessionStoryTestCase+ so we can decouple the test scenario from the test deployment logic; this encourages re-use for running the same tests with different deployments so we can further integrate other layers later.  The deployment method for our purposes here looks like:
 
@@ -848,11 +848,11 @@ public void shouldBeAbleToCreateConference() throws Exception { .. }
 ...
 ----
 
-The rest of the test class contains test logic to fulfill our test requirements.
+The rest of the test class contains test logic to fulfill our test requirements.(((range="endofrange", startref="ix_ch08-asciidoc22")))(((range="endofrange", startref="ix_ch08-asciidoc21")))(((range="endofrange", startref="ix_ch08-asciidoc20")))
   
 ==== Validating the HTTP Contracts with Warp
 
-We've ensured that the responses from the server are in expected form.  We'd additionally like to certify that our service is obeying the general contracts of HTTP.  Because by definition this will involve a lot of client-side requests and parsing of server responses, it'll be helpful for us to avoid writing a lot of custom code to negotiate the mapping.  For these tasks, we introduce an extension to Arquillian that is aimed at making this type of testing easier.
+((("Arquillian","Warp", id="ix_ch08-asciidoc23", range="startofrange")))((("HTTP contracts","validating", id="ix_ch08-asciidoc24", range="startofrange")))((("JAX-RS specification","HTTP contracts, validating", id="ix_ch08-asciidoc25", range="startofrange")))((("JAX-RS specification","Warp and", id="ix_ch08-asciidoc26", range="startofrange")))((("REST","HTTP contracts, validating", id="ix_ch08-asciidoc27", range="startofrange")))((("REST","Warp and", id="ix_ch08-asciidoc28", range="startofrange")))((("Warp (Arquillian)", id="ix_ch08-asciidoc29", range="startofrange")))We've ensured that the responses from the server are in expected form.  We'd additionally like to certify that our service is obeying the general contracts of HTTP.  Because by definition this will involve a lot of client-side requests and parsing of server responses, it'll be helpful for us to avoid writing a lot of custom code to negotiate the mapping.  For these tasks, we introduce an extension to Arquillian that is aimed at making this type of testing easier.
 
 ==== Arquillian Warp
 
@@ -864,11 +864,11 @@ Warp effectively removes the need for mocking and opens new possibilities for de
 
 ===== Gray-box testing
 
-Initially, Warp can be used from any black-box testing tool (like HttpClient, REST client, Selenium WebDriver, etc.). But it allows us to hook into the server request lifecycle and verify what happens inside the box (referred to as white-box testing). Thus, we identify Warp as a hybrid "gray-box" testing framework.
+((("gray-box testing (Warp)")))Initially, Warp can be used from any black-box testing tool (like HttpClient, REST client, Selenium WebDriver, etc.). But it allows us to hook into the server request lifecycle and verify what happens inside the box (referred to as white-box testing). Thus, we identify Warp as a hybrid "gray-box" testing framework.
 
 ===== Integration testing
 
-No matter the granularity of our tests, Warp fits the best integration level of testing with an overlap to functional testing. We can either test components, application API, or functional behavior.
+((("integration testing","with Warp")))No matter the granularity of our tests, Warp fits the best integration level of testing with an overlap to functional testing. We can either test components, application API, or functional behavior.
 
 ===== Technology independence
 
@@ -876,7 +876,7 @@ Whatever client-side tools we use for emiting an HTTP request, Warp allows us to
 
 ===== Use cases
 
-Warp can:
+((("use cases, in Warp")))Warp can:
 
 * Send a payload to a server
 * Verify an incoming request
@@ -887,7 +887,7 @@ Warp can:
 
 ===== Deploying Warp
 
-Thanks to an ability to bring an arbitrary payload to a server and hook into server lifecycles, we can use Warp in partially implemented projects. We do not require the database layer to be implemented in order to test UI logic. This is especially useful for projects based on loosely coupled components (e.g., CDI).
+((("Warp (Arquillian)","deploying")))Thanks to an ability to bring an arbitrary payload to a server and hook into server lifecycles, we can use Warp in partially implemented projects. We do not require the database layer to be implemented in order to test UI logic. This is especially useful for projects based on loosely coupled components (e.g., CDI).
 
 ===== Supported tools and frameworks
 
@@ -928,7 +928,7 @@ Selenium WebDriver
 
 ===== Frameworks
 
-Warp currently focuses on frameworks based on the Servlets API, but it provides special hooks and additional support for:
+((("frameworks","Warp and")))Warp currently focuses on frameworks based on the Servlets API, but it provides special hooks and additional support for:
 
 * JSF
 * JAX-RS (REST)
@@ -938,7 +938,7 @@ For more information about Warp, visit http://arquillian.org/.
 
 ==== Test Harness Setup
 
-We'll start by enabling the Arquillian Warp in the POM's +dependencyManagement+ section:
+((("test harness setup in Warp")))((("Warp (Arquillian)","test harness setup")))We'll start by enabling the Arquillian Warp in the POM's +dependencyManagement+ section:
 
 [source,xml]
 ----
@@ -964,7 +964,7 @@ This will lock down the versions correctly such that all Warp modules are of the
 
 ==== The HTTP Contracts Test
 
-Now we'd like to test details of the REST service behavior; we'll use Warp to allow easy control over permutations of data.  Again, we'll be swapping out alternate +Repository+ implementations to  bypass JPA and real peristence; we're just interested in the HTTP request/response interactions at this stage.
+((("HTTP contracts","testing")))((("REST","testing HTTP contracts")))((("testing","HTTP contracts")))Now we'd like to test details of the REST service behavior; we'll use Warp to allow easy control over permutations of data.  Again, we'll be swapping out alternate +Repository+ implementations to  bypass JPA and real peristence; we're just interested in the HTTP request/response interactions at this stage.
 
 What we'd like to do in this test is create +Conference+ domain objects on the client side and transfer them to the server.  Warp will allow us to control which data to fetch through the JAX-RS layer.  We can look at the abstract base class of +ConferenceResourceSpecificationTestCase+ as an example:
 
@@ -1049,4 +1049,5 @@ Via=1.1.overdrive.home
 
 The response will contain our links to related resources, as well as information about the requested +Conference+ object in the XML +xmlns:ns3="urn:ced:conference"+ format.  Using Warp, we can interact with and perform validations upon these types of payloads with ease.
 
-There are plenty of other detailed Warp examples throughout the tests of the REST modules in the GeekSeek application code; we advise readers to peruse the source for additional ideas in using this very powerful tool for white-box testing of the request/response model.
+There are plenty of other detailed Warp examples throughout the tests of the REST modules in the GeekSeek application code; we advise readers to peruse the source for additional ideas in using this very powerful tool for white-box testing of the request/response model.(((range="endofrange", startref="ix_ch08-asciidoc29")))(((range="endofrange", startref="ix_ch08-asciidoc28")))(((range="endofrange", startref="ix_ch08-asciidoc27")))(((range="endofrange", startref="ix_ch08-asciidoc26")))(((range="endofrange", startref="ix_ch08-asciidoc25")))(((range="endofrange", startref="ix_ch08-asciidoc24")))(((range="endofrange", startref="ix_ch08-asciidoc23"))) (((range="endofrange", startref="ix_ch08-asciidoc19")))(((range="endofrange", startref="ix_ch08-asciidoc18"))) (((range="endofrange", startref="ix_ch08-asciidoc9")))
+

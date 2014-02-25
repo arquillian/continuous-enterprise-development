@@ -6,15 +6,15 @@ ____
 The road to success is always under construction.
 ____
 
-To this point, we've focused primarily on the testable development of our modules and have taken some selective slices out for examination and testing.  The time has come for us to address full integration by bringing everything together into a single deployable unit.
+((("application assembly", id="ix_ch11-asciidoc0", range="startofrange")))((("assembly (of applications)", id="ix_ch11-asciidoc1", range="startofrange")))To this point, we've focused primarily on the testable development of our modules and have taken some selective slices out for examination and testing.  The time has come for us to address full integration by bringing everything together into a single deployable unit.
 
 Additionally, we'll look at some alternative (and arguably more enterprise-ready) runtimes for our application.  Ideally, we'd like to be in a position where our test environment is aligned as closely as possible to that which will be run in production, and we'll further aim to automate the process of deployment.  By removing human interaction as much as possible, our potential for mistakes decreases and we learn to rely instead on our test suite as a guardian of code quality.
 
-This chapter will ultimately link a +git push+ to validate new commits in a _continuous integration_ server before deploying the new version of our application into the publicly accessible Web.  Whether you go straight to production or first to a staging environment, these steps should outline a smooth transition from development to real application use.
+This chapter((("continuous integration"))) will ultimately link a +git push+ to validate new commits in a _continuous integration_ server before deploying the new version of our application into the publicly accessible Web.  Whether you go straight to production or first to a staging environment, these steps should outline a smooth transition from development to real application use.
 
 === Obtaining JBoss EAP
 
-_JBoss Enterprise Application Platform_ (EAP) is Red Hat's supportable application server distribution born from the community open source _WildFly_ project (formerly known as the JBoss Application Server).  A full discussion of the relationship and differences between community and supportable middleware is detailed by http://www.redhat.com/products/jbossenterprisemiddleware/community-enterprise/[Red Hat], and some of the most important points are:
+((("application assembly","JBoss Enterprise Application Platform", id="ix_ch11-asciidoc2", range="startofrange")))((("assembly (of applications)","JBoss Enterprise Application Platform", id="ix_ch11-asciidoc3", range="startofrange")))((("JBoss Enterprise Application Platform (JBoss EAP)", id="ix_ch11-asciidoc4", range="startofrange"))) ((("JBoss Enterprise Application Platform (JBoss EAP)","obtaining", id="ix_ch11-asciidoc5", range="startofrange")))_JBoss Enterprise Application Platform_ (EAP) is((("JBoss Enterprise Application Platform (JBoss EAP)")))((("Red Hat")))((("WildFly application service"))) Red Hat's supportable application server distribution born from the community open source _WildFly_ project (formerly known as the JBoss Application Server).  A full discussion of the relationship and differences between community and supportable middleware is detailed by http://www.redhat.com/products/jbossenterprisemiddleware/community-enterprise/[Red Hat], and some of the most important points are:
 
 * The community projects are built to innovate quickly and push new features at a rapid rate.
 * Supportable products are intended to have a multiyear life span, and receive updates and bug fixes over this time period.
@@ -42,7 +42,7 @@ eap $> unzip jboss-eap-6.1.0.zip
 
 Using this, we'd now have EAP installed at _/home/alr/opt/jboss/eap/jboss-eap-6.1/_.
 
-Now let's place our EAP Maven repository somewhere useful.  It might be enticing to mix in these artifacts with our default Maven repository (typically located at _USER_HOME/.m2/repository_), but let's keep things separated and create a new extension repo for our product bits.  This way we'll have the option of enabling this repository explicitly in our builds and won't ever have to worry about placing these artifacts alongside ones found in Maven Central.  We'll choose _USER_HOME/.m2/jboss-eap-6.1.0.GA-maven-repository_ (the default folder name contained inside the ZIP, under our user's Maven directory):
+Now let's place our EAP Maven repository somewhere useful.  It might be enticing to mix in these artifacts with our default Maven repository (typically located at _USER_HOME/.m2/repository_), but let's keep things separated and create a new extension repo for our product bits.  This way we'll have the option of enabling this repository explicitly in our builds and won't ever have to worry about placing these artifacts alongside ones found in Maven Central.  We'll choose _USER_HOME/.m2/jboss-eap-6.1.0.GA-maven-repository_ (the default folder name contained inside the ZIP, under our user's Maven directory): (((range="endofrange", startref="ix_ch11-asciidoc5")))
 
 ----
 Downloads $> unzip jboss-eap-6.1.0-maven-repository.zip
@@ -56,7 +56,7 @@ With our EAP installation in place, we're now in a position to exercise our appl
 
 ==== Using the EAP Remote Container
 
-First we'll run EAP as a standalone process.  Opening a terminal or console window, let's +cd+ into the directory in which we unzipped the distribution.  From there we can export an environment variable to set _JBOSS_HOME_ to the present working directory (using the +export+ command on *nix systems or simply +set+ on Windows machines):
+((("JBoss Enterprise Application Platform (JBoss EAP)","remote container", id="ix_ch11-asciidoc6", range="startofrange")))First we'll run EAP as a standalone process.  Opening a terminal or console window, let's +cd+ into the directory in which we unzipped the distribution.  From there we can export an environment variable to set _JBOSS_HOME_ to the present working directory (using the +export+ command on *nix systems or simply +set+ on Windows machines):
 
 ----
 $> cd /home/alr/opt/jboss/eap/jboss-eap-6.1/
@@ -93,7 +93,7 @@ image::images/cedj_12in02.png[EAP Home Page]
 
 Let's leave this as-is for the time being, and open a new console window (or tab) in the GeekSeek application's source root.
 
-Our experience with Arquillian up to this point has been using a _managed_ container configuration; this has ceded the responsibility of server startup and shutdown to Arquillian during the +Before Suite+ and +After Suite+ test lifecycle events.  Now that we've already got a server booted, we can let Arquillian bypass these steps to use a previously bootstrapped process, which gives us some benefits:
+Our ((("managed","container configuration")))experience with Arquillian up to this point has been using a _managed_ container configuration; this has ceded the responsibility of server startup and shutdown to Arquillian during the +Before Suite+ and +After Suite+ test lifecycle events.  Now that we've already got a server booted, we can let Arquillian bypass these steps to use a previously bootstrapped process, which gives us some benefits:
 
 * We save the time needed to start/stop a server alongside each test suite.
 * A server does not have to be running locally; the server process may be housed on a separate physical machine accessible on the network.
@@ -115,7 +115,7 @@ The build will run as we've seen before, only this time we'll be able to see som
 
 This may be a preferable technique to employ while developing; at the start of the day you can launch the server and keep it running as an external process, and run your tests without the overhead of waiting for server start and stop, as well as the unzipping process (and resulting file I/O) to create local WildFly installation directories under +target+ for testing.  On our machines, this cuts the total build time from around 3:30 to 2:11 as we exercise quite a few test suites and hence remove a good number of start/stop lifecycle events by using the remote container.
 
-Because we're done with the EAP instance we started earlier, let's end the process:
+Because we're done with the EAP instance we started earlier, let's end the process: (((range="endofrange", startref="ix_ch11-asciidoc6")))
 
 ----
 bin $> ^C
@@ -127,9 +127,9 @@ bin $> ^C
 
 ==== Using the EAP Managed Container
 
-Of course, the GeekSeek examples also make EAP available for use in _managed_ mode, as we've used before.  Because EAP is not currently available as a distribution in a Maven repository, it'll take a few extra steps for us to enable this layout.
+((("JBoss Enterprise Application Platform (JBoss EAP)","managed container", id="ix_ch11-asciidoc7", range="startofrange")))Of course, the GeekSeek examples also make EAP available for use((("managed mode"))) in _managed_ mode, as we've used before.  Because EAP is not currently available as a distribution in a Maven repository, it'll take a few extra steps for us to enable this layout.
 
-Remember that we downloaded the EAP Maven repository earlier. This is an _extension_ repo; it's meant to serve as an addition to a standard repo like that offered by JBoss Nexus or Maven Central.  As such, it contains EAP-specific artifacts and dependencies only.
+Remember ((("extension repo")))that we downloaded the EAP Maven repository earlier. This is an _extension_ repo; it's meant to serve as an addition to a standard repo like that offered by JBoss Nexus or Maven Central.  As such, it contains EAP-specific artifacts and dependencies only.
 
 Let's begin by unpacking this into a new repository alongside the default +~/.m2/repository+ repo:
 
@@ -247,11 +247,11 @@ To run our GeekSeek build with tests against EAP in managed mode, we apply the +
 code $> mvn clean install -Parq-jbosseap-managed,jboss-eap-6.1.0
 ----
 
-In this fashion, we can now automate our testing with EAP just as we've been doing with WildFly.
+In this fashion, we can now automate our testing with EAP just as we've been doing with WildFly.(((range="endofrange", startref="ix_ch11-asciidoc7"))) (((range="endofrange", startref="ix_ch11-asciidoc4")))(((range="endofrange", startref="ix_ch11-asciidoc3")))(((range="endofrange", startref="ix_ch11-asciidoc2")))
 
 === Continuous Integration and the Authoritative Build Server
 
-The practice of _continuous integration_ involves the frequent pushing of code to a shared mainline, then executing a robust test suite against it.  Ideally, each commit will be tested in this fashion, and though we should strive to run as many tests as are appropriate locally before pushing code to the source repository for all to see, the most reliable agent to verify correctness is our _authoritative build server_.
+((("application assembly","authoritative build servers", id="ix_ch11-asciidoc8", range="startofrange")))((("assembly (of applications)","authoritative build servers", id="ix_ch11-asciidoc9", range="startofrange")))((("authoritative build servers", id="ix_ch11-asciidoc10", range="startofrange")))((("continuous integration","authoritative build servers and", id="ix_ch11-asciidoc11", range="startofrange")))The practice of _continuous integration_ involves the frequent pushing of code to a shared mainline, then executing a robust test suite against it.  Ideally, each commit will be tested in this fashion, and though we should strive to run as many tests as are appropriate locally before pushing code to the source repository for all to see, the most reliable agent to verify correctness is our _authoritative build server_.
 
 Our goal here is to set up a continuous integration environment that will serve two primary purposes:
 
@@ -260,13 +260,13 @@ Our goal here is to set up a continuous integration environment that will serve 
 
 In this way we chain events together in order to automate the human action of a code commit all the way through deployment to a publicly accessible application server.
 
-Although we have our choice of build servers and cloud services backing them, we've chosen for our examples the http://jenkins-ci.org/[Jenkins CI Server] (the project forked off http://hudson-ci.org/[Hudson]) run by the http://www.cloudbees.com/[CloudBees] service.  Of course, we could install a CI server and maintain it ourselves, but the excellent folks at CloudBees have proven more than capable at keeping our infrastructure running, patched, and updated.  Additionally, they offer a few extension services (which we'll soon see) that fit well with our desired use cases.  
+Although we ((("Jenkins CI Server")))have our choice of build servers and cloud services backing them, we've chosen for our examples the http://jenkins-ci.org/[Jenkins CI Server] (the project forked off((("Jenkins CI Server"))) http://hudson-ci.org/[Hudson]) run by the http://www.cloudbees.com/[CloudBees] service.  Of course, we could install a CI server and maintain it ourselves, but the excellent folks at CloudBees have proven more than capable at keeping our infrastructure running, patched, and updated.  Additionally, they offer a few extension services (which we'll soon see) that fit well with our desired use cases.  
 
 It's worth noting that the CloudBees team has kindly provided the Arquillian and ShrinkWrap communities with gratis service and support over the past several years, so we'd like to thank them for their contributions in keeping the open source ecosystem running smoothly.
 
 ==== Configuring the GeekSeek Build on CloudBees
 
-Because our eventual deployment target will be EAP, we're going to configure CloudBees as our authoritative build server to execute Arquillian tests against the EAP runtime.  Just as we ran a few extra steps on our local environment to equip the backing Maven repositories with an EAP distribution, we'll have to make the same artifacts available to our CloudBees Jenkins instance.  Luckily, we've already done most of that work locally, so this will mainly be an issue of copying over the EAP Maven repository we already have.
+((("authoritative build servers","configuring", id="ix_ch11-asciidoc12", range="startofrange")))((("CloudBees","configuring", id="ix_ch11-asciidoc13", range="startofrange"))) ((("authoritative build servers","CloudBees", id="ix_ch11-asciidoc14", range="startofrange")))((("CloudBees", id="ix_ch11-asciidoc15", range="startofrange")))Because our eventual deployment target will be EAP, we're going to configure CloudBees as our authoritative build server to execute Arquillian tests against the EAP runtime.  Just as we ran a few extra steps on our local environment to equip the backing Maven repositories with an EAP distribution, we'll have to make the same artifacts available to our CloudBees Jenkins instance.  Luckily, we've already done most of that work locally, so this will mainly be an issue of copying over the EAP Maven repository we already have.
 
 First we'll log in to our CloudBees account and click Select to enter the Jenkins Dashboard from within CloudBees Central, as shown in <<Figure10-3>>.
 
@@ -286,7 +286,7 @@ The next step is to configure the build parameters, as shown in <<Figure10-5>>. 
 [[Figure10-5]]
 image::images/cedj_12in05.png["CloudBees SCM"]
 
-Now we'll tell Maven how to run the build; remember, we want to enable the +arq-jbosseap-managed+ profile, so we'll note that in the "Goals and options" section (see <<Figure10-6>>).  Also, we'll enable our alternative settings file, which will expose our +private+ repository to our build.
+Now we'll tell Maven how to run the build; remember, we want to enable the +arq-jbosseap-managed+ profile, so we'll note that in the "Goals and options" section (see <<Figure10-6>>).  Also, we'll enable our alternative settings file, which will expose our +private+ repository to our build.(((range="endofrange", startref="ix_ch11-asciidoc15")))(((range="endofrange", startref="ix_ch11-asciidoc14")))
 
 .CloudBees build config
 [[Figure10-6]]
@@ -294,11 +294,11 @@ image::images/cedj_12in06.png["CloudBees Build Config"]
 
 ==== Populating CloudBees Jenkins with the EAP Repository
 
-CloudBees offers a series of Maven repositories associated with each Jenkins domain.  These are documented http://wiki.cloudbees.com/bin/view/DEV/CloudBees+Private+Maven+Repository[here], and of particular note is the +private+ repository that is made available to us.  We'll be able to write to it and place in artifacts demanded by our builds, yet the visibility permissions associated with the +private+ repo will block the rest of the world from seeing or accessing these resources.
+((("CloudBees","populating with EAP repository", id="ix_ch11-asciidoc16", range="startofrange")))((("JBoss Enterprise Application Platform (JBoss EAP)","populating CloudBees with", id="ix_ch11-asciidoc17", range="startofrange")))CloudBees offers a series of Maven repositories associated with each Jenkins domain.  These are documented http://wiki.cloudbees.com/bin/view/DEV/CloudBees+Private+Maven+Repository[here], and of particular note is the +private+ repository that is made available to us.  We'll be able to write to it and place in artifacts demanded by our builds, yet the visibility permissions associated with the +private+ repo will block the rest of the world from seeing or accessing these resources.
 
-To copy our EAP Maven Repository into the CloudBees Jenkins +private+ repo, we'll make use of the WebDAV protocol, an extension of HTTP that permits writing to WWW resources.  There are a variety of system-dependent tools to mount DAV volumes, and CloudBees addresses some known working techniques in its http://wiki.cloudbees.com/bin/view/DEV/Mounting+DAV+Repositories[documentation].  For illustrative purposes, we'll apply *nix-specific software in this guide, loosely based off the http://wiki.cloudbees.com/bin/view/DEV/CloudBees+Maven+Repository+-+Mounting[CloudBees Linux Documentation].
+To copy our EAP Maven Repository into the CloudBees Jenkins +private+ repo, we'll make use of the WebDAV protocol, an extension of HTTP that permits writing to WWW resources.  There are a variety of system-dependent tools to mount DAV volumes, and CloudBees addresses some known working techniques in its http://wiki.cloudbees.com/bin/view/DEV/Mounting+DAV+Repositories[documentation].  For illustrative purposes, we'll apply *nix-specific software in this guide, loosely based off the((("CloudBees","documentation"))) http://wiki.cloudbees.com/bin/view/DEV/CloudBees+Maven+Repository+-+Mounting[CloudBees Linux Documentation].
 
-First we need to install the http://savannah.nongnu.org/projects/davfs2[davfs2] project, a set of libraries enabling the mounting of a WebDAV resource as a standard logical volume.  In most Linux-based systems with a package manager, installation can be done using +apt-get+ or +yum+:
+First we need to install the((("davfs2 project"))) http://savannah.nongnu.org/projects/davfs2[davfs2] project, a set of libraries enabling the mounting of a WebDAV resource as a standard logical volume.  In most Linux-based systems with a package manager, installation can be done using +apt-get+ or +yum+:
 
 ----
 $> sudo apt-get install davfs2
@@ -412,11 +412,11 @@ Note: it's not atypical for large hold times while the cache synchronizes over t
 ....
 ----
 
-Now we can manually trigger a build of our project, and if all's set up correctly, we'll see our test result come out clear.
+Now we can manually trigger a build of our project, and if all's set up correctly, we'll see our test result come out clear.(((range="endofrange", startref="ix_ch11-asciidoc17")))(((range="endofrange", startref="ix_ch11-asciidoc16"))) (((range="endofrange", startref="ix_ch11-asciidoc13")))(((range="endofrange", startref="ix_ch11-asciidoc12")))
 
 ==== Automatic Building on Git Push Events
 
-Let's take things one step further in terms of automation.  We don't have to click the Build Now button on our CI server every time we'd like to run a build.  With some extra configuration we can set up a trigger for new +git push+ events on the authoritative source repository to start a new CI build.
+((("CloudBees","Git push events and")))((("Git","push events and CloudBees")))Let's take things one step further in terms of automation.  We don't have to click the Build Now button on our CI server every time we'd like to run a build.  With some extra configuration we can set up a trigger for new +git push+ events on the authoritative source repository to start a new CI build.
 
 CloudBees http://developer.cloudbees.com/bin/view/DEV/GitHub+Commit+Hooks+HOWTO[documents this process], and we'll follow along these guidelines.  
 
@@ -434,15 +434,15 @@ image::images/cedj_12in08.png[GitHub WebHook URLs]
 
 From here on out, new commits pushed to the GitHub repository will trigger a build on the CloudBees Jenkins instance.  In this way we can nicely create a pipeline of build-related actions, triggered easily by our committing new work upstream.
 
-Note that this is simply one mechanism of chaining together actions from a `git push`, and it relies on the GitHub and CloudBees services specifically.  Of course, there are many other custom and third-party services available, and the choice will ultimately be yours based on your needs.  This configuration is offered merely to prove the concept and provide a base implementation (and it also drives the software examples for this book).
+Note that this is simply one mechanism of chaining together actions from a `git push`, and it relies on the GitHub and CloudBees services specifically.  Of course, there are many other custom and third-party services available, and the choice will ultimately be yours based on your needs.  This configuration is offered merely to prove the concept and provide a base implementation (and it also drives the software examples for this book).(((range="endofrange", startref="ix_ch11-asciidoc11")))(((range="endofrange", startref="ix_ch11-asciidoc10")))(((range="endofrange", startref="ix_ch11-asciidoc9")))(((range="endofrange", startref="ix_ch11-asciidoc8"))) (((range="endofrange", startref="ix_ch11-asciidoc1")))(((range="endofrange", startref="ix_ch11-asciidoc0")))
 
 === Pushing to Staging and Production
 
-With a working build to validate our tests and assemble the final deployable unit(s), we're now free to push our application out to a publicly accessible runtime.  In most cases, we'd like to first target a staging server that can be accessed only by members of our team before going public, but the choice for that extra stage is left to the reader's discretion.  For the purposes of our GeekSeek application, we'll allow commits that pass the test suite to go straight to the public WWW on OpenShift.
+((("application deployment", id="ix_ch11-asciidoc18", range="startofrange")))((("deploying applications", id="ix_ch11-asciidoc19", range="startofrange")))((("development process","deployment", id="ix_ch11-asciidoc20", range="startofrange")))With a working build to validate our tests and assemble the final deployable unit(s), we're now free to push our application out to a publicly accessible runtime.  In most cases, we'd like to first target a staging server that can be accessed only by members of our team before going public, but the choice for that extra stage is left to the reader's discretion.  For the purposes of our GeekSeek application, we'll allow commits that pass the test suite to go straight to the public WWW on OpenShift.
 
 ==== Setting Up the OpenShift Application
 
-First, let's create our new application by logging in to OpenShift and selecting Add Application, as shown in <<Figure10-9>>.
+((("application deployment","to OpenShift", id="ix_ch11-asciidoc21", range="startofrange")))((("deploying applications","to OpenShift", id="ix_ch11-asciidoc22", range="startofrange")))((("OpenShift application service","deploying applications to", id="ix_ch11-asciidoc23", range="startofrange"))) ((("application deployment","set up in OpenShift", id="ix_ch11-asciidoc24", range="startofrange")))((("deploying applications","set up in OpenShift", id="ix_ch11-asciidoc25", range="startofrange")))((("OpenShift application service","set up", id="ix_ch11-asciidoc26", range="startofrange")))First, let's create our new application by logging in to OpenShift and selecting Add Application, as shown in <<Figure10-9>>.
 
 .Add Application
 [[Figure10-9]]
@@ -503,11 +503,11 @@ Password: *****************
 Alias 'geekseek.continuousdev.org' has been added.
 ----
 
-Assuming the CNAME is properly set up with your domain registrar, the record has percolated through the network's DNS tree (which may or may not take some time), and the alias is set up correctly, your application should now be available directly at the provided alias.  In our case, this is +http://geekseek.continuousdev.org/+.
+Assuming the CNAME is properly set up with your domain registrar, the record has percolated through the network's DNS tree (which may or may not take some time), and the alias is set up correctly, your application should now be available directly at the provided alias.  In our case, this is +http://geekseek.continuousdev.org/+.(((range="endofrange", startref="ix_ch11-asciidoc26")))(((range="endofrange", startref="ix_ch11-asciidoc25")))(((range="endofrange", startref="ix_ch11-asciidoc24")))
 
 ==== Removing the Default OpenShift Application
 
-Now let's clear the way for our real application.  First we'll clone the OpenShift application repository into our local workspace.  The Git URL for your application is displayed on the application's status screen on your OpenShift account.  The +git clone+ command will look a little like this:
+((("OpenShift application service","default application, removing")))Now let's clear the way for our real application.  First we'll clone the OpenShift application repository into our local workspace.  The Git URL for your application is displayed on the application's status screen on your OpenShift account.  The +git clone+ command will look a little like this:
 
 ----
 $> git clone ssh://(somehash))@geekseek-continuousdev.
@@ -546,7 +546,7 @@ When the +git push+ command concludes and the remote build is complete, reloadin
 
 ==== Pushing from the CI Build Job to OpenShift
 
-The final piece of the automated deployment puzzle lies in deploying artifacts built from our CI server into our runtime environment.  In our case, this amounts to configuring the CloudBees Jenkins instance to perform some Git operations against our OpenShift repository.
+((("application deployment","pushing build jobs", id="ix_ch11-asciidoc27", range="startofrange")))((("deploying applications","pushing build jobs", id="ix_ch11-asciidoc28", range="startofrange")))((("OpenShift application service","pushing build jobs to", id="ix_ch11-asciidoc29", range="startofrange")))The final piece of the automated deployment puzzle lies in deploying artifacts built from our CI server into our runtime environment.  In our case, this amounts to configuring the CloudBees Jenkins instance to perform some Git operations against our OpenShift repository.
 
 We'll need to allow access for CloudBees Jenkins to interact with the OpenShift repository. On the Configure screen for our CI job is a section entitled "CloudBees DEV@Cloud Authorization," which contains our public key (see <<Figure10-16>>). Copy this to your OS's clipboard.
 
@@ -590,7 +590,7 @@ git commit -m "$COMMIT_MESSAGE"
 git push origin master
 ----
 
-Let's see what's going on here.  First we have some bash logic to either clone the remote OpenShift repository if this node hasn't already, or update the existing copy.  Then we copy the final deployable web application. We'll WAR into the _deployments_ directory of the repository, renaming it to _ROOT.war_ so that this acts as our application servicing requests from the web root.  Also, we'll add or update an empty _ROOT.war.dodeploy_ file to let OpenShift know that we want this application deployed when it's discovered (full documentation on this feature is https://access.redhat.com/site/documentation/en-US/OpenShift/2.0/html/User_Guide/sect-OpenShift-User_Guide-Deploying_JBoss_Applications-Example_JBoss_Application_Deployment_Workflows.html[available on the OpenShift site]).  Finally, we add our changes to be staged for commit, perform the commit, and then push the changes to our remote OpenShift repository.
+Let's see what's((("deployments"))) going on here.  First we have some bash logic to either clone the remote OpenShift repository if this node hasn't already, or update the existing copy.  Then we copy the final deployable web application. We'll WAR into the _deployments_ directory of the repository, renaming it to _ROOT.war_ so that this acts as our application servicing requests from the web root.  Also, we'll add or update an empty _ROOT.war.dodeploy_ file to let OpenShift know that we want this application deployed when it's discovered (full documentation on this feature is https://access.redhat.com/site/documentation/en-US/OpenShift/2.0/html/User_Guide/sect-OpenShift-User_Guide-Deploying_JBoss_Applications-Example_JBoss_Application_Deployment_Workflows.html[available on the OpenShift site]).  Finally, we add our changes to be staged for commit, perform the commit, and then push the changes to our remote OpenShift repository.
 
 As we've seen before, OpenShift will dutifully exercise the remote operations to redeploy our application and make it available for our use.
 
@@ -600,7 +600,7 @@ Using the OpenShift client command-line tools, we can tail the server logs for t
 $> rhc tail {openshift_appname} -l {openshift_username}
 ----
 
-If we look closely, we'll see that the application has deployed, and is ready for use!
+If we look closely, we'll see that the application has deployed, and is ready for use!(((range="endofrange", startref="ix_ch11-asciidoc29")))(((range="endofrange", startref="ix_ch11-asciidoc28")))(((range="endofrange", startref="ix_ch11-asciidoc27"))) (((range="endofrange", startref="ix_ch11-asciidoc23")))(((range="endofrange", startref="ix_ch11-asciidoc22")))(((range="endofrange", startref="ix_ch11-asciidoc21"))) (((range="endofrange", startref="ix_ch11-asciidoc20")))(((range="endofrange", startref="ix_ch11-asciidoc19")))(((range="endofrange", startref="ix_ch11-asciidoc18")))
 
 ----
 2013/06/04 05:38:52,413 INFO  [org.jboss.as.server] 
