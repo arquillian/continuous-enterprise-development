@@ -34,7 +34,7 @@ image::images/cedj_0501.png[]
 
 The role of((("database management systems (DBMS)","role of")))((("relational databases"))) a DBMS is very generally to store and provide access to data.  They come in a variety of flavors which are differentiated in terms of how they internally organize information:
 
-Relational (RDBMS):: Like data is grouped into tables where columns represent data types and rows represent records.  Most often employs a protocol language called((("Structured Query Language (SQL)")) _Structured Query Language_ (SQL) for interaction.  Examples((("MySQL")))((("PostgreSQL"))): http://www.mysql.com/[MySQL], http://www.postgresql.org/[PostgreSQL].
+Relational (RDBMS):: Like data is grouped into tables where columns represent data types and rows represent records.  Most often employs a protocol language called((("Structured Query Language (SQL)"))) _Structured Query Language_ (SQL) for interaction.  Examples((("MySQL")))((("PostgreSQL"))): http://www.mysql.com/[MySQL], http://www.postgresql.org/[PostgreSQL].
 Graph:: Stores((("graph DBMS"))) objects with relationships in a graph structure; ideal for traversing nodes.  Example((("Neo4j"))): http://www.neo4j.org/[Neo4j].
 Key/value:: Nested ((("key DBMS")))((("value DBMS")))Map or document-oriented structure, becoming very popular in recent years.  Examples((("Infinispan")))((("MongoDB"))): http://www.jboss.org/infinispan/[Infinispan], http://www.mongodb.org/[MongoDB].
 Column-oriented:: Stores((("column-oriented DBMS"))) data in columns, as opposed to the RDBMS where the records are kept in rows.  Best-suited for very large tables.  Examples((("Apache HBase")))((("Apache Cassandra"))): http://hbase.apache.org/[Apache HBase], http://cassandra.apache.org/[Apache Cassandra].
