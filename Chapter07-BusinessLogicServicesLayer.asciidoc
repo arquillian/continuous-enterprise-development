@@ -364,7 +364,7 @@ This gives us an opportunity to create a new +SMTPServer+ instance, register a h
 
 [source,java]
 ----
-@javax.annotation.@PreDestroy
+@javax.annotation.PreDestroy
 public void shutdown() throws Exception {
   server.stop();
 }
