@@ -453,7 +453,7 @@ The next point of interest is the class-level annotation:
 @RunWith(Arquillian.class)
 ----
 
-+@RunWith+ is a standard((("@RunWith (construct)"))) JUnit construct that directs control to a specified test runner.  This is Arquillian's entry point; from here Arquillian can receive lifecycle events from JUnit and perform its own handling.  The benefit to this design decision is that Arquillian requires no special plug-ins or configuration on the part of the user.  Anything that is capable of launching a JUnit test--be it a Maven build, an Ant task, a manual command, or an IDE--can take advantage of Arquillian without any additional handling.  For instance, you can use JBDS and Eclipse to launch a full-scale integration test with Arquillian by right-clicking on the class and selecting Run As -> JUnit Test.
++@RunWith+ is a standard JUnit construct that directs control to a specified test runner.  This is Arquillian's entry point; from here Arquillian can receive lifecycle events from JUnit and perform its own handling.  The benefit to this design decision is that Arquillian requires no special plug-ins or configuration on the part of the user.  Anything that is capable of launching a JUnit test--be it a Maven build, an Ant task, a manual command, or an IDE--can take advantage of Arquillian without any additional handling.  For instance, you can use JBDS and Eclipse to launch a full-scale integration test with Arquillian by right-clicking on the class and selecting Run As -> JUnit Test.
 
 Next up is the class declaration:
 
