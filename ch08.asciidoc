@@ -492,7 +492,7 @@ Through these converters we can easily delegate the messy business of parsing th
 [[resource-model]]
 ==== The @ResourceModel
 
-((("@Resource model for")))((("JAX-RS specification","@Resource model for")))Because JAX-RS 1.x does not define an interceptor model, we need to apply these on our own in order to activate cross-cutting concerns such as security, validation, and resource linking to our JAX-RS endpoints.  This is easily enough accomplished by using the stereotype feature of CDI, where we can create our own annotation type (which itself has annotations); wherever our custom type is applied, the metadata we specify upon the stereotype will propagate.  So we can create an annotation to apply all of the features we'd like upon a +RepositoryResource+, and we call it +org.cedj.geekseek.web.rest.core.annotation.ResourceModel+:
+((("@Resource model", sortas="Resource model")))((("JAX-RS specification","@Resource model for", sortas="Resource model")))Because JAX-RS 1.x does not define an interceptor model, we need to apply these on our own in order to activate cross-cutting concerns such as security, validation, and resource linking to our JAX-RS endpoints.  This is easily enough accomplished by using the stereotype feature of CDI, where we can create our own annotation type (which itself has annotations); wherever our custom type is applied, the metadata we specify upon the stereotype will propagate.  So we can create an annotation to apply all of the features we'd like upon a +RepositoryResource+, and we call it +org.cedj.geekseek.web.rest.core.annotation.ResourceModel+:
 
 [source,java]
 ----
