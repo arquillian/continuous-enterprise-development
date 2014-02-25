@@ -361,7 +361,7 @@ Our use case will explore the testable development of an SMTP service and intera
 
 ==== Chapter 8: REST and Addressable Services
 
-((("Representational State Transfer", see "REST")))REST (__Re__presentational __S__tate __T__ransfer) is((("Arquillian Warp"))) an architecture of patterns that reveal services as resources in a fashion consistent with the guiding concepts behind the Web itself. <<ch08>> will introduce the exposition of enterprise services using REST guidelines, and will be implemented with Java EE's JAX-RS framework.  Additionally, we'll test our endpoints using _Arquillian Warp_ and the http://code.google.com/p/rest-assured/[REST-assured project].
+((("Representational State Transfer", see="REST")))REST (__Re__presentational __S__tate __T__ransfer) is((("Arquillian Warp"))) an architecture of patterns that reveal services as resources in a fashion consistent with the guiding concepts behind the Web itself. <<ch08>> will introduce the exposition of enterprise services using REST guidelines, and will be implemented with Java EE's JAX-RS framework.  Additionally, we'll test our endpoints using _Arquillian Warp_ and the http://code.google.com/p/rest-assured/[REST-assured project].
 
 ==== Chapter 9: Security
 
