@@ -426,7 +426,7 @@ When the +SuccessfulAuthentication+ event is fired from the +OAuthAuthenticator+
 
 === Requirement Test Scenarios
 
-((("requirement test scenarios","for security", id="ix_ch09-asciidoc12", range="startofrange")))((("security","requirement test scenarios for", id="ix_ch09-asciidoc13", range="startofrange")))((("testing","security", id="ix_ch09-asciidoc14", range="startofrange")))With our resources secured by URL patterns, it's time to ensure that the barriers we've put in place are protecting us as we'd expect.  
+((("requirement test scenarios","for security", sortas="security", id="ix_ch09-asciidoc12", range="startofrange")))((("security","requirement test scenarios for", id="ix_ch09-asciidoc13", range="startofrange")))((("testing","security", id="ix_ch09-asciidoc14", range="startofrange")))With our resources secured by URL patterns, it's time to ensure that the barriers we've put in place are protecting us as we'd expect.  
 
 ==== Overview
 
