@@ -24,7 +24,7 @@ In general, our requirements remain simply to expose our operations in a human-c
 
 === Implementation
 
-((("user interface","implementing", id="ix_ch10-asciidoc1", range="startofrange")))Our frontend is ((("Model, View, Controller (MVC)")))((("AngularJS")))written using the popular JavaScript framework http://angularjs.org/[AngularJS]: a framework that lets us extend the HTML syntax, write client-side components in the familiar Model, View, Controller (MVC) pattern, and allow for a two-way binding of our data models.
+((("user interface","implementing", id="ix_ch10-asciidoc1", range="startofrange")))Our frontend is ((("Model, View, Controller (MVC) pattern")))((("AngularJS")))written using the popular JavaScript framework http://angularjs.org/[AngularJS]: a framework that lets us extend the HTML syntax, write client-side components in the familiar Model, View, Controller (MVC) pattern, and allow for a two-way binding of our data models.
 
 ((("HATEOAS, handling with AngularJS")))AngularJS has a built-in abstraction to work with +Resources+ like REST, but it lacks built-in support for HATEOAS. The AngularJS `Resource` can easily operate on a single +Resource+, but with no automatic link support or knowledge of the +OPTIONS+ that the +Resource+ might support. For our frontend view to be completely driven by the backend services we need this extra layer of support.
 
