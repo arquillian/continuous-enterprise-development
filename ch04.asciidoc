@@ -111,7 +111,7 @@ This is because database systems have varying strengths when we couple data repr
 
 ===== Relationships
 
-((("logical data models","relationships")))((("relationships between entities")))_Relationships_ are the bonds that tie((("cardinality of relationships")))((("many-to-many relationships")))((("one-to-many relationships")))((("one-to-one relationships")))((("relationships","cardinality of")))((("relationships","many-to-many")))((("relationships","one-to-many")))((("relationships","one-to-one"))) our entities together, and come in three flavors of _cardinality_:
+((("logical data models","relationships")))((("relationships between entities")))_Relationships_ are the bonds that tie((("cardinality of relationships")))((("many-to-many relationships")))((("one-to-many relationships")))((("one-to-one relationships")))((("relationships","cardinality of"))) our entities together, and come in three flavors of _cardinality_:
 
 [options="header"]
 |======
