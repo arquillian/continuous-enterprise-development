@@ -179,7 +179,7 @@ managedPerson.setName("Just a POJO");  // This state change will *not* be
 
 === Use Cases and Requirements
 
-This is the ((("user requirements")))first chapter in which we'll be dealing with the companion GeekSeek example application for the book; its purpose is to highlight all layers working in concert to fulfill the _user requirements_ dictated by each chapter.  From here out, we'll be pointing to selections from the GeekSeek application in order to showcase how we wire together the domain, application, view, and test layers in a cohesive, usable project.
+This is the ((("users", "requirements of")))first chapter in which we'll be dealing with the companion GeekSeek example application for the book; its purpose is to highlight all layers working in concert to fulfill the _user requirements_ dictated by each chapter.  From here out, we'll be pointing to selections from the GeekSeek application in order to showcase how we wire together the domain, application, view, and test layers in a cohesive, usable project.
 
 As we proceed, we'll note each file so that you can draw references between the text and the deployable example.  We're firm believers that you best learn by doing (or at least exploring real code), so we invite you to dig in and run the examples as we go along.
 
