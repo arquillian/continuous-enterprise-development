@@ -108,7 +108,7 @@ Because our GeekSeek application has a social component (who is attending which 
 
 === Use Cases and Requirements
 
-((("data storage","in GeekSeek")))((("GeekSeek","data use cases/requirements")))((("storing data","in GeekSeek"))) ((("data storage","implementing", id="ix_ch06-asciidoc3", range="startofrange")))((("storing data","implementing", id="ix_ch06-asciidoc4", range="startofrange")))We've already seen the domain model for our GeekSeek application in the previous chapter; this encompasses all of our +Conference+, +Session+, +User+, and +Venue+ entities.  The link between +Conference+ and +Session+ is fairly restricted, so we use an RBDMS relationship to handle this.
+((("data storage","in GeekSeek", sortas="GeekSeek")))((("GeekSeek","data use cases/requirements")))((("storing data","in GeekSeek"))) ((("data storage","implementing", id="ix_ch06-asciidoc3", range="startofrange")))((("storing data","implementing", id="ix_ch06-asciidoc4", range="startofrange")))We've already seen the domain model for our GeekSeek application in the previous chapter; this encompasses all of our +Conference+, +Session+, +User+, and +Venue+ entities.  The link between +Conference+ and +Session+ is fairly restricted, so we use an RBDMS relationship to handle this.
 
 We'd also like to be able to introduce the notion of an +Attachment+; this can be any bit of supporting documentation that may be associated with a +Conference+ or +Session+.  Therefore we have the requirement:
 
