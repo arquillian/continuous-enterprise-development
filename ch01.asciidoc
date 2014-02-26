@@ -79,13 +79,13 @@ Though this might fit the retail software mold, the never-go-back mentality of a
 
 ===== Extreme Programming
 
-((("extreme programming (XP)")))((("software development process","extreme programming (XP)")))Also known simply as "XP," _Extreme Programming_ is a discipline that introduces a feedback loop into each phase of the development process.  A practice that rose to popularity especially in the late '90s and early 2000s, XP lauds communication and other social aspects as centrally important themes. <<Figure1-2>> illustrates a typical workflow.
+((("Extreme Programming (XP)")))((("software development process","Extreme Programming (XP)")))((("XP", see="Extreme Programming")))Also known simply as "XP," _Extreme Programming_ is a discipline that introduces a feedback loop into each phase of the development process.  A practice that rose to popularity especially in the late '90s and early 2000s, XP lauds communication and other social aspects as centrally important themes. <<Figure1-2>> illustrates a typical workflow.
 
 .Iterative feedback loops in Extreme Programming
 [[Figure1-2]]
 image::images/cedj_0102.png[]
 
-While the full reasoning behind XP is detailed by Kent Beck's _Extreme Programming Explained: Embrace Change, Second Edition_ (Addison-Wesley, 2004), some of its primary tenants can be boiled down to:
+While the full reasoning behind XP is detailed by((("Extreme Programming Explained: Embrace Change, Second Edition (Beck)")))((("Beck, Kent"))) Kent Beck's _Extreme Programming Explained: Embrace Change, Second Edition_ (Addison-Wesley, 2004), some of its primary tenants can be boiled down to:
 
 * Short development cycles
 * Daily, brief meetings
@@ -95,7 +95,7 @@ While the full reasoning behind XP is detailed by Kent Beck's _Extreme Programmi
 * Test-Driven Development
 ** The approach of first writing automated tests, then correcting/augmenting main code until they pass
 
-In fact, XP along with other models has both inspired and acts as an implementation of a larger collection of iterative policies as outlined by the http://agilemanifesto.org/[_Manifesto for Agile Software Development_]. (((range="endofrange", startref="ix_ch01-asciidoc0")))
+In fact, XP along with other models has both inspired and acts as an implementation of a larger collection of iterative policies as outlined by((("Agile Software Development")))((("Manifesto for Agile Software Development"))) the http://agilemanifesto.org/[_Manifesto for Agile Software Development_]. (((range="endofrange", startref="ix_ch01-asciidoc0")))
 
 === Testing _Is_ Development
 
@@ -118,14 +118,14 @@ Automated testing can take many forms, and we'll categorize a few for use throug
 
 ((("testing","levels of")))Proponents of test-oriented software development processes may qualify tests in one or more flavors:
 
-Acceptance:: Asserts ((("acceptance")))((("processes","acceptance")))that code meets business requirements
-Black-box:: Asserts ((("black-box")))((("processes","black-box")))the contract of an API is working without respect to its internals
-Compatibility:: Asserts ((("compatibility")))((("processes","compatibility")))that code plays nicely with one or more outside components; for instance, a web application may need to display correctly on Internet Explorer, Chrome, Firefox, Safari, and mobile devices
-Functional:: Asserts((("functional")))((("processes","functional"))) that code meets the technical requirements derived from business requirements (i.e., that all _functions_ are working as expected)
-Load/stress/performance:: Asserts((("load")))((("performance")))((("processes","load")))((("processes","performance")))((("processes","stress"))) and measures how a system handles input under load, and how gracefully it degrades with increased traffic
-Regression:: Asserts((("processes","regression")))((("regression"))) that previously identified errors have been corrected or that existing features continue to function
-Smoke:: A subset((("processes","smoke")))((("smoke"))) of a full test suite, intended to run quickly and provide feedback that the system is generally intact from a simplistic level
-White-box:: Asserts((("processes","white-box")))((("white-box"))) that an API is working as contracted, taking into consideration implementation-specific data structures and constructs
+Acceptance:: Asserts ((("acceptance testing")))that code meets business requirements
+Black-box:: Asserts ((("black-box testing")))the contract of an API is working without respect to its internals
+Compatibility:: Asserts ((("compatibility testing")))that code plays nicely with one or more outside components; for instance, a web application may need to display correctly on Internet Explorer, Chrome, Firefox, Safari, and mobile devices
+Functional:: Asserts((("functional testing"))) that code meets the technical requirements derived from business requirements (i.e., that all _functions_ are working as expected)
+Load/stress/performance:: Asserts((("load testing")))((("performance testing")))((("stress testing"))) and measures how a system handles input under load, and how gracefully it degrades with increased traffic
+Regression:: Asserts((("regression testing"))) that previously identified errors have been corrected or that existing features continue to function
+Smoke:: A subset((("smoke testing"))) of a full test suite, intended to run quickly and provide feedback that the system is generally intact from a simplistic level
+White-box:: Asserts((("white-box testing"))) that an API is working as contracted, taking into consideration implementation-specific data structures and constructs
 
 A well-tested application may have tests covering many of these areas, and we can further organize these types according to scope.
 
@@ -347,7 +347,7 @@ image::images/cedj_02in04.png["TestNG IDE Runner Integration"]
 
 === Continuous Development
 
-((("continuous development", id="ix_ch01-asciidoc8", range="startofrange")))((("continuous integration", id="ix_ch01-asciidoc9", range="startofrange")))Followers of Extreme Programming and Agile methodologies are likely to be familiar with http://bit.ly/1e7nG9j[Continuous Integration], a practice that advocates frequent patching of the upstream development branch in order to catch errors as they're introduced.  Such an approach involves:
+((("continuous development", id="ix_ch01-asciidoc8", range="startofrange")))((("continuous integration", id="ix_ch01-asciidoc9", range="startofrange")))((("Agile Software Development")))((("Extreme Programming (XP)")))Followers of Extreme Programming and Agile methodologies are likely to be familiar with http://bit.ly/1e7nG9j[Continuous Integration], a practice that advocates frequent patching of the upstream development branch in order to catch errors as they're introduced.  Such an approach involves:
 
 * An authoritative source repository (which is _not_ at odds with decentralized version control systems, as we'll soon see)
 * A comprehensive test suite
