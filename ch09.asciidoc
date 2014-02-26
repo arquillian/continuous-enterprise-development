@@ -204,7 +204,7 @@ Here we've shown the use of PicketLink as a handy security abstraction, but we h
 * A generic API to work with OAuth 1.0a and 2.0 services
 * A generic API to interact with JSON serialization and deserialization
 * A generic identification API to retrieve basic user information from a social service
-* Specific APIs for((("Twitter", "Agorva and")))((("Facebook", "Agorva and")))((("LinkedIn", "Agorva and"))) Twitter, Facebook, and LinkedIn
+* Specific APIs for((("Twitter", "Agorva and")))((("Facebook", "Agorva and")))((("LinkedIn"))) Twitter, Facebook, and LinkedIn
 
 In short, we'll ((("authentication","process")))be using Agorava to handle our _authentication_ process and do the behind-the-scenes interaction with Twitter, powering our sign-in integration.
 
