@@ -115,7 +115,7 @@ Of course, the English language might be a bit more confusing than we'd like, so
 
 === The Java Persistence API
 
-((("data","Java Persistence API")))((("Java Persistence API")))It's nice that a DBMS allows us to relieve ourselves of the details involving persistence, but introducing this separate data layer presents a few issues:
+((("data","Java Persistence API")))((("Java Persistence API (JPA)")))((("JPA", see="Java Persistence API")))It's nice that a DBMS allows us to relieve ourselves of the details involving persistence, but introducing this separate data layer presents a few issues:
 
 * Though SQL is an ANSI Standard, its use is not truly portable between RDBMS vendors.  In truth, each database product has its own dialect and extensions.
 * The details of interacting with a database are vendor-dependent, though there are connection-only abstractions (drivers) in Java (for instance, Java Database Connectivity, or JDBC).
@@ -226,7 +226,7 @@ In GeekSeek, however, we'll want to ensure that users are seeing up-to-date info
 
 === Implementation
 
-((("Java Persistence API","implementing", id="ix_ch05-asciidoc1", range="startofrange")))Given our ((("conceptual weight")))user and technical concerns, the Java EE stack using JPA described earlier will do a satisfactory job toward meeting our requirements.  And there's an added benefit: by using frameworks designed to relieve the application developer of complicated programming, we'll end up writing a lot less code.  This will help us to reduce the _conceptual weight_ of our code and ease maintenance over the long run.  The slices of Java EE that we'll use((("Enterprise JavaBeans (EJB)")))((("Java Transaction API (JTA)")))((("JPA"))) specifically include: 
+((("Java Persistence API","implementing", id="ix_ch05-asciidoc1", range="startofrange")))Given our ((("conceptual weight")))user and technical concerns, the Java EE stack using JPA described earlier will do a satisfactory job toward meeting our requirements.  And there's an added benefit: by using frameworks designed to relieve the application developer of complicated programming, we'll end up writing a lot less code.  This will help us to reduce the _conceptual weight_ of our code and ease maintenance over the long run.  The slices of Java EE that we'll use((("Enterprise JavaBeans (EJB)")))((("Java Transaction API (JTA)"))) specifically include: 
 
 * Java Transaction API (JTA)
 * Enterprise JavaBeans (EJB, http://bit.ly/MAYJwZ[JSR 318])
