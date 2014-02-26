@@ -105,7 +105,7 @@ Once we've got a solid understanding of the kinds of data we'll be addressing, w
 * How much data are we expecting in each entity?
 * What features will be demanded of our entities?
 
-It's questions ((("logical data models")))like these that will help us to arrive at a _logical data model_, a representation of our data that isn't yet tied to any specific storage mechanism but still addresses the preceding questions.  Decisions at this step are instrumental in our later choices, which will have heavy impact in areas like efficiency and performance.
+It's questions like these that will help us to arrive at a _logical data model_, a representation of our data that isn't yet tied to any specific storage mechanism but still addresses the preceding questions.  Decisions at this step are instrumental in our later choices, which will have heavy impact in areas like efficiency and performance.
 
 This is because database systems have varying strengths when we couple data representation with the requests we may make.  Actions like searching and sorting can take milliseconds or days, depending only upon the backing data structures and implementation used!  Therefore, it's very important for us to define the relationships required between our data, and recognize cases where we could have potentially large result sets; it's here that we'll need to design efficiently.
 
