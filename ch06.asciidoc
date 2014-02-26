@@ -747,7 +747,7 @@ Our implementation is almost complete, though it's our position that nothing tru
 
 === Requirement Test Scenarios
 
-((("requirement test scenarios","for data storage", id="ix_ch06-asciidoc9", range="startofrange")))Given our user requirements and the implementation choices we've made, it's important we assert a few areas are working as expected:
+((("requirement test scenarios","for data storage", sortas="data storage", id="ix_ch06-asciidoc9", range="startofrange")))Given our user requirements and the implementation choices we've made, it's important we assert a few areas are working as expected:
 
 * CRUD operations on +Attachment+ objects
 * Transactional integrity of CRUD operations on +Attachment+ objects
