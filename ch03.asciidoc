@@ -15,7 +15,7 @@ In the interest of providing a uniformly workable solution to the reader, this t
 
 === The Development Environment
 
-((("development environment")))((("development process","environment for")))Although all projects used here are ultimately standalone and require no plug-ins or special environments aside from a Java runtime, we're going to make our lives easier by taking advantage of the integration facilities provided((("JBoss Developer Studio (JBDS)"))) by JBoss Developer Studio (JBDS).
+((("development process","environment for")))Although all projects used here are ultimately standalone and require no plug-ins or special environments aside from a Java runtime, we're going to make our lives easier by taking advantage of the integration facilities provided((("JBoss Developer Studio (JBDS)"))) by JBoss Developer Studio (JBDS).
 
 The JBDS plug-ins ((("Eclipse IDE")))atop the Eclipse Integrated Development Environment (IDE) will unify our development experience and allow us to stay inside one window.  Installation is via an executable JAR available from the http://bit.ly/MAzyup[JBDS site] (see <<Figure3-1>>).
 
