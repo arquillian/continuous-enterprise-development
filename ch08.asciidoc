@@ -737,7 +737,7 @@ public class ResourceLink {
 
 === Requirement Test Scenarios
 
-((("requirement test scenarios","for JAX-RS", id="ix_ch08-asciidoc18", range="startofrange")))((("requirement test scenarios","for REST", id="ix_ch08-asciidoc19", range="startofrange")))With our implementation in place leveraging JAX-RS to map our DAP to business methods, we're set to test our endpoints.  The core areas we want to assert are the expected responses from requests to:
+((("requirement test scenarios","for JAX-RS", sortas="JAX-RS", id="ix_ch08-asciidoc18", range="startofrange")))((("requirement test scenarios","for REST", sortas="REST", id="ix_ch08-asciidoc19", range="startofrange")))With our implementation in place leveraging JAX-RS to map our DAP to business methods, we're set to test our endpoints.  The core areas we want to assert are the expected responses from requests to:
 
 * +PUT+ data
 * +GET+ data
