@@ -96,7 +96,7 @@ In this text, we'll be using the open source DVCS _Git_.
 
 ==== Git
 
-((("Git")))((("version control systems","Git")))Originally developed to coordinate development of the Linux Kernel, Git is a DVCS whose usage has taken off in recent years, arguably due to the user-friendliness of the socially aware hosting site http://www.github.com[GitHub].  In fact, this book's text and examples are http://bit.ly/1e7o0ox[hosted on GitHub] for all to participate.
+((("Git")))((("version control systems (VCS)","Git")))Originally developed to coordinate development of the Linux Kernel, Git is a DVCS whose usage has taken off in recent years, arguably due to the user-friendliness of the socially aware hosting site http://www.github.com[GitHub].  In fact, this book's text and examples are http://bit.ly/1e7o0ox[hosted on GitHub] for all to participate.
 
 From a high level, we've chosen Git for our projects because it enables:
 
