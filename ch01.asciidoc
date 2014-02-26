@@ -63,7 +63,7 @@ This _fail-fast_ policy((("fail-fast policies"))) is equally as important at run
 
 ==== Serial Models
 
-((("sequential model of software development")))((("serial model of software development")))((("software development process","sequential model of")))((("software development process","serial model of")))A _serial_, or _sequential_, process((("processes","sequential")))((("processes","serial"))) follows a linear path from project inception to completion.  As each stage in the development lifecycle comes to a close, the next one in turn is started.  Prior stages are typically not revisited, and this model is often visualized as a series of steps, as illustrated in <<Figure1-1>>.
+((("sequential model of software development")))((("serial model of software development")))((("software development process","sequential model of")))((("software development process","serial model of")))A _serial_, or _sequential_, process follows a linear path from project inception to completion.  As each stage in the development lifecycle comes to a close, the next one in turn is started.  Prior stages are typically not revisited, and this model is often visualized as a series of steps, as illustrated in <<Figure1-1>>.
 
 .Waterfall model
 [[Figure1-1]]
@@ -75,7 +75,7 @@ Though this might fit the retail software mold, the never-go-back mentality of a
 
 ==== Iterative Models
 
-((("iterative model of software development")))((("software development process","iterative model of")))In stark((("iterative processes")))((("processes","iterative"))) contrast to the linear workflow prescribed by the Waterfall Model, there exists a suite of well-known iterative designs built to encourage change and promote parallelism.  By decomposing a large problem into more manageable components, we grant ourselves the option to solve each piece independently.  Additionally, we might opt to take broad swipes on a first pass, further refining our solutions in repeated cycles; this is where "iterative" processes obtain their name.
+((("iterative model of software development")))((("software development process","iterative model of")))In stark contrast to the linear workflow prescribed by the Waterfall Model, there exists a suite of well-known iterative designs built to encourage change and promote parallelism.  By decomposing a large problem into more manageable components, we grant ourselves the option to solve each piece independently.  Additionally, we might opt to take broad swipes on a first pass, further refining our solutions in repeated cycles; this is where "iterative" processes obtain their name.
 
 ===== Extreme Programming
 
