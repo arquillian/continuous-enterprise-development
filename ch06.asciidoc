@@ -61,7 +61,7 @@ image::images/cedj_0601.png[]
 
 When we((("denormalized view"))) go to query for these relationships we often perform an operation called an +_SQL JOIN_+ to return a result of rows from two or more tables.  This process involves resolving any foreign keys to provide a _denormalized_ view; one that combines all relevant data into a form that's useful for us as humans to interpret, but might not be the most efficient for storage or searching purposes.
 
-The ((("results, joining")))problem is that running joins between data types is an inherently expensive operation, and often we need to join more than two tables.  Sometimes we even need to join _results_.  Consider the following example, which has now become a commonplace feature among social media.
+The ((("query results, joining")))problem is that running joins between data types is an inherently expensive operation, and often we need to join more than two tables.  Sometimes we even need to join _results_.  Consider the following example, which has now become a commonplace feature among social media.
 
 Andy has a set of friends.  His friends also each have a set of friends.  To find all of the people who are friends with both Andy and his friends, we might do something like:
 
