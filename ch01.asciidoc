@@ -85,7 +85,7 @@ Though this might fit the retail software mold, the never-go-back mentality of a
 [[Figure1-2]]
 image::images/cedj_0102.png[]
 
-While the full reasoning behind XP is detailed by((("Extreme Programming Explained: Embrace Change, Second Edition (Beck)")))((("Beck, Kent"))) Kent Beck's _Extreme Programming Explained: Embrace Change, Second Edition_ (Addison-Wesley, 2004), some of its primary tenants can be boiled down to:
+While the full reasoning behind XP is detailed by((("Extreme Programming Explained: Embrace Change, 2E (Beck)")))((("Beck, Kent"))) Kent Beck's _Extreme Programming Explained: Embrace Change, Second Edition_ (Addison-Wesley, 2004), some of its primary tenants can be boiled down to:
 
 * Short development cycles
 * Daily, brief meetings
