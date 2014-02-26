@@ -115,7 +115,7 @@ Of course, the English language might be a bit more confusing than we'd like, so
 
 === The Java Persistence API
 
-((("data","Java Persistence API")))((("Java Persistence API (JPA)")))((("JPA", see="Java Persistence API")))It's nice that a DBMS allows us to relieve ourselves of the details involving persistence, but introducing this separate data layer presents a few issues:
+((("data","Java Persistence API")))((("Java Persistence API")))((("JPA", see="Java Persistence API")))It's nice that a DBMS allows us to relieve ourselves of the details involving persistence, but introducing this separate data layer presents a few issues:
 
 * Though SQL is an ANSI Standard, its use is not truly portable between RDBMS vendors.  In truth, each database product has its own dialect and extensions.
 * The details of interacting with a database are vendor-dependent, though there are connection-only abstractions (drivers) in Java (for instance, Java Database Connectivity, or JDBC).
