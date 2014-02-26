@@ -163,7 +163,7 @@ As an example, the +Conference+ +MediaType+ in +View+ mode could look like this:
 
 ==== Pure JavaScript
 
-((("Arquillian","QUnit interface")))((("JavaScript, testing")))((("QUnit")))((("requirement test scenarios","for JavaScript")))((("user interface","JavaScript and")))((("user interface","testing with QUnit")))For the pure client JavaScript we're going to use http://qunitjs.com/[QUnit], a JavaScript Unit Testing framework. And handily enough, Arquillian has an extension that can invoke QUnit execution within our normal Java build system.
+((("Arquillian","QUnit interface")))((("JavaScript, testing")))((("QUnit")))((("requirement test scenarios","for JavaScript")))((("user interface","JavaScript and")))((("user interface","QUnit, testing with")))For the pure client JavaScript we're going to use http://qunitjs.com/[QUnit], a JavaScript Unit Testing framework. And handily enough, Arquillian has an extension that can invoke QUnit execution within our normal Java build system.
 
 Although the ((("QUnit","execution")))QUnit tests themselves do not require any Java code, the Arquillian QUnit extension uses a normal JUnit test class to configure and report on the QUnit execution. 
 
