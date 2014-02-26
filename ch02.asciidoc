@@ -716,7 +716,7 @@ Maven.resolver().loadPomFromFile(
 
 ===== System properties
 
-((("ShrinkWrap Resolvers","system properties, overriding with")))((("system properties","overriding with ShrinkWrap Resolvers")))((("system properties, overriding")))ShrinkWrap Resolvers allows you to override any programmatic configuration via System Properties, which are((("ShrinkWrap","resolvers"))) defined in <<table2-8>>.
+((("ShrinkWrap Resolvers","system properties, overriding with")))((("system properties, overriding")))ShrinkWrap Resolvers allows you to override any programmatic configuration via System Properties, which are defined in <<table2-8>>.
 
 .System Properties that alter the behavior of ShrinkWrap Resolvers
 [[table2-8]]
