@@ -228,7 +228,7 @@ Receiving objects: 100% (2661/2661), 1.19 MiB | 1.24 MiB/s, done.
 Resolving deltas: 100% (534/534), done.
 ----
 
-This will((("continuous enterprise development"))) create a new directory called _continuous-enterprise-development_, under which you'll be able to see the book's source in the root and all supporting code under the _code_ directory.  The _GeekSeek_ application root is housed under _code/application_:
+This will create a new directory called _continuous-enterprise-development_, under which you'll be able to see the book's source in the root and all supporting code under the _code_ directory.  The _GeekSeek_ application root is housed under _code/application_:
 
 ----
 $> ls -l
