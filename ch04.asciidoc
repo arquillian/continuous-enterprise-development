@@ -347,7 +347,7 @@ We'll also((("Arquillian Persistence Extension")))((("Java Persistence API"))) g
 
 Although it enjoys popularity as the most widely deployed database management system flavor, the relational model is not the only representation we have at our disposal.  In recent years a paradigm shift has been prevalent in the persistence space.
 
-NoSQL is a blanket term that has varied definitions, but generally refers to any number of database systems that do not employ the relational model.  Popular implementations include a document store (i.e.,((("document store")))((("MongoDB"))) http://www.mongodb.org/[MongoDB]), a key/value store((("key/value store")))((("Infinispan"))) (i.e., http://www.jboss.org/infinispan/[Infinispan]), or a graph database((("graph database")))((("Neo4j"))) (i.e., http://www.neo4j.org/[Neo4j]).
+NoSQL is a blanket term that has varied definitions, but generally refers to any number of database systems that do not employ the relational model.  Popular implementations include a document store (i.e.,((("document store")))((("MongoDB"))) http://www.mongodb.org/[MongoDB]), a key/value store((("key/value store")))((("Infinispan"))) (i.e., http://www.jboss.org/infinispan/[Infinispan]), or a graph database((("graph databases")))((("Neo4j"))) (i.e., http://www.neo4j.org/[Neo4j]).
 
 We noted earlier that our user relationship model is a natural graph and that our attachments might be well-served from a key/value store, so <<ch06>> will take a look at implementing persistent storage through these mechanisms.
 
