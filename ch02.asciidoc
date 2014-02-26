@@ -70,7 +70,7 @@ Overall, the goal of Forge is to ease project setup at all stages of development
 
 === Version Control
 
-((("tools","version control")))((("version control systems")))From the moment we collaborate on a project with others or would like to inspect the evolution of our code over time, we need some form of _version control_.  Until recently, the most common paradigm for synchronizing access to a shared codebase was the _client/server_ model wherein developers can keep a local working copy and check their changes into a centralized server, as shown in <<Figure2-2>>.  
+((("tools","version control")))((("version control systems (VCS)")))From the moment we collaborate on a project with others or would like to inspect the evolution of our code over time, we need some form of _version control_.  Until recently, the most common paradigm for synchronizing access to a shared codebase was the _client/server_ model wherein developers can keep a local working copy and check their changes into a centralized server, as shown in <<Figure2-2>>.  
 
 .Need a caption
 [[Figure2-2]]
@@ -78,7 +78,7 @@ image::images/cedj_0202.png[]
 
 Some systems utilize file-level locking to ensure that no conflicts arise during development; others allow concurrent access at the file granularity but cue the developer to resolve line-level conflicts upon committing changes upstream.
 
-Likely the ((("concurrent versions systems (CVS)")))((("Subversion (SVN)")))((("unreserved checkouts")))((("version control systems (VCS)")))most widely deployed client/server version control system (VCS) from the 1990s through the 2000s has been http://savannah.nongnu.org/projects/cvs[Concurrent Versions Systems], most often referred to by its acronym _CVS_.  Although CVS has enabled teams to freely work on all files in the tree through _unreserved checkouts_, its shortcomings (including nonatomic commits and absent tracking for file renames) prompted the development of http://subversion.apache.org/[Subversion] (SVN), hier apparent to CVS.  Boasting a wider featureset and greater stability as contrasted with CVS, SVN has enjoyed its reign from the mid- to late-2000s.
+Likely the ((("concurrent versions systems (CVS)")))((("Subversion (SVN)")))((("unreserved checkouts")))most widely deployed client/server version control system (VCS) from the 1990s through the 2000s has been http://savannah.nongnu.org/projects/cvs[Concurrent Versions Systems], most often referred to by its acronym _CVS_.  Although CVS has enabled teams to freely work on all files in the tree through _unreserved checkouts_, its shortcomings (including nonatomic commits and absent tracking for file renames) prompted the development of http://subversion.apache.org/[Subversion] (SVN), hier apparent to CVS.  Boasting a wider featureset and greater stability as contrasted with CVS, SVN has enjoyed its reign from the mid- to late-2000s.
 
 These ((("distributed version control systems (DVCSs)")))days, the centralized model has been superseded by _distributed version control systems_ (DVCS), which are differentiated by their ability to store the full repository including all history in any number of nodes.
 
