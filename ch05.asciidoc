@@ -187,7 +187,7 @@ Testing is a first-class citizen in verifying that our development is done corre
 
 ==== User Perspective
 
-((("data","user perspective on")))((("GeekSeek","user perspective")))((("user perspective")))Our users are ((("CRUD","operations")))going to have to perform a series of _CRUD_ (Create, Read, Update, Delete) operations upon the entities that drive our application's data.  As such, we've defined a set of user-centric requirements:
+((("data","user perspective on")))((("GeekSeek","user perspective")))((("users", "perspective of")))Our users are ((("CRUD","operations")))going to have to perform a series of _CRUD_ (Create, Read, Update, Delete) operations upon the entities that drive our application's data.  As such, we've defined a set of user-centric requirements:
 
 ----
 As a User, I should be able to:
