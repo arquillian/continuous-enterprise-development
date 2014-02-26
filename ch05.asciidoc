@@ -226,7 +226,7 @@ In GeekSeek, however, we'll want to ensure that users are seeing up-to-date info
 
 === Implementation
 
-((("Java Persistence API","implementing", id="ix_ch05-asciidoc1", range="startofrange")))Given our ((("conceptual weight")))user and technical concerns, the Java EE stack using JPA described earlier will do a satisfactory job toward meeting our requirements.  And there's an added benefit: by using frameworks designed to relieve the application developer of complicated programming, we'll end up writing a lot less code.  This will help us to reduce the _conceptual weight_ of our code and ease maintenance over the long run.  The slices of Java EE that we'll use((("Enterprise JavaBeans (EJB)")))((("Java Transaction API (JTA)"))) specifically include: 
+((("Java Persistence API","implementing", id="ix_ch05-asciidoc1", range="startofrange")))Given our ((("conceptual weight")))user and technical concerns, the Java EE stack using JPA described earlier will do a satisfactory job toward meeting our requirements.  And there's an added benefit: by using frameworks designed to relieve the application developer of complicated programming, we'll end up writing a lot less code.  This will help us to reduce the _conceptual weight_ of our code and ease maintenance over the long run.  The slices of Java EE that we'll use((("Enterprise JavaBeans (EJB)")))((("Java Transaction API"))) ((("JTA", see="Java Transaction API")))specifically include: 
 
 * Java Transaction API (JTA)
 * Enterprise JavaBeans (EJB, http://bit.ly/MAYJwZ[JSR 318])
