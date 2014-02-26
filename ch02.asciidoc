@@ -332,7 +332,7 @@ myPackage.jar:
 /org/alr/test/TestClass.class
 ----
 
-So let's((("Assignable facilities"))) see what's going on here.  First we create a +JavaArchive+ and add all contents of the current ++Class++'s +Package+ . Then we dump the output to the console, just to see what's included.  In the final line, we again use the +Assignable+ facilities of the +JavaArchive+ view to get us into a new view: one capable of exporting to ZIP format.  In this case we use the appropriately named +ZipExporter+, allowing us to export to a +File+, +OutputStream+, or even get the contents as an +InputStream+ so we can deal with the bytes ourselves.
+So let's see what's going on here.  First we create a +JavaArchive+ and add all contents of the current ++Class++'s +Package+ . Then we dump the output to the console, just to see what's included.  In the final line, we again use the +Assignable+ facilities of the +JavaArchive+ view to get us into a new view: one capable of exporting to ZIP format.  In this case we use the appropriately named +ZipExporter+, allowing us to export to a +File+, +OutputStream+, or even get the contents as an +InputStream+ so we can deal with the bytes ourselves.
 
 <<table2-4>> lists the three types of exporters that ship with ShrinkWrap.
 
