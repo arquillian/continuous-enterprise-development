@@ -232,7 +232,7 @@ In GeekSeek, however, we'll want to ensure that users are seeing up-to-date info
 * Enterprise JavaBeans (EJB, http://bit.ly/MAYJwZ[JSR 318])
 * JPA
 
-((("transactions, database")))Transactions((("ACID properties"))) are a wide subject that merits its own book when dealing with the mechanics of implementing a viable transactional engine.  For us as users, however, the rules are remarkably simple.  We'll imagine a transaction is a set of code that runs within a block.  The instructions that are executed within this block must adhere to the _ACID_ properties--Atomicity, Consistency, Isolation, and Durability:
+((("transactions", "database")))Transactions((("ACID properties"))) are a wide subject that merits its own book when dealing with the mechanics of implementing a viable transactional engine.  For us as users, however, the rules are remarkably simple.  We'll imagine a transaction is a set of code that runs within a block.  The instructions that are executed within this block must adhere to the _ACID_ properties--Atomicity, Consistency, Isolation, and Durability:
 
 Atomicity:: The instructions in the block act as one unit; they either succeed (_commit_) or fail (_rollback_) together.
 Consistency:: All resources associated with the transaction (in this case, our database) will always be in a legal, viable state.  For instance, a foreign key field will always point to a valid primary key.  These rules are typically enforced by the transactional resource (again, our database).
