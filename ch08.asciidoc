@@ -784,7 +784,7 @@ public class CreateConferenceAndSessionStory {
     }
 ----
 
-((("REST services","validating")))The +@RunWith+ annotation should be familiar by now; Arquillian will be handling the test lifecycle for us.  As noted previously, it's good practice to allow Arquillian to inject the base URL of the application by using +@ArquillianResource+.  And because we're not bound to any frameworks in particular, we can also use the https://code.google.com/p/rest-assured/[REST-assured] project to provide us with a clean DSL to validate our REST services.
+((("REST", "validating services")))The +@RunWith+ annotation should be familiar by now; Arquillian will be handling the test lifecycle for us.  As noted previously, it's good practice to allow Arquillian to inject the base URL of the application by using +@ArquillianResource+.  And because we're not bound to any frameworks in particular, we can also use the https://code.google.com/p/rest-assured/[REST-assured] project to provide us with a clean DSL to validate our REST services.
 
 Notably missing from this declaration is the +@Deployment+ method, which we supply in +CreateConferenceAndSessionStoryTestCase+ so we can decouple the test scenario from the test deployment logic; this encourages re-use for running the same tests with different deployments so we can further integrate other layers later.  The deployment method for our purposes here looks like:
 
