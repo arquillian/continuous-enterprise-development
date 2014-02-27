@@ -12,7 +12,7 @@ _Business logic_ governs ((("cross-cutting")))the behaviors that power our appli
 
 That said, the cross-cutting concerns just mentioned (and many more!) are all commonly demanded by our business needs. For instance, imagine we have a series of services, each of which needs to be accessed by an authenticated and authorized user, and in the context of a transaction. If we were diligently applying proper modularization and encapsulation, we might implement separate functions for the transactional and security enforcement, and then call these from our services.
 
-A glaring((("transactions","invoking"))) problem with this approach is that, although we’ve nicely extracted out the logic for our security and transactions for reuse, we must still manually _invoke_ them, sprinkling these method calls at the head and foot of every function requiring their use. Additionally, we may have to pass around contextual objects that know about the state of the current user or transactional registration (though in practice, these are commonly associated with a +Thread+, and thus able to fly under the visible API radar in an obfuscated context).
+A glaring((("transactions","invoking"))) problem with this approach is that, although we’ve nicely extracted out the logic for our security and transactions for reuse, we must still manually _invoke_ them, sprinkling these method calls at the head and foot of every function requiring their use. Additionally, we may have to pass around contextual objects that know about the state of the current user or transactional registration (though in practice, these are commonly associated with a +Thread+, and thus are able to fly under the visible API radar in an obfuscated context).
 
 Things get ((("dependent services")))more complicated when we introduce _dependent_ services. A +UserRegistration+ function may in turn call many finer-grained services like +SendEmail+, +PutUserInDatabase+, and +GenerateHashOfPassword+. This composition is desirable because it separates concerns, but we’re left with the problem of _looking up_ or locating each of these disparate services from +UserRegistration+. Ultimately this adds to the "plumbing" code, which provides no benefit to us aside from hooking our cleanly decoupled modules together. Although this has historically been addressed by employing a technique known as the _Service Locator Pattern_, for reasons we’ll soon see, this is a largely outdated and((("Service Locater Pattern"))) inferior approach.
 
@@ -54,7 +54,7 @@ In this chapter we'll be examining each of these complications and a proposed so
 
 Our GeekSeek application will therefore introduce the requirement: "Send an Email to the New User Upon Successful Signup."
 
-At first blush, this seems like a farily trivial problem to solve.  The((("JavaMail API"))) http://www.oracle.com/technetwork/java/javamail/index.html[JavaMail] API is straightforward enough to use (though a bit dated), and is included as part of the Java EE Platform.
+At first blush, this seems like a fairly trivial problem to solve.  The((("JavaMail API"))) http://www.oracle.com/technetwork/java/javamail/index.html[JavaMail] API is straightforward enough to use (though a bit dated), and is included as part of the Java EE Platform.
 
 Unfortunately, there ((("GeekSeek","issues to consider")))are many issues to consider beyond the boilerplate code required to send the email itself:
 
@@ -127,7 +127,7 @@ public MailMessage build() throws IllegalStateException {
 
 It's this immutable +MailMessageBuilder.MailMessage+ that will be safely passed between our services.
 
-With our value object defined, we can now create our +SMTPMailService+.  We know that we'll need to connect to some external SMTP server via the +JavaMail+ API, and Java EE allows injection of these via the +@Resource+ annotation (though the mechanics of exactly where some services are bound is vendor-dependent.).  Also, we know that this +SMTPMailService+ is meant to be shared by all users running the application, and won't have any session-specific state.  For these reasons, we'll implement the +SMTPMailService+ as a Singleton Session EJB.  Note that a Stateless Session Bean (for use of a pool of instances) might work in an equally appropriate fashion:
+With our value object defined, we can now create our +SMTPMailService+.  We know that we'll need to connect to some external SMTP server via the +JavaMail+ API, and Java EE allows injection of these via the +@Resource+ annotation (though the mechanics of exactly where some services are bound is vendor-dependent).  Also, we know that this +SMTPMailService+ is meant to be shared by all users running the application, and won't have any session-specific state.  For these reasons, we'll implement the +SMTPMailService+ as a Singleton Session EJB.  Note that a Stateless Session Bean (for use of a pool of instances) might work in an equally appropriate fashion:
 
 [source,java]
 ----
@@ -141,7 +141,7 @@ This is our Singleton bean declaration.  Of particular note is the +TransactionA
 
 An SMTP server is an external resource that is not transactionally aware.  Therefore, we'll have to make note of any exceptions and ensure that if we want a transaction rolled back, we either explicitly tell that to the +TransactionManager+ or throw an unchecked exception, which will signal the EJB container to mark any currently executing transaction for rollback.
 
-We're making a general-purpose SMTP service here, so we may not always know the appropriate actions to take with regards to transactions.  The default for EJB is +@TransactionAttributeType.MANDATORY+, which creates a transaction if one is not already in flight.  That's not really appropriate here; the SMTP server with which we interact is not transactional, it it'd be silly to sacrifice the overhead of starting a transaction when we're not even dealing with a resource that will respect its semantics!  +@TransactionAttributeType.SUPPORTS+, which we've used here, will accept existing transactions if one is in play, or do nothing if the service is invoked outside of a transactional context.
+We're making a general-purpose SMTP service here, so we may not always know the appropriate actions to take with regard to transactions.  The default for EJB is +@TransactionAttributeType.MANDATORY+, which creates a transaction if one is not already in flight.  That's not really appropriate here: the SMTP server with which we interact is not transactional; it would be silly to sacrifice the overhead of starting a transaction when we're not even dealing with a resource that will respect its semantics!  +@TransactionAttributeType.SUPPORTS+, which we've used here, will accept existing transactions if one is in play, or do nothing if the service is invoked outside of a transactional context.
 
 Now we need to define a method to do the dirty work: accept our +MailMessage+ as a parameter and send it along to the SMTP server.  The +JavaMail+ API will act as our conduit to connect to the SMTP server, so we'll take advantage of Java EE's +@Resource+ annotation to inject some relevant supporting services into our +SMTPMailService+.
 
@@ -159,7 +159,7 @@ private javax.jms.ConnectionFactory connectionFactory;
 private javax.jms.Queue smtpQueue;
 ----
 
-The +@Resource.lookup+ attribute has vendor-specific function, but most often maps to a JNDI name.  This use case has been coded to run specifically on the JBoss family of application servers, so some adjustment to these values may be necessary in your environment.  To that end we've centralized some JNDI names in a small interface:
+The +@Resource.lookup+ attribute has vendor-specific function but most often maps to a JNDI name.  This use case has been coded to run specifically on the JBoss family of application servers, so some adjustment to these values may be necessary in your environment.  To that end we've centralized some JNDI names in a small interface:
 
 [source,java]
 ----
@@ -179,11 +179,11 @@ public interface SMTPMailServiceConstants {
 
 Note that we have put into place a field called +smtpQueue+, of type +javax.jms.Queue+.  This is how we'll handle two of the "hidden" problems with testable development of sending email raised earlier.
 
-First, sending((("fire and forget"))) a message to a JMS `Queue` is a "fire and forget" operation.  Once the message is received by the queue (which is in-process, unlike our production SMTP server), control is returned to the caller and the handling of the message is processed asynchronously.  If we create a listener to pull messages off the queue and send emails, we won't have to wait for this process to complete.  This gives us asynchrony for free.
+First, sending((("fire and forget"))) a message to a JMS `Queue` is a "fire and forget" operation.  Once the message is received by the queue (which is in process, unlike our production SMTP server), control is returned to the caller and the handling of the message is processed asynchronously.  If we create a listener to pull messages off the queue and send emails, we won't have to wait for this process to complete.  This gives us asynchrony for free.
 
-The other ((("JMS Queue")))tangible benefit to using a JMS `Queue` to send messages is in the guaranteed processing afforded by JMS.  If there's a temporary error in sending the email, for instance a connection problem to the remote SMTP server, the messaging server will dutifully retry (as configured) a number of times.  This process will even survive server restarts; if for some reason all of these retries fail to yield a successful result (again, after some configured number of tries or timeout), messages can be forwarded to the DLQ (dead-letter queue) for manual inspection by system administrators later.  This gives us some assurance that we won't lose messages we intended to send, and we also won't have to fail our user registration process entirely if there's some issue with sending the welcome email.
+The other ((("JMS Queue")))tangible benefit to using a JMS `Queue` to send messages is in the guaranteed processing afforded by JMS.  If there's a temporary error in sending the email, for instance a connection problem with the remote SMTP server, the messaging server will dutifully retry (as configured) a number of times.  This process will even survive server restarts; if for some reason all of these retries fail to yield a successful result (again, after some configured number of tries or timeout), messages can be forwarded to the DLQ (dead-letter queue) for manual inspection by system administrators later.  This gives us some assurance that we won't lose messages we intended to send, and we also won't have to fail our user registration process entirely if there's some issue with sending the welcome email.
 
-In WildFly / JBoss AS7 / JBoss EAP, we deploy a JMS Queue with the deployment descriptor +geekseek-smtp-queue-jms.xml+ (the filename may be anything located in the EJB JAR's +META-INF+ and ending with the suffix +-jms.xml+):
+In WildFly/JBoss AS7/JBoss EAP, we deploy a JMS Queue with the deployment descriptor +geekseek-smtp-queue-jms.xml+ (the filename may be anything located in the EJB JAR's +META-INF+ and ending with the suffix +-jms.xml+):
 
 [source,xml]
 ----
@@ -199,7 +199,7 @@ In WildFly / JBoss AS7 / JBoss EAP, we deploy a JMS Queue with the deployment de
 </messaging-deployment>
 ----
 
-This will bind a new JMS Queue to the JNDI address +java:/jms/queue/GeekSeekSMTP+, which we referenced earlier in the +@Resource.lookup+ attribute.
+This will bind a new JMS Queue to the JNDI address _java:/jms/queue/GeekSeekSMTP_, which we referenced earlier in the +@Resource.lookup+ attribute.
 
 With our supporting services and resources hooked in and available to our EJB, we can code the +sendMail+ method.  As noted before, this is likely the least interesting part of the use case, even though it's technically the code that drives the entire feature:
 
@@ -234,13 +234,14 @@ public void sendMail(final MailMessageBuilder.MailMessage mailMessage)
 }
 ----
 
-Nothing special going on here; we translate our own value object +MailMessageBuilder.MailMessage+ into fields required by JavaMail's +MimeMessage+, and send. We'll wrap any errors in a +RuntimeException+ to be handled by the EJB container (resulting in transaction rollback if one is being used).
+There's nothing special going on here: we translate our own value object +MailMessageBuilder.MailMessage+ into fields required by JavaMail's +MimeMessage+, and send. We'll wrap any errors in a +RuntimeException+ to be handled by the EJB container (resulting in transaction rollback if one is being used).
 
 This method, of course, is synchronous up until the mail message is delivered to the SMTP server.  We noted earlier that it's likely better in a multiuser environment to queue the mail for sending such that we don't have to wait on interaction with this external resource, so we'll also supply a +queueMailForDelivery+ method to send our desired message to a JMS `Queue`:
 
 [source,java]
 ----
-public void queueMailForDelivery(final MailMessageBuilder.MailMessage mailMessage)
+public void queueMailForDelivery(final MailMessageBuilder.MailMessage 
+mailMessage)
         throws IllegalArgumentException {
 
     // Precondition check
@@ -253,7 +254,8 @@ public void queueMailForDelivery(final MailMessageBuilder.MailMessage mailMessag
         final javax.jms.Session session = connection
           .createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
         final MessageProducer producer = session.createProducer(smtpQueue);
-        final ObjectMessage jmsMessage = session.createObjectMessage(mailMessage);
+        final ObjectMessage jmsMessage = 
+        session.createObjectMessage(mailMessage);
         producer.send(jmsMessage);
     } catch (final JMSException jmse) {
         throw new RuntimeException(
@@ -317,7 +319,7 @@ public void onMessage(final javax.jms.Message message) {
 }
 ----
 
-These compose all the working pieces of the business logic supporting this feature.  However, the true challenge lies in verifying that everything works as expected.(((range="endofrange", startref="ix_ch07-asciidoc5")))(((range="endofrange", startref="ix_ch07-asciidoc4")))(((range="endofrange", startref="ix_ch07-asciidoc3")))
+These comprise all the working pieces of the business logic supporting this feature.  However, the true challenge lies in verifying that everything works as expected.(((range="endofrange", startref="ix_ch07-asciidoc5")))(((range="endofrange", startref="ix_ch07-asciidoc4")))(((range="endofrange", startref="ix_ch07-asciidoc3")))
 
 === Requirement Test Scenarios
 
@@ -325,11 +327,11 @@ These compose all the working pieces of the business logic supporting this featu
 
 ((("requirement test scenarios","of business logic", sortas="business logic", id="ix_ch07-asciidoc6", range="startofrange")))((("requirement test scenarios","of services layer", sortas="services layer", id="ix_ch07-asciidoc7", range="startofrange"))) ((("GeekSeek","SMTP server, testing", id="ix_ch07-asciidoc8", range="startofrange")))((("SMTP server, testing", id="ix_ch07-asciidoc9", range="startofrange")))The JavaMail API nicely abstracts out connections to an SMTP server, and we've built our +SMTPMailService+ to pull _any_ configured JavaMail +Session+ from JNDI.  This gives us the option to provide a test-only SMTP server for use in development and staging environments with only configuration changes differing between these and the production setup.  Although it's true that this text has generally discouraged the use of mock objects and services, that's a guideline.  In this instance, we'll absolutely need a hook that differs from production in order to validate that emails are being delivered as expected.  Otherwise, we'd be using a real SMTP service that could send emails out to real email addresses.
 
-For our own testing, we'll aim to change not the code in our +SMTPMailService+, but configure it to point to an embeddable SMTP server; one that will allow us to see what messages were received and do some assertion checking to be sure the contents are as expected.  For this we look to the((("SubEtha project"))) https://code.google.com/p/subetha/[SubEtha project], an open source Java SMTP server that fulfills our requirements nicely.
+For our own testing, we'll aim not to change the code in our +SMTPMailService+, but to configure it to point to an embeddable SMTP server: one that will allow us to see which messages were received and do some assertion checking to be sure the contents are as expected.  For this we look to the((("SubEtha project"))) https://code.google.com/p/subetha/[SubEtha project], an open source Java SMTP server that fulfills our requirements nicely.
 
 We'll let our SMTP server run in the same process as our application server and tests; this will allow us to use shared memory and set guards to handle the asynchrony implicit in dispatching messages to an SMTP server.
 
-A nice technique is to install SubEtha to come up alongside our application.  In Java EE, the mechanism for creating application start events is by implementing a +PostConstruct+ callback on a Singleton Session EJB that's configured to eagerly load. We do this by defining a new service:
+A nice technique is to install SubEtha to come up alongside our application.  In Java EE, the mechanism for creating application-start events is to implement a +PostConstruct+ callback on a Singleton Session EJB that's configured to eagerly load. We do this by defining a new service:
 
 +org.cedj.geekseek.service.smtp.SMTPServerService+
 [source,java]
@@ -396,7 +398,7 @@ public void setHandler(final TestReceiveHandler handler) {
 }
 ----
 
-Pluggable handling in our SMTP server can then be set up on-the-fly by tests.  When a new message is received by the SMTP server, our listener will read in the contents, log them for our convenience, then call upon our +TestReceiveHandler+:
+Pluggable handling in our SMTP server can then be set up on the fly by tests.  When a new message is received by the SMTP server, our listener will read in the contents, log them for our convenience, then call upon our +TestReceiveHandler+:
 
 [source,java]
 ----
@@ -442,7 +444,7 @@ private class PluggableReceiveHandlerMessageListener
 
 ==== The Test
 
-(((range="endofrange", startref="ix_ch07-asciidoc9")))(((range="endofrange", startref="ix_ch07-asciidoc8"))) ((("business logic","testing", id="ix_ch07-asciidoc10", range="startofrange")))((("services layer","testing", id="ix_ch07-asciidoc11", range="startofrange")))Our test will again use Arquillian for the container interaction as we've seen before, but will require no extra extensions.  Therefore, the declaration here is fairly simple:
+(((range="endofrange", startref="ix_ch07-asciidoc9")))(((range="endofrange", startref="ix_ch07-asciidoc8"))) ((("business logic","testing", id="ix_ch07-asciidoc10", range="startofrange")))((("services layer","testing", id="ix_ch07-asciidoc11", range="startofrange")))Our test will again use Arquillian for the container interaction as we've seen before, but it will require no extra extensions.  Therefore, the declaration here is fairly simple:
 
 +org.cedj.geekseek.service.smtp.SMTPMailServiceTestCase+
 [source,java]
@@ -451,7 +453,7 @@ private class PluggableReceiveHandlerMessageListener
 public class SMTPMailServiceTestCase {
 ----
 
-Unlike in previous examples, this time we'll handle deployment and undeployment operations manually.  This is because we'd first like to configure the server _before_ deployment, but _after_ it has started.  Because Arquillian currently does not provide for a lifecycle operation between the server startup and deployment, we'll make use of ordered test methods to clearly delineate which actions should be handled when. This is what we'd like to see:
+Unlike in previous examples, this time we'll handle deployment and undeployment operations manually.  This is because we'd first like to configure the server _before_ deployment, but _after_ it has started.  Because Arquillian currently does not provide for a lifecycle operation between the server startup and deployment, we'll use ordered test methods to clearly delineate which actions should be handled when. This is what we'd like to see:
 
 * Server start (handled automatically by Arquillian)
 * Server configuration
@@ -576,7 +578,7 @@ public void configureAppServer() throws Exception {
      * likely have configured the server before it was started to point to a real
      * SMTP server.
      */
-    // Code ommitted for brevity, not really relevant to 
+    // Code omitted for brevity, not really relevant to 
     // our objectives here
 
     /*
@@ -616,7 +618,8 @@ The test logic looks like this:
         // Set a handler which will ensure the body was received properly
         smtpServerService.setHandler(new SMTPServerService.TestReceiveHandler() {
             @Override
-            public void handle(final String contents) throws AssertionFailedError {
+            public void handle(final String contents) throws 
+            AssertionFailedError {
                 try {
 
                     // Perform assertion
