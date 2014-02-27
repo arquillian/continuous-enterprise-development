@@ -6,7 +6,7 @@ ____
 There is no real security except for whatever you build inside yourself.
 ____
 
-((("development process","security", id="ix_ch09-asciidoc0", range="startofrange")))((("security", id="ix_ch09-asciidoc1", range="startofrange")))In a Utopian society, we'd leave our homes unlocked in the morning.  We'd park our cars at the office with the windows open, and after dark we'd be free to walk unlit alleyways without concern.
+((("development process","security", id="ix_ch09-asciidoc0", range="startofrange")))((("security", id="ix_ch09-asciidoc1", range="startofrange")))In a utopian society, we'd leave our homes unlocked in the morning.  We'd park our cars at the office with the windows open, and after dark we'd be free to walk unlit alleyways without concern.
 
 Unfortunately, the small percentage of those looking to take advantage of others necessitates taking some measures to protect ourselves.  We look after our belongings and each other.  In the digital arena, our vulnerable currency is __data__—not everyone is entitled to see or edit everything.  Although our systems are built to support a large number of users, we cannot simply allow anyone to take any action they please.  In software and life, security amounts to controlling access.
 
@@ -36,7 +36,7 @@ In practice, this means we'll need to lock down the resources for these actions 
 
 ===== PicketLink: application-level security
 
-((("application level security", id="ix_ch09-asciidoc3", range="startofrange")))((("authentication","social", id="ix_ch09-asciidoc4", range="startofrange")))((("PicketLink", id="ix_ch09-asciidoc5", range="startofrange")))((("security","application level", id="ix_ch09-asciidoc6", range="startofrange")))((("security","PicketLink", id="ix_ch09-asciidoc7", range="startofrange")))http://www.picketlink.org[PicketLink] is an ((("PicketLink")))umbrella project for security and identity management for Java applications.  It provides the backbone of security for a variety of JBoss products, but also can be used standalone, as we'll do with GeekSeek. PicketLink components are available to support the following:
+((("application level security", id="ix_ch09-asciidoc3", range="startofrange")))((("authentication","social", id="ix_ch09-asciidoc4", range="startofrange")))((("PicketLink", id="ix_ch09-asciidoc5", range="startofrange")))((("security","application level", id="ix_ch09-asciidoc6", range="startofrange")))((("security","PicketLink", id="ix_ch09-asciidoc7", range="startofrange")))http://www.picketlink.org[PicketLink] is an ((("PicketLink")))umbrella project for security and identity management for Java applications.  It provides the backbone of security for a variety of JBoss products, but it also can be used standalone, as we'll do with GeekSeek. PicketLink components are available to support the following:
 
 http://www.jboss.org/picketlink/IDM.html[IDM]:: Universal ((("IDM")))identity management with pluggable backends like LDAP or RDBMS
 http://www.jboss.org/picketlink/Fed[Federation]:: Federated ((("Federation")))Identity and Single-Sign-On (SSO)
@@ -67,7 +67,7 @@ public interface Identity extends Serializable
 }
 ----
 
-We can use the +Identity+ API to lock down all requests that match the URL pattern +/auth+ via our +org.cedj.geekseek.service.security.oauth.AuthServlet+:
+We can use the +Identity+ API to lock down all requests that match the URL pattern pass:[<phrase role='keep-together'><literal>/auth</literal></phrase>] via our +org.cedj.geekseek.service.security.oauth.AuthServlet+:
 
 [source,java]
 ----
