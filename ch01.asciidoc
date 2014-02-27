@@ -7,7 +7,7 @@ ____
 
 === The Zen of Prevention
 
-((("error handling")))At times it may feel that the universe mischievously conspires to destroy our work.  And to some extent this is true: nature doesn't like order.  This entropy manifests itself in many ways; we open a network socket, a router may fail.  We write to a file, the disk could fill up.  We fail to check for valid inputs, our program could blow up unexpectedly.
+((("error handling")))At times it may feel that the universe mischievously conspires to destroy our work.  And to some extent this is true: nature doesn't like order.  This entropy manifests itself in many ways: we open a network socket, a router may fail.  We write to a file, the disk could fill up.  We fail to check for valid inputs, our program could blow up unexpectedly.
 
 Causes of potential failure are both infinite and inevitable.  As guardians of our own code quality, we're armed with two battle tactics: Be _reactive_, or be _proactive_.
 
@@ -15,9 +15,9 @@ Causes of potential failure are both infinite and inevitable.  As guardians of o
 
 ((("error handling","reactive")))((("reactive error handling")))Colloquially referred ((("firefighting")))to as "firefighting," a reactive position calls us to action.  In most cases, an undesirable situation has already presented itself, and now we're charged with fixing:
 
-. The initial cause of the error, if under our control.
-. The unprotected areas of code that allowed the cause to wreak greater havoc.
-. Any resultant artifacts that persist after the error is encountered.
+. The initial cause of the error, if under our control
+. The unprotected areas of code that allowed the cause to wreak greater havoc
+. Any resultant artifacts that persist after the error is encountered
 
 Anyone who's rifled through a database's binary logfile to restore data to a consistent state can attest to the stressful waste of time incurred in handling emergency situations after a breach in expected execution. Dealing with issues as they arise also imposes a sense of immediacy; the activities of a normal workday may be suspended to address more pressing concerns.
 
@@ -28,7 +28,7 @@ Clearly, the reactive model is not our best option if it can be avoided.
 
 ((("error handling","proactive")))((("proactive quality policies")))"Only YOU can prevent ... fires" has been the plea of the United States Forest Service since 1947, underscoring the importance of limiting factors that contribute to disaster _before_ they happen.  
 
-Related ((("containment")))to the prevention of errors is the issue of _containment_.  In the case of failure we'd like to know as soon as possible and handle the problem prior to its leaking into other areas of the system where it might cause greater harm.  Consider this simple bit of code:
+Related ((("containment")))to the prevention of errors is the issue of _containment_.  In the case of failure we'd like to know as soon as possible and handle the problem prior to its leaking into other areas of the system, where it might cause greater harm.  Consider this simple bit of code:
 
 [source,java]
 ----
@@ -69,9 +69,9 @@ This _fail-fast_ policy((("fail-fast policies"))) is equally as important at run
 [[Figure1-1]]
 image::images/cedj_0101.png[]
 
-Development((("Waterfall development model"))) flows from one stage to the next, forming the basis for the nickname "Waterfall," often associated with serial models.  Also called((("Big Design Up Front development model"))) "Big Design Up Front," this process relies heavily upon a full understanding of all requirements from the project onset.  The general theory supporting Waterfall Design is roughly "measure twice, cut once"; by doing an exhaustive evaluation of all moving parts, the goal is to reduce wasted time by avoiding the need to go back and make corrections.  In our opinion, this tack is best applied for projects with a long development cycle targeting a single release.
+Development((("Waterfall development model"))) flows from one stage to the next, forming the basis for the nickname "Waterfall," often associated with serial models.  Also called((("Big Design Up Front development model"))) "Big Design Up Front," this process relies heavily upon a full understanding of all requirements from the project onset.  The general theory supporting Waterfall Design is roughly "measure twice, cut once": by doing an exhaustive evaluation of all moving parts, the goal is to reduce wasted time by avoiding the need to go back and make corrections.  In our opinion, this tack is best applied for projects with a long development cycle targeting a single release.
 
-Though this might fit the retail software mold, the never-go-back mentality of a serial process makes it a particularly brittle approach to building adaptable code; the model is not designed to support changing requirements.  For that we might be better served looking to a more random-access model where any development phase may be revisited (or many may be in-process at the same time!)
+Though this might fit the retail software mold, the never-go-back mentality of a serial process makes it a particularly brittle approach to building adaptable code; the model is not designed to support changing requirements.  For that we might be better served by looking to a more random-access model where any development phase may be revisited (or many may be in-process at the same time!)
 
 ==== Iterative Models
 
@@ -85,7 +85,7 @@ Though this might fit the retail software mold, the never-go-back mentality of a
 [[Figure1-2]]
 image::images/cedj_0102.png[]
 
-While the full reasoning behind XP is detailed by((("Extreme Programming Explained: Embrace Change, 2E (Beck)")))((("Beck, Kent"))) Kent Beck's _Extreme Programming Explained: Embrace Change, Second Edition_ (Addison-Wesley, 2004), some of its primary tenants can be boiled down to:
+While the full reasoning behind XP is detailed by((("Extreme Programming Explained: Embrace Change, 2E (Beck)")))((("Beck, Kent"))) Kent Beck's _Extreme Programming Explained: Embrace Change, Second Edition_ (Addison-Wesley, 2004), some of its primary tenets can be boiled down to:
 
 * Short development cycles
 * Daily, brief meetings
@@ -93,9 +93,9 @@ While the full reasoning behind XP is detailed by((("Extreme Programming Explain
 * Doing only what needs to be done now, deferring nonessential work until later
 * Garnering feedback from all stakeholders, not only programmers, early and often
 * Test-Driven Development
-** The approach of first writing automated tests, then correcting/augmenting main code until they pass
+** The approach of first writing automated tests, then correcting/augmenting main code until it passes
 
-In fact, XP along with other models has both inspired and acts as an implementation of a larger collection of iterative policies as outlined by((("Agile Software Development")))((("software development process","Agile")))((("Manifesto for Agile Software Development"))) the http://agilemanifesto.org/[_Manifesto for Agile Software Development_]. (((range="endofrange", startref="ix_ch01-asciidoc0")))
+In fact, XP, along with other models, has both inspired and acts as an implementation of a larger collection of iterative policies as outlined by((("Agile Software Development")))((("software development process","Agile")))((("Manifesto for Agile Software Development"))) the http://agilemanifesto.org/[_Manifesto for Agile Software Development_]. (((range="endofrange", startref="ix_ch01-asciidoc0")))
 
 === Testing _Is_ Development
 
@@ -152,7 +152,7 @@ public void testHashCodeOfEqualObjects() {
 }
 ----
 
-This test, implemented ((("invariants")))using the Java +assert+ keyword, is a classic example of a unit test; it checks for the smallest possible _invariant_ (in this case that the +equals()+ and +hashCode()+ implementations of +MyObject+ are working with respect to one another).  Many experts will advise that a unit test contains only one assertion; in our experience this is a fantastic guideline, but as the preceding example illustrates, use common sense.  If more than one assertion is required to conclude that all participants in an invariant are in expected form, then use what's necessary.
+This test, implemented ((("invariants")))using the Java +assert+ keyword, is a classic example of a unit test: it checks for the smallest possible _invariant_ (in this case that the +equals()+ and +hashCode()+ implementations of +MyObject+ are working with respect to one another).  Many experts will advise that a unit test contains only one assertion; in our experience this is a fantastic guideline, but as the preceding example illustrates, use common sense.  If more than one assertion is required to conclude that all participants in an invariant are in expected form, then use what's necessary.
 
 In((("mock objects"))) cases where a unit test may require inputs from unrelated components, the use of _mock objects_ is a common solution.  Mocks supply an alternate implementation used in testing that may help the developer to:
 
@@ -162,13 +162,13 @@ In((("mock objects"))) cases where a unit test may require inputs from unrelated
 * Avoid dependence upon a mechanism that supplies nonidempotent (nonrepeatable) values
 ** For instance, a random-number generator or something that relies on the current time
 
-Although ((("Context and Dependency Injection (CDI)")))((("loose coupling")))((("POJO (Plain Old Java Object)")))mocks absolutely have their place in the testing arsenal, in the context of Enterprise development it's our opinion that their use should be limited.  The Java Enterprise Edition is based on a _POJO_ (Plain Old Java Object) component model, which enables us to directly instantiate servlets, Enterprise Java beans (EJBs), and Context and Dependency Injection (CDI) beans; this is great for validating business logic in simple calls.  However, the true power of Java EE is in the _loose coupling_ between components, and mocks do not account for the linkage between these pieces that's provided by the container.  To fully test an application, you must test the whole runtime, not simply the code you've written on your own.  For that, we need a more comprehensive solution to validation than is allowed by unit tests.
+Although ((("Context and Dependency Injection (CDI)")))((("loose coupling")))((("POJO (Plain Old Java Object)")))mocks absolutely have their place in the testing arsenal, in the context of Enterprise development it's our opinion that their use should be limited.  The Java Enterprise Edition is based on a _POJO_ (Plain Old Java Object) component model, which enables us to directly instantiate servlets, Enterprise JavaBeans (EJBs), and Context and Dependency Injection (CDI) beans; this is great for validating business logic in simple calls.  However, the true power of Java EE is in the _loose coupling_ between components, and mocks do not account for the linkage between these pieces that's provided by the container.  To fully test an application, you must test the whole runtime, not simply the code you've written on your own.  For that, we need a more comprehensive solution to validation than is allowed by unit tests.
 
 ==== Integration
 
 ((("integration testing")))((("testing","integration")))Imagine we'd like to build a pipe to carry water from a nearby reservoir to a treatment and purification facility.  The unit tests we described previously would be responsible for ensuring that each section of the tube was free of leaks and generally of good quality.  But the whole is more than the sum of its parts: the opportunity for water escaping between the cracks still exists.
 
-And((("dependency injection"))) so it is with software; we must check that our components play nicely with one another.  This is especially true for Java EE where _dependency injection_ is a commonplace tool.  It's great that one bean not be explicitly bound to another, but eventually we rely upon a container to do the wiring for us.  If our metadata or configuration is incorrect, our injection points may not be filled as we're expecting.  This could result in a deployment-time exception or worse, making it imperative that we have test coverage for the interaction between components.
+And((("dependency injection"))) so it is with software: we must check that our components play nicely with one another.  This is especially true for Java EE, where _dependency injection_ is a commonplace tool.  It's great that one bean not be explicitly bound to another, but eventually we rely upon a container to do the wiring for us.  If our metadata or configuration is incorrect, our injection points may not be filled as we're expecting.  This could result in a deployment-time exception or worse, making it imperative that we have test coverage for the interaction between components.
 
 When((("containers")))((("development"))) we talk about _integration testing_ in this book, it's within the context of a _container_.  Historically, interaction with an application server has been notoriously difficult to test.  For many, Java EE has become a dirty term as a result.  It's the goal of this text to clearly delineate techniques for building enterprise applications in a testable manner.  Though many may view this discussion as related to integration testing, instead we feel that it's more about _development_, and integration testing is a valued part of that equation.
 
@@ -176,7 +176,7 @@ In that sense, testing _is_ development.(((range="endofrange", startref="ix_ch01
 
 === Foundation Test Frameworks
 
-((("frameworks", "test", id="ix_ch01-asciidoc3", range="startofrange")))((("test frameworks", id="ix_ch01-asciidoc4", range="startofrange")))((("testing","frameworks for", id="ix_ch01-asciidoc5", range="startofrange")))As you might imagine, _container services_ really help us to((("container services")))((("declarative security")))((("transaction management"))) cut down on the complexity in our application code.  Dependency injection frees us from manual wiring, while features like _declarative security_ and _transaction management_ keep us from weaving technical concerns into our business logic.  Unfortunately, nothing comes for free; the cost of enlisting a framework or an application server's help is that we've now added another integration point.  And every integration point must be validated by an integration test.
+((("frameworks", "test", id="ix_ch01-asciidoc3", range="startofrange")))((("test frameworks", id="ix_ch01-asciidoc4", range="startofrange")))((("testing","frameworks for", id="ix_ch01-asciidoc5", range="startofrange")))As you might imagine, _container services_ really help us to((("container services")))((("declarative security")))((("transaction management"))) cut down on the complexity in our application code.  Dependency injection frees us from manual wiring, while features like _declarative security_ and _transaction management_ keep us from weaving technical concerns into our business logic.  Unfortunately, nothing comes for free: the cost of enlisting a framework or an application server's help is that we've now added another integration point.  And every integration point must be validated by an integration test.
 
 Java has built-in support for the +java.lang.Assertion+ error and the +assert+ keyword, and these are fine tools when used in the right context.  Because assertions using +assert+ are only analyzed in the presence of the +-ea+ switch at launch of the Java runtime, you need not worry about the performance implications of running extra checks in a production environment with this support disabled.  For that reason, it makes sense to use +assert+ for testing internal code. For instance:
 
@@ -339,7 +339,7 @@ public class WelcomeTestNGTest {
 
 Some of the parameter orders and API names for the annotations have changed, but the concept remains: write less, and let the framework wire up the call stack.
 
-IDE integration, while not standard for Eclipse Juno, is http://testng.org/doc/download.html[simple enough to install] and provides a GUI runner as we've seen in <<Figure1-6>>.(((range="endofrange", startref="ix_ch01-asciidoc5")))(((range="endofrange", startref="ix_ch01-asciidoc4")))(((range="endofrange", startref="ix_ch01-asciidoc3")))
+IDE integration, while not standard for Eclipse Juno, is http://testng.org/doc/download.html[simple enough to install] and provides a GUI runner, as we see in <<Figure1-6>>.(((range="endofrange", startref="ix_ch01-asciidoc5")))(((range="endofrange", startref="ix_ch01-asciidoc4")))(((range="endofrange", startref="ix_ch01-asciidoc3")))
 
 .JUnit runner in Eclipse
 [[Figure1-6]]
@@ -358,15 +358,15 @@ These general rules are applicable in most any modern language, are tool-agnosti
 
 So why the _Continuous Development_ title of this book?
 
-In addition to the successful ideology and theory espoused by the Agile community, we'll be looking at concrete tools and projects both within and extending the Java Enterprise Platform to best address the real-world concerns of an Enterprise Java Developer.
+In addition to the successful ideology and theory espoused by the Agile community, we'll be looking at concrete tools and projects both within and extending the Java Enterprise platform to best address the real-world concerns of an Enterprise Java developer.
 
 The authoritative Git repository containing the book and example application source for this text is hosted by our friends http://bit.ly/1e7o0ox[at GitHub].  The accompanying book site is located at http://continuousdev.org, and the official Twitter channel is http://twitter.com/ContinuousDev[@ContinuousDev].  The authors can be reached at authors@continuousdev.org.
 
-All contents of the book's repository are licensed under http://creativecommons.org/licenses/by-sa/2.0/[Creative Commons Attribution-ShareAlike 2.0 Generic], and we invite the community at large to contribute work including feature requests, typographical error corrections, and enhancements via our http://bit.ly/1e7kQRD[GitHub Issue Tracker].
+All contents of the book's repository are licensed under http://creativecommons.org/licenses/by-sa/2.0/[Creative Commons Attribution-ShareAlike 2.0 Generic], and we invite the community at large to contribute work, including feature requests, typographical error corrections, and enhancements, via our http://bit.ly/1e7kQRD[GitHub Issue Tracker].
 
-The print release of the book and its example is set to be given the Git tag of +1.0.0+ in the authoritative repository, and development will continue thereafter in the +master+ branch to correct errata and add supplmentary material including new chapters and use cases.  The community is welcome to suggest or request topics for additional coverage.
+The print release of the book and its example source is set to be given the Git tag of +1.0.0+ in the authoritative repository, and development will continue thereafter in the +master+ branch to correct errata and add supplmentary material, including new chapters and use cases.  The community is welcome to suggest or request topics for additional coverage.
 
-The example application accompanying the use cases raised in this book is called GeekSeek, and is publicly available at http://geekseek.continuousdev.org.  The source is located in this repository under _code/application_, and instructions for building, testing, and running locally are detailed in http://bit.ly/1e7wJqQ[Chapter 4].  The build jobs for the application are kindly powered by http://www.cloudbees.com[CloudBees] at http://bit.ly/1e7wRGN and http://bit.ly/1e7wQ5H.
+The example application accompanying the use cases raised in this book is called GeekSeek, and it is publicly available at http://geekseek.continuousdev.org.  The source is located in this repository under _code/application_, and instructions for building, testing, and running locally are detailed in http://bit.ly/1e7wJqQ[Chapter 4].  The build jobs for the application are kindly powered by http://www.cloudbees.com[CloudBees] at http://bit.ly/1e7wRGN and http://bit.ly/1e7wQ5H.
 
 We welcome your contributions and hope you find the material covered here to be of interest and benefit to your work and career in testable enterprise development.
 
