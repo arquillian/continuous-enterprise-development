@@ -353,8 +353,8 @@ public class OAuthAuthenticator extends BaseAuthenticator {
 
                     // https://issues.jboss.org/browse/AGOVA-53
                     successful.fire(new SuccessfulAuthentication(
-                    service.getSession().getUserProfile(), 
-                    service.getAccessToken()));
+                        service.getSession().getUserProfile(), 
+                        service.getAccessToken()));
 
                     String screenName = ((TwitterProfile)service.
                        getSession().getUserProfile()).getScreenName();
@@ -523,7 +523,7 @@ We start by defining a +@WarpTest+ to run from the client side (as denoted by +@
         Warp.initiate(new Activity() {
             @Override
             public void perform() {
-                    given().
+                given().
                     then().
                         statusCode(Status.OK.getStatusCode()).
                         header("Allow", allOf(
@@ -532,7 +532,7 @@ We start by defining a +@WarpTest+ to run from the client side (as denoted by +@
                             not(containsString("DELETE")),
                             not(containsString("PATCH")))).
                 when().
-                    options(testURL.toExternalForm());
+                options(testURL.toExternalForm());
             }
         }).inspect(new SetupAuth(null));
     }
@@ -551,7 +551,7 @@ Conversely, we can ensure that we do obtain the +Allow+ header for all methods w
         Warp.initiate(new Activity() {
             @Override
             public void perform() {
-                    given().
+                given().
                     then().
                         statusCode(Status.OK.getStatusCode()).
                         header("Allow", allOf(
@@ -581,7 +581,7 @@ We can take a similar approach to validating that we receive an HTTP Unauthorize
         Warp.initiate(new Activity() {
             @Override
             public void perform() {
-                    given().
+                given().
                     then().
                         statusCode(Status.UNAUTHORIZED.getStatusCode()).
                 when().
@@ -596,7 +596,7 @@ We can take a similar approach to validating that we receive an HTTP Unauthorize
         Warp.initiate(new Activity() {
             @Override
             public void perform() {
-                    given().
+                given().
                     then().
                         statusCode(Status.OK.getStatusCode()).
                 when().
@@ -660,7 +660,7 @@ This interceptor prohibits access and returns an HTTP +401+ if the request is fo
         Warp.initiate(new Activity() {
             @Override
             public void perform() {
-                    given().
+                given().
                     then().
                         statusCode(Status.UNAUTHORIZED.getStatusCode()).
                 when().
@@ -675,7 +675,7 @@ This interceptor prohibits access and returns an HTTP +401+ if the request is fo
         Warp.initiate(new Activity() {
             @Override
             public void perform() {
-                    given().
+                given().
                         redirects().
                             follow(false).
                     then().
