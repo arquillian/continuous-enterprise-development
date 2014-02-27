@@ -687,10 +687,10 @@ public void resetAppServerConfig()
 {
     deployer.undeploy(DEPLOYMENT_NAME);
 
-    // Server config code ommitted for brevity,
+    // Server config code omitted for brevity,
     // not really relevant to our objectives here
  }
 ----
 
-This example serves to illustrate a common and often undertested aspect of enterprise development.  Though the techniques we've applied here deal with external, non-transactional resources, asynchronous calling, and server configurations, this should serve as proof that even difficult cases can be adequately tested given a little thought and effort.  It's our belief that this will pay off dividends in avoiding production runtime errors and peace-of-mind in being armed with one more weapon in the battle to maintain a comprehensive, automated test suite.(((range="endofrange", startref="ix_ch07-asciidoc11")))(((range="endofrange", startref="ix_ch07-asciidoc10"))) (((range="endofrange", startref="ix_ch07-asciidoc7")))(((range="endofrange", startref="ix_ch07-asciidoc6"))) (((range="endofrange", startref="ix_ch07-asciidoc2")))(((range="endofrange", startref="ix_ch07-asciidoc1")))(((range="endofrange", startref="ix_ch07-asciidoc0")))
+This example serves to illustrate a common and often undertested aspect of enterprise development.  Though the techniques we've applied here deal with external, non-transactional resources, asynchronous calling, and server configurations, this should serve as proof that even difficult cases can be adequately tested given a little thought and effort.  It's our belief that this will pay dividends in avoiding production runtime errors and peace of mind in being armed with one more weapon in the battle to maintain a comprehensive, automated test suite.(((range="endofrange", startref="ix_ch07-asciidoc11")))(((range="endofrange", startref="ix_ch07-asciidoc10"))) (((range="endofrange", startref="ix_ch07-asciidoc7")))(((range="endofrange", startref="ix_ch07-asciidoc6"))) (((range="endofrange", startref="ix_ch07-asciidoc2")))(((range="endofrange", startref="ix_ch07-asciidoc1")))(((range="endofrange", startref="ix_ch07-asciidoc0")))
 
