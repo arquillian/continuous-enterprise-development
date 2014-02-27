@@ -30,6 +30,8 @@ In practice, this means we'll need to lock down the resources for these actions 
 
 === Implementation
 
+Our security solution will rely on some third-party assistance to provide the implementation pieces.
+
 ==== Supporting Software
 
 ((("security","implementing", id="ix_ch09-asciidoc2", range="startofrange")))It likely doesn't benefit us much to build bespoke solutions for generalized and important layers such as security, so we'll be relying on integration with a few frameworks to help us fulfill our requirements.
@@ -98,8 +100,7 @@ Here we define some constants and inject the PicketLink +@Identity+.  We can the
 ----
     @Override
     public void service(ServletRequest req, ServletResponse resp) 
-       throws IOException,
-        ServletException {
+       throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)resp;
@@ -123,7 +124,7 @@ Here we define some constants and inject the PicketLink +@Identity+.  We can the
                     response.getWriter().append("FAILED");
                 } else {
                     String url = String.valueOf(
-                    request.getSession().getAttribute(SESSION_REDIRECT));
+                        request.getSession().getAttribute(SESSION_REDIRECT));
                     response.setStatus(302);
                     response.setHeader(LOCATION, url);
                     request.getSession().removeAttribute(SESSION_REDIRECT);
