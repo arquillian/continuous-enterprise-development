@@ -8,7 +8,7 @@ ____
 
 ((("application assembly", id="ix_ch11-asciidoc0", range="startofrange")))((("assembly (of applications)", id="ix_ch11-asciidoc1", range="startofrange")))To this point, we've focused primarily on the testable development of our modules and have taken some selective slices out for examination and testing.  The time has come for us to address full integration by bringing everything together into a single deployable unit.
 
-Additionally, we'll look at some alternative (and arguably more enterprise-ready) runtimes for our application.  Ideally, we'd like to be in a position where our test environment is aligned as closely as possible to that which will be run in production, and we'll further aim to automate the process of deployment.  By removing human interaction as much as possible, our potential for mistakes decreases and we learn to rely instead on our test suite as a guardian of code quality.
+Additionally, we'll look at some alternative (and arguably more enterprise-ready) runtimes for our application.  Ideally, we'd like to be in a position where our test environment is aligned as closely as possible to what will be run in production, and we'll further aim to automate the process of deployment.  By removing human interaction as much as possible, our potential for mistakes decreases and we learn to rely instead on our test suite as a guardian of code quality.
 
 This chapter((("continuous integration"))) will ultimately link a +git push+ to validate new commits in a _continuous integration_ server before deploying the new version of our application into the publicly accessible Web.  Whether you go straight to production or first to a staging environment, these steps should outline a smooth transition from development to real application use.
 
@@ -20,9 +20,9 @@ This chapter((("continuous integration"))) will ultimately link a +git push+ to 
 * Supportable products are intended to have a multiyear life span, and receive updates and bug fixes over this time period.
 * A support contract and SLA can be purchased for supportable products.
 
-In March of 2013, the JBoss Senior Director of Engineering https://community.jboss.org/blogs/mark.little/2013/03/07/eap-binaries-available-for-all-developers[announced] that EAP binaries and its dependencies will be made freely available (at no monetary cost) through a _0-dollar subscription_ through Red Hat.  Because this runtime comes with no obligation and allows us a migration path to support if our little _GeekSeek_ business were to need it, we'll opt for EAP as our target runtime.
+In March of 2013, the JBoss Senior Director of Engineering https://community.jboss.org/blogs/mark.little/2013/03/07/eap-binaries-available-for-all-developers[announced] that EAP binaries and their dependencies will be made freely available (at no monetary cost) via a _0-dollar subscription_ through Red Hat.  Because this runtime comes with no obligation and allows us a migration path to support if our little _GeekSeek_ business were to need it, we'll opt for EAP as our target runtime.
 
-EAP has some additional differences with WildFly, which become very apparent during our development experience.  Though EAP is available for free, there is a _Terms and Conditions_ prerequisite to its use, and therefore is not currently available in the JBoss Nexus or Maven Central repositories.  We'll have to perform some extra steps to set up our environments for EAP before we can enable this option in our builds.
+EAP has some additional differences with WildFly, which become very apparent during our development experience.  Though EAP is available for free, there is a _Terms and Conditions_ prerequisite to its use, and therefore it is not currently available in the JBoss Nexus or Maven Central repositories.  We'll have to perform some extra steps to set up our environments for EAP before we can enable this option in our builds.
 
 First, let's obtain the EAP distribution and private JBoss EAP Maven repository from the http://www.jboss.org/jbossas/downloads/[JBoss Downloads] page, as shown in <<Figure10-1>>.
 
@@ -91,14 +91,14 @@ And with that, we have our server process running and ready to receive deploymen
 [[Figure10-2]]
 image::images/cedj_12in02.png[EAP Home Page]
 
-Let's leave this as-is for the time being, and open a new console window (or tab) in the GeekSeek application's source root.
+Let's leave this as is for the time being, and open a new console window (or tab) in the GeekSeek application's source root.
 
 Our ((("managed","container configuration")))experience with Arquillian up to this point has been using a _managed_ container configuration; this has ceded the responsibility of server startup and shutdown to Arquillian during the +Before Suite+ and +After Suite+ test lifecycle events.  Now that we've already got a server booted, we can let Arquillian bypass these steps to use a previously bootstrapped process, which gives us some benefits:
 
-* We save the time needed to start/stop a server alongside each test suite.
+* We save the time needed to start and/or stop a server alongside each test suite.
 * A server does not have to be running locally; the server process may be housed on a separate physical machine accessible on the network.
 
-We've provided a Maven profile, +arq-jbosseap-remote+, to run our Arquillian tests against a running EAP process on the local machine.  From the GeekSeek source code root, simply pass this profile as an argument using the +-P+ switch to the +mvn+ command, and instead of using the default WildFly managed container (which will automatically start/stop), we'll instead use our running server that we started earlier:
+We've provided a Maven profile, +arq-jbosseap-remote+, to run our Arquillian tests against a running EAP process on the local machine.  From the GeekSeek source code root, simply pass this profile as an argument using the +-P+ switch to the +mvn+ command, and instead of using the default WildFly managed container (which will automatically start and stop), we'll instead use the running server that we started earlier:
 
 ----
 code $> mvn clean install -Parq-jbosseap-remote
@@ -113,7 +113,7 @@ The build will run as we've seen before, only this time we'll be able to see som
   (runtime-name : "015c84ea-1a41-4e37-957a-f2433f201a23.war")
 ----
 
-This may be a preferable technique to employ while developing; at the start of the day you can launch the server and keep it running as an external process, and run your tests without the overhead of waiting for server start and stop, as well as the unzipping process (and resulting file I/O) to create local WildFly installation directories under +target+ for testing.  On our machines, this cuts the total build time from around 3:30 to 2:11 as we exercise quite a few test suites and hence remove a good number of start/stop lifecycle events by using the remote container.
+This may be a preferable technique to employ while developing; at the start of the day you can launch the server and keep it running as an external process, and run your tests without the overhead of waiting for server start and stop, as well as the unzipping process (and resulting file I/O) to create local WildFly installation directories under +target+ for testing.  On our machines, this cuts the total build time from around 3:30 to 2:11, as we exercise quite a few test suites and hence remove a good number of start/stop lifecycle events by using the remote container.
 
 Because we're done with the EAP instance we started earlier, let's end the process: (((range="endofrange", startref="ix_ch11-asciidoc6")))
 
@@ -140,11 +140,11 @@ Let's begin by unpacking this into a new repository alongside the default +~/.m2
 .m2 $> rm jboss-eap-6.1.0-maven-repository.zip
 ----
 
-This will leave us with a our new EAP extension repository +jboss-eap-6.1.0.GA-maven-repository+ under our +.m2/+ directory.
+This will leave us with the new EAP extension repository +jboss-eap-6.1.0.GA-maven-repository+ under our +.m2/+ directory.
 
 Now we must let Maven know about our new repository, so we can define it in the default user-level _~/.m2/settings.xml_.  Note that we're actually free to use any settings file we choose, though if we opt outside of the default settings file we'll have to manually specify our settings configuration to the +mvn+ command using the +-s /path/to/settings/file+ switch.
 
-We'll add our repository definition inside of a profile, so that we can enable this at will without affecting other projects.  In this case we create the +jboss-eap-6.1.0+ profile:
+We'll add our repository definition inside a profile, so that we can enable this at will without affecting other projects.  In this case we create the +jboss-eap-6.1.0+ profile:
 
 ----
 <?xml version="1.0" encoding="UTF-8"?>
@@ -239,7 +239,7 @@ jboss-as-dist-eap-6.1.0.zip.md5
 jboss-as-dist-eap-6.1.0.zip.sha1
 ----
 
-Now, assuming we enable the +jboss-eap-6.1.0+ profile in our builds, we'll be able to use EAP just as we had for WildFly, because we've assigned it to a proper Maven artifact in the coordinate space +org:jboss.as:jboss-as-dist:eap-6.1.0+.
+Now, assuming we enable the +jboss-eap-6.1.0+ profile in our builds, we'll be able to use EAP just as we did for WildFly, because we've assigned it to a proper Maven artifact in the coordinate space +org:jboss.as:jboss-as-dist:eap-6.1.0+.
 
 To run our GeekSeek build with tests against EAP in managed mode, we apply the +jboss-eap-6.1.0+ profile to enable our custom repository, and the +arq-jbosseap-managed+ profile to configure Arquillian with the proper adaptors:
 
@@ -472,7 +472,7 @@ When the process is completed, a default landing page will be accessible to us (
 [[Figure10-13]]
 image::images/cedj_12in13.png[Welcome to OpenShift]
 
-The default DNS record will be in format _http://appName-domainId.rhcloud.com_.  It's likely that this isn't really the name we desire for public consumption, so let's add our own custom DNS name.
+The default DNS record will be in the format _http://appName-domainId.rhcloud.com_.  It's likely that this isn't really the name we desire for public consumption, so let's add our own custom DNS name.
 
 This is a two-step process:
 
@@ -548,7 +548,7 @@ When the +git push+ command concludes and the remote build is complete, reloadin
 
 ((("application deployment","pushing build jobs", id="ix_ch11-asciidoc27", range="startofrange")))((("deploying applications","pushing build jobs", id="ix_ch11-asciidoc28", range="startofrange")))((("OpenShift application service","pushing build jobs to", id="ix_ch11-asciidoc29", range="startofrange")))The final piece of the automated deployment puzzle lies in deploying artifacts built from our CI server into our runtime environment.  In our case, this amounts to configuring the CloudBees Jenkins instance to perform some Git operations against our OpenShift repository.
 
-We'll need to allow access for CloudBees Jenkins to interact with the OpenShift repository. On the Configure screen for our CI job is a section entitled "CloudBees DEV@Cloud Authorization," which contains our public key (see <<Figure10-16>>). Copy this to your OS's clipboard.
+We'll need to allow access for CloudBees Jenkins to interact with the OpenShift repository. On the Configure screen for our CI job is a section named CloudBees DEV@Cloud Authorization, which contains our public key (see <<Figure10-16>>). Copy this to your OS's clipboard.
 
 .CloudBees SSH public key
 [[Figure10-16]]
@@ -560,7 +560,7 @@ Then log in to your OpenShift Management Console and select https://openshift.re
 [[Figure10-17]]
 image::images/cedj_12in17.png[OpenShift Public Keys]
 
-Switching back to our Jenkins job configuration screen, toward the bottom is a section where we can add "Post Build" steps (see <<Figure10-18>>).  Let's create a shell-based action that will be set to execute only upon successful build.
+Switching back to our Jenkins job configuration screen, toward the bottom is a section where we can add "postbuild" steps (see <<Figure10-18>>).  Let's create a shell-based action that will be set to execute only upon successful build.
 
 .CloudBees Post Build
 [[Figure10-18]]
