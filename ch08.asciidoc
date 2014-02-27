@@ -8,13 +8,13 @@ ____
 
 ((("REST", id="ix_ch08-asciidoc0", range="startofrange"))) ((("addressable services", id="ix_ch08-asciidoc1", range="startofrange")))((("REST","as addressable service", id="ix_ch08-asciidoc2", range="startofrange")))The concepts guiding the makeup of the modern Web could be considered a happy accident, or at least an implementation of ideas that had general applicability far beyond their initial design criteria.  In the late 1980s we had the hardware and software necessary for networking; these were low-level tools for transmitting data from one computer to another.  We even had some payload protocols and application layers available including IRC for chat, POP for email, and Usenet for general discussions.  We were communicating, albeit over relatively constrained channels.
 
-Out of necessity for his own research,((("Berners-Lee, Tim"))) Tim Berners-Lee of the((("European Organization for Nuclear Research (CERN)"))) European Organization for Nuclear Research (CERN) concocted a small receipe for publishing documents in a manner that would make his findings more accessible between departments and encourage updates over time.  Called the((("world wide web, origins of"))) "WorldWideWeb" (WWW), http://bit.ly/1e8h4rh[this project proposed a series of simple constructs]:
+Out of necessity for his own research,((("Berners-Lee, Tim"))) Tim Berners-Lee of the((("European Organization for Nuclear Research (CERN)"))) European Organization for Nuclear Research (CERN) concocted a small recipe for publishing documents in a manner that would make his findings more accessible between departments and encourage updates over time.  Called the((("world wide web, origins of"))) "WorldWideWeb" (WWW), http://bit.ly/1e8h4rh[this project proposed a series of simple constructs]:
 
 Addressable resources:: A unique key or address assigned to each document
 Hypertext:: A unidirectional pointer to an addressable resource
 Browser:: A client program capable of reading hypertext-enabled documents
 
-We take these concepts lightly now, but it's worthwhile considering the paradigm shift this evoked in the early 1990s; in only ten years' time, most of the world's university students and many homes were connected to a web that contained a marketing presense for an overwhelming majority of the Fortune 500.  These ideas ushered innovation and communication at a rate never before seen in the history of mankind.  This was instant, global publishing, and it was free.
+We take these concepts lightly now, but it's worthwhile considering the paradigm shift this evoked in the early 1990s; in only 10 years' time, most of the world's university students and many homes were connected to a web that contained a marketing presence for an overwhelming majority of the Fortune 500.  These ideas ushered innovation and communication at a rate never before seen in the history of mankind.  This was instant, global publishing, and it was free.
 
 Central to the makeup of the WWW was the introduction of the _Uniform Resource Identifier_, or URI.  The URI defined by http://bit.ly/1e8haPu[RFC 3986] forms the basis of an addressable resource, and has the following makeup:
 
@@ -45,9 +45,9 @@ By addressing services and applying a set of conventions to these URIs, we're ab
 Clearly the study of REST is worthy of its own text, and we'll recommend pass:[<emphasis><ulink role="orm:hideurl" url="http://shop.oreilly.com/product/9780596805838.do">REST in Practice</ulink></emphasis>] by Webber, et al. (O'Reilly, 2010) to those looking to explore in greater depth.
 ====
 
-((("Remote Procedure Call (RPC)")))REST is certainly not the first distributed architecture; _Remote Procedure Call_ (RPC) variants have been used in various forms (i.e., SOAP, XML-RPC) for a long while.  In recent years, the trend toward REST has been largely attributed to its ease-of-use and slim profile when coupled with the((("HyperText Transfer Protocol (HTTP)"))) _HyperText Transfer Protocol_ (HTTP), an established communication protocol providing for _methods_, _headers_, and _return status codes_ that map well to the objectives of the caller.  In practice, the success of the WWW is inherently linked to HTTP, though this is only one protocol (scheme) that can be applied to the general guidelines of the Web.  Due to its widespread usage and versatility, we'll be employing HTTP throughout this chapter.
+((("Remote Procedure Call (RPC)")))REST is certainly not the first distributed architecture: _Remote Procedure Call_ (RPC) variants have been used in various forms (i.e., SOAP, XML-RPC) for a long while.  In recent years, the trend toward REST has been largely attributed to its ease of use and slim profile when coupled with the((("HyperText Transfer Protocol (HTTP)"))) _HyperText Transfer Protocol_ (HTTP), an established communication protocol providing for _methods_, _headers_, and _return status codes_ that map well to the objectives of the caller.  In practice, the success of the WWW is inherently linked to HTTP, though this is only one protocol (scheme) that can be applied to the general guidelines of the Web.  Due to its widespread usage and versatility, we'll be employing HTTP throughout this chapter.
 
-Because of its success, REST has become an abused buzzword in some circles.  It's helpful for us to clarify the stages of compliance with a truly RESTful system, and a maturity model developed by((("Richardson, Leonard"))) http://www.crummy.com/self/[Leonard Richardson] presents four rungs of evolution.  ((("Fowler, Martin")))Martin Fowler ably sums these up in his http://bit.ly/1fh2AGt[blog post], and we'll outline them here:
+Because of its success, REST has become an abused buzzword in some circles.  It's helpful for us to clarify the stages of compliance with a truly RESTful system, and a maturity model developed by((("Richardson, Leonard"))) http://www.crummy.com/self/[Leonard Richardson] presents four rungs of evolution.  ((("Fowler, Martin")))Martin Fowler ably sums these up in a http://bit.ly/1fh2AGt[blog post], and we'll outline them here:
 
 |====
 |Stage 0|Using HTTP as a transport system for arbitrary payloads; typically used in plain RPC where a caller may wish to invoke upon a server over a network.
@@ -75,7 +75,7 @@ with POJOs in order to expose them as Web resources. The specification will defi
 and scope.
 HTTP-centric:: The specification will assume HTTP is the underlying network protocol and will provide a clear mapping between HTTP and URI elements and the corresponding API classes and
 annotations. The API will provide high-level support for common HTTP usage patterns and will be
-sufficiently flexible to support a variety of HTTP applications including WebDAV and the Atom
+sufficiently flexible to support a variety of HTTP applications, including WebDAV and the Atom
 Publishing Protocol.
 Format independence:: The ((("format independence")))API will be applicable to a wide variety of HTTP entity body content types. It
 will provide the necessary pluggability to allow additional types to be added by an application in a
@@ -88,7 +88,7 @@ class.
 
 [NOTE]
 ====
-Because it's not our aim to provide a comprehensive overview of JAX-RS, we recommend((("RESTful Java with JAX-RS (Burke)")))((("Burke, Bill"))) pass:[<emphasis><ulink role="orm:hideurl" url="http://shop.oreilly.com/product/9780596158057.do">RESTful Java with JAX-RS</ulink></emphasis>] by Bill Burke (O'Reilly, 2009), member of the JSR-339 Expert Group and lead of the JBoss Community's http://www.jboss.org/resteasy[RESTEasy implementation].  The second revision of the book, covering the latest 2.0 version of the specification, is now http://shop.oreilly.com/product/0636920028925.do[on sale for pre-order].
+Because it's not our aim to provide a comprehensive overview of JAX-RS, we recommend((("RESTful Java with JAX-RS (Burke)")))((("Burke, Bill"))) pass:[<emphasis><ulink role="orm:hideurl" url="http://shop.oreilly.com/product/9780596158057.do">RESTful Java with JAX-RS</ulink></emphasis>] by Bill Burke (O'Reilly, 2009), a member of the JSR-339 Expert Group and lead of the JBoss Community's http://www.jboss.org/resteasy[RESTEasy implementation].  The second revision of the book, covering the latest 2.0 version of the specification, is now http://shop.oreilly.com/product/0636920028925.do[on sale].
 ====
 
 The((("JAX-RS Specification API"))) http://jsr311.java.net/nonav/javadoc/[JAX-RS Specification API] provides a set of annotations helpful to developers seeking to map incoming HTTP-based requests to backend services.  From the docs, these include:
@@ -237,7 +237,7 @@ public abstract class RepositoryResource<
     implements Resource {
 ----
 
-Simple enough; an abstract class notes we'll be extending this later for more specific resources that interact with a +Respository+.  Let's define the base media types our application will be using.  Remember, media types are a key part of the maturity model in handling the types of responses to be returned given the input from the request.  For example, a JSON request should yield a JSON response in our known format:
+Simple enough; an abstract class notes we'll be extending this later for more specific resources that interact with a +Respository+.  Let's define the base media types our application will be using.  Remember, media types are a key part of the maturity model in handling the types of responses to be returned, given the input from the request.  For example, a JSON request should yield a JSON response in our known format:
 
 [source,java]
 ----
@@ -271,7 +271,7 @@ private Repository<DOMAIN> repository;
 private RepresentationConverter<REP, DOMAIN> converter;
 ----
 
-The +@Context+ annotation will help us gain access into the context of the request in-flight; information about the URI or HTTP headers.  The +Repository+ is how we'll access the persistence layer, and the +RepresentationConverter+ will be responsible for mapping between the client payload and our own entity object model.
+The +@Context+ annotation will help us gain access to the context of the request in flight: information about the URI or HTTP headers.  The +Repository+ is how we'll access the persistence layer, and the +RepresentationConverter+ will be responsible for mapping between the client payload and our own entity object model.
 
 Now let's make sure that subclasses set our extension fields properly:
 
@@ -397,7 +397,7 @@ public class UserResource
 }
 ----
 
-Because we inherit all of the support to interact with JPA from the parent +RepositoryResource+, this class needs to do little more than:
+Because we inherit all the support to interact with JPA from the parent +RepositoryResource+, this class needs to do little more than:
 
 * Note that we are an +@ResourceModel+, a custom type that is a CDI `@Stereotype` to add interceptors.  We explain this in greater depth in <<resource-model>>.
 * Define a path for the resource, in this case, "/user" under the JAX-RS application root.
@@ -415,7 +415,7 @@ Now we can handle CRUD operations for +User+ domain objects; similar implementat
 * Link resources
 * Render itself in multiple different representations and formats
 
-Additionally, some resources act as proxy resources and have no representation on their own.  To allow these resources to operate in a modular fashion, we need a way to describe conversion--for example, the relation resource links users to a conference (attendees, speakers). The relation it self knows nothing about the source or target types, but it knows how to get a converter that supports converting between these types.  To handle this, we supply the +org.cedj.geekseek.web.rest.core.RepresentationConverter+:
+Additionally, some resources act as proxies and have no representation on their own.  To allow these resources to operate in a modular fashion, we need a way to describe conversion--for example, the relation resource links users to a conference (attendees, speakers). The relation it self knows nothing about the source or target types, but it knows how to get a converter that supports converting between these types.  To handle this, we supply the +org.cedj.geekseek.web.rest.core.RepresentationConverter+:
 
 [source,java]
 ----
@@ -478,7 +478,7 @@ public abstract static class Base<REST, SOURCE>
 }
 ----
 
-CDI will dutifully inject the appropriate instance of this converter where required; for instance, in this field of the +org.cedj.geekseek.web.rest.conference.ConferenceResource+:
+CDI will dutifully inject the appropriate instance of this converter where required; for instance, in this field of the +org.cedj.geekseek.web.rest.conference.Conference+ pass:[<phrase role='keep-together'><literal>Resource</literal></phrase>]:
 
 [source,java]
 ----
@@ -487,12 +487,12 @@ private RepresentationConverter<SessionRepresentation,
     Session> sessionConverter;
 ----
 
-Through these converters we can easily delegate the messy business of parsing the media type payload formats to and from our own interal domain objects.(((range="endofrange", startref="ix_ch08-asciidoc14")))(((range="endofrange", startref="ix_ch08-asciidoc13")))(((range="endofrange", startref="ix_ch08-asciidoc12")))
+Through these converters we can easily delegate the messy business of parsing the media-type payload formats to and from our own internal domain objects.(((range="endofrange", startref="ix_ch08-asciidoc14")))(((range="endofrange", startref="ix_ch08-asciidoc13")))(((range="endofrange", startref="ix_ch08-asciidoc12")))
 
 [[resource-model]]
 ==== The @ResourceModel
 
-((("@Resource model", sortas="Resource model")))((("JAX-RS specification","@Resource model for", sortas="Resource model")))Because JAX-RS 1.x does not define an interceptor model, we need to apply these on our own in order to activate cross-cutting concerns such as security, validation, and resource linking to our JAX-RS endpoints.  This is easily enough accomplished by using the stereotype feature of CDI, where we can create our own annotation type (which itself has annotations); wherever our custom type is applied, the metadata we specify upon the stereotype will propagate.  So we can create an annotation to apply all of the features we'd like upon a +RepositoryResource+, and we call it +org.cedj.geekseek.web.rest.core.annotation.ResourceModel+:
+((("@Resource model", sortas="Resource model")))((("JAX-RS specification","@Resource model for", sortas="Resource model")))Because JAX-RS 1.x does not define an interceptor model, we need to apply these on our own to activate cross-cutting concerns such as security, validation, and resource linking to our JAX-RS endpoints.  This is easily enough accomplished using the stereotype feature of CDI, where we can create our own annotation type (which itself has annotations): wherever our custom type is applied, the metadata we specify upon the stereotype will propagate.  So we can create an annotation to apply all of the features we'd like upon a +RepositoryResource+, and we call it +org.cedj.geekseek.web.rest.core.annotation.ResourceModel+:
 
 [source,java]
 ----
@@ -544,7 +544,7 @@ public class RESTInterceptorEnabler {
 }
 ----
 
-Marking the +RESTInterceptorEnabler+ with +@REST+ and +@Interceptor+ binds the +RESTInterceptorEnabler+ to the use of the +@REST+ annotation; then we can inject all valid +RESTInterceptor+ instances and invoke them according to a sorted order in the +intercept+ method annotated with +@AroundInvoke+.  With our custom chain we can rely on CDI to provide an +Instance<X>+ of our desired custom interceptor type dynamically based on what is deployed rather then what is configured.
+Marking the +RESTInterceptorEnabler+ with +@REST+ and +@Interceptor+ binds the +RESTInterceptorEnabler+ to the use of the +@REST+ annotation; then we can inject all valid +RESTInterceptor+ instances and invoke them according to a sorted order in the +intercept+ method annotated with +@AroundInvoke+.  With our custom chain, we can rely on CDI to provide an +Instance<X>+ of our desired custom interceptor type dynamically based on what is deployed rather then what is configured.
 
 In practice, this means that our +SecurityInterceptor+, +LinkedInterceptor+, and +ValidatedInterceptor+ (our implementations of type +RESTInterceptor+) will all be invoked for business methods on classes marked +@ResourceModel+.
 
@@ -685,7 +685,7 @@ public class LinkedInterceptor implements RESTInterceptor {
 
 ==== ResourceLink
 
-(((range="endofrange", startref="ix_ch08-asciidoc17")))(((range="endofrange", startref="ix_ch08-asciidoc16")))(((range="endofrange", startref="ix_ch08-asciidoc15"))) ((("GeekSeek","ResourceLink")))((("ResourceLink (GeekSeek)")))Recall from our DAP that many requests are to return a link to other resources as the client makes its way through state changes in the application.  A link is really a value object to encapsulate a media type, href (link), and relation.  We provide this in +org.cedj.geekseek.web.rest.core.ResourceLink+:
+(((range="endofrange", startref="ix_ch08-asciidoc17")))(((range="endofrange", startref="ix_ch08-asciidoc16")))(((range="endofrange", startref="ix_ch08-asciidoc15"))) ((("GeekSeek","ResourceLink")))((("ResourceLink (GeekSeek)")))Recall from our DAP that many requests are to return a link to other resources as the client makes its way through state changes in the application.  A link is really a value object to encapsulate a media type, `href` (link), and relation.  We provide this in +org.cedj.geekseek.web.rest.core.ResourceLink+:
 
 [source,java]
 ----
@@ -737,7 +737,7 @@ public class ResourceLink {
 
 === Requirement Test Scenarios
 
-((("requirement test scenarios","for JAX-RS", sortas="JAX-RS", id="ix_ch08-asciidoc18", range="startofrange")))((("requirement test scenarios","for REST", sortas="REST", id="ix_ch08-asciidoc19", range="startofrange")))With our implementation in place leveraging JAX-RS to map our DAP to business methods, we're set to test our endpoints.  The core areas we want to assert are the expected responses from requests to:
+((("requirement test scenarios","for JAX-RS", sortas="JAX-RS", id="ix_ch08-asciidoc18", range="startofrange")))((("requirement test scenarios","for REST", sortas="REST", id="ix_ch08-asciidoc19", range="startofrange")))With our implementation in place, leveraging JAX-RS to map our DAP to business methods, we're set to test our endpoints.  The core areas we want to assert are the expected responses from requests to:
 
 * +PUT+ data
 * +GET+ data
@@ -784,9 +784,9 @@ public class CreateConferenceAndSessionStory {
     }
 ----
 
-((("REST", "validating services")))The +@RunWith+ annotation should be familiar by now; Arquillian will be handling the test lifecycle for us.  As noted previously, it's good practice to allow Arquillian to inject the base URL of the application by using +@ArquillianResource+.  And because we're not bound to any frameworks in particular, we can also use the https://code.google.com/p/rest-assured/[REST-assured] project to provide us with a clean DSL to validate our REST services.
+((("REST", "validating services")))The +@RunWith+ annotation should be familiar by now; Arquillian will be handling the test lifecycle for us.  As noted previously, it's good practice to allow Arquillian to inject the base URL of the application by using +@ArquillianResource+.  And because we're not bound to any frameworks in particular, we can also use the https://code.google.com/p/rest-assured/[REST-assured] project to provide a clean DSL to validate our REST services.
 
-Notably missing from this declaration is the +@Deployment+ method, which we supply in +CreateConferenceAndSessionStoryTestCase+ so we can decouple the test scenario from the test deployment logic; this encourages re-use for running the same tests with different deployments so we can further integrate other layers later.  The deployment method for our purposes here looks like:
+Notably missing from this declaration is the +@Deployment+ method, which we supply in +CreateConferenceAndSessionStoryTestCase+ so we can decouple the test scenario from the test deployment logic; this encourages re-use for running the same tests with different deployments, so we can further integrate other layers later.  The deployment method for our purposes here looks like:
 
 [source,java]
 ----
@@ -797,7 +797,7 @@ public static WebArchive deploy() {
 }
 ----
 
-Because this is a black-box test, we set +testable+ to +false+ to tell Arquillian not to equip the deployment with any additional test runners; we don't want to test in-container here, but rather run requests from the outside of the server and analyze the response.  The test should verify a behavior, not any internal details.  We could likely write a test where we employ sharing of objects and this might be easier to code and update, but could also sneak in unexpected client changes that should have been caught by the tests.  We're interested only in testing the contract between the client and the server, which is specified by our DAP.  Thus, black-box testing is an appropriate solution in this case.
+Because this is a black-box test, we set +testable+ to +false+ to tell Arquillian not to equip the deployment with any additional test runners; we don't want to test in-container here, but rather run requests from the outside of the server and analyze the response.  The test should verify a behavior, not any internal details.  We could likely write a test where we employ sharing of objects, and this might be easier to code and update, but it could also sneak in unexpected client changes that should have been caught by the tests.  We're interested only in testing the contract between the client and the server, which is specified by our DAP.  Thus, black-box testing is an appropriate solution in this case.
 
 In this deployment, we'll also use "fake" implementations for the Repository / JPA layer; these are provided by the +TestConferenceRepository+ and +TestSessionRepository+ test classes, which simulate the JPA layer for testing purposes.  We won't be hitting the database for the tests at this level of integration.  Later on, when we fully integrate the application, we'll bring JPA back into the picture:
 
@@ -815,7 +815,7 @@ On to the tests:
 
 [source,java]
 ----
-// Story: As a 3rd party Integrator I should be able locate 
+// Story: As a 3rd party Integrator I should be able to locate 
 // the Conference root Resource
 @Test @InSequence(0)
 public void shouldBeAbleToLocateConferenceRoot() throws Exception {
@@ -836,13 +836,13 @@ public void shouldBeAbleToLocateConferenceRoot() throws Exception {
     }
 ----
 
-Our first test is charged with locating the conference root at the base URL + "api" (as we configured the path using the +@ApplicationPath+ annotation in our application).  We set the media type and expect to have our links for the conference returned to the client matching the +@Path+ annotation we have sitting atop our +ConferenceResource+ class (baseURL + "api" + "conference").  The +@InSequence+ annotation set to value of +0+ will ensure that this test is run first.
+Our first test is charged with locating the conference root at the base URL + "api" (as we configured the path using the +@ApplicationPath+ annotation in our application).  We set the media type and expect to have our links for the conference returned to the client matching the +@Path+ annotation we have sitting atop our +ConferenceResource+ class (baseURL + "api" + "conference").  The +@InSequence+ annotation set to a value of +0+ will ensure that this test is run first.
 
 Assuming that's successful, we can move on to our next test, creating a conference:
 
 [source,java]
 ----
-// Story: As a 3rd party Integrator I should be able create a Conference
+// Story: As a 3rd party Integrator I should be able to create a Conference
 @Test @InSequence(1)
 public void shouldBeAbleToCreateConference() throws Exception { .. }
 ...
@@ -872,7 +872,7 @@ Warp effectively removes the need for mocking and opens new possibilities for de
 
 ===== Technology independence
 
-Whatever client-side tools we use for emiting an HTTP request, Warp allows us to assert and verify logic on a most appropriate place of client-server request lifecycle.
+Whatever client-side tools we use for emitting an HTTP request, Warp allows us to assert and verify logic on the most appropriate place of client-server request lifecycle.
 
 ===== Use cases
 
@@ -1049,5 +1049,5 @@ Via=1.1.overdrive.home
 
 The response will contain our links to related resources, as well as information about the requested +Conference+ object in the XML +xmlns:ns3="urn:ced:conference"+ format.  Using Warp, we can interact with and perform validations upon these types of payloads with ease.
 
-There are plenty of other detailed Warp examples throughout the tests of the REST modules in the GeekSeek application code; we advise readers to peruse the source for additional ideas in using this very powerful tool for white-box testing of the request/response model.(((range="endofrange", startref="ix_ch08-asciidoc29")))(((range="endofrange", startref="ix_ch08-asciidoc28")))(((range="endofrange", startref="ix_ch08-asciidoc27")))(((range="endofrange", startref="ix_ch08-asciidoc26")))(((range="endofrange", startref="ix_ch08-asciidoc25")))(((range="endofrange", startref="ix_ch08-asciidoc24")))(((range="endofrange", startref="ix_ch08-asciidoc23"))) (((range="endofrange", startref="ix_ch08-asciidoc19")))(((range="endofrange", startref="ix_ch08-asciidoc18"))) (((range="endofrange", startref="ix_ch08-asciidoc9")))
+There are plenty of other detailed Warp examples throughout the tests of the REST modules in the GeekSeek application code; we advise readers to peruse the source for additional ideas on using this very powerful tool for white-box testing of the request/response model.(((range="endofrange", startref="ix_ch08-asciidoc29")))(((range="endofrange", startref="ix_ch08-asciidoc28")))(((range="endofrange", startref="ix_ch08-asciidoc27")))(((range="endofrange", startref="ix_ch08-asciidoc26")))(((range="endofrange", startref="ix_ch08-asciidoc25")))(((range="endofrange", startref="ix_ch08-asciidoc24")))(((range="endofrange", startref="ix_ch08-asciidoc23"))) (((range="endofrange", startref="ix_ch08-asciidoc19")))(((range="endofrange", startref="ix_ch08-asciidoc18"))) (((range="endofrange", startref="ix_ch08-asciidoc9")))
 
