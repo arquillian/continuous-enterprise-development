@@ -761,7 +761,7 @@ We can also set a few flags to note whether our create and remove JPA events are
 
 [source,java]
 ----
-    // these fields are static because Events observed by this TestClass are not
+    // these fields are static because Events observed by this TestClass
     // are not observed on the same TestClass instance as @Test is running.
     private static boolean createdEventFired = false;
     private static boolean removedEventFired = false;
