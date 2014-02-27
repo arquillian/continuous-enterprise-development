@@ -106,6 +106,16 @@ Watch us on YouTube: link:$$http://www.youtube.com/oreillymedia$$[]
 
 === Acknowledgments
 
-++++
-<remark>ALR and Aslak to supply to Prod.</remark>
-++++
+First and foremost we would like to give a huge thanks to the Arquillian community: wonderful, talented folks from around the world who have contributed their time and knowledge to help improve the project, from coding to writing to speaking to screaming on the Internet (yes, we pay attention to you).
+
+A special thank you to all the Arquillian module leads: Karel Piwko, Bartosz Majsak, Lukáš Fryč, Dan Allen, Stefan Miklosovic, Jakub Narloch, Gerhard Poul, John Ament, Jan Papousek, Bernard Labno, Ståle Pedersen, Ken Finnigan, Tolis Emmanouilidis, Ales Justin, Martin Gencur, Vineet Reynolds, Davide D’Alto, Jean Deruelle, David Blevins, Mark Struberg, Thomas Diesler, Romain Manni-Bucau, Logan McGrath, and Alexis Hassler.
+
+A big shout out to Sarah White and Cheyenne Weaver for giving us the visual identity and the storyline to play with. You make us look good!
+
+And thanks to all the people who helped us throughout this book, correcting and commenting on the content.
+
+Thanks to Meghan Blanchette for being so persistent on pushing us back to work. This probably (definitely) would never have reached revision if you hadn’t!
+
+And last but not least, a big thanks to our friend in code Adam Bien for the foreword.
+
+This book is for the community from which our work was born, raised, and continues to evolve.
