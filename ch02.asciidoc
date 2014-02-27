@@ -110,31 +110,31 @@ Again, it is not our aim to fully delve into the mechanics of each tool we'll be
 
 ((("test platforms", id="ix_ch02-asciidoc5a", range="startofrange")))Java EE 5 introduced a _POJO_ (Plain Old Java Object) programming ((("POJO (Plain Old Java Object)","programming model")))model, which freed developers from having to adhere to any particular class hierarchy for its business objects.  The introduction of http://bit.ly/MAgJYs[Contexts and Dependency Injection] (CDI) in Java EE 6 further pushed the notion of simple ((("Context and Dependency Injection (CDI)")))((("typesafe injection")))business objects by providing _typesafe injection_.  
 
-The benefit to objects that can be easily created using the +new+ operator is the same as their drawback; when we manually instantiate objects for use in testing, we're not dealing with the same enterprise components we have in the target runtime.  An EJB becomes such only in the context of an EJB container; a servlet is a servlet only when created by a servlet container.  Any time we circumvent the target runtime environment to handle object creation and wiring on our own, we're((("mock objects"))) using _mock objects_.
+The benefit to objects that can be easily created using the +new+ operator is the same as their drawback: when we manually instantiate objects for use in testing, we're not dealing with the same enterprise components we have in the target runtime.  An EJB becomes such only in the context of an EJB container; a servlet is a servlet only when created by a servlet container.  Any time we circumvent the target runtime environment to handle object creation and wiring on our own, we're((("mock objects"))) using _mock objects_.
 
 Although many will advocate on the usefulness of mocks, by definition they provide an approximation of how your application will behave in a production environment.  Remember that you're responsible for validating that the full bevy of code running on your servers is working as expected, including the bits you _did not write_.  Many not-so-subtle errors may arise while leveraging the full potential of the application server in production, and it's best to be testing in an environment as close to the real thing as possible.
 
-True Java EE testing in this sense is an area left largely unspecified by the EE Platform, and we'll be examining some tools to help bridge this divide.
+True Java EE testing in this sense is an area left largely unspecified by the EE platform, and we'll be examining some tools to help bridge this divide.
 
 ==== Arquillian
 
 ((("Arquillian")))((("test platforms","Arquillian")))http://arquillian.org[Arquillian] is an innovative and highly extensible testing platform for the JVM that enables developers to easily create automated integration, functional, and acceptance tests for Java middleware.
 
-Picking up where unit tests leave off, Arquillian handles all the plumbing of container management, deployment, and framework initialization so you can focus on the business of writing test logic.  Instead of configuring a potentially complex test harness, Arquillian abstracts out the target runtime by:
+Picking up where unit tests leave off, Arquillian handles all the plumbing of container management, deployment, and framework initialization, so you can focus on the business of writing test logic.  Instead of configuring a potentially complex test harness, Arquillian abstracts out the target runtime by:
 
-* Managing the lifecycle of the container (or containers)
-* Bundling the test case, dependent classes, and resources into a ShrinkWrap archive (or archives)
-* Deploying the archive (or archives) to the container (or containers)
-* Enriching the test case by providing dependency injection and other declarative services
-* Executing the tests inside (or against) the container
-* Capturing the results and returning them to the test runner for reporting
-* To avoid introducing unnecessary complexity into the developer’s build environment, Arquillian integrates seamlessly with familiar testing frameworks (e.g., JUnit 4, TestNG 5), allowing tests to be launched using existing IDE, Ant, and Maven test plug-ins--without any add-ons
+* Managing the lifecycle of the container (or containers).
+* Bundling the test case, dependent classes, and resources into a ShrinkWrap archive (or archives).
+* Deploying the archive (or archives) to the container (or containers).
+* Enriching the test case by providing dependency injection and other declarative services.
+* Executing the tests inside (or against) the container.
+* Capturing the results and returning them to the test runner for reporting.
+* To avoid introducing unnecessary complexity into the developer’s build environment, Arquillian integrates seamlessly with familiar testing frameworks (e.g., JUnit 4, TestNG 5), allowing tests to be launched using existing IDE, Ant, and Maven test plug-ins--without any add-ons.
 
 The Arquillian project ((("Arquillian","core principles")))adheres to three core principles:
 
-Tests should be portable to any supported container:: Keeping container-specific APIs out of the tests enables developers to verify application portability by running tests in a variety of containers. It also means that lightweight containers can be used as a substitute for full containers during development.
-Tests should be executable from both the IDE and the build tool::  By leveraging the IDE, the developer can skip the build for a faster turnaround and has a familiar environment for debugging. These benefits shouldn’t sacrifice the ability to run the tests in continuous integration using a build tool.
-The platform should extend or integrate existing test frameworks:: An extensible architecture encourages reuse of existing software and fosters a unified Java testing ecosystem.  Regardless of how complex it becomes, executing an Arquillian test is as simple as selecting Run As -> Test in the IDE or executing the “test” goal from the build tool, as shown in <<Figure2-4>>.
+Tests should be portable to any supported container.:: Keeping container-specific APIs out of the tests enables developers to verify application portability by running tests in a variety of containers. It also means that lightweight containers can be used as a substitute for full containers during development.
+Tests should be executable from both the IDE and the build tool.::  By leveraging the IDE, the developer can skip the build for a faster turnaround and has a familiar environment for debugging. These benefits shouldn’t sacrifice the ability to run the tests in continuous integration using a build tool.
+The platform should extend or integrate existing test frameworks.:: An extensible architecture encourages reuse of existing software and fosters a unified Java testing ecosystem.  Regardless of how complex it becomes, executing an Arquillian test is as simple as selecting Run As -> Test in the IDE or executing the “test” goal from the build tool, as shown in <<Figure2-4>>.
 
 .DCVS repositories and their relationships
 [[Figure2-4]]
@@ -154,7 +154,7 @@ $ mvn clean install
 [INFO] ------------------------------------------------------------------------
 ----
 
-But as developers, we live in our coding environments. Switching out of that mindset to run a build is wasteful.  So we asked: "What if we could declare, in Java, an object to represent that archive?"  What resulted was a Java API analogue to the "jar" tool, a virtual filesystem with an intuitive syntax:
+But as developers, we live in our coding environments. Switching out of that mind set to run a build is wasteful.  So we asked: "What if we could declare, in Java, an object to represent that archive?"  What resulted was a Java API analogue to the "jar" tool, a virtual filesystem with an intuitive syntax:
 
 [source,java]
 ----
@@ -311,7 +311,7 @@ archive.jar:
 
 Using this mechanism is central to keeping ShrinkWrap's usage clean and intuitive, while providing for a versatility typically found in true multiple-inheritance languages.
 
-Although ShrinkWrap has its roots in Java EE and close ties to the Arquillian Testing Platform, it's certainly not limited to these domains.  In fact, ShrinkWrap on its own intentionally scoped to go no further than act as a virtual filesystem for archives.  As such, it provides a simple mechanism for playing nicely with flat-file structures.
+Although ShrinkWrap has its roots in Java EE and close ties to the Arquillian Testing Platform, it's certainly not limited to these domains.  In fact, ShrinkWrap on its own intentionally is scoped to go no further than to act as a virtual filesystem for archives.  As such, it provides a simple mechanism for playing nicely with flat-file structures.
 
 Borrowing from the previous example, perhaps we'd like to use ShrinkWrap to package up all of the _.class_ files in the current package and output these as a standard JAR in ZIP format.  The code for that would actually be pretty simple:
 
@@ -332,7 +332,7 @@ myPackage.jar:
 /org/alr/test/TestClass.class
 ----
 
-So let's see what's going on here.  First we create a +JavaArchive+ and add all contents of the current ++Class++'s +Package+ . Then we dump the output to the console, just to see what's included.  In the final line, we again use the +Assignable+ facilities of the +JavaArchive+ view to get us into a new view: one capable of exporting to ZIP format.  In this case we use the appropriately named +ZipExporter+, allowing us to export to a +File+, +OutputStream+, or even get the contents as an +InputStream+ so we can deal with the bytes ourselves.
+So let's see what's going on here.  First we create a +JavaArchive+ and add all the contents of the current ++Class++'s +Package+ . Then we dump the output to the console, just to see what's included.  In the final line, we again use the +Assignable+ facilities of the +JavaArchive+ view to get us into a new view: one capable of exporting to ZIP format.  In this case we use the appropriately named +ZipExporter+, allowing us to export to a +File+, +OutputStream+, or even get the contents as an +InputStream+ so we can deal with the bytes ourselves.
 
 <<table2-4>> lists the three types of exporters that ship with ShrinkWrap.
 
@@ -346,7 +346,7 @@ So let's see what's going on here.  First we create a +JavaArchive+ and add all 
 |+org.jboss.shrinkwrap.api.exporter.ZipExporter+|ZIP
 |==========================
 
-Of course, we can also obtain a ShrinkWrap archive from a flat-file in a similar fashion by using one of the standard importers shown in <<table2-5>>.
+Of course, we can also obtain a ShrinkWrap archive from a flat file in a similar fashion by using one of the standard importers shown in <<table2-5>>.
 
 .ShrinkWrap importer types
 [[table2-5]]
@@ -390,7 +390,7 @@ $> jar -tvf myApplication.war
 
 As you((("Enterprise Application Archives (EARs)")))((("Enterprise JavaBeans (EJB)"))) can see, under _WEB-INF/lib_ are a couple of third-party libraries used as dependencies by our own code, and an _Enterprise JavaBeans_ (EJB) module that we've written for our application.  This packaging structure is consistent with the final deployments used by most WARs and _Enterprise application ARchives_ (EARs).
 
-Often((("software repositories"))) we don't control the construction of these libraries, and we certainly shouldn't be in the business of reassembling them (and hence further differentiating our tests from the our production runtime deployments).  With the advent of Maven and other build systems, typically third-party libraries and our own dependent modules are obtained from a backing software _repository_.  In this case we supply a series of coordinates that uniquely identifies an artifact in the repository, and resolve the target files from there.
+Often((("software repositories"))) we don't control the construction of these libraries, and we certainly shouldn't be in the business of reassembling them (and hence further differentiating our tests from our production runtime deployments).  With the advent of Maven and other build systems, typically third-party libraries and our own dependent modules are obtained from a backing software _repository_.  In this case we supply a series of coordinates that uniquely identifies an artifact in the repository, and resolve the target files from there.
 
 That is precisely the aim of the ShrinkWrap Resolvers project; it is a Java API to obtain artifacts from a repository system. Grammars and support for Maven-based repository structures are currently implemented (this is separate from the use of Maven as a project management system or build tool; it's possible to use a Maven repository layout with other build systems).
 
@@ -504,7 +504,7 @@ You can import the ShrinkWrap Resolvers BOM via the following snippet:
 ----
 ====
 
-The general entry point for resolution is the convenience +org.jboss.shrinkwrap.resolver.api.maven.Maven+ class, which has static hooks to obtain a new +org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem+.
+The general entry point for resolution is the convenience +org.jboss.shrinkwrap.resolver.api.maven.Maven+ class, which has static hooks to obtain a new +org.jboss.+ pass:[<phrase role='keep-together'><literal>shrinkwrap.resolver.api.maven.MavenResolverSystem</literal></phrase>].
 Let's cover some of the most popular use cases for ShrinkWrap Resolvers.
 
 ===== Resolution of artifacts specified by Maven coordinates
