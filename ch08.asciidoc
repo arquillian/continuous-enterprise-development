@@ -582,8 +582,7 @@ public abstract class LinkableRepresentation<X>
     protected LinkableRepresentation() {}
 
     public LinkableRepresentation(Class<X> sourceType,
-      String representationType, 
-      UriInfo uriInfo) {
+      String representationType, UriInfo uriInfo) {
         this.sourceType = sourceType;
         this.representationType = representationType;
         this.uriInfo = uriInfo;
@@ -981,8 +980,7 @@ public void shouldReturnOKOnGETResource() throws Exception {
                 given().
                 then().
                     contentType(getTypedMediaType())
-            , domain).
-            when().
+            , domain).when().
                 get(createRootURL() + "/{id}", 
                     domain.getId()).body();
         }
