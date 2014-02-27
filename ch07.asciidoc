@@ -183,7 +183,7 @@ First, sending((("fire and forget"))) a message to a JMS `Queue` is a "fire and 
 
 The other ((("JMS Queue")))tangible benefit to using a JMS `Queue` to send messages is in the guaranteed processing afforded by JMS.  If there's a temporary error in sending the email, for instance a connection problem to the remote SMTP server, the messaging server will dutifully retry (as configured) a number of times.  This process will even survive server restarts; if for some reason all of these retries fail to yield a successful result (again, after some configured number of tries or timeout), messages can be forwarded to the DLQ (dead-letter queue) for manual inspection by system administrators later.  This gives us some assurance that we won't lose messages we intended to send, and we also won't have to fail our user registration process entirely if there's some issue with sending the welcome email.
 
-In WildFly / JBossAS7 / JBoss EAP, we deploy a JMS Queue with the deployment descriptor +geekseek-smtp-queue-jms.xml+ (the filename may be anything located in the EJB JAR's +META-INF+ and ending with the suffix +-jms.xml+):
+In WildFly / JBoss AS7 / JBoss EAP, we deploy a JMS Queue with the deployment descriptor +geekseek-smtp-queue-jms.xml+ (the filename may be anything located in the EJB JAR's +META-INF+ and ending with the suffix +-jms.xml+):
 
 [source,xml]
 ----
