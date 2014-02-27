@@ -108,7 +108,8 @@ Here we define some constants and inject the PicketLink +@Identity+.  We can the
 
         if(!identity.isLoggedIn()) {
             if(session.getAttribute(SESSION_REDIRECT) == null) {
-                session.setAttribute(SESSION_REDIRECT, request.getHeader(REFERER));
+                session.setAttribute(SESSION_REDIRECT, 
+                request.getHeader(REFERER));
             }
 
             try {
@@ -208,7 +209,7 @@ Here we've shown the use of PicketLink as a handy security abstraction, but we h
 
 In short, we'll ((("authentication","process")))be using Agorava to handle our _authentication_ process and do the behind-the-scenes interaction with Twitter, powering our sign-in integration.
 
-((("OAuth","Agorva and")))Because the Twitter authentication mechanism is via OAuth, it'll benefit us to produce an Agorava +OAuthSession+ to represent the current user.  Again, we turn to a CDI producer method to handle the details in +org.cedj.geekseek.service.security.oauth.SessionProducer+:
+((("OAuth","Agorva and")))Because the Twitter authentication mechanism is via OAuth, it'll benefit us to produce an Agorava +OAuthSession+ to represent the current user.  Again, we turn to a CDI producer method to handle the details in +org.cedj.geekseek.service.security.oauth.+ pass:[<phrase role='keep-together'><literal>SessionProducer</literal></phrase>]:
 
 [source,java]
 ----
