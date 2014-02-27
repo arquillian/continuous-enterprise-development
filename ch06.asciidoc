@@ -6,17 +6,17 @@ ____
 I’m more of an adventurous type than a relationship type.
 ____
 
-((("data storage", id="ix_ch06-asciidoc0", range="startofrange")))((("development process","designing data storage", id="ix_ch06-asciidoc1", range="startofrange")))((("storing data", id="ix_ch06-asciidoc2", range="startofrange"))) ((("relational database management systems (RDBMS)")))Until relatively recently, the relational database (RDBMS) reigned over data in enterprise applications by a wide margin when contrasted with other approaches.  RDBMSs follow a premise of storing heavily normalized data in relational structures such as tables, and are heavily based on rigorous mathematical set theory. Commercial offerings from((("Oracle"))) http://www.oracle.com/index.html[Oracle] and established open source projects((("MySQL"))) like http://www.mysql.com/[MySQL] (reborn as((("MariaDB"))) https://mariadb.org/[MariaDB]) and((("PostgreSQL"))) http://www.postgresql.org/[PostgreSQL] became defacto choices when it came to storing, archiving, retrieving, and searching for data.  In retrospect, it's shocking that given the varying requirements from those operations, one solution was so heavily lauded for so long.
+((("data storage", id="ix_ch06-asciidoc0", range="startofrange")))((("development process","designing data storage", id="ix_ch06-asciidoc1", range="startofrange")))((("storing data", id="ix_ch06-asciidoc2", range="startofrange"))) ((("relational database management systems (RDBMS)")))Until relatively recently, the relational database (RDBMS) reigned over data in enterprise applications by a wide margin when contrasted with other approaches.  RDBMSs follow a premise of storing heavily normalized data in relational structures such as tables, and are heavily based on rigorous mathematical set theory. Commercial offerings from((("Oracle"))) http://www.oracle.com/index.html[Oracle] and established open source projects((("MySQL"))) like http://www.mysql.com/[MySQL] (reborn as((("MariaDB"))) https://mariadb.org/[MariaDB]) and((("PostgreSQL"))) http://www.postgresql.org/[PostgreSQL] became de facto choices when it came to storing, archiving, retrieving, and searching for data.  In retrospect, it's shocking that given the varying requirements from those operations, one solution was so widely lauded for so long.
 
-In the late 2000s, a trend away from the strict ACID transactional properties could be clearly observed given the emergence of data stores that organized information differently from the traditional row-based table model.  In addition, many programmers were beginning to advocate for a release from strict transactions; in many use cases it appeared that this level of isolation wasn't enough of a priority to warrant the computational expense necessary to provide ACID guarantees, and the often severe performance penalties it imposed on storage systems distributed across more than one server.
+In the late 2000s, a trend away from the strict ACID transactional properties could be clearly observed, given the emergence of data stores that organized information differently from the traditional row-based table model.  In addition, many programmers were beginning to advocate for a release from strict transactions; in many use cases it appeared that this level of isolation wasn't enough of a priority to warrant the computational expense necessary to provide ACID guarantees, and the often severe performance penalties it imposed on storage systems distributed across more than one server.
 
-In 2009,((("Amazon")))((("Vogels, Werner"))) Amazon's Werner Vogels published((("Eventually Consistent (Vogels)"))) http://bit.ly/MB2t1C[Eventually Consistent], an article that advocated for the tolerance of inconsistent data in large, distributed systems.  He argued that this was central to providing a system that could continue to perform effectively under load, and could withstand times when part of a distributed data model was effectively unavailable for use.  In contrast with the rigid ACID properties, this system could be described as((("Basically Available, Soft state, Eventual consistency (BASE)"))) _BASE_ (Basically Available, Soft state, Eventual consistency).  
+In 2009,((("Amazon")))((("Vogels, Werner"))) Amazon's Werner Vogels published((("Eventually Consistent (Vogels)"))) http://bit.ly/MB2t1C[Eventually Consistent], an article that advocated for the tolerance of inconsistent data in large, distributed systems.  He argued that this was central to providing a system that could continue to perform effectively under load and could withstand times when part of a distributed data model was effectively unavailable for use.  In contrast with the rigid ACID properties, this system could be described as((("Basically Available, Soft state, Eventual consistency (BASE)"))) _BASE_ (Basically Available, Soft state, Eventual consistency).  
 
-The tenants((("eventual consistency"))) of _eventual consistency_ are as the name implies; in a distributed system, updates to a data item will, over time, be reflected in all nodes.  There is no guarantee when, or that this will happen immediately, so it's possible that disparate nodes in a replicated database may not all be in sync at any given point in time.  Vogels argued that this was a condition to embrace, not fear.
+The tenets((("eventual consistency"))) of _eventual consistency_ are as the name implies: in a distributed system, updates to a data item will, over time, be reflected in all nodes.  There is no guarantee of when, or that this will happen immediately, so it's possible that disparate nodes in a replicated database may not all be in sync at any given point in time.  Vogels argued that this was a condition to embrace, not fear.
 
 Thus began the rise of the newly coined((("NoSQL systems"))) _NoSQL_ systems, an umbrella term that encompasses, very generally, data solutions that do not adhere to the ACID properties or store information in a relational format.
 
-It's important to remember that as developers we're not prescribed to any set of solutions before we've fully analyzed the problem.  The overwhelming dominance of RDBMS is a clear sign that as an industry we'd stopped focusing on the operations needed by _our_ data model, and instead were throwing all persistent storage features to solutions that perhaps were not the most efficient at solving a particular storage or querying problem.
+It's important to remember that as developers we're not bound to any set of solutions before we've fully analyzed the problem.  The overwhelming dominance of RDBMS is a clear sign that as an industry we stopped focusing on the operations needed by _our_ data model, and instead were throwing all persistent storage features into solutions that perhaps were not the most efficient at solving a particular storage or querying problem.
 
 Let's have a look at a few scenarios in which an RDBMS might not be the best-suited solution.
 
@@ -26,13 +26,13 @@ Let's have a look at a few scenarios in which an RDBMS might not be the best-sui
 
 Most RDBMS((("query caches"))) engines have mechanisms to ensure that queries are executed quickly.  One device is a _query cache_, a temporary location held in memory that remembers the result of recently or often-executed queries and holds them until the data changes, invalidating the cached result and evicting the result from the cache.  This space is precious and valuable; it's typically limited by the amount of RAM available and configuration parameters supported by the vendor.  When we add +BLOB+ data into a query and it makes its way into the cache, this very quickly fills up space that's better used for holding references or other small bits of useful data.  When a query is not available in the cache or an index is not available, a full table scan must be performed to attain the result.  It's therefore best to ensure that our large bits of data stay clear of the cache.
 
-The other issue with a traditional RDMBS is that its adherence to the ACID properties is, in most cases, overkill for fetching documents.  It's entirely possible (and probable) in a distributed environment with many database nodes that the user can see data that's not entirely up-to-date.  Consider the case of((("Twitter")))  http://twitter.com/[Twitter] or((("Facebook"))) http://www.facebook.com[Facebook]; seeing the newest tweets or status updates in your feed is not a request that demands completely up-to-date information.  _Eventually_ you'll want to catch all the posts of your friends, but this doesn't need to be available to you immediately after the update is posted to the server.  To provide complete consistency across the database implies that there is((("blocking")))((("locking"))) _locking_ and _blocking_ taking place; other writes and reads in this concurrent environment would have to wait until the new update is fully committed.  Before long, we'd have requests queueing up at a rate likely to exceed that which the writes could be committed, and the system could grind to a standstill.  The mark of a functioning concurrent environment is to avoid blocking wherever possible.
+The other issue with a traditional RDMBS is that its adherence to the ACID properties is, in most cases, overkill for fetching documents.  It's entirely possible (and probable) in a distributed environment with many database nodes that the user can see data that's not entirely up-to-date.  Consider the case of((("Twitter")))  http://twitter.com/[Twitter] or((("Facebook"))) http://www.facebook.com[Facebook]; seeing the newest tweets or status updates in your feed is not a request that demands completely up-to-date information.  _Eventually_ you'll want to catch all the posts of your friends, but this doesn't need to be available to you immediately after the update is posted to the server.  To provide complete consistency across the database implies that there is((("blocking")))((("locking"))) _locking_ and _blocking_ taking place; other writes and reads in this concurrent environment would have to wait until the new update is fully committed.  Before long, we'd have requests queueing up at a rate likely to exceed that at which the writes could be committed, and the system could grind to a standstill.  The mark of a functioning concurrent environment is to avoid blocking wherever possible.
 
 ==== Data Grids
 
 ((("data grids")))((("data grids","binary data and")))((("data grids","RDBMS vs.")))((("data storage","data grids")))((("relational database management systems (RDBMS)","data grids vs.")))((("storing data","data grids")))In an era((("big data")))((("scaling"))) where _big data_ is becoming more and more relevant, we're faced with the problem of _scaling_.  Our systems are continually asked to store and query upon larger and larger data sets, and one machine is unlikely to be able to handle the load for a non-trivial, public application.
 
-Traditional ((("master instances")))((("replication")))((("slave instances")))RDBMS implementations typically offer one or two approaches.  First, _replication_ involves a write-only _master_ instance where a single machine is knighted as the authoritative instance.  _Slaves_ then pull data from the master's write operations and replay those writes locally, thus able to serve read requests.  This works well in an application where there is a low write-to-read ratio; the reads will scale out to new slaves while the writes remain centralized on the master.
+Traditional ((("master instances")))((("replication")))((("slave instances")))RDBMS implementations typically offer one or two approaches.  First, _replication_ involves a write-only _master_ instance where a single machine is knighted as the authoritative instance.  _Slaves_ then pull data from the master's write operations and replay those writes locally, thus being able to serve read requests.  This works well in an application where there is a low write-to-read ratio; the reads will scale out to new slaves while the writes remain centralized on the master.
 
 Second, _clustering_ is an((("clustering"))) option where a number of database instances keep state current over the network.  This is a generally a preferred approach in a write-heavy environment where scaling out only the read operations is unlikely to provide much performance benefit.  Full clustering has significant overhead, however, so the costs should be weighed carefully.
 
@@ -40,7 +40,7 @@ Data grids((("elasticity of data grids"))) work a little bit differently.  They'
 
 ===== Infinispan
 
-((("data grids","Infinispan")))((("Infinispan")))http://www.jboss.org/infinispan/[Infinispan] is an open source data grid from the JBoss Community.  It's API centers around a +Cache+, a +Map+ structure that provides a mapping between a key and value (this does not actually extend the +java.util.Map+ interface from the Java Collections library).  The full +javax.cache+ API is defined by the Java Community Process in http://bit.ly/MB357k[JSR-107], and although Infinispan is not a direct implementor of this specification, it contains many ideas adjacent to and inspiring JSR-107 and the newer Data Grids Specification http://bit.ly/MB31Ve[JSR-347].  Infinispan bills itself as a "Transactional in-memory key/value NoSQL datastore & Data Grid."
+((("data grids","Infinispan")))((("Infinispan")))http://www.jboss.org/infinispan/[Infinispan] is an open source data grid from the JBoss Community.  Its API centers around a +Cache+, a +Map+ structure that provides a mapping between a key and value (this does not actually extend the +java.util.Map+ interface from the Java Collections library).  The full +javax.cache+ API is defined by the Java Community Process in http://bit.ly/MB357k[JSR-107], and although Infinispan is not a direct implementor of this specification, it contains many ideas adjacent to and inspiring JSR-107 and the newer Data Grids Specification http://bit.ly/MB31Ve[JSR-347].  Infinispan bills itself as a "Transactional in-memory key/value NoSQL datastore & Data Grid."
 
 [NOTE]
 ====
@@ -59,27 +59,27 @@ This makes Infinispan well-suited to holding large objects that may have otherwi
 [[Figure6-1]]
 image::images/cedj_0601.png[]
 
-When we((("denormalized view"))) go to query for these relationships we often perform an operation called an +_SQL JOIN_+ to return a result of rows from two or more tables.  This process involves resolving any foreign keys to provide a _denormalized_ view; one that combines all relevant data into a form that's useful for us as humans to interpret, but might not be the most efficient for storage or searching purposes.
+When we((("denormalized view"))) go to query for these relationships, we often perform an operation called an +_SQL JOIN_+ to return a result of rows from two or more tables.  This process involves resolving any foreign keys to provide a _denormalized_ view; one that combines all relevant data into a form that's useful for us as humans to interpret, but might not be the most efficient for storage or searching purposes.
 
-The ((("query results, joining")))problem is that running joins between data types is an inherently expensive operation, and often we need to join more than two tables.  Sometimes we even need to join _results_.  Consider the following example, which has now become a commonplace feature among social media.
+The ((("query results, joining")))problem is that running joins between data types is an inherently expensive operation, and often we need to join more than two tables.  Sometimes we even need to join _results_.  Consider the following example, which has now become a commonplace feature in social media.
 
 Andy has a set of friends.  His friends also each have a set of friends.  To find all of the people who are friends with both Andy and his friends, we might do something like:
 
-* Find all of Andy's friends
-* For each of those friends, find their friends (3rd-degree friends)
-* For each of the 3rd-degree friends, determine who is also friends directly with Andy
+* Find all of Andy's friends.
+* For each of those friends, find their friends (third-degree friends).
+* For each of the third-degree friends, determine who is also friends directly with Andy.
 
 That amounts((("geometric complexity"))) to a lot of querying and joining.  What makes this approach unworkable from a computer science standpoint is the use of the term _for each_, which indicates a loop.  The preceding example has two of these, creating a computational problem with _geometric complexity_ at best.  As the size of the friend network increases linearly, the time it will take to determine a result increases by factors of magnitude.  Eventually (and it doesn't take a very large social network size), our system will be unable to perform these calculations in a reasonable amount of time, if at all.
 
-Additionally, the approach outlined in the preceding example will need to either search entire tables for the correct foreign-key relationships or maintain a separate index for each type of query.  Indexing adds some overhead to write operations; whenever a row is updated or added, the index must reflect that.  And working devoid of an index will require the database to do a full table scan.  If the size of the table is large enough that it cannot be contained in-memory (RAM) or the query cannot be held in a cache, now we introduce another serious roadblock because the system must resort to reading from physical disk, which is a far slower undertaking.
+Additionally, the approach outlined in the preceding example will need to either search entire tables for the correct foreign-key relationships or maintain a separate index for each type of query.  Indexing adds some overhead to write operations; whenever a row is updated or added, the index must reflect that.  And working devoid of an index will require the database to do a full table scan.  If the size of the table is large enough that it cannot be contained in memory (RAM) or the query cannot be held in a cache, now we face another serious roadblock, because the system must resort to reading from physical disk, which is a far slower undertaking.
 
 When it comes to complex relationships involving tables of any substantial size, the classic RDBMS approach is simply not the most intelligent way to model these resources.
 
 ==== Graph Theory
 
-((("data storage","graph databases")))((("graph databases","RDBMS vs.")))((("relational database management systems (RDBMS)","graph theory vs.")))((("storing data","graph databases")))The preceding problem illustrates that we're simply using the wrong tool for the job.  RDBMS excels at storage of tabular data, and even does a passable job of drawing simple relationships.  
+((("data storage","graph databases")))((("graph databases","RDBMS vs.")))((("relational database management systems (RDBMS)","graph theory vs.")))((("storing data","graph databases")))The preceding problem illustrates that we're simply using the wrong tool for the job. An RDBMS excels at storage of tabular data, and even does a passable job of drawing simple relationships.  
 
-What we ((("graph theory")))((("transitive relationships")))want to do here is easily explore _transitive relationships_ without a geometric complexity problem, so we need to tackle the problem from a different angle.  Students of computer science will remember studying various data structures, their strengths, and weaknesses.  In this case, we benefit from turning to the writings of  mathematician((("Euler, Leonhard")))((("Seven Bridges of Königsberg problem"))) Leonhard Euler on the _Seven Bridges of Königsberg_, which in 1735 established the roots of _graph theory_.
+What we ((("graph theory")))((("transitive relationships")))want to do here is easily explore _transitive relationships_ without a geometric complexity problem, so we need to tackle the problem from a different angle.  Students of computer science will remember studying various data structures and their strengths and weaknesses.  In this case, we benefit from turning to the writings of  mathematician((("Euler, Leonhard")))((("Seven Bridges of Königsberg problem"))) Leonhard Euler on the _Seven Bridges of Königsberg_, which in 1735 established the roots of _graph theory_.
 
 Graphs are ((("nodes")))((("vertices")))data structures comprised from _nodes_ or _vertices_ and edges; the node/vertex represents our data, while the edge defines the relationship.
 
@@ -93,14 +93,14 @@ We'll be using a graph database to represent some of the relationships between t
 
 ===== Neo4j
 
-((("graph databases","Neo4j")))((("Neo4j")))Neo4j is is an open source, transactional graph database that _does_ adhere to the ACID properties.  Both its user view and its backing storage engine use underlying graph structures, so it achieves the performance we'd expect from applying graph theory to queries it's suited to serve.  Because of this, the Neo4j documentation touts performance one thousand times faster than possible by RDBMS for connected data problems.
+((("graph databases","Neo4j")))((("Neo4j")))Neo4j is is an open source, transactional graph database that _does_ adhere to the ACID properties.  Both its user view and its backing storage engine use underlying graph structures, so it achieves the performance we'd expect from applying graph theory to queries it's suited to serve.  Because of this, the Neo4j documentation touts performance one thousand times faster than possible with an RDBMS for connected data problems.
 
 [NOTE]
 ====
-For those looking to understand graph databases and Neo4j in greater detail, we recommend((("Graph Databases (Robinson, Webber, and Eifrem)"))) http://graphdatabases.com/[_Graph Databases_] by Robinson, Webber, and Eifrem (O'Reilly, 2013).
+For those looking to understand graph databases and Neo4j in greater detail, we recommend((("Graph Databases (Robinson, Webber, and Eifrem)"))) http://graphdatabases.com/[_Graph Databases_] by Robinson, Webber, and Eifrém (O'Reilly, 2013).
 ====
 
-Because our GeekSeek application has a social component (who is attending which conferences, who is following speakers and attendees, etc), we'd like to put in place a solution that will enable us to augment the data in our RDBMS to:
+Because our GeekSeek application has a social component (who is attending which conferences, who is following speakers and attendees, etc.), we'd like to put in place a solution that will enable us to augment the data in our RDBMS to:
 
 * Draw relationships between data unrelated in the RDBMS schema
 * Quickly query recursive relationships
@@ -116,24 +116,24 @@ We'd also like to be able to introduce the notion of an +Attachment+; this can b
 As a User I should be able to Add/Change/Delete an Attachment.
 ----
 
-Because the +Attachment+ is binary data (perhaps a PDF, +.doc+, or other related material), we'll store these in a data grid backend using Infinispan.
+Because the +Attachment+ is binary data (perhaps a PDF, _.doc_, or other related material), we'll store these in a data grid backend using Infinispan.
 
 Additionally, we'd like to introduce some relationships atop our existing data model.  
 
 Adding an +Attachment+ is wonderful, but it won't have much utility for us unless we somehow associate this information with the entity it represents.  Therefore, we have the requirement:
 
 ----
-As a User I should be able to Add/Delete an Attachment to a Conference
+As a User I should be able to Add/Delete an Attachment to a Conference.
 
-As a User I should be able to Add/Delete an Attachment to a Session
+As a User I should be able to Add/Delete an Attachment to a Session.
 ----
 
 A +User+ may attend or speak at a +Conference+, and it'll be useful to see who might be nearby while we're at the show.  So we also have the general requirement:
 
 ----
-As a User I should be able to SPEAK at a Conference
+As a User I should be able to SPEAK at a Conference.
 
-As a User I should be able to ATTEND a Conference
+As a User I should be able to ATTEND a Conference.
 ----
 
 Because this represents a potentially recursive situation ("I want to see all the attendees at conferences in which I'm a speaker"), we'd be smart to use a graph structure to model these ties.
@@ -159,9 +159,9 @@ public class Attachment implements Identifiable, Timestampable, Serializable {
     private final Date updated;
 ----
 
-This class declaration will adhere to the contracts we've seen before in +Identifiable+ and +Timestampable+, and has no JPA annotations or metadata because we'll be delegating the persistent operations of this class to Infinispan.
+This class declaration will adhere to the contracts we've seen before in +Identifiable+ and +Timestampable+, and it has no JPA annotations or metadata because we'll be delegating the persistent operations of this class to Infinispan.
 
-We should also be sure that these +Attachment+ objects are in valid state, so we'll add some assertion checks and intelligent defaults along the way:
+We should also be sure that these +Attachment+ objects are in a valid state, so we'll add some assertion checks and intelligent defaults along the way:
 
 [source,java]
 ----
@@ -244,7 +244,7 @@ Recall that our persistence layer for objects, whether through JPA or other mean
 public class AttachmentRepository implements Repository<Attachment> {
 ----
 
-We're implementing this +AttachmentRepository+ as a Stateless Session EJB, where all business methods are executed inside the context of a transaction.  If a transaction is already in flight, it will be used; else a new one will be started at the onset of the method invocation and committed when complete.
+We're implementing this +AttachmentRepository+ as a Stateless Session EJB, where all business methods are executed inside the context of a transaction.  If a transaction is already in flight, it will be used; otherwise, a new one will be started at the onset of the method invocation and committed when complete.
 
 Our storage engine will be accessed via the Infinispan API's +org.infinispan.AdvancedCache+, so we'll inject this using CDI:
 
@@ -338,7 +338,7 @@ public class CacheProducer {
 
 +CacheProducer+ does the business of creating and configuring the Infinispan +AdvancedCache+ instance and makes it a valid injection source by use of CDI's (technically +javax.enterprise.inject+) +@Produces+ annotation.
 
-This should be enough to fulfill our requirements to perform CRUD operations on an +Attachment+, and does so in a way that won't bog our RDBMS with binary data.(((range="endofrange", startref="ix_ch06-asciidoc5")))
+This should be enough to fulfill our requirements to perform CRUD operations on an +Attachment+, and does so in a way that won't bog down our RDBMS with binary data.(((range="endofrange", startref="ix_ch06-asciidoc5")))
 
 ==== Relation
 
@@ -582,8 +582,8 @@ As shown, this is a fairly simple undertaking given a little research into prope
 [source,java]
 ----
     /**
-     * Helper method that looks in the BeanManager for a Repository that match
-     * signature Repository<T>.
+     * Helper method that looks in the BeanManager for a Repository that 
+     * matches signature Repository<T>.
      *
      * Used to dynamically find repository to load targets from.
      *
@@ -747,7 +747,7 @@ Our implementation is almost complete, though it's our position that nothing tru
 
 === Requirement Test Scenarios
 
-((("requirement test scenarios","for data storage", sortas="data storage", id="ix_ch06-asciidoc9", range="startofrange")))Given our user requirements and the implementation choices we've made, it's important we assert a few areas are working as expected:
+((("requirement test scenarios","for data storage", sortas="data storage", id="ix_ch06-asciidoc9", range="startofrange")))Given our user requirements and the implementation choices we've made, it's important we assert that a few areas are working as expected:
 
 * CRUD operations on +Attachment+ objects
 * Transactional integrity of CRUD operations on +Attachment+ objects
@@ -792,7 +792,7 @@ Here we have a simple Arquillian test defined with no additional extensions.  We
     }
 ----
 
-This will give us our +Attachment+ domain entity, the +AttachmentRepository+, and the CDI producer to inject hooks to an Infinispan +Cache+ as shown before. Additionally, we'll need to deploy the Infinispan API and implementation as a library, so +AttachmentDeployments.resolveDependencies+ will bring this in for us:
+This will give us our +Attachment+ domain entity, the +AttachmentRepository+, and the CDI producer to inject hooks into an Infinispan +Cache+ as shown before. Additionally, we'll need to deploy the Infinispan API and implementation as a library, so +AttachmentDeployments.resolveDependencies+ will bring this in for us:
 
 [source,java]
 ----
@@ -941,18 +941,18 @@ So here we have our CRUD tests using the injected +Repository+ to perform their 
 
 ==== Transactional Integrity of Attachment Persistence
 
-((("Java Persistence API","testing", id="ix_ch06-asciidoc10", range="startofrange")))((("testing","transactional integrity", id="ix_ch06-asciidoc11", range="startofrange")))((("transactional integrity, testing", id="ix_ch06-asciidoc12", range="startofrange")))While we're confident that the CRUD operations of our +Attachment+ entity are in place, we should ensure that the transactional semantics are upheld if a transaction is in-flight.  This will essentially validate that Infinispan is respectful of the _Java Transactions API_ (JTA), a specification under the direction of the http://jcp.org/en/jsr/detail?id=907[JSR-907] Expert Group.
+((("Java Persistence API","testing", id="ix_ch06-asciidoc10", range="startofrange")))((("testing","transactional integrity", id="ix_ch06-asciidoc11", range="startofrange")))((("transactional integrity, testing", id="ix_ch06-asciidoc12", range="startofrange")))While we're confident that the CRUD operations of our +Attachment+ entity are in place, we should ensure that the transactional semantics are upheld if a transaction is in flight.  This will essentially validate that Infinispan is respectful of the _Java Transactions API_ (JTA), a specification under the direction of the http://jcp.org/en/jsr/detail?id=907[JSR-907] Expert Group.
 
 To accomplish this, we're going to directly interact with JTA's +UserTransaction+ in our test.  In fact, the +Attachment+ entity is not the only one we should be verifying, so we'll code this test in a way that will enable us to extend it to ensure that +Conference+, +Session+, and other entities can be exercised for transactional compliance.
 
 Our goals are to assert that for any entity type +T+:
 
-* +T+ is Stored on commit and can be read from another transaction
-* +T+ is Updated on commit and can be read from another transaction
-* +T+ is Removed on commit and can not be read by another transaction
-* +T+ is not Stored on rollback and cannot be read by another transaction
-* +T+ is not Updated on rollback and cannot be read by another transaction
-* +T+ is not Removed on rollback and can be read by another transaction
+* +T+ is Stored on commit and can be read from another transaction.
+* +T+ is Updated on commit and can be read from another transaction.
+* +T+ is Removed on commit and cannot be read by another transaction.
+* +T+ is not Stored on rollback and cannot be read by another transaction.
+* +T+ is not Updated on rollback and cannot be read by another transaction.
+* +T+ is not Removed on rollback and can be read by another transaction.
 
 Therefore we'll attempt to centralize these operations in a base test class that will, when provided a +T+ and a +Repository<T>+, verify that +T+ is committed and rolled back as required.  Thus we introduce +org.cedj.geekseek.domain.test.integration.BaseTransactionalSpecification+:
 
@@ -981,12 +981,12 @@ Because this class is to be extended for each entity type we'd like to test, we'
     protected abstract REPO getRepository();
 
     /**
-     * Create a new unique instance of the Domain Object
+     * Create a new unique instance of the Domain Object.
      */
     protected abstract DOMAIN createNewDomainObject();
 
     /**
-     * Update some domain object values
+     * Update some domain object values.
      */
     protected abstract void updateDomainObject(
       DOMAIN domain);
@@ -1174,7 +1174,7 @@ Now we'll set up some constants and instance members, then populate them before 
     }
 ----
 
-+SourceObject+ and +TargetObject+ are test-only objects we've introduced to represent entities.  Again, we only care about _relationships_ here, so there's no sense tying this test to one of our real entities at this level of integration.  At this point we want to test the +Relation+ and its persistence mechanisms in as much isolation as possible, so some test-only entities we'll tie together is appropriate.
++SourceObject+ and +TargetObject+ are test-only objects we've introduced to represent entities.  Again, we only care about _relationships_ here, so there's no sense tying this test to one of our real entities at this level of integration.  At this point we want to test the +Relation+ and its persistence mechanisms in as much isolation as possible, so it's appropriate to tie together test-only entities.
 
 Now we'll want to run our tests to:
 
