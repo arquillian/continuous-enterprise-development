@@ -504,12 +504,11 @@ You can import the ShrinkWrap Resolvers BOM via the following snippet:
 ----
 ====
 
-The general entry point for resolution is the convenience +org.jboss.shrinkwrap.resolver.api.maven.Maven+ class, which has static hooks to obtain a new +org.jboss.+ pass:[<phrase role='keep-together'><literal>shrinkwrap.resolver.api.maven.MavenResolverSystem</literal></phrase>].
-Let's cover some of the most popular use cases for ShrinkWrap Resolvers.
+The general entry point for resolution is the convenience +org.jboss.shrinkwrap.resolver.api.maven.Maven+ class, which has static hooks to obtain a new +org.jboss.+ pass:[<phrase role='keep-together'><literal>shrinkwrap.resolver.api.maven.MavenResolverSystem</literal></phrase>]. Let's cover some of the most popular use cases for ShrinkWrap Resolvers.
 
 ===== Resolution of artifacts specified by Maven coordinates
 
-((("Apache Maven","resolving coordinates with ShrinkWrap", id="ix_ch02-asciidoc6", range="startofrange")))((("ShrinkWrap Resolvers","Maven coordinates, resolving with", id="ix_ch02-asciidoc7", range="startofrange")))Maven coordinates, in their canonical form, are specified as follows: +groupId:artifactId:[packagingType:[classifier]]:version+. Often, those are referred as +G+ (groupId), +A+ (artifactId), +P+ (packagingType), +C+ (classifier), and +V+ (version). If you omit +P+ and +C+, you will get the default value, which uses +jar+ as the packaging type and an empty classifier. ShrinkWrap Resolvers additionally allows you to skip +V+ in case it has version information available from the POM; here are some use cases:
+((("Apache Maven","resolving coordinates with ShrinkWrap", id="ix_ch02-asciidoc6", range="startofrange")))((("ShrinkWrap Resolvers","Maven coordinates, resolving with", id="ix_ch02-asciidoc7", range="startofrange")))Maven coordinates, in their canonical form, are specified as follows: +groupId:artifactId:[packagingType:[classifier]]:version+. Often, those are referred as +G+ pass:[<phrase role='keep-together'>(groupId)</phrase>], +A+ (artifactId), +P+ (packagingType), +C+ (classifier), and +V+ (version). If you omit +P+ and +C+, you will get the default value, which uses +jar+ as the packaging type and an empty classifier. ShrinkWrap Resolvers additionally allows you to skip +V+ in case it has version information available from the POM; here are some use cases:
 
 * The most simple use case is to resolve a file using coordinates. Here, the resolver locates an artifact defined by +G:A:V+ and resolves it including all transitive dependencies. The result is formatted as array of type +File+:
 +
