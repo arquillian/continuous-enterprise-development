@@ -7,7 +7,7 @@ ____
 
 ((("user interface", id="ix_ch10-asciidoc0", range="startofrange")))To this point, we've focused entirely on elements that cannot be seen.  In this chapter we bring everything home by exposing our backend services to the end user.
 
-When it ((("Facelet templates")))((("JavaServer Faces (JSF)")))((("server-side rendering")))comes to Enterprise Java, we have our fill of options for display technologies.  The Java EE Specification provides _JavaServer Faces_ (JSF), a component-based framework for web applications.  This approach takes advantage of _server-side rendering_; that is, the final response returned to the client is created on the server from source templates (typically _Facelets_).
+When it ((("Facelet templates")))((("JavaServer Faces (JSF)")))((("server-side rendering")))comes to Enterprise Java, we have our fill of options for display technologies.  The Java EE Specification provides _JavaServer Faces_ (JSF), a component-based framework for web applications.  This approach takes advantage of _server-side rendering_: that is, the final response returned to the client is created on the server from source templates (typically _Facelets_).
 
 In our GeekSeek example, however, we'll be going off the beaten path a bit and rolling our own single-page application in pure HTML.  The dynamic elements backed by data will be supplied via JavaScript calls to the backend via the RESTful interface we exposed earlier.
 
@@ -15,12 +15,12 @@ In general, our requirements remain simply to expose our operations in a human-c
 
 === Use Cases and Requirements
 
-((("GeekSeek","user interface for")))On a high level, we're looking to allow a user to take advantage of the application's primary purpose; we'd like to modify state of our domain objects in a consistent fashion.  We can state these:
+((("GeekSeek","user interface for")))On a high level, we're looking to allow a user to take advantage of the application's primary purpose: we'd like to modify the state of our domain objects in a consistent fashion.  We can state these:
 
 * As a User I should be able Add/Change/Delete a Conference
 * As a User I should be able Add/Change/Delete a Session to Conferences
-* As a User I should be able Add/Change/Delete a Attachment to Sessions and Conferences
-* As a User I should be able Add/Change/Delete a Venue (and attach to Conference and Session)
+* As a User I should be able Add/Change/Delete an Attachment to Sessions and Conferences
+* As a User I should be able Add/Change/Delete a Venue (and attach to Conferences and Sessions)
 
 === Implementation
 
@@ -38,7 +38,7 @@ To start, the +RestGraph+ requires you to define a root `Resource` URL, the top-
 var root = RestGraph('http://geekseek.continuousdev.org/api').init();
 ----
 
-This is similar to how you would do it when you visit a web page in a web browser; you give yourself and the browser a starting point by typing an address (URL) in the address bar.  
+This is similar to how it's done when you visit a web page in a web browser; you give yourself and the browser a starting point by typing an address (URL) in the address bar.  
 
 Based on the +Response+ from the root +Resource+ we can determine what can be done next:
 [source, json]
@@ -80,7 +80,7 @@ conference.add({})
 conference.update({})
 ----
 
-Now we have the basics. But, we still don't know if we're allowed to perform all of those operations on all discovered +Resources+. Certain security constraints and possible other limitations are implementated on the server side that we need to take into consideration before/when we make a +Request+. In the same way we can discover related `Resources` and `Actions` via links in the +Response+, we can query the +Resource+ for the +OPTIONS+ it supports:
+Now we have the basics. But, we still don't know if we're allowed to perform all of those operations on all discovered +Resources+. Certain security constraints and possible other limitations are implemented on the server side that we need to take into consideration before/when we make a +Request+. In the same way we can discover related `Resources` and `Actions` via links in the +Response+, we can query the +Resource+ for the +OPTIONS+ it supports:
 
 [source, http]
 ----
@@ -110,7 +110,7 @@ conference.canRemove()
 conference.canCreate()
 ----
 
-This gives us the complete picture of what the API and the backend, under the current circumstances, will allow us to do. While the communication with the backend is up and running, the user still can't see any thing. We need to convert the raw data into a suitable user interface.
+This gives us the complete picture of what the API and the backend, under the current circumstances, will allow us to do. While the communication with the backend is up and running, the user still can't see anything. We need to convert the raw data into a suitable user interface.
 
 We choose to map the +MediaTypes+ described in the DAP to HTML templates in the UI:
 [source, json]
@@ -122,7 +122,7 @@ We choose to map the +MediaTypes+ described in the DAP to HTML templates in the 
 }
 ----
 
-By combining the current +Action+ (View, Update, Create) with the +MediaType+ subtype argument we can identify a unique template for how to represent the current +Resource+ as HTML.(((range="endofrange", startref="ix_ch10-asciidoc1")))
+By combining the current +Action+ (View, Update, Create) with the +MediaType+ subtype argument, we can identify a unique template for how to represent the current +Resource+ as HTML.(((range="endofrange", startref="ix_ch10-asciidoc1")))
 
 As an example, the +Conference+ +MediaType+ in +View+ mode could look like this:
 [source, html]
@@ -159,7 +159,7 @@ As an example, the +Conference+ +MediaType+ in +View+ mode could look like this:
 
 === Requirement Test Scenarios
 
-((("requirement test scenarios","for user interface", sortas="user interface", id="ix_ch10-asciidoc2", range="startofrange")))((("user interface","requirement test scenarios for", id="ix_ch10-asciidoc3", range="startofrange")))The UI for our GeekSeek application is based on a JavaScript frontend talking to a REST backend. In this scenario, there are some different approaches and types of testing we can do; one is for the pure JavaSscript code (e.g., client controllers) and the other part is the interaction with the browser and REST endpoints on the backend. 
+((("requirement test scenarios","for user interface", sortas="user interface", id="ix_ch10-asciidoc2", range="startofrange")))((("user interface","requirement test scenarios for", id="ix_ch10-asciidoc3", range="startofrange")))The UI for our GeekSeek application is based on a JavaScript frontend talking to a REST backend. In this scenario, there are some different approaches and types of testing we can do: one is for the pure JavaSscript code (e.g., client controllers) and the other part is the interaction with the browser and REST endpoints on the backend. 
 
 ==== Pure JavaScript
 
@@ -184,10 +184,10 @@ public class GraphTestCase {
 }
 ----
 
-In the this example we introduce two new annotations that are specific to the Arquillian QUnit extension: 
+In this example we introduce two new annotations that are specific to the Arquillian QUnit extension: 
 
-* +@QUnitResources+ defines the root source of the JavaScript files
-* +@QUnitTest+ defines which HTML page to 'run' for this `@Test`
+* +@QUnitResources+ defines the root source of the JavaScript files.
+* +@QUnitTest+ defines which HTML page to 'run' for this `@Test`.
 
 The _graph-assertions.html_ referenced in the +@QUnitTest+ annotation is the HTML page that contains the +<script>+ tag, which includes the QUnit JavaScript tests and any other JavaScript dependencies we might need:
 
@@ -256,7 +256,7 @@ One could argue that we're now moving over from integration into functional test
 
 We use Drone to control the lifecycle of the browser and Graphene to wrap the browser and provide client-side object injection.
 
-We rely on ((("PageFragments")))((("PageObjects")))((("Selenium")))a pattern called http://code.google.com/p/selenium/wiki/PageObjects[PageObjects] from Selenium to encapsulate the logic within a page in a type-safe and programmable API. With Graphene we can take the PageObject concept one step further and use PageFragments. PageFragments are reusable components that you might find within a Page. We might have a +Conference+ object displayed on multiple different pages or a Login controller repeated in all headers.
+We rely on ((("PageFragments")))((("PageObjects")))((("Selenium")))a pattern called http://code.google.com/p/selenium/wiki/PageObjects[PageObjects] from Selenium to encapsulate the logic within a page in a type-safe and programmable API. With Graphene we can take the PageObject concept one step further and use PageFragments. PageFragments are reusable components that you might find within a page. We might have a +Conference+ object displayed on multiple different pages or a Login controller repeated in all headers.
 
 By encapsulating the references to the HTML IDs and CSS rules within PageObjects and PageFragments, we can create reusable TestObjects that represent our application.
 
@@ -304,9 +304,9 @@ public class MyUITest {
 
 The +testSomething+ method accepts a +MainPage+ object with proper state intact. 
 
-When Graphene initializes the +MainPage+ instance for injection, it scans the PageObject for +@FindBy+ annotations to inject proxies that represent the given element.  In our case we use a second layer of abstraction, +ActionLinks+, which is our PageFragment.  Each page has a menu of "what can be done next?" following the flow of the underlying REST backend.  These are split in two; `actionLinks` and `userActionLinks`. The differentiator: is this a general action against a +Resource+ or an action against a `Resource` that involves the +User+?  An example of an action is 'Add Conference' and a +User+ action example would be 'Add me as a Tracker to this Conference'.
+When Graphene initializes the +MainPage+ instance for injection, it scans the PageObject for +@FindBy+ annotations to inject proxies that represent the given element.  In our case we use a second layer of abstraction, +ActionLinks+, which is our PageFragment.  Each page has a menu of "what can be done next?" following the flow of the underlying REST backend.  These are split in two; `actionLinks` and `userActionLinks`. The differentiator: is this a general action against a +Resource+ or an action against a `Resource` that involves the +User+?  An example of an action is 'Add Conference', and a +User+ action example would be 'Add me as a Tracker to this Conference'.
 
-We add an +ActionLinks+ abstraction to simply expose a nicer API around checking if a link exist and how to retrieve it:
+We add an +ActionLinks+ abstraction to simply expose a nicer API around checking if a link exists and how to retrieve it:
 
 [source,java]
 ----
@@ -333,7 +333,7 @@ public class ActionLinks {
 }
 ----
 
-The +ActionLinks+ PageFragment is very similar in how the PageObject works. The main difference is the use of the +@Root+ annotation. Both +Actions+ and +UserActions+ are modeled as the PageFragment type +ActionLinks+. They are two lists of links located in different locations on the page. In the PageObject +MainPage+ we have the following two injection points:
+The +ActionLinks+ PageFragment is very similar in how the PageObject works. The main difference is the use of the +@Root+ annotation. Both +Actions+ and +UserActions+ are modeled as the PageFragment type +ActionLinks+. They are two lists of links in different locations on the page. In the PageObject +MainPage+ we have the following two injection points:
 
 [source,java]
 ----
@@ -346,7 +346,7 @@ The +ActionLinks+ PageFragment is very similar in how the PageObject works. The 
 
 The +ActionsLinks+ +@Root+ WebElement is injected based on the parent `@FindBy` element and represents where on the page this fragment was found. When working within a PageFragment, all of our +@FindBy+ expressions are relative to the +@Root+ element.
 
-You might remember that our application is a single-page application, so everything happens within the same physical URL and the content is only manipulated via JavaScript. With this in mind we've modeled in a concept of a fragment being `SelfAware`.  This allows us to encapsulate the logic of knowing how to find certain fragments within the fragment itself:  
+You might remember that our application is a single page, so everything happens within the same physical URL and the content is only manipulated via JavaScript. With this in mind we've modeled in a concept of a fragment being `SelfAware`.  This allows us to encapsulate the logic of knowing how to find certain fragments within the fragment itself:  
 
 +org.cedj.geekseek.test.functional.ui.page.SelfAwareFragment+:
 [source,java]
@@ -374,9 +374,9 @@ The +MainPage+ PageObject implements the discovery logic like so:
     }
 ----
 
-Within the +MainPage+ we want to control the creation of PageFragments so we can do it dynamically based on the requested type. This to avoid having to create a +@FindBy+ injection point for all possible combinations within our application. But we still want our 'on demand' PageFragments to have the same features as the injected ones, so we delegate the actual creation of the instance to Graphene's +PageFragmentEnricher+, giving it the requested type and the +@Root+ element we expect it be found within.
+Within the +MainPage+ we want to set up PageFragments so they can be created dynamically based on the requested type. This is to avoid having to create a +@FindBy+ injection point for all possible combinations within our application. But we still want our 'on-demand' PageFragments to have the same features as the injected ones, so we delegate the actual creation of the instance to Graphene's +PageFragmentEnricher+, giving it the requested type and the +@Root+ element we expect it to be found within.
 
-After discovering and executing +ActionLinks+ we can now ask the +MainPage+: "Are we within a given 'subpage'?" by only referring to the class itself:
+After discovering and executing +ActionLinks+ we can now ask the +MainPage+: "Are we within a given 'subpage'?" by referring just to the class itself:
 
 
 [source,java]
@@ -440,9 +440,9 @@ As shown in this example in one of our +SelfAwareFragment+ types, +Conference.Fo
 </div>
 ----
 
-The complete state of the input is required--not only where to put data, but also the defined name, "help" text, and most importantly: is it in an error state after submitting?
+The complete state of the input is required--not only where to put data, but also the defined name, "help" text, and, most importantly, is it in an error state after submitting?
 
-We also have a custom extension to Drone and Arquillian; we need to ensure that "click" and "navigate" events wait for the loading of async calls before doing their time check.  For this, we have the +org.cedj.geekseek.test.functional.arquillian.AngularJSDroneExtension+, which defines:
+We also have a custom extension to Drone and Arquillian: we need to ensure that "click" and "navigate" events wait for the loading of async calls before doing their time check.  For this, we have the +org.cedj.geekseek.test.functional.arquillian.AngularJSDroneExtension+, which defines:
 
 [source,java]
 ----
@@ -538,13 +538,13 @@ public class AddConferenceStory {
 
 The +shouldShowErrorMessageOnMissingDatesInConferenceForm+ test method takes the following actions:
 
-* Go the +MainPage+ (as injected)
-* Get all +ActionLinks+
-* Verify there is an +ActionLink+ named 'conference'
-* Click the 'conference' +ActionLink+
-* Verify we're on the +Conference.Form+
-* Input given data in the form and submit it
-* Verify that name and `tagLine` input are not in error state
-* Verify that start and end input are in error state
+* Go the +MainPage+ (as injected).
+* Get all +ActionLinks+.
+* Verify there is an +ActionLink+ named 'conference'.
+* Click the 'conference' +ActionLink+.
+* Verify we're on the +Conference.Form+.
+* Input given data in the form and submit it.
+* Verify that name and `tagLine` input are not in error state.
+* Verify that start and end input are in error state.
 
 As we can see, Arquillian Drone, together with Selenium and QUnit, makes for an integrated solution to testing frontend code with a Java object model.  Running the full suite on your own locally should be instructive.(((range="endofrange", startref="ix_ch10-asciidoc11")))(((range="endofrange", startref="ix_ch10-asciidoc10")))(((range="endofrange", startref="ix_ch10-asciidoc9")))(((range="endofrange", startref="ix_ch10-asciidoc8")))(((range="endofrange", startref="ix_ch10-asciidoc7")))(((range="endofrange", startref="ix_ch10-asciidoc6")))(((range="endofrange", startref="ix_ch10-asciidoc5")))(((range="endofrange", startref="ix_ch10-asciidoc4"))) (((range="endofrange", startref="ix_ch10-asciidoc3")))(((range="endofrange", startref="ix_ch10-asciidoc2"))) (((range="endofrange", startref="ix_ch10-asciidoc0")))
