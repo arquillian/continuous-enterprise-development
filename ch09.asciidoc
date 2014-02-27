@@ -483,7 +483,7 @@ public class SetupAuth extends Inspection {
 
 ===== Secured options
 
-((("security","secured options", id="ix_ch09-asciidoc15", range="startofrange")))The whole picture comes together in +org.cedj.geekseek.service.security.test.integration.SecuredOptionsTestCase+.  This will test that the +Allow+ HTTP header is not returned for unauthorized users issuing state-changing requests upon a protected URL.  Additionally, it'll ensure that if a user _is_ logged in, the state-changing methods will be allowed and the +Allow+ header will be present:
+((("security","secured options", id="ix_ch09-asciidoc15", range="startofrange")))The whole picture comes together in pass:[<phrase role='keep-together'><literal>org.cedj.geekseek.service.security.test.</literal></phrase>] pass:[<phrase role='keep-together'><literal>integration.SecuredOptionsTestCase</literal></phrase>].  This will test that the +Allow+ HTTP header is not returned for unauthorized users issuing state-changing requests upon a protected URL.  Additionally, it'll ensure that if a user _is_ logged in, the state-changing methods will be allowed and the +Allow+ header will be present:
 
 [source,java]
 ----
@@ -511,7 +511,7 @@ public class SecuredOptionsTestCase {
     private URL baseURL;
 ----
 
-We start by defining a +@WarpTest+ to run from the client side (as denoted by +@RunAsClient+), and provide an +@Deployment+ with test-double elements like our +TestCurrentUserProducer+ as explained earlier.  Arquillian will inject the +baseURL+ of our deployment because we've annotated it with +@ArquillianResource+:
+We start by defining a +@WarpTest+ to run from the client side (as denoted by +@RunAsClient+), and provide an +@Deployment+ with test-double elements like our +TestCurrentUserProducer+, as explained earlier.  Arquillian will inject the +baseURL+ of our deployment because we've annotated it with +@ArquillianResource+:
 
 [source,java]
 ----
@@ -830,4 +830,4 @@ public class AuthServletTestCase {
 
 Here we have two test methods, +shouldRedirectToRefererOnAuthSuccess+ and +shouldReturnUnAuthorizedOnAuthFailure+, which issue plain HTTP requests and assert that the response code returned is correct depending on how we've configured the +ControllableAuthenticator+.
 
-Although it's thematic that this text does not promote the usage of mocks in situations where real runtime components may be used, these test fixtures give us a hook into the greater runtime and allow how tests to control backend responses normally out of their reach.  In this case, we advocate on behalf of their utility.(((range="endofrange", startref="ix_ch09-asciidoc18")))(((range="endofrange", startref="ix_ch09-asciidoc17")))(((range="endofrange", startref="ix_ch09-asciidoc16"))) (((range="endofrange", startref="ix_ch09-asciidoc14")))(((range="endofrange", startref="ix_ch09-asciidoc13")))(((range="endofrange", startref="ix_ch09-asciidoc12"))) (((range="endofrange", startref="ix_ch09-asciidoc1")))(((range="endofrange", startref="ix_ch09-asciidoc0")))
+Although it's thematic that this text does not promote the usage of mocks in situations where real runtime components may be used, these test fixtures give us a hook into the greater runtime and allow tests to control backend responses normally out of their reach.  In this case, we advocate on behalf of their utility.(((range="endofrange", startref="ix_ch09-asciidoc18")))(((range="endofrange", startref="ix_ch09-asciidoc17")))(((range="endofrange", startref="ix_ch09-asciidoc16"))) (((range="endofrange", startref="ix_ch09-asciidoc14")))(((range="endofrange", startref="ix_ch09-asciidoc13")))(((range="endofrange", startref="ix_ch09-asciidoc12"))) (((range="endofrange", startref="ix_ch09-asciidoc1")))(((range="endofrange", startref="ix_ch09-asciidoc0")))
