@@ -446,7 +446,7 @@ public interface RelationRepository {
     void remove(Identifiable source, String type, Identifiable target);
 
     <T extends Identifiable> List<T> findTargets(Identifiable source, 
-    String type, Class<T> targetType);
+        String type, Class<T> targetType);
 }
 ----
 
@@ -481,7 +481,7 @@ The +RelationRepository+ contract implementation looks like this:
 ----
     @Override
     public Relation add(Identifiable source, final String type, 
-    Identifiable target) {
+        Identifiable target) {
 
         Transaction tx = graph.beginTx();
         try {
@@ -491,16 +491,16 @@ The +RelationRepository+ contract implementation looks like this:
             Node sourceTypeNode = getOrCreateNodeType(sourceTypeName);
             Node targetTypeNode = getOrCreateNodeType(targetTypeName);
             getOrCreateRelationship(root, sourceTypeNode, 
-            Named.relation(sourceTypeName));
+                Named.relation(sourceTypeName));
             getOrCreateRelationship(root, targetTypeNode, 
-            Named.relation(targetTypeName));
+                Named.relation(targetTypeName));
 
             Node sourceNode = getOrCreateNode(source, sourceTypeName);
             getOrCreateRelationship(sourceTypeNode, sourceNode, 
-            Named.relation(REL_TYPE_ALL));
+                Named.relation(REL_TYPE_ALL));
             Node targetNode = getOrCreateNode(target, targetTypeName);
             getOrCreateRelationship(targetTypeNode, targetNode, 
-            Named.relation(REL_TYPE_ALL));
+                Named.relation(REL_TYPE_ALL));
 
             getOrCreateRelationship(sourceNode, targetNode, Named.relation(type));
 
@@ -523,12 +523,12 @@ The +RelationRepository+ contract implementation looks like this:
         try {
             Index<Node> nodeIndex = graph.index().forNodes(PROP_INDEX_NODE);
             Index<Relationship> relationIndex = graph.index().forRelationships(
-            PROP_INDEX_REL);
+                PROP_INDEX_REL);
 
             Node sourceNode = nodeIndex.get(PROP_ID, source.getId()).getSingle();
             Node targetNode = nodeIndex.get(PROP_ID, target.getId()).getSingle();
             for(Relationship rel : sourceNode.getRelationships(
-            Named.relation(type))) {
+                Named.relation(type))) {
                 if(rel.getEndNode().equals(targetNode)) {
                     rel.delete();
                     relationIndex.remove(rel);
