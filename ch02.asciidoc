@@ -216,7 +216,7 @@ For projects not using the Maven repository system, the ShrinkWrap Distribution 
 
 ShrinkWrap can run on any Java5 runtime or higher, but requires at least JDK6 for compilation.
 
-The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.api.ShrinkWrap+ class.  From here you can call the +create+ method to make a new +Archive+, the a generic view of the virtual filesystem that allows the addition of content called ++Asset++s into a location called an +ArchivePath+. <<table2-2>> more easily shows ShrinkWrap nomenclature next to more((("ShrinkWrap","archive types"))) common terms.
+The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.api.ShrinkWrap+ class.  From here you can call the +create+ method to make a new +Archive+, a generic view of the virtual filesystem that allows the addition of content called ++Asset++s into a location called an +ArchivePath+. <<table2-2>> more easily shows ShrinkWrap nomenclature next to more((("ShrinkWrap","archive types"))) common terms.
 
 .ShrinkWrap archive types
 [[table2-2]]
@@ -227,7 +227,7 @@ The primary entry point to the ShrinkWrap library is the +org.jboss.shrinkwrap.a
 |pass:[<phrase role='keep-together'><literal>org.jboss.shrinkwrap.api.spec.JavaArchive</literal></phrase>]|JAR type; allows addition of ++Class++es, ++Package++s, and Manifest operations
 |pass:[<phrase role='keep-together'><literal>org.jboss.shrinkwrap.api.spec.EnterpriseArchive</literal></phrase>]|Java EE EAR type; supports Manifest and related spec operations
 |pass:[<phrase role='keep-together'><literal>org.jboss.shrinkwrap.api.spec.WebArchive</literal></phrase>]|Java EE WAR type; supports operations common to web application deployments
-|pass:[<phrase role='keep-together'><literal>org.jboss.shrinkwrap.api.spec.ResourceAdaptorArchive</literal></phrase>]|Java EE RAR type; supports operations common to resource adaptor deployments
+|pass:[<phrase role='keep-together'><literal>org.jboss.shrinkwrap.api.spec.ResourceAdaptorArchive</literal></phrase>]|Java EE RAR type; supports operations common to resource adapter deployments
 |=============================
 
 To create an +Archive+, simply choose your desired archive type and optionally supply a name to the static +ShrinkWrap:create+ method:
@@ -518,7 +518,7 @@ File[] = Maven.resolver().resolve("G:A:V").withTransitivity().asFile();
 ----
 
 
-* You might want to change default Maven behavior and resolve only artifacts specified by +G:A:V+, avoiding Maven's transitive dependencies. For this use case, ShrinkWrap Resolvers provides a shorthand for changing resolution strategy, called +withoutTransitivity()+. Additionally, you might want to return a single +File+ instead of an array:
+* You might want to change the default Maven behavior and resolve only one artifact specified by +G:A:V+, avoiding Maven's transitive dependencies. For this use case, ShrinkWrap Resolvers provides a shorthand for changing resolution strategy, called +withoutTransitivity()+. Additionally, you might want to return a single +File+ instead of an array:
 +
 [source,java]
 ----
@@ -674,9 +674,9 @@ ShrinkWrap Resolvers will not consume _settings.xml_ files specified on the comm
 
 ((("POM","files, resolving artifacts with ShrinkWrap")))((("ShrinkWrap Resolvers","POM files, resolving artifacts with")))While previous calls allow you to manually define what you want to resolve, in Maven projects, you have very likely specified this information already in your _pom.xml_ file. ShrinkWrap Resolvers allows you to follow _DRY_ (Don't Repeat Yourself) principles and can load metadata included there.
 
-ShrinkWrap Resolvers((("POM","models"))) constructs an _effective POM model_ (your _pom.xml_ file plus all parent POMs, condensed into one file). In order to construct the model, it uses all local repositories, classpath repositories, and remote repositories. Once the model is loaded, you can automatically add the metadata in there to artifacts you want to resolve. The following use cases are supported:
+ShrinkWrap Resolvers((("POM","models"))) constructs a so called _effective POM model_ (simplified, that is your _pom.xml_ file plus parent hierarchy and Super POM, the Maven default POM file). In order to construct the model, it uses all local repositories, the classpath repository, and all remote repositories. Once the model is loaded, you can automatically add the metadata in there to artifacts you want to resolve. The following use cases are supported:
 
-* Resolving an artifact with the version defined in effective POM. If you want to resolve +G:A:V+, you can simply specify +G:A+ instead. For artifacts with a non-JAR packaging type or classifier, you must use alternative syntax with a question mark +?+, such as +G:A:P:?+ or +G:A:P:C:?+:
+* Resolving an artifact with the version defined in effective POM. In case, you want to resolve +G:A:V+, you can simply specify +G:A+ instead. For artifacts with non JAR packaging type or classifier, you must use alternative syntax with a question mark +?+, such as +G:A:P:?+ or +G:A:P:C:?+:
 +
 [source,java]
 ----
@@ -687,7 +687,7 @@ Maven.resolver().loadPomFromClassLoaderResource("/path/to/pom.xml")
   .resolve("G:A:P:?").withTransitivity().asFile();
 ----
 
-* Resolving artifacts defined in effective POM. ShrinkWrap resolvers allows you to add artifacts defined with a specific scope into the list of artifacts to be resolved. This way, you don't need to alter your tests if you change dependencies of your application. You can either use +importDependencies(ScopeType...)+ or convenience methods that cover the most frequent usages (+importRuntimeDependencies()+, +importTestDependencies()+, and +importRuntimeAndTestDependencies()+:
+* Resolving artifacts defined in effective POM. ShrinkWrap resolvers allows you to import artifacts defined with a specific scope into the list of artifacts to be resolved. This way, you don't need to alter your tests if you change dependencies of your application. You can either use +importDependencies(ScopeType...)+ or convenience methods that cover the most frequent usages (+importRuntimeDependencies()+, +importTestDependencies()+, and +importRuntimeAndTestDependencies()+:
 +
 [source,java]
 ----
