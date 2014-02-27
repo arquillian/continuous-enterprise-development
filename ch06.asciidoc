@@ -171,7 +171,7 @@ We should also be sure that these +Attachment+ objects are in a valid state, so 
     }
 
     private Attachment(String id, String title, String mimeType, 
-    URL url, Date created) {
+        URL url, Date created) {
         requireNonNull(title, "Title must be specified)");
         requireNonNull(mimeType, "MimeType must be specified)");
         requireNonNull(url, "Url must be specified)");
@@ -322,7 +322,7 @@ public class CacheProducer {
 
     @Produces @ApplicationScoped
     public AdvancedCache<String, Attachment> createAdvanced(
-    EmbeddedCacheManager manager) {
+        EmbeddedCacheManager manager) {
         Cache<String, Attachment> cache = 
           manager.getCache();
         return cache.getAdvancedCache();
