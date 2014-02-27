@@ -6,11 +6,11 @@ ____
 I get by with a little help from my friends.
 ____
 
-((("tools", id="ix_ch02-asciidoc0", range="startofrange")))There's a common misconception that the goal of a standard specification is to address _every_ problem.  This couldn't be further from the truth; creating a standard is meant to address the 80% case in a manner that's been proven through experience in the field.  The http://bit.ly/1e7xn7H[Java Enterprise Edition] and its subsystems, governed by the http://www.jcp.org/en/home/index[Java Community Process] (JCP), is no exception.
+((("tools", id="ix_ch02-asciidoc0", range="startofrange")))There's a common misconception that the goal of a standard specification is to address _every_ problem.  This couldn't be further from the truth: creating a standard is meant to address the 80% case in a manner that's been proven through experience in the field.  The http://bit.ly/1e7xn7H[Java Enterprise Edition] and its subsystems, governed by the http://www.jcp.org/en/home/index[Java Community Process] (JCP), is no exception.
 
 By its very makeup, the JCP is designed to strive for consensus among all participants in an Expert Group on a given technology.  Where corporate sponsors and individual contributors disagree or determine that a feature is not yet mature enough to be adequately standardized, latitude is given to specification implementors.  This helps to foster creativity and provides differentiation between vendors.  In fact, on a http://bit.ly/1e7xoIF[discussion regarding the Java EE7 Roadmap], Expert Group member David Blevins succinctly addressed the dynamic: "Vendors innovate, collectively we standardize."
 
-Though it's not the goal of this book to provide exhaustive instruction on the complete featureset of Java EE, it is absolutely our intent to unify the development experience.  Helping us along the way are a set of enabling technologies intended to smooth the rough edges of the EE Platform and fill the gaps left open by its specifications.
+Though it's not the goal of this book to provide exhaustive instruction on the complete featureset of Java EE, it is absolutely our intent to unify the development experience.  Helping us along the way are a set of enabling technologies intended to smooth the rough edges of the EE platform and fill the gaps left open by its specifications.
 
 The following open source projects are all made freely available for you to download, use, and modify (be sure to consult individual licensing terms).
 
@@ -33,9 +33,9 @@ Our examples ((("declarative build tool")))will be built using a _declarative bu
 
 ((("Apache Maven")))((("tools","Apache Maven")))((("Maven", see="Apache Maven")))Perhaps the most prominent figure in the Java automated build tool landscape, http://maven.apache.org/[Apache Maven] positions itself as a "software project management and comprehension tool."  For simplicity's sake, we can view it as a build tool; it's capable of compiling, testing, and assembling.  
 
-One very ((("goals")))((("Apache Maven","actions")))nice feature of Maven is that it strives for "_convention over configuration_."  By following a set of recommended best practices, you're likely to trim down on the amount of metadata you'd otherwise need to explicitly define.  Additionally, Maven actions (called _goals_) are bound to a http://bit.ly/1e7xH6o[documented lifecycle] that are common to all Maven-based projects.  For instance, in order to compile, test, and package your project, the command +$> mvn package+ applies.  This standardization alleviates us from having to declare or learn different build commands for each project.
+One very ((("goals")))((("Apache Maven","actions")))nice feature of Maven is that it strives for "_convention over configuration_."  By following a set of recommended best practices, you're likely to trim down on the amount of metadata you'd otherwise need to explicitly define.  Additionally, Maven actions (called _goals_) are bound to a http://bit.ly/1e7xH6o[documented lifecycle] that is common to all Maven-based projects.  For instance, in order to compile, test, and package your project, the command +$> mvn package+ applies.  This standardization relieves us from having to declare or learn different build commands for each project.
 
-At the ((("dependency management solutions")))core of the Maven engine is a sophisticated _dependency management_ solution capable of resolving libraries by name from a http://search.maven.org/[Central Repository] (or additionally configured repository) onto a user's local system.  This feature allows us to skip the manual process of adding dependencies into our version control system, and allows us to instead fetch them on-demand as part of the build process.  As an added bonus, the requisite dependencies for all projects consuming ours are well-documented and automatically fetched for us, as shown in <<Figure2-1>>.
+At the ((("dependency management solutions")))core of the Maven engine is a sophisticated _dependency management_ solution capable of resolving libraries by name from a http://search.maven.org/[Central Repository] (or additionally configured repository) onto a user's local system.  This feature allows us to skip the manual process of adding dependencies into our version control system, and allows us to instead fetch them on demand as part of the build process.  As an added bonus, the requisite dependencies for all projects consuming ours are well-documented and automatically fetched for us, as shown in <<Figure2-1>>.
 
 .Project dependencies as fetched from an external repository
 [[Figure2-1]]
@@ -43,7 +43,7 @@ image::images/cedj_0201.png[]
 
 Maven is not without its detractors, however.  It's been criticized for a few points. Among them are:
 
-* Maven plug-ins versions are not bound to Maven Core versions, making guaranteed reproducible builds between different environments difficult to guarantee.
+* Maven plug-in versions are not bound to Maven Core versions, making guaranteed reproducible builds between different environments difficult to guarantee.
 * Project Object Model (POM, i.e., _pom.xml_) syntax, which is the metadata describing a project's makeup, is verbose.
 * Transitive dependencies as a default trigger a lot of downloading on first build.  Without care, a project may inherit more dependencies than are necessary or desired.
 * Deviation from the defined Maven standard is often difficult to reconcile.
@@ -61,7 +61,7 @@ http://forge.jboss.org/[JBoss Forge] offers "incremental project enhancement for
 * Adding _Java Persistence API_ (JPA) entities and describing their model
 * Configuring Maven dependencies
 * Setting up project scaffolding
-* Generating a view layer, reversed-engineered from a domain model
+* Generating a view layer, reverse-engineered from a domain model
 * Deploying to an application server
 
 Because Forge((("modulars"))) is built atop a _modular_, http://forge.jboss.org/plugins.html[_plug-in-based architecture_], it's extensible to additional tasks that may be specific to your application.
@@ -70,7 +70,7 @@ Overall, the goal of Forge is to ease project setup at all stages of development
 
 === Version Control
 
-((("tools","version control")))((("version control systems (VCS)")))From the moment we collaborate on a project with others or would like to inspect the evolution of our code over time, we need some form of _version control_.  Until recently, the most common paradigm for synchronizing access to a shared codebase was the _client/server_ model wherein developers can keep a local working copy and check their changes into a centralized server, as shown in <<Figure2-2>>.  
+((("tools","version control")))((("version control systems (VCS)")))From the moment we collaborate on a project with others or would like to inspect the evolution of our code over time, we need some form of _version control_.  Until recently, the most common paradigm for synchronizing access to a shared codebase was the _client/server_ model, wherein developers can keep a local working copy and check their changes into a centralized server, as shown in <<Figure2-2>>.  
 
 .Need a caption
 [[Figure2-2]]
@@ -78,9 +78,9 @@ image::images/cedj_0202.png[]
 
 Some systems utilize file-level locking to ensure that no conflicts arise during development; others allow concurrent access at the file granularity but cue the developer to resolve line-level conflicts upon committing changes upstream.
 
-Likely the ((("concurrent versions systems (CVS)")))((("Subversion (SVN)")))((("unreserved checkouts")))most widely deployed client/server version control system (VCS) from the 1990s through the 2000s has been http://savannah.nongnu.org/projects/cvs[Concurrent Versions Systems], most often referred to by its acronym _CVS_.  Although CVS has enabled teams to freely work on all files in the tree through _unreserved checkouts_, its shortcomings (including nonatomic commits and absent tracking for file renames) prompted the development of http://subversion.apache.org/[Subversion] (SVN), hier apparent to CVS.  Boasting a wider featureset and greater stability as contrasted with CVS, SVN has enjoyed its reign from the mid- to late-2000s.
+Likely the ((("concurrent versions systems (CVS)")))((("Subversion (SVN)")))((("unreserved checkouts")))most widely deployed client/server version control system (VCS) from the 1990s through the 2000s has been http://savannah.nongnu.org/projects/cvs[Concurrent Versions Systems], most often referred to by its acronym, _CVS_.  Although CVS has enabled teams to freely work on all files in the tree through _unreserved checkouts_, its shortcomings (including nonatomic commits and absent tracking for file renames) prompted the development of http://subversion.apache.org/[Subversion] (SVN), heir apparent to CVS.  Boasting a wider featureset and greater stability as contrasted with CVS, SVN has enjoyed its reign from the mid- to late-2000s.
 
-These ((("distributed version control systems (DVCSs)")))days, the centralized model has been superseded by _distributed version control systems_ (DVCS), which are differentiated by their ability to store the full repository including all history in any number of nodes.
+These ((("distributed version control systems (DVCSs)")))days, the centralized model has been superseded by _distributed version control systems_ (DVCS), which are differentiated by their ability to store the full repository, including all history in any number of nodes.
 
 This layout ((("pull models")))((("push models")))creates a "pull model," where developers on a common project are given the authority over their own repository, free to incorporate changes from others (or not!).  At first, this can be a confusing topic to grasp for users vested in the centralized "push model," but it's our opinion that the benefits of this design easily justify the initial confusion inherent when considering many full-fledged repositories representing the same project.
 
@@ -96,11 +96,11 @@ In this text, we'll be using the open source DVCS _Git_.
 
 ==== Git
 
-((("Git")))((("version control systems (VCS)","Git")))Originally developed to coordinate development of the Linux Kernel, Git is a DVCS whose usage has taken off in recent years, arguably due to the user-friendliness of the socially aware hosting site http://www.github.com[GitHub].  In fact, this book's text and examples are http://bit.ly/1e7o0ox[hosted on GitHub] for all to participate.
+((("Git")))((("version control systems (VCS)","Git")))Originally developed to coordinate development of the Linux kernel, Git is a DVCS whose usage has taken off in recent years, arguably due to the user-friendliness of the socially aware hosting site http://www.github.com[GitHub].  In fact, this book's text and examples are http://bit.ly/1e7o0ox[hosted on GitHub] for all to participate.
 
 From a high level, we've chosen Git for our projects because it enables:
 
-* True feature (topic) development.  Branching is quick, easy, and cheap.  You can work on feature X in isolation with the ability to put your changes _on top of_ development that may be occurring in the mainline branch.
+* True feature (topic) development.  Branching is quick, easy, and cheap.  You can work on feature X in isolation, with the ability to put your changes _on top of_ development that may be occurring in the mainline branch.
 * Integration with third-party systems built to respond to Git events.  For instance, we'll be able to trigger builds and production deployments by pushing our local changes to a remote repository.
 * Rewriting of local history.  Often it's handy to commit liberally, giving yourself many "save" points along the way.  However, before making these (sometimes breaking) changes visible to the rest of the world, it's good practice to "squash" the mini-changes into a cohesive, singular commit.  This helps keep the version history sane and facilitates later auditing if a bug should arise.
 
