@@ -291,7 +291,7 @@ public class SettingsProducer implements Serializable {
 }
 ----
 
-This +@Singleton+ EJB ((("authentication","OAuth")))((("OAuth","sessions")))is scoped application-wide and available to all sessions needing configuration to create OAuth sessions.  We store the config data in environment variables to not couple secrets into our application, and allow our various deployment targets (local dev, staging, production, etc) to have independent configurations.
+This +@Singleton+ EJB ((("authentication","OAuth")))((("OAuth","sessions")))is scoped application-wide and available to all sessions needing configuration to create OAuth sessions.  We store the config data in environment variables to not couple secrets into our application, and allow our various deployment targets (local dev, staging, production, etc.) to have independent configurations.
 
 Now we can move to the business of authenticating a user via the Twitter OAuth service via Agorava.  We can extend PicketLink's +BaseAuthenticator+ to provide the necessary logic in our +org.cedj.geekseek.service.security.picketlink.OAuthAuthenticator+:
 
@@ -330,7 +330,7 @@ public class OAuthAuthenticator extends BaseAuthenticator {
         if(request == null || response == null) {
             setStatus(AuthenticationStatus.FAILURE);
         } else {
-            if(session.isConnected()) { // already got a active session going
+            if(session.isConnected()) { // already got an active session going
                 OAuthSession session = service.getSession();
                 UserProfile userProfile = session.getUserProfile();
 
@@ -352,7 +352,8 @@ public class OAuthAuthenticator extends BaseAuthenticator {
 
                     // https://issues.jboss.org/browse/AGOVA-53
                     successful.fire(new SuccessfulAuthentication(
-                    service.getSession().getUserProfile(), service.getAccessToken()));
+                    service.getSession().getUserProfile(), 
+                    service.getAccessToken()));
 
                     String screenName = ((TwitterProfile)service.
                        getSession().getUserProfile()).getScreenName();
@@ -380,11 +381,11 @@ public class OAuthAuthenticator extends BaseAuthenticator {
 }
 ----
 
-By annotating the +OAuthAuthenticator+ with +@PicketLink+, this denotes that this is the authenticator instance to be used by PicketLink.
+Annotating the +OAuthAuthenticator+ with +@PicketLink+ denotes that this is the authenticator instance to be used by PicketLink.
 
 The +authenticate+ method uses the current (injected) +OAuthSession+ to determine whether or not we have a logged-in user, and further may extract profile information from there.  If the session is not yet connected, we can issue the redirect to the provider for access.
 
-Upon a +SuccessfulAuthentication+ event, we can take further action to store this user's information from Twitter in our datastore by observing the event in +org.cedj.geekseek.service.security.user.UserRegistration+:
+Upon a +SuccessfulAuthentication+ event, we can take further action to store this user's information from Twitter in our data store by observing the event in +org.cedj.geekseek.service.security.user.UserRegistration+:
 
 [source,java]
 ----
@@ -431,7 +432,7 @@ When the +SuccessfulAuthentication+ event is fired from the +OAuthAuthenticator+
 
 ==== Overview
 
-We must validate that for each of the operations we invoke upon secured resources, we're getting back the appropriate response.  As we've seen before in <<ch08>>, this will pertain to:
+We must validate that for each of the operations we invoke upon secured resources, we're getting back the appropriate response.  As we've seen before, in <<ch08>>, this will pertain to:
 
 * +PUT+ data
 * +GET+ data
@@ -444,7 +445,7 @@ We must validate that for each of the operations we invoke upon secured resource
 
 ==== Setup
 
-By making use of CDI's producers, we can swap in some test-only implementations to provide our tests with a logged-in +User+; this will mimic the true +@CurrentUser+ behavior we'll see in production.  For instance, +org.cedj.geekseek.service.security.test.model.TestCurrentUser+ contains:
+By making use of CDI's producers, we can swap in some test-only implementations to provide our tests with a logged-in +User+; this will mimic the true +@CurrentUser+ behavior we'll see in production.  For instance, pass:[<phrase role='keep-together'><literal>org.cedj.geekseek.service.security.test.</literal></phrase>] pass:[<phrase role='keep-together'><literal>model.TestCurrentUser</literal></phrase>] contains:
 
 [source,java]
 ----
