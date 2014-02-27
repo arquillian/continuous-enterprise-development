@@ -317,8 +317,8 @@ Borrowing from the previous example, perhaps we'd like to use ShrinkWrap to pack
 
 [source,java]
 ----
- JavaArchive archive = ShrinkWrap.create(JavaArchive.class,
-  "myPackage.jar").addPackage(this.getClass().getPackage());
+ JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "myPackage.jar")
+    .addPackage(this.getClass().getPackage());
   System.out.println(archive.toString(true));
   archive.as(ZipExporter.class).exportTo(
     new File("/home/alr/Desktop/myPackage.jar"), true);
@@ -560,7 +560,7 @@ Maven.resolver().resolve("G:A:V").withTransitivity().as(File.class);
 Maven.resolver().resolve("G:A:V").withTransitivity().as(InputStream.class);
 Maven.resolver().resolve("G:A:V").withTransitivity().as(JavaArchive.class);
 Maven.resolver().resolve("G:A:war:V").withoutTransitivity().asSingle(
-WebArchive.class);
+    WebArchive.class);
 ----
 +
 [NOTE]
@@ -687,7 +687,7 @@ Maven.resolver().loadPomFromClassLoaderResource("/path/to/pom.xml")
   .resolve("G:A:P:?").withTransitivity().asFile();
 ----
 
-* Resolving artifacts defined in effective POM. ShrinkWrap Resolvers allows you to artifacts defined with a specific scope into list of artifacts to be resolved. This way, you don't need to alter your tests if you change dependencies of your application. You can either use +importDependencies(ScopeType...)+ or convenience methods that cover the most frequent usages (+importRuntimeDependencies()+, +importTestDependencies()+, and +importRuntimeAndTestDependencies()+:
+* Resolving artifacts defined in effective POM. ShrinkWrap resolvers allows you to add artifacts defined with a specific scope into the list of artifacts to be resolved. This way, you don't need to alter your tests if you change dependencies of your application. You can either use +importDependencies(ScopeType...)+ or convenience methods that cover the most frequent usages (+importRuntimeDependencies()+, +importTestDependencies()+, and +importRuntimeAndTestDependencies()+:
 +
 [source,java]
 ----
@@ -789,8 +789,7 @@ ShrinkWrap.create(MavenImporter.class)
 
 ShrinkWrap.create(MavenImporter.class)
   .loadPomFromFile("/path/to/pom.xml", "activate-profile-1", 
-  "!disable-profile-2")
-  .importBuildOutput().as(WebArchive.class);
+  "!disable-profile-2").importBuildOutput().as(WebArchive.class);
 
 ShrinkWrap.create(MavenImporter.class).configureFromFile("/path/to/settings.xml")
   .loadPomFromFile("/path/to/pom.xml").importBuildOutput().as(JavaArchive.class);
