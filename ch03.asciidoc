@@ -444,7 +444,7 @@ public class FeedbackEntryTest {
 
 Before going forward, let's break down the anatomy of this test.
 
-First, we'll note that there are no references in the +import+ statements to any particular application server or target container.  This is because Arquillian is designed to decouple the programming model of the test from the target runtime; any container that can handle the capabilities demanded by the test will work.  This keeps the portability goals of Java EE intact, moving the mechanics of startup and deployment to configuration elements.  In this case, the Arquillian runner will note that the JBossAS7 container adaptor is available on the +classpath+ because it was defined in the POM when we ran the +setup+ command for the Arquillian Forge plug-in.
+First, we'll note that there are no references in the +import+ statements to any particular application server or target container.  This is because Arquillian is designed to decouple the programming model of the test from the target runtime; any container that can handle the capabilities demanded by the test will work.  This keeps the portability goals of Java EE intact, moving the mechanics of startup and deployment to configuration elements.  In this case, the Arquillian runner will note that the JBoss AS7 container adaptor is available on the +classpath+ because it was defined in the POM when we ran the +setup+ command for the Arquillian Forge plug-in.
 
 The next point of interest is the class-level annotation:
 
@@ -501,7 +501,7 @@ $> build --notest --profile arq-jboss_as_remote_7.x;
 
 After a series of informative build output messages from Maven, we should see +BUILD SUCCESS+, indicating that the WAR has been properly built from sources.
 
-The missing bit is that we need a server into which we can deploy our web app!  JBossAS7 has a simple installation process (simply download and unzip onto the filesystem), but again Forge can help automate this for us so we don't need to locate the JBossAS binaries.  For this we'll turn to the Forge JBossAS7 plug-in, which is installed similarly to the Arquillian plug-in we put in place in the previous section:
+The missing bit is that we need a server into which we can deploy our web app!  JBoss AS7 has a simple installation process (simply download and unzip onto the filesystem), but again Forge can help automate this for us so we don't need to locate the JBossAS binaries.  For this we'll turn to the Forge JBoss AS7 plug-in, which is installed similarly to the Arquillian plug-in we put in place in the previous section:
 
 ----
 $> forge install-plugin jboss-as-7
@@ -513,7 +513,7 @@ Once installation is complete, we can use the newly acquired +as7+ command to se
 $> as7 setup
 ----
 
-You'll be prompted for your +$JAVA_HOME+ location and JBossAS7 version; be sure to align the versions with the Arquillian Container Adaptor Version we'd chosen before.  Again, in this example we recommend +7.1.1.Final+.  Forge will additionally ask for the location to a JBossAS7 installation on the filesystem, but simply hitting Enter will download the server for us into the +target+ directory of our project.
+You'll be prompted for your +$JAVA_HOME+ location and JBoss AS7 version; be sure to align the versions with the Arquillian Container Adaptor Version we'd chosen before.  Again, in this example we recommend +7.1.1.Final+.  Forge will additionally ask for the location to a JBoss AS7 installation on the filesystem, but simply hitting Enter will download the server for us into the +target+ directory of our project.
 
 Now it's time to fire up the server.  We'll first +cd+ into the root of our project in the Forge shell, then execute the following command:
 
@@ -521,7 +521,7 @@ Now it's time to fire up the server.  We'll first +cd+ into the root of our proj
 $> as7 start --jboss-home target/jboss-as-dist/jboss-as-7.1.1.Final/
 ----
 
-If you've opted for a different version of JBossAS7, you may have to make substitutions to point +JBOSS_HOME+ correctly.  Assuming all goes as planned, you should see the JBossAS7 startup sequence in the Forge shell, followed by:
+If you've opted for a different version of JBoss AS7, you may have to make substitutions to point +JBOSS_HOME+ correctly.  Assuming all goes as planned, you should see the JBoss AS7 startup sequence in the Forge shell, followed by:
 
 ----
 ***INFO*** JBoss AS 7.1.1.Final has successfully started.
@@ -533,7 +533,7 @@ With the server up, let's deploy our application:
 $> as7 deploy
 ----
 
-Again, after a series of JBossAS7 deployment messages, you should see:
+Again, after a series of JBoss AS7 deployment messages, you should see:
 
 ----
 The deployment operation (FORCE_DEPLOY) was successful.
@@ -596,7 +596,7 @@ With assurance that our application has some minimal level of tested functionali
 
 === Deploying to OpenShift via JBoss Developer Studio
 
-((("development process","deployment", id="ix_ch03-asciidoc10", range="startofrange")))((("JBoss Developer Studio (JBDS)","deployment", id="ix_ch03-asciidoc11", range="startofrange")))((("JBoss Developer Studio (JBDS)","OpenShift and", id="ix_ch03-asciidoc12", range="startofrange")))((("OpenShift application service","deploying to, via JBDS", id="ix_ch03-asciidoc13", range="startofrange")))JBDS provides us a convenient user interface to the OpenShift cloud service, which will run our applications on the publicly available Web.  Complete information is available at the https://www.openshift.com/[OpenShift] site; for our purposes we'll be running the Java EE web app we created earlier in a JBossAS7 _cartridge_, OpenShift's moniker for a canned set of cloud services.
+((("development process","deployment", id="ix_ch03-asciidoc10", range="startofrange")))((("JBoss Developer Studio (JBDS)","deployment", id="ix_ch03-asciidoc11", range="startofrange")))((("JBoss Developer Studio (JBDS)","OpenShift and", id="ix_ch03-asciidoc12", range="startofrange")))((("OpenShift application service","deploying to, via JBDS", id="ix_ch03-asciidoc13", range="startofrange")))JBDS provides us a convenient user interface to the OpenShift cloud service, which will run our applications on the publicly available Web.  Complete information is available at the https://www.openshift.com/[OpenShift] site; for our purposes we'll be running the Java EE web app we created earlier in a JBoss AS7 _cartridge_, OpenShift's moniker for a canned set of cloud services.
 
 Before continuing, we are required to create an account; we can do this by clicking the SIGN UP button from the home page and completing the requisite form, as shown in <<Figure3-9>>.
 
@@ -686,4 +686,4 @@ CLIENT_RESULT: Artifacts deployed: ./ROOT.war
 
 This indicates success, and we can find our application running in the browser at +http://feedback-${openShiftAccountName}.rhcloud.com+.
 
-Although this is not indicitive of the steps we'd traditionally take to develop a more realistic application, we've found that Forge, JBossAS7 (WildFly support forthcoming), and OpenShift make a powerful team in quickly prototyping or learning the components involved in bringing a blank slate to a fully deployed, live, Java EE application.(((range="endofrange", startref="ix_ch03-asciidoc13")))(((range="endofrange", startref="ix_ch03-asciidoc12")))(((range="endofrange", startref="ix_ch03-asciidoc11")))(((range="endofrange", startref="ix_ch03-asciidoc10"))) (((range="endofrange", startref="ix_ch03-asciidoc0")))
+Although this is not indicitive of the steps we'd traditionally take to develop a more realistic application, we've found that Forge, JBoss AS7 (WildFly support forthcoming), and OpenShift make a powerful team in quickly prototyping or learning the components involved in bringing a blank slate to a fully deployed, live, Java EE application.(((range="endofrange", startref="ix_ch03-asciidoc13")))(((range="endofrange", startref="ix_ch03-asciidoc12")))(((range="endofrange", startref="ix_ch03-asciidoc11")))(((range="endofrange", startref="ix_ch03-asciidoc10"))) (((range="endofrange", startref="ix_ch03-asciidoc0")))
