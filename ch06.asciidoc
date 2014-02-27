@@ -619,10 +619,10 @@ As shown, this is a fairly simple undertaking given a little research into prope
 
     private Node getOrCreateNodeType(String type) {
         UniqueFactory<Node> factory = new UniqueFactory.UniqueNodeFactory(
-        graph, PROP_INDEX_NODE) {
+            graph, PROP_INDEX_NODE) {
             @Override
             protected void initialize(Node created, Map<String, Object> 
-            properties) {
+                properties) {
                 created.setProperty(PROP_ID, properties.get(PROP_ID));
             }
         };
@@ -630,7 +630,7 @@ As shown, this is a fairly simple undertaking given a little research into prope
     }
 
     private Node getOrCreateNode(Identifiable source, final String 
-    nodeClassType) {
+        nodeClassType) {
         UniqueFactory<Node> factory = new UniqueFactory.UniqueNodeFactory(
           graph, PROP_INDEX_NODE) {
             @Override
@@ -644,7 +644,7 @@ As shown, this is a fairly simple undertaking given a little research into prope
     }
 
     private Relationship getOrCreateRelationship(final Node source, final Node 
-    target, final RelationshipType type) {
+        target, final RelationshipType type) {
         final String key = generateKey(source, target, type);
 
         UniqueFactory<Relationship> factory = 
@@ -660,7 +660,7 @@ As shown, this is a fairly simple undertaking given a little research into prope
 
             @Override
             protected void initialize(Relationship rel, Map<String, Object> 
-            properties) {
+                properties) {
                 rel.setProperty(PROP_CREATED, System.currentTimeMillis());
             }
         };
@@ -671,7 +671,7 @@ As shown, this is a fairly simple undertaking given a little research into prope
      * Generate some unique key we can identify a relationship with.
      */
     private String generateKey(Node source, Node target, RelationshipType 
-    type) {
+        type) {
         return source.getProperty(PROP_ID, "X") + "-" + type.name() + "-" + 
         target.getProperty(PROP_ID, "X");
     }
@@ -706,7 +706,7 @@ public class GraphDatabaseProducer {
     private String DATABASE_PATH_PROPERTY = "neo4j.path";
 
     private static Logger log = Logger.getLogger(
-    GraphDatabaseProducer.class.getName());
+        GraphDatabaseProducer.class.getName());
 
     @Produces
     public GraphDatabaseService createGraphInstance() throws Exception {
@@ -716,7 +716,7 @@ public class GraphDatabaseProducer {
     }
 
     public void shutdownGraphInstance(@Disposes GraphDatabaseService service) 
-    throws Exception {
+        throws Exception {
         service.shutdown();
     }
 
@@ -800,8 +800,7 @@ This will give us our +Attachment+ domain entity, the +AttachmentRepository+, an
         return Maven.resolver()
             .offline()
             .loadPomFromFile("pom.xml")
-            .resolve(
-                "org.infinispan:infinispan-core")
+            .resolve("org.infinispan:infinispan-core")
             .withTransitivity()
             .asFile();
     }
@@ -815,7 +814,7 @@ Also as part of the deployment we'll throw in a +TestUtils+ class, which will le
 ----
     public static Attachment createAttachment() {
         try {
-        return new Attachment(
+            return new Attachment(
             "Test Attachment",
             "text/plain",
             new URL("http://geekseek.org"));
@@ -1020,7 +1019,7 @@ And now we're free to write the tests backing the points listed earlier; we want
     }
 
     protected <T> T commit(Class<T> type, Callable<T> callable) 
-    throws Exception {
+        throws Exception {
         try {
             tx.begin();
             return callable.call();
