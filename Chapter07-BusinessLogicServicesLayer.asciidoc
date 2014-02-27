@@ -50,7 +50,7 @@ Web-based applications offer few avenues to push information to their users once
 
 Our GeekSeek application will therefore introduce the requirement: "Send an Email to the new User upon successful Signup"
 
-At first blush, this seems like a farily trivial problems to solve.  The http://www.oracle.com/technetwork/java/javamail/index.html[JavaMail] API is straightforward enough to use (though a bit dated), and is included as part of the Java EE platform.
+At first blush, this seems like a fairly trivial problems to solve.  The http://www.oracle.com/technetwork/java/javamail/index.html[JavaMail] API is straightforward enough to use (though a bit dated), and is included as part of the Java EE platform.
 
 Unfortunately, there are many issues to consider beyond the boilerplate code required to send the email itself.
 
@@ -58,7 +58,7 @@ _Should we block (wait) while the mail message is sent to the SMTP server?_ Conn
 
 _What if sending the email fails?  Should the enclosing user registration action which called the email service fail, too?_  Sending the email is, in our case, part of a welcome operation.  A new user registration doesn't strictly *need* this to succeed as we won't be relying upon email to validate the user's identity.  Still, we'd like to make every available effort to ensure that the email goes through, independent of the user registration action.  And we'd like to have some notification and options to handle emails that were attempted to be sent, but have failed.
 
-_How do we test to ensure that the emails we've sent are received?  How do we validate the email's contents are correct?_  Even if we don't dispatch the communication with the SMTP server to a new Thread, interacting with this external process makes for an asynchronous action.  Asynchronous testing is not always the most simple process to set up, but this does not excuse us from the responsibility of ensuring that our email service is worked as designed.
+_How do we test to ensure that the emails we've sent are received?  How do we validate the email's contents are correct?_  Even if we don't dispatch the communication with the SMTP server to a new Thread, interacting with this external process makes for an asynchronous action.  Asynchronous testing is not always the most simple process to set up, but this does not excuse us from the responsibility of ensuring that our email service is working as designed.
 
 === Implementation
 
@@ -120,7 +120,7 @@ public MailMessage build() throws IllegalStateException {
 
 It's this immutable +MailMessageBuilder.MailMessage+ which will be safely passed between our services.
 
-With our value object defined, we can now create our +SMTPMailService+.  We know that we'll need to connect to some external SMTP server via the +JavaMail+ API, and Java EE allows injection of these via the +@Resource+ annotation (though the mechanics of exactly where some services are bound is vendor-dependent.).  Also, we know that this +SMTPMailService+ is meant to be shared by all users running the application, and won't have any session-specific state.  For these reasons, we'll implement the +SMTPMailService+ as a Singleton Session EJB.  Note that a a Stateless Session Bean (for use of a pool of instances) might work in an equally-appropriate fashion.
+With our value object defined, we can now create our +SMTPMailService+.  We know that we'll need to connect to some external SMTP server via the +JavaMail+ API, and Java EE allows injection of these via the +@Resource+ annotation (though the mechanics of exactly where some services are bound is vendor-dependent.).  Also, we know that this +SMTPMailService+ is meant to be shared by all users running the application, and won't have any session-specific state.  For these reasons, we'll implement the +SMTPMailService+ as a Singleton Session EJB.  Note that a Stateless Session Bean (for use of a pool of instances) might work in an equally-appropriate fashion.
 
 [source,java]
 ----
@@ -134,7 +134,7 @@ The above is our Singleton bean declaration.  Of particular note is the +Transac
 
 An SMTP server is an external resource which is not transactionally-aware.  Therefore, we'll have to make note of any exceptions and ensure that if we want a transaction rolled back, we either explicitly tell that to the +TransactionManager+ or throw an unchecked exception which will signal the EJB container to mark any currently-executing transaction for rollback.
 
-We're making a general-purpose SMTP service here, so we may not always know the appropriate actions to take with regards to transactions.  The default for EJB is +@TransactionAttributeType.MANDATORY+, which creates a transaction if one is not already in flight.  That's not really appropriate here; the SMTP server with which we interact is not transactional, it it'd be silly to sacrifice the overhead of starting a transaction when we're not even dealing with a resource which will respect its semantics!  +@TransactionAttributeType.SUPPORTS+, which we've used here, will accept existing transactions if one is in play, or do nothing if we're invoked outside of a transactional context.
+We're making a general-purpose SMTP service here, so we may not always know the appropriate actions to take with regards to transactions.  The default for EJB is +@TransactionAttributeType.REQUIRED+, which creates a transaction if one is not already in flight.  That's not really appropriate here; the SMTP server with which we interact is not transactional, it it'd be silly to sacrifice the overhead of starting a transaction when we're not even dealing with a resource which will respect its semantics!  +@TransactionAttributeType.SUPPORTS+, which we've used here, will accept existing transactions if one is in play, or do nothing if we're invoked outside of a transactional context.
 
 Now we need to define a method to do the dirty work: accept our +MailMessage+ as a parameter and send it along to the SMTP server.  The +JavaMail+ API will act as our conduit to connect to the SMTP server, so we'll take advantage of Java EE's +@Resource+ annotation to inject some relevant supporting services into our +SMTPMailService+.
 
@@ -244,7 +244,7 @@ public void queueMailForDelivery(final MailMessageBuilder.MailMessage mailMessag
     try {
         final Connection connection = connectionFactory.createConnection();
         final javax.jms.Session session = connection
-          .createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
+          .createSession(true, javax.jms.Session.SESSION_TRANSACTED);
         final MessageProducer producer = session.createProducer(smtpQueue);
         final ObjectMessage jmsMessage = session.createObjectMessage(mailMessage);
         producer.send(jmsMessage);
