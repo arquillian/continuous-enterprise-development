@@ -72,7 +72,7 @@ Overall, the goal of Forge is to ease project setup at all stages of development
 
 ((("tools","version control")))((("version control systems (VCS)")))From the moment we collaborate on a project with others or would like to inspect the evolution of our code over time, we need some form of _version control_.  Until recently, the most common paradigm for synchronizing access to a shared codebase was the _client/server_ model, wherein developers can keep a local working copy and check their changes into a centralized server, as shown in <<Figure2-2>>.  
 
-.Need a caption
+.Clients interacting with a centralized version control system
 [[Figure2-2]]
 image::images/cedj_0202.png[]
 
@@ -175,7 +175,7 @@ Although ShrinkWrap is a standalone virtual filesystem, in our examples we'll be
 
 The first step is getting your hands on the ShrinkWrap binaries. The Core is composed of three pieces, as outlined in <<table2-1>>.
 
-.Needs a caption
+.ShrinkWrap modules and separation of API, SPI, and implementation
 [[table2-1]]
 [options="header"]
 |=========================
@@ -235,7 +235,7 @@ To create an +Archive+, simply choose your desired archive type and optionally s
 [source,java]
 ----
 GenericArchive myArchive = ShrinkWrap.create(GenericArchive.class,
-"myArchive.jar");
+    "myArchive.jar");
 ----
 
 That's it!  You've got your first ShrinkWrap archive!
