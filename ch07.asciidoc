@@ -48,6 +48,8 @@ In this chapter we'll be examining each of these complications and a proposed so
 
 === Use Cases and Requirements
 
+As always, before digging into the implementation, we'll define some requirements based on our desired use cases.
+
 ==== Send Email On New User Signup
 
 ((("GeekSeek","business logic, encoding")))((("GeekSeek","services layer in")))Web-based applications offer few avenues to push information to their users once offline; perhaps the most prevalent is through the use of email.  We see this in a variety of user stories: "Confirm Email Address," "Reset Password," and "Welcome New User" are all subject lines we've grown to expect from the sites we use.  It's fitting, then, that we devise a simple strategy to send email from our application that can be easily reused by the more coarsely grained operations.
@@ -322,6 +324,8 @@ public void onMessage(final javax.jms.Message message) {
 These comprise all the working pieces of the business logic supporting this feature.  However, the true challenge lies in verifying that everything works as expected.(((range="endofrange", startref="ix_ch07-asciidoc5")))(((range="endofrange", startref="ix_ch07-asciidoc4")))(((range="endofrange", startref="ix_ch07-asciidoc3")))
 
 === Requirement Test Scenarios
+
+Testing the SMTP service will involve a few moving pieces.
 
 ==== A Test-Only SMTP Server
 
