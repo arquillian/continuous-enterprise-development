@@ -561,7 +561,7 @@ We can also inject a hook to manually deploy and undeploy our deployment, such t
 private Deployer deployer;
 ----
 
-At this point, Arquillian is set to run and start the server, and the deployment is defined but not yet deployed.  Next on our agenda is to configure the server; we'll ensure this is done in the proper order by creating a test method to run first by using Arquillian's +@InSequence+ annotation.  Also, we don't want this test method running inside the container (as is the default), but rather on the client process, so we'll flag this method with +@RunAsClient+:
+At this point, Arquillian is set to run and start the server, and the deployment is defined but not yet deployed.  Next on our agenda is to configure the server; we'll ensure this is done in the proper order by creating a test method to run first by using Arquillian's +@InSequence+ annotation.  Also, we don't want this test method running inside the pass:[<phrase role='keep-together'>container</phrase>] (as is the default), but rather on the client process, so we'll flag this method with +@RunAsClient+:
 
 [source,java]
 ----
