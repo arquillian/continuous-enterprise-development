@@ -257,7 +257,7 @@ Of course, an object representing an empty archive is pretty useless.  So let's 
 |+org.jboss.shrinkwrap.api.asset.EmptyAsset+|Empty (0-byte) content
 |=====================
 
-Additionally, because +Asset+ is an interface, you can provide your own implementation to supply any byte-based content that may be represented as an +InputStream+.  For instance, the following snippet shows how to present an Activation Framework +DataSource+ as an +Asset+:
+Additionally, because +Asset+ is an interface, you can provide your own implementation to supply any byte-based content that may be represented as an +InputStream+.  For pass:[<phrase role='keep-together'>instance,</phrase>] the following snippet shows how to present an Activation Framework +DataSource+ as an +Asset+:
 
 [source,java]
 ----
