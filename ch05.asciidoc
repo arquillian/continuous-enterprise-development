@@ -833,7 +833,7 @@ conference:
 
 In this manner, we can more easily check that data is making its way to and from the persistence layer intact, with an easier syntax to define the values we'll expect to find.  This also frees us from writing a lot of assertions on each individual field of every entry in the DB, and makes for much easier automated checking of large data sets.
 
-Our test class has similar methods to enforce related behaviors mandated by our requirements:
+Our test class has similar methods to enforce related behaviors mandated by our pass:[<phrase role='keep-together'>requirements:</phrase>]
 
 [source,java]
 ----
