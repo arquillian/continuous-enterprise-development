@@ -242,7 +242,7 @@ But our signal-to-noise ratio is way off when we write our own +main(String[])+-
 
 ==== JUnit
 
-((("JUnit test framework", id="ix_ch01-asciidoc6", range="startofrange")))((("test frameworks","JUnit", id="ix_ch01-asciidoc7", range="startofrange")))The http://www.junit.org/[JUnit Test Framework] is one of the most widely known testing frameworks for Java.  Initially ported from http://en.wikipedia.org/wiki/Kent_Beck[Kent Beck's work in testing the Smalltalk programming language], JUnit is the most-downloaded artifact in the http://search.maven.org/[Maven Central Repository] outside of libraries used to run Maven itself (as of August 2012).
+((("JUnit test framework", id="ix_ch01-asciidoc6", range="startofrange")))((("test frameworks","JUnit", id="ix_ch01-asciidoc7", range="startofrange")))The http://www.junit.org/[JUnit Test Framework] is one of the most widely known testing frameworks for Java.  Initially ported from http://en.wikipedia.org/wiki/Kent_Beck[Kent Beck's work in testing the Smalltalk programming pass:[<phrase role='keep-together'>language</phrase>]], JUnit is the most-downloaded artifact in the http://search.maven.org/[Maven Central Repository] outside of libraries used to run Maven itself (as of August 2012).
 
 Refactoring our +WelcomeJDKTest+ to use JUnit might look a little like this:
 
