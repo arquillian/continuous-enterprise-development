@@ -11,7 +11,7 @@ Of course, this all runs contrary to the mission of Java EE: to make our experie
 
 Some of this is by design.  The specifications that comprise the Java EE Platform intentionally leave room for vendors to implement features like server startup and deployment at their discretion. (Although there is some limited facility to, for instance, create an EJB container in a running JVM and bring EJB deployments on the classpath into service, a full-scale deployment is still typically achieved in a vendor-specific manner.)
 
-In the interest of providing a uniformly workable solution to the reader, this text will routinely opt for vendor-specific approaches in favor of generic guidelines.  By the end of this chapter, you should be comfortable creating a new Java EE web application and pushing it live to production using a few tools and services offered by the JBoss Community.
+In the interest of providing a uniformly workable solution to the reader, this text will routinely opt for vendor-specific approaches in favor of generic guidelines.  By the end of this chapter, you should be comfortable creating a new Java EE web application and pushing it live to production using a few tools and services offered by the JBoss pass:[<phrase role='keep-together'>Community.</phrase>]
 
 === The Development Environment
 
