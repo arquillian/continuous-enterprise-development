@@ -478,6 +478,8 @@ Alternatively, you can have finer-grained control over using ShrinkWrap Resolver
   </dependencies>
 ----
 
+The general entry point for resolution is the convenience +org.jboss.shrinkwrap.resolver.api.maven.Maven+ class, which has static hooks to obtain a new +org.jboss.+ pass:[<phrase role='keep-together'><literal>shrinkwrap.resolver.api.maven.MavenResolverSystem</literal></phrase>]. Let's cover some of the most popular use cases for ShrinkWrap Resolvers.
+
 [TIP]
 ====
 If you happen to use Arquillian BOM in `<dependencyManagement>`, it already contains a ShrinkWrap Resolvers version. You must import the ShrinkWrap Resolvers BOM preceding the Arquillian OM in order to attain the 2.0.0-x version. Adding a ShrinkWrap BOM is recommended in any case.
@@ -503,8 +505,6 @@ You can import the ShrinkWrap Resolvers BOM via the following snippet:
 </dependencyManagement>
 ----
 ====
-
-The general entry point for resolution is the convenience +org.jboss.shrinkwrap.resolver.api.maven.Maven+ class, which has static hooks to obtain a new +org.jboss.+ pass:[<phrase role='keep-together'><literal>shrinkwrap.resolver.api.maven.MavenResolverSystem</literal></phrase>]. Let's cover some of the most popular use cases for ShrinkWrap Resolvers.
 
 ===== Resolution of artifacts specified by Maven coordinates
 
