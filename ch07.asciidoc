@@ -64,7 +64,7 @@ Should we block (wait) while the mail message is sent to the SMTP server?:: Conn
 
 What if sending the email fails?  Should the enclosing user registration action that called the email service fail, too?::  Sending the email is, in our case, part of a welcome operation.  A new user registration doesn't strictly _need_ this to succeed because we won't be relying on email to validate the user's identity.  Still, we'd like to make every available effort to ensure that the email goes through, independent of the user registration action.  And we'd like to have some notification and options to handle emails that were attempted to be sent, but have failed.
 
-How do we test to ensure that the emails we've sent are received?  How do we validate the email's contents are correct?::  Even if we don't dispatch the communication with the SMTP server to a new `Thread`, interacting with this external process makes for an asynchronous action.  Asynchronous testing is not always the simplest process to set up, but this does not excuse us from the responsibility of ensuring that our email service works as designed.
+How do we test to ensure that the emails we've sent are received?  How do we validate the email's contents are correct?::  Even if we don't dispatch the communication with the SMTP server to a new `Thread`, interacting with this external process makes for an asynchronous action.  Asynchronous testing is not always the simplest process to set up, but this does not excuse us from the responsibility of ensuring that our email service works as pass:[<phrase role='keep-together'>designed.</phrase>]
 
 === Implementation
 
