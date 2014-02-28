@@ -302,7 +302,7 @@ private Date updated;
 
 You'll notice a few interesting bits in play here.
 
-We denote the +id+ field as our primary key by use of the +@javax.persistence.Id+ annotation.
+We denote the +id+ field as our primary key by use of the +@javax.persistence.Id+ pass:[<phrase role='keep-together'>annotation.</phrase>]
 
 +@javax.persistence.Temporal+ is required by JPA upon +Date+ and +Calendar+ fields that are persistent.
 
