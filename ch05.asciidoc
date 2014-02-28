@@ -585,7 +585,7 @@ public class ConferenceRepository extends PersistenceRepository<Conference> {
 
 Despite the small amount of code here, there's a lot of utility going on.
 
-The +Stateless+ annotation defines this class as an EJB, a Stateless Session Bean, meaning that the application server may create and destroy instances at will, and a client should not count on ever receiving any particular instance.  +@LocalBean+ indicates that this EJB has no _business interface_; clients may call upon +ConferenceRepository+ methods directly.
+The +Stateless+ annotation defines this class as an EJB, a Stateless Session Bean, meaning that the application server may create and destroy instances at will, and a client should not count on ever receiving any particular instance.  +@LocalBean+ indicates that this EJB has no _business interface_; clients may call upon +ConferenceRepository+ methods pass:[<phrase role='keep-together'>directly.</phrase>]
 
 The +TransactionAttribute+ annotation and its +REQUIRED+ value on the class level notes that every method invocation upon one of the business methods exposed by the EJB will run in a transaction.  That means that if a transaction does not exist one will be created, and if there's currently a transaction in flight, it will be used.
 
