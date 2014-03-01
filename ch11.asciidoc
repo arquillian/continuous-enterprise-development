@@ -594,6 +594,11 @@ Let's see what's((("deployments"))) going on here.  First we have some bash logi
 
 As we've seen before, OpenShift will dutifully exercise the remote operations to redeploy our application and make it available for our use.
 
+
+++++
+<?hard-pagebreak?>
+++++
+
 Using the OpenShift client command-line tools, we can tail the server logs for the application to monitor status:
 
 ----
