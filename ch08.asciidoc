@@ -24,7 +24,7 @@ Examples from the RFC include:
 
 +foo://example.com:8042/over/there?name=ferret#nose+
 
-and
+and:
 
 +urn:example:animal:ferret:nose+
 
