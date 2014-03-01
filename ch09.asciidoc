@@ -294,7 +294,7 @@ public class SettingsProducer implements Serializable {
 
 This +@Singleton+ EJB ((("authentication","OAuth")))((("OAuth","sessions")))is scoped application-wide and available to all sessions needing configuration to create OAuth sessions.  We store the config data in environment variables to not couple secrets into our application, and allow our various deployment targets (local dev, staging, production, etc.) to have independent configurations.
 
-Now we can move to the business of authenticating a user via the Twitter OAuth service via Agorava.  We can extend PicketLink's +BaseAuthenticator+ to provide the necessary logic in our +org.cedj.geekseek.service.security.picketlink.OAuth+ pass:[<phrase role='keep-together'><literal>Authenticator</literal></phrase>]:
+Now we can move to the business of authenticating a user via the Twitter OAuth service via Agorava.  We can extend PicketLink's +BaseAuthenticator+ to provide the necessary logic in our +org.cedj.geekseek.service.security.picketlink.OAuthAuthenticator+:
 
 [source,java]
 ----
