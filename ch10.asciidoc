@@ -260,7 +260,7 @@ We rely on ((("PageFragments")))((("PageObjects")))((("Selenium")))a pattern cal
 
 By encapsulating the references to the HTML IDs and CSS rules within PageObjects and PageFragments, we can create reusable TestObjects that represent our application.
 
-We start out by creating a PageObject for our application in +org.cedj.geekseek.test.functional.ui.page.MainPage+:
+We start out by creating a PageObject for our application in pass:[<phrase role='keep-together'><literal>org.cedj.geekseek.test.</literal></phrase>] pass:[<phrase role='keep-together'><literal>functional.ui.page.MainPage</literal></phrase>]:
 
 [source,java]
 ----
