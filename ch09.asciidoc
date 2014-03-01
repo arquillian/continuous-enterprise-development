@@ -94,7 +94,7 @@ The +@WebServlet+ annotation and +urlPatterns+ attribute assign this servlet to 
     private Identity identity;
 ----
 
-Here we define some constants and inject the PicketLink +@Identity+.  We can then use these in our servlet's +service+ method, called by the container on incoming client requests:
+Here we define some constants and inject the PicketLink +@Identity+.  We can then use these in our servlet's +service+ method, called by the container on incoming client pass:[<phrase role='keep-together'>requests:</phrase>]
 
 [source,java]
 ----
