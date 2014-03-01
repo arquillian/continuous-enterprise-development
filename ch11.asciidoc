@@ -304,7 +304,7 @@ First we need to install the((("davfs2 project"))) http://savannah.nongnu.org/pr
 $> sudo apt-get install davfs2
 ----
 
-or
+or:
 
 ----
 $> sudo yum install davfs2
