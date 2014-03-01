@@ -222,7 +222,7 @@ org/jboss/as/jboss-as-dist/maven-metadata.xml (313 B at 305.7 KB/sec)
 [INFO] Final Memory: 5M/102M
 ----
 
-And in the _~/.m2/jboss-eap-6.1.0.GA-maven-repository/org/jboss/as/jboss-as-dist_ directory, we should see our EAP distribution ZIP along with some Maven-generated metadata files:
+And in the _~/.m2/jboss-eap-6.1.0.GA-maven-repository/org/jboss/as/jboss-as-dist_ directory, we should see our EAP distribution ZIP along with some Maven-generated pass:[<phrase role='keep-together'>metadata</phrase>] files:
 
 ----
 $> ls -R
