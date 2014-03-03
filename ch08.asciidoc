@@ -746,7 +746,7 @@ public class ResourceLink {
 
 ==== A Black-Box Test
 
-((("black box testing for JAX-RS", id="ix_ch08-asciidoc20", range="startofrange")))((("JAX-RS specification","black box testing for", id="ix_ch08-asciidoc21", range="startofrange")))((("REST","black box testing for", id="ix_ch08-asciidoc22", range="startofrange")))The general flow of our first test will be to model a user's actions as she navigates through the site.  To accomplish execution of the test methods in sequence, we'll use Arquillian's +@InSequence+ annotation to signal the order of test execution.  This will really position the test class as more of a "test scenario," with each test method acting as the separate tests that must maintain a proper order.  In this fashion, we will follow the normal REST client flow from point A to B to C and so on.  We're going to execute requests to:
+((("black-box testing for JAX-RS", id="ix_ch08-asciidoc20", range="startofrange")))((("JAX-RS specification","black box testing for", id="ix_ch08-asciidoc21", range="startofrange")))((("REST","black box testing for", id="ix_ch08-asciidoc22", range="startofrange")))The general flow of our first test will be to model a user's actions as she navigates through the site.  To accomplish execution of the test methods in sequence, we'll use Arquillian's +@InSequence+ annotation to signal the order of test execution.  This will really position the test class as more of a "test scenario," with each test method acting as the separate tests that must maintain a proper order.  In this fashion, we will follow the normal REST client flow from point A to B to C and so on.  We're going to execute requests to:
 
 * +GET+ the Root resource 
 * Locate the +Conference+ link
