@@ -927,7 +927,7 @@ Selenium WebDriver
 
 ===== Frameworks
 
-((("Warp","frameworks")))Warp currently focuses on frameworks based on the Servlets API, but it provides special hooks and additional support for:
+((("Warp (Arquillian)","frameworks")))Warp currently focuses on frameworks based on the Servlets API, but it provides special hooks and additional support for:
 
 * JSF
 * JAX-RS (REST)
