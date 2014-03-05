@@ -6,7 +6,7 @@ ____
 There is no real security except for whatever you build inside yourself.
 ____
 
-((("development process","security", id="ix_ch09-asciidoc0", range="startofrange")))((("security", id="ix_ch09-asciidoc1", range="startofrange")))In a utopian society, we'd leave our homes unlocked in the morning.  We'd park our cars at the office with the windows open, and after dark we'd be free to walk unlit alleyways without concern.
+((("development process","security", id="ix_ch09-asciidoc0", range="startofrange")))((("security", id="ix_ch09-asciidoc1", range="startofrange", seealso="authentication, authorization")))In a utopian society, we'd leave our homes unlocked in the morning.  We'd park our cars at the office with the windows open, and after dark we'd be free to walk unlit alleyways without concern.
 
 Unfortunately, the small percentage of those looking to take advantage of others necessitates taking some measures to protect ourselves.  We look after our belongings and each other.  In the digital arena, our vulnerable currency is __data__—not everyone is entitled to see or edit everything.  Although our systems are built to support a large number of users, we cannot simply allow anyone to take any action they please.  In software and life, security amounts to controlling access.
 
@@ -206,9 +206,9 @@ Here we've shown the use of PicketLink as a handy security abstraction, but we h
 * A generic API to work with OAuth 1.0a and 2.0 services
 * A generic API to interact with JSON serialization and deserialization
 * A generic identification API to retrieve basic user information from a social service
-* Specific APIs for((("Twitter", "Agorva and")))((("Facebook", "Agorva and")))((("LinkedIn"))) Twitter, Facebook, and LinkedIn
+* Specific APIs for((("Twitter", "Agorva and", seealso="authentication, authorization")))((("Facebook", "Agorva and", seealso="authentication, authorization")))((("LinkedIn", seealso="authentication, authorization"))) Twitter, Facebook, and LinkedIn
 
-((("Facebook", seealso="authentication, authorization")))((("Twitter", seealso="authentication, authorization")))((("LinkedIn", seealso="authentication, authorization")))((("social authentication", seealso="authentication, authorization")))((("security", seealso="authentication, authorization")))In short, we'll ((("authentication","process")))be using Agorava to handle our _authentication_ process and do the behind-the-scenes interaction with Twitter, powering our sign-in integration.
+((("social authentication", seealso="authentication, authorization")))In short, we'll ((("authentication","process")))be using Agorava to handle our _authentication_ process and do the behind-the-scenes interaction with Twitter, powering our sign-in integration.
 
 ((("OAuth","Agorva and")))Because the Twitter authentication mechanism is via OAuth, it'll benefit us to produce an Agorava +OAuthSession+ to represent the current user.  Again, we turn to a CDI producer method to handle the details in pass:[<phrase role='keep-together'><literal>org.cedj.geekseek.service.security.</literal></phrase>] pass:[<phrase role='keep-together'><literal>oauth.SessionProducer</literal></phrase>]:
 
