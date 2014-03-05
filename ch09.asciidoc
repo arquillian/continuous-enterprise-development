@@ -200,7 +200,7 @@ Here we've shown the use of PicketLink as a handy security abstraction, but we h
 
 ===== Agorava and social authentication
 
-((("Agorava", id="ix_ch09-asciidoc8", range="startofrange")))((("authentication","Agorava", id="ix_ch09-asciidoc8a", range="startofrange")))((("security","Agorava", id="ix_ch09-asciidoc9", range="startofrange")))((("security","social authentication", id="ix_ch09-asciidoc10", range="startofrange")))((("social authentication", id="ix_ch09-asciidoc11", range="startofrange", seealso="authentication, authorization")))http://agorava.org/[Agorava] is a library consisting of CDI beans and extensions for interaction with the predominant social networks.  Its featureset touts((("Twitter", "Agorva and", seealso="authentication, authorization")))((("Facebook", "Agorva and", seealso="authentication, authorization")))((("LinkedIn", seealso="authentication, authorization"))):
+((("Agorava", id="ix_ch09-asciidoc8", range="startofrange")))((("authentication","Agorava", id="ix_ch09-asciidoc8a", range="startofrange")))((("security","Agorava", id="ix_ch09-asciidoc9", range="startofrange")))((("security","social authentication", id="ix_ch09-asciidoc10", range="startofrange")))((("social authentication", id="ix_ch09-asciidoc11", range="startofrange", seealso="authentication, authorization")))http://agorava.org/[Agorava] is a library consisting of CDI beans and extensions for interaction with the predominant social networks.  Its featureset touts((("Twitter", seealso="authentication, authorization")))((("Facebook", seealso="authentication, authorization")))((("LinkedIn", seealso="authentication, authorization"))):
 
 * A generic and portable REST client API
 * A generic API to work with OAuth 1.0a and 2.0 services
