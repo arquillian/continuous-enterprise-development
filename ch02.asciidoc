@@ -78,7 +78,7 @@ image::images/cedj_0202.png[]
 
 Some systems utilize file-level locking to ensure that no conflicts arise during development; others allow concurrent access at the file granularity but cue the developer to resolve line-level conflicts upon committing changes upstream.
 
-Likely the ((("concurrent versions systems (CVS)")))((("Subversion (SVN)")))((("unreserved checkouts")))most widely deployed client/server version control system (VCS) from the 1990s through the 2000s has been http://savannah.nongnu.org/projects/cvs[Concurrent Versions Systems], most often referred to by its acronym, _CVS_.  Although CVS has enabled teams to freely work on all files in the tree through _unreserved checkouts_, its shortcomings (including nonatomic commits and absent tracking for file renames) prompted the development of http://subversion.apache.org/[Subversion] (SVN), heir apparent to CVS.  Boasting a wider featureset and greater stability as contrasted with CVS, SVN has enjoyed its reign from the mid- to late-2000s.
+Likely the ((("concurrent versions systems (CVS)")))((("version control systems (VCS)", "Subversion")))((("Subversion (SVN)")))((("unreserved checkouts")))most widely deployed client/server version control system (VCS) from the 1990s through the 2000s has been http://savannah.nongnu.org/projects/cvs[Concurrent Versions Systems], most often referred to by its acronym, _CVS_.  Although CVS has enabled teams to freely work on all files in the tree through _unreserved checkouts_, its shortcomings (including nonatomic commits and absent tracking for file renames) prompted the development of http://subversion.apache.org/[Subversion] (SVN), heir apparent to CVS.  Boasting a wider featureset and greater stability as contrasted with CVS, SVN has enjoyed its reign from the mid- to late-2000s.
 
 These ((("distributed version control systems (DVCSs)")))days, the centralized model has been superseded by _distributed version control systems_ (DVCS), which are differentiated by their ability to store the full repository, including all history in any number of nodes.
 
@@ -118,7 +118,7 @@ True Java EE testing in this sense is an area left largely unspecified by the EE
 
 ==== Arquillian
 
-((("Arquillian")))((("test platforms","Arquillian")))http://arquillian.org[Arquillian] is an innovative and highly extensible testing platform for the JVM that enables developers to easily create automated integration, functional, and acceptance tests for Java middleware.
+((("Arquillian")))((("test platforms","Arquillian")))((("tools", seealso="Arquillian")))http://arquillian.org[Arquillian] is an innovative and highly extensible testing platform for the JVM that enables developers to easily create automated integration, functional, and acceptance tests for Java middleware.
 
 Picking up where unit tests leave off, Arquillian handles all the plumbing of container management, deployment, and framework initialization, so you can focus on the business of writing test logic.  Instead of configuring a potentially complex test harness, Arquillian abstracts out the target runtime by:
 
@@ -806,7 +806,7 @@ By enabling resolution in a friendly, intuitive API, ShrinkWrap Resolvers arms S
 
 === Runtime
 
-((("application services","runtime")))((("runtime services")))((("services, application","runtime")))Being simply a component model, Java EE needs a concrete implementation to provide the runtime services to our applications.
+((("runtime services")))Being simply a component model, Java EE needs a concrete implementation to provide the runtime services to our applications.
 
 ==== WildFly
 

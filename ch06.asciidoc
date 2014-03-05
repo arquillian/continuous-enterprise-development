@@ -940,7 +940,7 @@ So here we have our CRUD tests using the injected +Repository+ to perform their 
 
 ==== Transactional Integrity of Attachment Persistence
 
-((("Java Persistence API","testing", id="ix_ch06-asciidoc10", range="startofrange")))((("testing","transactional integrity", id="ix_ch06-asciidoc11", range="startofrange")))((("transactional integrity, testing", id="ix_ch06-asciidoc12", range="startofrange")))While we're confident that the CRUD operations of our +Attachment+ entity are in place, we should ensure that the transactional semantics are upheld if a transaction is in flight.  This will essentially validate that Infinispan is respectful of the _Java Transactions API_ (JTA), a specification under the direction of the http://jcp.org/en/jsr/detail?id=907[JSR-907] Expert Group.
+((("Java Persistence API","testing", id="ix_ch06-asciidoc10", range="startofrange")))((("testing","transactional integrity", id="ix_ch06-asciidoc11", range="startofrange")))((("transactions", "integrity testing", id="ix_ch06-asciidoc12", range="startofrange")))While we're confident that the CRUD operations of our +Attachment+ entity are in place, we should ensure that the transactional semantics are upheld if a transaction is in flight.  This will essentially validate that Infinispan is respectful of the _Java Transactions API_ (JTA), a specification under the direction of the http://jcp.org/en/jsr/detail?id=907[JSR-907] Expert Group.
 
 To accomplish this, we're going to directly interact with JTA's +UserTransaction+ in our test.  In fact, the +Attachment+ entity is not the only one we should be verifying, so we'll code this test in a way that will enable us to extend it to ensure that +Conference+, +Session+, and other entities can be exercised for transactional compliance.
 

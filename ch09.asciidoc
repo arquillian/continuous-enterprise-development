@@ -12,7 +12,7 @@ Unfortunately, the small percentage of those looking to take advantage of others
 
 The process ((("security","models")))by which we grant or restrict access is reflected in our _security model_; this defines the criteria by which we judge access attempts.  If someone is asking to enter the office, should we ensure they're an employee?  Is it after business hours, and how does that affect our decision?  Access may be permitted or denied based on _contextual_ information, and the way we value those contexts is what comprises our security model.
 
-When we((("authorization", seealso="OAuth")))((("role-based security")))((("tasks")))((("users","security and"))) permit access to a resource, this is the process of _authorization_.  A commonly employed approach involves _role-based security_, where functions and actions on the system are linked to a _role_.  For instance, the task of unlocking an office's front doors may be permitted to someone with the "janitor" role.  A staffer, Jim, may in turn be assigned to the "janitor" role; thus Jim will have permission to unlock the office's front doors.  Role-based security decouples the _user_ from the _task_; if Jim leaves the company and no longer is noted as the janitor, the permissions he'd had when assigned to that role would disappear as well.  
+When we((("authorization", seealso="OAuth")))((("authorization", seealso="authentication")))((("role-based security")))((("tasks")))((("users","security and"))) permit access to a resource, this is the process of _authorization_.  A commonly employed approach involves _role-based security_, where functions and actions on the system are linked to a _role_.  For instance, the task of unlocking an office's front doors may be permitted to someone with the "janitor" role.  A staffer, Jim, may in turn be assigned to the "janitor" role; thus Jim will have permission to unlock the office's front doors.  Role-based security decouples the _user_ from the _task_; if Jim leaves the company and no longer is noted as the janitor, the permissions he'd had when assigned to that role would disappear as well.  
 
 Coupled ((("authentication")))with authorization, which is the act of granting or denying access, is ensuring that the requesting party is who they say they are.  Surely the CEO of a company is privy to all sorts of details that wouldn't be available to the general public; if anyone could claim to be CEO, they'd be permitted to browse the whole system!  The process of validating identity is called _authentication_.
 
@@ -200,7 +200,7 @@ Here we've shown the use of PicketLink as a handy security abstraction, but we h
 
 ===== Agorava and social authentication
 
-((("Agorava", id="ix_ch09-asciidoc8", range="startofrange")))((("security","Agorava", id="ix_ch09-asciidoc9", range="startofrange")))((("security","social authentication", id="ix_ch09-asciidoc10", range="startofrange")))((("social authentication", id="ix_ch09-asciidoc11", range="startofrange")))http://agorava.org/[Agorava] is a library consisting of CDI beans and extensions for interaction with the predominant social networks.  Its featureset touts:
+((("Agorava", id="ix_ch09-asciidoc8", range="startofrange")))((("authentication","Agorava", id="ix_ch09-asciidoc8a", range="startofrange")))((("security","Agorava", id="ix_ch09-asciidoc9", range="startofrange")))((("security","social authentication", id="ix_ch09-asciidoc10", range="startofrange")))((("social authentication", id="ix_ch09-asciidoc11", range="startofrange")))http://agorava.org/[Agorava] is a library consisting of CDI beans and extensions for interaction with the predominant social networks.  Its featureset touts:
 
 * A generic and portable REST client API
 * A generic API to work with OAuth 1.0a and 2.0 services
@@ -208,7 +208,7 @@ Here we've shown the use of PicketLink as a handy security abstraction, but we h
 * A generic identification API to retrieve basic user information from a social service
 * Specific APIs for((("Twitter", "Agorva and")))((("Facebook", "Agorva and")))((("LinkedIn"))) Twitter, Facebook, and LinkedIn
 
-In short, we'll ((("authentication","process")))be using Agorava to handle our _authentication_ process and do the behind-the-scenes interaction with Twitter, powering our sign-in integration.
+((("Facebook", seealso="authentication")))((("Twitter", seealso="authentication")))((("LinkedIn", seealso="authentication")))((("social authentication", seealso="authentication")))((("security", seealso="authentication")))((("Facebook", seealso="authorization")))((("Twitter", seealso="authorization")))((("LinkedIn", seealso="authorization")))((("social authentication", seealso="authorization")))((("security", seealso="authorization")))In short, we'll ((("authentication","process")))be using Agorava to handle our _authentication_ process and do the behind-the-scenes interaction with Twitter, powering our sign-in integration.
 
 ((("OAuth","Agorva and")))Because the Twitter authentication mechanism is via OAuth, it'll benefit us to produce an Agorava +OAuthSession+ to represent the current user.  Again, we turn to a CDI producer method to handle the details in pass:[<phrase role='keep-together'><literal>org.cedj.geekseek.service.security.</literal></phrase>] pass:[<phrase role='keep-together'><literal>oauth.SessionProducer</literal></phrase>]:
 
@@ -425,7 +425,7 @@ public class UserRegistration {
 }
 ----
 
-When the +SuccessfulAuthentication+ event is fired from the +OAuthAuthenticator+, our +UserRegistration+ bean will set the appropriate fields in our own data model, then persist via the injected +Repository+.(((range="endofrange", startref="ix_ch09-asciidoc11")))(((range="endofrange", startref="ix_ch09-asciidoc10")))(((range="endofrange", startref="ix_ch09-asciidoc9")))(((range="endofrange", startref="ix_ch09-asciidoc8"))) (((range="endofrange", startref="ix_ch09-asciidoc2")))
+When the +SuccessfulAuthentication+ event is fired from the +OAuthAuthenticator+, our +UserRegistration+ bean will set the appropriate fields in our own data model, then persist via the injected +Repository+.(((range="endofrange", startref="ix_ch09-asciidoc11")))(((range="endofrange", startref="ix_ch09-asciidoc10")))(((range="endofrange", startref="ix_ch09-asciidoc9")))(((range="endofrange", startref="ix_ch09-asciidoc8a")))(((range="endofrange", startref="ix_ch09-asciidoc8")))(((range="endofrange", startref="ix_ch09-asciidoc2")))
 
 === Requirement Test Scenarios
 

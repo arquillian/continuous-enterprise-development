@@ -41,7 +41,7 @@ Forge's user interface is a shell, so it can be installed manually and used from
 [[Figure3-2]]
 image::images/cedj_04in02.png["Forge Console View Selection"]
 
-With our((("Forge Console view")))((("Forge shell"))) new _Forge Console_ view, we're now free to start up the Forge runtime, which came embedded with the JBDS installation.  Clicking the green play button, as shown in <<Figure3-3>>, will give us access to the Forge shell:
+With our((("Forge Console view")))((("JBossForge"))) new _Forge Console_ view, we're now free to start up the Forge runtime, which came embedded with the JBDS installation.  Clicking the green play button, as shown in <<Figure3-3>>, will give us access to the Forge shell:
 
 ----
     _____                    
@@ -355,7 +355,7 @@ And ((("testable development")))that's enough for now; we've created the skeleto
 
 === Writing Our First Integration Test with Arquillian
 
-((("Arquillian","writing integration tests", id="ix_ch03-asciidoc4", range="startofrange")))((("development process","integration tests", id="ix_ch03-asciidoc5", range="startofrange")))((("integration testing", id="ix_ch03-asciidoc6", range="startofrange")))((("integration tests", id="ix_ch03-asciidoc7", range="startofrange")))We've mentioned before that Forge is based on a plug-in architecture; all commands we've used thus far are actually plug-ins called by the Forge runtime when we request them in the console.  Up to this point, we've used support that comes standard with the Forge distribution.  Now we'd like to add some tests, and we'll use the Arquillian Test Platform as both the programming model and the JUnit test runner.  The first order of business is to install the Arquillian plug-in into our Forge runtime, and we do this by way of the +forge install-plugin+ command:
+((("Arquillian","writing integration tests", id="ix_ch03-asciidoc4", range="startofrange")))((("development process","integration tests", id="ix_ch03-asciidoc5", range="startofrange")))((("integration testing", id="ix_ch03-asciidoc6", range="startofrange")))We've mentioned before that Forge is based on a plug-in architecture; all commands we've used thus far are actually plug-ins called by the Forge runtime when we request them in the console.  Up to this point, we've used support that comes standard with the Forge distribution.  Now we'd like to add some tests, and we'll use the Arquillian Test Platform as both the programming model and the JUnit test runner.  The first order of business is to install the Arquillian plug-in into our Forge runtime, and we do this by way of the +forge install-plugin+ command:
 
 ----
 $> forge install-plugin arquillian
@@ -489,7 +489,7 @@ The final important fixture of the Arquillian test anatomy is the +@Deployment+ 
 
 Because ((("Enterprise Application Archives (EARs)")))((("Java Archives (JARs)")))((("Web Archives (WARs)")))Java EE application servers work off deployments like _Web Archives (WARs)_, _Java Archives (JARs)_, or _Enterprise Archives (EARs)_, we need to instruct Arquillian with the artifact to be deployed.  This method must be +static+ and return any ShrinkWrap +Archive+ type; for this first exercise we'll simply grab the output of the current project's build _feedback.war_, but as we'll soon see in later examples, we don't need to rely on flat files at all!  This will free us to skip the build entirely in between code changes and test runs, instead letting us rely ShrinkWrap's packaging of _.class_ files created from the IDE's incremental complication features.
 
-The rest of the file is all test logic!  Remember, the focus of the Arquillian programming model is to allow you to write less boilerplate and setup, and focus on the bits of code that only you as the developer can write.  It's not your job to deal with bootstrapping an application server or calling upon vendor-specific deployment hooks; Arquillian will handle all of that for you behind the scenes.(((range="endofrange", startref="ix_ch03-asciidoc7")))(((range="endofrange", startref="ix_ch03-asciidoc6")))(((range="endofrange", startref="ix_ch03-asciidoc5")))(((range="endofrange", startref="ix_ch03-asciidoc4")))
+The rest of the file is all test logic!  Remember, the focus of the Arquillian programming model is to allow you to write less boilerplate and setup, and focus on the bits of code that only you as the developer can write.  It's not your job to deal with bootstrapping an application server or calling upon vendor-specific deployment hooks; Arquillian will handle all of that for you behind the scenes.(((range="endofrange", startref="ix_ch03-asciidoc6")))(((range="endofrange", startref="ix_ch03-asciidoc5")))(((range="endofrange", startref="ix_ch03-asciidoc4")))
 
 === Running the Application Locally
 

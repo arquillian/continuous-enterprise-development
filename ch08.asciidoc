@@ -851,7 +851,7 @@ The rest of the test class contains test logic to fulfill our test requirements.
   
 ==== Validating the HTTP Contracts with Warp
 
-((("Arquillian","Warp", id="ix_ch08-asciidoc23", range="startofrange")))((("HTTP contracts","validating", id="ix_ch08-asciidoc24", range="startofrange")))((("JAX-RS specification","HTTP contracts, validating", id="ix_ch08-asciidoc25", range="startofrange")))((("JAX-RS specification","Warp and", id="ix_ch08-asciidoc26", range="startofrange")))((("REST","HTTP contracts, validating", id="ix_ch08-asciidoc27", range="startofrange")))((("REST","Warp and", id="ix_ch08-asciidoc28", range="startofrange")))((("Warp (Arquillian)", id="ix_ch08-asciidoc29", range="startofrange")))We've ensured that the responses from the server are in expected form.  We'd additionally like to certify that our service is obeying the general contracts of HTTP.  Because by definition this will involve a lot of client-side requests and parsing of server responses, it'll be helpful for us to avoid writing a lot of custom code to negotiate the mapping.  For these tasks, we introduce an extension to Arquillian that is aimed at making this type of testing easier.
+((("Arquillian","Warp", id="ix_ch08-asciidoc23", range="startofrange")))((("HTTP contracts","validating", id="ix_ch08-asciidoc24", range="startofrange")))((("JAX-RS specification","HTTP contracts, validating", id="ix_ch08-asciidoc25", range="startofrange")))((("REST","HTTP contracts, validating", id="ix_ch08-asciidoc27", range="startofrange")))((("Warp (Arquillian)", id="ix_ch08-asciidoc29", range="startofrange")))We've ensured that the responses from the server are in expected form.  We'd additionally like to certify that our service is obeying the general contracts of HTTP.  Because by definition this will involve a lot of client-side requests and parsing of server responses, it'll be helpful for us to avoid writing a lot of custom code to negotiate the mapping.  For these tasks, we introduce an extension to Arquillian that is aimed at making this type of testing easier.
 
 ==== Arquillian Warp
 
@@ -867,7 +867,7 @@ Warp effectively removes the need for mocking and opens new possibilities for de
 
 ===== Integration testing
 
-((("integration testing","with Warp")))No matter the granularity of our tests, Warp fits the best integration level of testing with an overlap to functional testing. We can either test components, application API, or functional behavior.
+No matter the granularity of our tests, Warp fits the best integration level of testing with an overlap to functional testing. We can either test components, application API, or functional behavior.
 
 ===== Technology independence
 
@@ -927,7 +927,7 @@ Selenium WebDriver
 
 ===== Frameworks
 
-((("frameworks","Warp and")))Warp currently focuses on frameworks based on the Servlets API, but it provides special hooks and additional support for:
+((("Warp","frameworks")))Warp currently focuses on frameworks based on the Servlets API, but it provides special hooks and additional support for:
 
 * JSF
 * JAX-RS (REST)
@@ -1047,5 +1047,5 @@ Via=1.1.overdrive.home
 
 The response will contain our links to related resources, as well as information about the requested +Conference+ object in the XML +xmlns:ns3="urn:ced:conference"+ format.  Using Warp, we can interact with and perform validations upon these types of payloads with ease.
 
-There are plenty of other detailed Warp examples throughout the tests of the REST modules in the GeekSeek application code; we advise readers to peruse the source for additional ideas on using this very powerful tool for white-box testing of the request/response model.(((range="endofrange", startref="ix_ch08-asciidoc29")))(((range="endofrange", startref="ix_ch08-asciidoc28")))(((range="endofrange", startref="ix_ch08-asciidoc27")))(((range="endofrange", startref="ix_ch08-asciidoc26")))(((range="endofrange", startref="ix_ch08-asciidoc25")))(((range="endofrange", startref="ix_ch08-asciidoc24")))(((range="endofrange", startref="ix_ch08-asciidoc23"))) (((range="endofrange", startref="ix_ch08-asciidoc19")))(((range="endofrange", startref="ix_ch08-asciidoc18"))) (((range="endofrange", startref="ix_ch08-asciidoc9")))
+There are plenty of other detailed Warp examples throughout the tests of the REST modules in the GeekSeek application code; we advise readers to peruse the source for additional ideas on using this very powerful tool for white-box testing of the request/response model.(((range="endofrange", startref="ix_ch08-asciidoc29")))(((range="endofrange", startref="ix_ch08-asciidoc27")))(((range="endofrange", startref="ix_ch08-asciidoc25")))(((range="endofrange", startref="ix_ch08-asciidoc24")))(((range="endofrange", startref="ix_ch08-asciidoc23")))(((range="endofrange", startref="ix_ch08-asciidoc19")))(((range="endofrange", startref="ix_ch08-asciidoc18")))(((range="endofrange", startref="ix_ch08-asciidoc9")))
 

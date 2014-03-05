@@ -167,7 +167,7 @@ Now that we've developed a better understanding of our data, what requests we'll
 
 ==== Obtaining, Building, Testing, and Running GeekSeek
 
-We mentioned ((("authoritative repositories")))((("copying repos")))((("forking repos")))((("upstream repos")))earlier that we'd be using the distributed version control system Git to store the source for this book and its examples, and our _authoritative repository_ is kindly hosted http://bit.ly/1e7o0ox[at GitHub].  Unlike centralized version control systems, Git stores the full repository history in each clone; when you "fork" or "copy" our repo, you'll get the entire history with every commit made since the book's inception.  The _authoritative repository_ refers to the one we elect to act as the _upstream_; changes that are approved to make it into new releases go here.
+We mentioned ((("authoritative repositories")))((("copying repositories")))((("forking repositories")))((("upstream repositories")))earlier that we'd be using the distributed version control system Git to store the source for this book and its examples, and our _authoritative repository_ is kindly hosted http://bit.ly/1e7o0ox[at GitHub].  Unlike centralized version control systems, Git stores the full repository history in each clone; when you "fork" or "copy" our repo, you'll get the entire history with every commit made since the book's inception.  The _authoritative repository_ refers to the one we elect to act as the _upstream_; changes that are approved to make it into new releases go here.
 
 ===== Obtaining the source
 
@@ -185,7 +185,7 @@ Once logged in, you'll _fork_ the authoritative repo into your own publicly view
 [[Figure4-4]]
 image::images/cedj_05in02.png["Forking a GitHub Repository"]
 
-With the((("cloning repos")))((("committing repos")))((("pushing repos"))) fork in your account, now you'll be able to _clone_ this repository locally.  And because you have your own fork on GitHub, you'll be able to _push_ the _commits_ you make locally to your own fork, where you have write access.  This provides two important benefits. First, it serves as a backup in case of disk failure, loss of machine, or a synchronization point if you develop on many machines.  Second, it allows others to see the changes you've made and optionally bring them in for their own use.
+With the((("cloning repositories")))((("committing repositories")))((("pushing repositories"))) fork in your account, now you'll be able to _clone_ this repository locally.  And because you have your own fork on GitHub, you'll be able to _push_ the _commits_ you make locally to your own fork, where you have write access.  This provides two important benefits. First, it serves as a backup in case of disk failure, loss of machine, or a synchronization point if you develop on many machines.  Second, it allows others to see the changes you've made and optionally bring them in for their own use.
 
 Before bringing in your fork of the repository locally, you'll need to have a Git client installed.  This is a command-line tool available on many platforms, but there are also GUI wrappers included in many IDEs, like Eclipse or IntelliJ IDEA.  We'll offer instructions based on the command line.
 
@@ -342,7 +342,7 @@ Our featureset demands a variety of operations that depend upon persistent data;
 
 As our ((("relational models")))logical data analysis has exposed, we have plenty of data types that might work well arranged in a table/row/column structure as provided by the _relational_ model, and that's exactly what we'll cover in <<ch05>>.
 
-We'll also((("Arquillian Persistence Extension")))((("Java Persistence API"))) give a brief overview of mapping from a relational database to an object model that's more familiar and friendly using the _Java Persistence API_ and transactional support via _Enterprise JavaBeans_, and we'll be sure to test that our domain layer is properly tested against known data sets using the handy _Arquillian Persistence Extension_.
+We'll also((("Arquillian", "Persistence Extension")))((("Java Persistence API"))) give a brief overview of mapping from a relational database to an object model that's more familiar and friendly using the _Java Persistence API_ and transactional support via _Enterprise JavaBeans_, and we'll be sure to test that our domain layer is properly tested against known data sets using the handy _Arquillian Persistence Extension_.
 
 ==== Chapter 6: NoSQL: Data Grids and Graph Databases
 
