@@ -297,7 +297,7 @@ As opposed to our homebrewed +main(String[])+ test client, JUnit supports report
 [[Figure1-4]]
 image::images/cedj_02in02.png["JUnit IDE Reporting Integration"]
 
-((("continuous integration server")))Often we'll make use of a _continuous integration server_ to handle our builds and provide an auditable view of the codebase over time.  During this more formal build process, output may be directed to an XML file for analysis by plug-ins. This can be very helpful in tracking progress of the failing and total number of tests. For instance, we can use the http://jenkins-ci.org/[Jenkins Continuous Integration Server] shown in <<Figure1-5>> to track the progress graphically.
+((("continuous integration server", seealso="authoritative build servers")))Often we'll make use of a _continuous integration server_ to handle our builds and provide an auditable view of the codebase over time.  During this more formal build process, output may be directed to an XML file for analysis by plug-ins. This can be very helpful in tracking progress of the failing and total number of tests. For instance, we can use the http://jenkins-ci.org/[Jenkins Continuous Integration Server] shown in <<Figure1-5>> to track the progress graphically.
 
 .Continuous integration test reporting
 [[Figure1-5]]
