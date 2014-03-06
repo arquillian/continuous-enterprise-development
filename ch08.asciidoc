@@ -80,10 +80,10 @@ Publishing Protocol.
 Format independence:: The ((("format independence")))API will be applicable to a wide variety of HTTP entity body content types. It
 will provide the necessary pluggability to allow additional types to be added by an application in a
 standard manner.
-Container independence:: Artifacts ((("container independence")))using the API will be deployable in a variety of Web-tier containers.
+Container independence:: Artifacts ((("container independence")))using the API will be deployable in a variety of web-tier containers.
 The specification will define how artifacts are deployed in a Servlet container and as a JAX-WS Provider.
 Inclusion in Java EE:: The specification will define the environment for a web resource class hosted in a
-Java EE container and will specify how to use Java EE features and components within a Web resource
+Java EE container and will specify how to use Java EE features and components within a web resource
 class.
 
 [NOTE]
