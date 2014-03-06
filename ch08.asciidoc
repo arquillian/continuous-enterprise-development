@@ -14,7 +14,7 @@ Addressable resources:: A unique key or address assigned to each document
 Hypertext:: A unidirectional pointer to an addressable resource
 Browser:: A client program capable of reading hypertext-enabled documents
 
-We take these concepts lightly now, but it's worthwhile considering the paradigm shift this evoked in the early 1990s; in only 10 years' time, most of the world's university students and many homes were connected to a web that contained a marketing presence for an overwhelming majority of the Fortune 500.  These ideas ushered innovation and communication at a rate never before seen in the history of mankind.  This was instant, global publishing, and it was free.
+We take these concepts lightly now, but it's worthwhile considering the paradigm shift this evoked in the early 1990s; in only 10 years' time, most of the world's university students and many homes were connected to a Web that contained a marketing presence for an overwhelming majority of the Fortune 500.  These ideas ushered innovation and communication at a rate never before seen in the history of mankind.  This was instant, global publishing, and it was free.
 
 Central to the makeup of the WWW was the introduction of the _Uniform Resource Identifier_, or URI.  The URI defined by http://bit.ly/1e8haPu[RFC 3986] forms the basis of an addressable resource, and has the following makeup:
 
@@ -28,7 +28,7 @@ and:
 
 +urn:example:animal:ferret:nose+
 
-In short time, Berners-Lee introduced the first version of the((("HyperText Markup Language (HTML)"))) _HyperText Markup Language_ (HTML), aimed at providing a more concise vernacular for incorporating links into a common markup that browsers could format for viewing.  The WWW was built as a mechanism for _document exchange_, sharing of published material over a commonly understood protocol and payload format (commonly HTML).  
+In a short time, Berners-Lee introduced the first version of the((("HyperText Markup Language (HTML)"))) _HyperText Markup Language_ (HTML), aimed at providing a more concise vernacular for incorporating links into a common markup that browsers could format for viewing.  The WWW was built as a mechanism for _document exchange_, sharing of published material over a commonly understood protocol and payload format (commonly HTML).  
 
 In 2000, ((("University of California at Irvine")))University of California at Irvine's((("Fielding, Roy")))((("Architectural Styles and the Design of Network-based Software Architectures (Fielding)"))) Roy Fielding published his dissertation http://bit.ly/1e8hbTD["Architectural Styles and the Design of Network-based Software Architectures"], which expanded the notion of addressing documents to include _services_ among the data exchanged on the Web, and defined a system of _REpresentational State Transfer_ (REST).  With his background in coauthoring http://bit.ly/1e8he1T[RFC-2616], which defined the HTTP/1.1 protocol, Fielding was in a position of expertise to rethink how the principles of the Web might be applied to services.
 
@@ -47,7 +47,7 @@ Clearly the study of REST is worthy of its own text, and we'll recommend pass:[<
 
 ((("Remote Procedure Call (RPC)")))REST is certainly not the first distributed architecture: _Remote Procedure Call_ (RPC) variants have been used in various forms (i.e., SOAP, XML-RPC) for a long while.  In recent years, the trend toward REST has been largely attributed to its ease of use and slim profile when coupled with the((("HyperText Transfer Protocol (HTTP)"))) _HyperText Transfer Protocol_ (HTTP), an established communication protocol providing for _methods_, _headers_, and _return status codes_ that map well to the objectives of the caller.  In practice, the success of the WWW is inherently linked to HTTP, though this is only one protocol (scheme) that can be applied to the general guidelines of the Web.  Due to its widespread usage and versatility, we'll be employing HTTP throughout this chapter.
 
-Because of its success, REST has become an abused buzzword in some circles.  It's helpful for us to clarify the stages of compliance with a truly RESTful system, and a maturity model developed by((("Richardson, Leonard"))) http://www.crummy.com/self/[Leonard Richardson] presents four rungs of evolution.  ((("Fowler, Martin")))Martin Fowler ably sums these up in a http://bit.ly/1fh2AGt[blog post], and we'll outline them here:
+Because of its success, REST has become an abused buzzword in some circles.  It's helpful for us to clarify the stages of compliance with a truly RESTful system, and a maturity model developed by((("Richardson, Leonard"))) http://www.crummy.com/self/[Leonard Richardson] presents four rungs of evolution.  ((("Fowler, Martin")))Martin Fowler aptly sums these up in a http://bit.ly/1fh2AGt[blog post], and we'll outline them here:
 
 |====
 |Stage 0|Using HTTP as a transport system for arbitrary payloads; typically used in plain RPC where a caller may wish to invoke upon a server over a network.
@@ -71,7 +71,7 @@ As the Java community has come to understand the REST principles, it has provide
 ((("Java API for RESTful Web Services (JAX-RS)", id="ix_ch08-asciidoc3", range="startofrange")))((("JAX-RS specification", id="ix_ch08-asciidoc4", range="startofrange")))((("REST","in Enterprise Java", id="ix_ch08-asciidoc5", range="startofrange")))((("REST","JAX-RS specification", id="ix_ch08-asciidoc6", range="startofrange")))The _Java API for RESTful Web Services_, or JAX-RS, is a specification under the direction of the Java Community Process, defined by http://bit.ly/1e8hjT0[JSR-339] in its latest 2.0 version.  Java EE6 incorprates the 1.1 revision, as defined by http://bit.ly/1e8hkXe[JSR-311]; this is the version we'll be covering here.  From the specification document, its goals are to be/have:
 
 POJO-based:: API will provide a set of annotations and associated classes/interfaces that may be used
-with POJOs in order to expose them as Web resources. The specification will define object lifecycle
+with POJOs in order to expose them as web resources. The specification will define object lifecycle
 and scope.
 HTTP-centric:: The specification will assume HTTP is the underlying network protocol and will provide a clear mapping between HTTP and URI elements and the corresponding API classes and
 annotations. The API will provide high-level support for common HTTP usage patterns and will be
@@ -82,7 +82,7 @@ will provide the necessary pluggability to allow additional types to be added by
 standard manner.
 Container independence:: Artifacts ((("container independence")))using the API will be deployable in a variety of Web-tier containers.
 The specification will define how artifacts are deployed in a Servlet container and as a JAX-WS Provider.
-Inclusion in Java EE:: The specification will define the environment for a Web resource class hosted in a
+Inclusion in Java EE:: The specification will define the environment for a web resource class hosted in a
 Java EE container and will specify how to use Java EE features and components within a Web resource
 class.
 
@@ -96,10 +96,10 @@ The((("JAX-RS Specification API"))) http://jsr311.java.net/nonav/javadoc/[JAX-RS
 |====
 |+ApplicationPath+|Identifies the application path that serves as the base URI for all resource URIs provided by `Path`.
 |+Consumes+|Defines the media types that the methods of a resource class or `MessageBodyReader` can accept.
-|+CookieParam+|Binds the value of a HTTP cookie to a resource method parameter, resource class field, or resource class bean property.
+|+CookieParam+|Binds the value of an HTTP cookie to a resource method parameter, resource class field, or resource class bean property.
 |+DefaultValue+|Defines the default value of request metadata that is bound using one of the following annotations: `PathParam`, `QueryParam`, `MatrixParam`, `CookieParam`, `FormParam`, or `HeaderParam`.
 |+DELETE+|Indicates that the annotated method responds to HTTP `DELETE` requests.
-|+Encoded+|Disables automatic decoding of parameter values bound using `QueryParam`, `PathParam`, `FormParam`, or `MatrixParam`.
+|+Encoded+|Disables automatic decoding of parameter values bound using `QueryParam`, `PathParam`, pass:[<phrase role='keep-together'><literal>FormParam</literal></phrase>], or `MatrixParam`.
 |+FormParam+|Binds the value(s) of a form parameter contained within a request entity body to a resource method parameter.
 |+GET+|Indicates that the annotated method responds to HTTP `GET` requests.
 |+HEAD+|Indicates that the annotated method responds to HTTP `HEAD` requests.
