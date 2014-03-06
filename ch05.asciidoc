@@ -338,7 +338,7 @@ Next we can put in place the fields holding the state for +Conference+:
     }
 ----
 
-The +duration+ field is +@javax.persistence.Embedded+, used to signal a complex object type that will decompose into further fields (columns) when mapped to relational persistence.  +org.cedj.app.domain.conference.model.Duration+ looks like:
+The +duration+ field is +@javax.persistence.Embedded+, which is used to signal a complex object type that will decompose into further fields (columns) when mapped to relational persistence.  +org.cedj.app.domain.conference.model.Duration+ looks like this:
 
 [source,java]
 ----
