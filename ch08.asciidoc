@@ -888,6 +888,10 @@ Whatever client-side tools we use for emitting an HTTP request, Warp allows us t
 
 ((("Warp (Arquillian)","deploying")))Thanks to an ability to bring an arbitrary payload to a server and hook into server lifecycles, we can use Warp in partially implemented projects. We do not require the database layer to be implemented in order to test UI logic. This is especially useful for projects based on loosely coupled components (e.g., CDI).
 
+++++
+<?hard-pagebreak?>
+++++
+
 ===== Supported tools and frameworks
 
 ++++
