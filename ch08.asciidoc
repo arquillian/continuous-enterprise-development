@@ -783,9 +783,9 @@ public class CreateConferenceAndSessionStory {
     }
 ----
 
-((("REST", "validating services")))The +@RunWith+ annotation should be familiar by now; Arquillian will be handling the test lifecycle for us.  As noted previously, it's good practice to allow Arquillian to inject the base URL of the application by using +@ArquillianResource+.  And because we're not bound to any frameworks in particular, we can also use the https://code.google.com/p/rest-assured/[REST-assured] project to provide a clean DSL to validate our REST services.
+((("REST", "validating services")))The +@RunWith+ annotation should be familiar by now; Arquillian will be handling the test lifecycle for us.  As noted previously, it's good practice to allow Arquillian to inject the base URL of the application by using +@ArquillianResource+.  And because we're not bound to any frameworks in particular, we can also use the https://code.google.com/p/rest-assured/[REST-assured project] to provide a clean DSL to validate our REST services.
 
-Notably missing from this declaration is the +@Deployment+ method, which we supply in +CreateConferenceAndSessionStoryTestCase+ so we can decouple the test scenario from the test deployment logic; this encourages re-use for running the same tests with different deployments, so we can further integrate other layers later.  The deployment method for our purposes here looks like:
+Notably missing from this declaration is the +@Deployment+ method, which we supply in +CreateConferenceAndSessionStoryTestCase+ so we can decouple the test scenario from the test deployment logic; this encourages re-use for running the same tests with different deployments, so we can further integrate other layers later.  The deployment method for our purposes here looks like this:
 
 [source,java]
 ----
@@ -798,7 +798,7 @@ public static WebArchive deploy() {
 
 Because this is a black-box test, we set +testable+ to +false+ to tell Arquillian not to equip the deployment with any additional test runners; we don't want to test in-container here, but rather run requests from the outside of the server and analyze the response.  The test should verify a behavior, not any internal details.  We could likely write a test where we employ sharing of objects, and this might be easier to code and update, but it could also sneak in unexpected client changes that should have been caught by the tests.  We're interested only in testing the contract between the client and the server, which is specified by our DAP.  Thus, black-box testing is an appropriate solution in this case.
 
-In this deployment, we'll also use "fake" implementations for the Repository / JPA layer; these are provided by the +TestConferenceRepository+ and +TestSessionRepository+ test classes, which simulate the JPA layer for testing purposes.  We won't be hitting the database for the tests at this level of integration.  Later on, when we fully integrate the application, we'll bring JPA back into the picture:
+In this deployment, we'll also use "fake" implementations for the Repository/JPA layer; these are provided by the +TestConferenceRepository+ and +TestSessionRepository+ test classes, which simulate the JPA layer for testing purposes.  We won't be hitting the database for the tests at this level of integration.  Later on, when we fully integrate the application, we'll bring JPA back into the picture:
 
 [source,java]
 ----
@@ -937,7 +937,7 @@ For more information about Warp, visit http://arquillian.org/.
 
 ==== Test Harness Setup
 
-((("test harness setup in Warp")))((("Warp (Arquillian)","test harness setup")))We'll start by enabling the Arquillian Warp in the POM's +dependencyManagement+ section:
+((("test harness setup in Warp")))((("Warp (Arquillian)","test harness setup")))We'll start by enabling the Arquillian Warp in the POM's +dependencyManagement+ pass:[<phrase role='keep-together'>section:</phrase>]
 
 [source,xml]
 ----
