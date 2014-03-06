@@ -107,7 +107,7 @@ This is ((("foreign keys")))((("primary key")))the defining characteristic of _r
 |6|Sister|0|3|4
 |==========
 
-Note especially that there is no direct data reference to the children of a person in the relational model.  That's because this is the "many" side of a "one to many" relationship: one person may have many children, and many children may have one father and one mother. Therefore, to find the children of a given person, we'd ask the database something like:
+Note especially that there is no direct data reference to the children of a person in the relational model.  That's because this is the "many" side of a "one-to-many" relationship: one person may have many children, and many children may have one father and one mother. Therefore, to find the children of a given person, we'd ask the database something like:
 
 _"Please give me all the records where the 'mother' field is my ID if I'm not a male, and where the 'father' field is my ID if I am a male."_
 
@@ -245,7 +245,7 @@ Persistence is a case that's well-understood by and lives at the heart of most J
 
 ==== Entity Objects
 
-((("entities","objects", id="ix_ch05-asciidoc2", range="startofrange")))((("GeekSeek","entity objects in", id="ix_ch05-asciidoc3", range="startofrange")))((("Java Persistence API","entity objects in", id="ix_ch05-asciidoc4", range="startofrange")))There are a few common fields we'll want from each of our entities and ultimately the tables they represent.  All will have a primary key (ID), and a created and last modified +Date+.  To avoid duplication of code, we'll create a base class from which our entities may extend; this is provided by +org.cedj.geekseek.domain.persistence.model.BaseEntity+:
+((("entities","objects", id="ix_ch05-asciidoc2", range="startofrange")))((("GeekSeek","entity objects in", id="ix_ch05-asciidoc3", range="startofrange")))((("Java Persistence API","entity objects in", id="ix_ch05-asciidoc4", range="startofrange")))There are a few common fields we'll want from each of our entities and ultimately the tables they represent.  All will have a primary key (ID), and a created and last modified +Date+.  To avoid duplication of code, we'll create a base class from which our entities may extend; this is provided by +org.cedj.geekseek.domain.persistence.model.Base+ pass:[<phrase role='keep-together'><literal>Entity</literal></phrase>]:
 
 [source,java]
 ----
