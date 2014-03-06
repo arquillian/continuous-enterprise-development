@@ -10,7 +10,7 @@ ____
 
 Unfortunately, the small percentage of those looking to take advantage of others necessitates taking some measures to protect ourselves.  We look after our belongings and each other.  In the digital arena, our vulnerable currency is __data__—not everyone is entitled to see or edit everything.  Although our systems are built to support a large number of users, we cannot simply allow anyone to take any action they please.  In software and life, security amounts to controlling access.
 
-The process ((("security","models")))by which we grant or restrict access is reflected in our _security model_; this defines the criteria by which we judge access attempts.  If someone is asking to enter the office, should we ensure they're an employee?  Is it after business hours, and how does that affect our decision?  Access may be permitted or denied based on _contextual_ information, and the way we value those contexts is what comprises our security model.
+The process ((("security","models")))by which we grant or restrict access is reflected in our _security model_; this defines the criteria by which we judge access attempts.  If someone is asking to enter the office, should we ensure he's an employee?  Is it after business hours, and how does that affect our decision?  Access may be permitted or denied based on _contextual_ information, and the way we value those contexts is what comprises our security model.
 
 When we((("authorization", seealso="OAuth, authentication")))((("role-based security")))((("tasks")))((("users","security and"))) permit access to a resource, this is the process of _authorization_.  A commonly employed approach involves _role-based security_, where functions and actions on the system are linked to a _role_.  For instance, the task of unlocking an office's front doors may be permitted to someone with the "janitor" role.  A staffer, Jim, may in turn be assigned to the "janitor" role; thus Jim will have permission to unlock the office's front doors.  Role-based security decouples the _user_ from the _task_; if Jim leaves the company and no longer is noted as the janitor, the permissions he'd had when assigned to that role would disappear as well.  
 
@@ -194,7 +194,7 @@ public class CurrentUserProducer {
 }
 ----
 
-This class will supply a +User+ to fields annotated with +@Current+, or null if no one is logged in.  As we've seen, our +UserAccount+ implementation will allow us to call +getUser()+ on the current +Identity+.
+This class will supply a +User+ to fields annotated with +@Current+, or `null` if no one is logged in.  As we've seen, our +UserAccount+ implementation will allow us to call +getUser()+ on the current +Identity+.
 
 Here we've shown the use of PicketLink as a handy security abstraction, but we haven't done any real authentication or authorization yet.  For that, we'll need to implement a provider that will power the IDM requirements we have to enable social login via Twitter.(((range="endofrange", startref="ix_ch09-asciidoc7")))(((range="endofrange", startref="ix_ch09-asciidoc6")))(((range="endofrange", startref="ix_ch09-asciidoc5")))(((range="endofrange", startref="ix_ch09-asciidoc4")))(((range="endofrange", startref="ix_ch09-asciidoc3")))
 
@@ -294,7 +294,7 @@ public class SettingsProducer implements Serializable {
 
 This +@Singleton+ EJB ((("authentication","OAuth")))((("OAuth","sessions")))is scoped application-wide and available to all sessions needing configuration to create OAuth sessions.  We store the config data in environment variables to not couple secrets into our application, and allow our various deployment targets (local dev, staging, production, etc.) to have independent configurations.
 
-Now we can move to the business of authenticating a user via the Twitter OAuth service via Agorava.  We can extend PicketLink's +BaseAuthenticator+ to provide the necessary logic in our +org.cedj.geekseek.service.security.picketlink.OAuthAuthenticator+:
+Now we can move to the business of authenticating a user via the Twitter OAuth service via Agorava.  We can extend PicketLink's +BaseAuthenticator+ to provide the necessary logic in +org.cedj.geekseek.service.security.picketlink.OAuthAuthenticator+:
 
 [source,java]
 ----
