@@ -252,7 +252,7 @@ This will pull the current upstream version of the application into your local d
 
 * Create a +remote+ reference to the authoritative repo: +git remote add upstream https://github.com/arquillian/continuous-enterprise-development.git+
 * +fetch+ all the tags from the remote repo: +git fetch -t upstream+
-* +checkout+ the tag as a local branch: +git checkout -b remotes/upstream/1.0.0+ (For instance checks out tag +1.0.0+)
+* +checkout+ the tag as a local branch: +git checkout -b remotes/upstream/1.0.0+ (checks out tag +1.0.0+)
 * Work on your new branch, based off the tag you've specified: +git branch+ (((range="endofrange", startref="ix_ch04-asciidoc5")))
 
 ===== Building and testing GeekSeek
@@ -282,7 +282,7 @@ The first run is likely to take some time because Maven will resolve all depende
 
 The +test+ phase will instruct Maven to fire up the application servers and run all tests to ensure that everything is working as expected.  If you'd like to save some time and simply fetch the dependencies, build the sources, and package the application, execute +mvn package -DskipTests=true+.  Here's a full list of the http://bit.ly/1e7xH6o[Maven lifecycles].
 
-Packaging the full application will result in a WAR (Web Archive) file located at _application/target/geekseek-(version).war_.  It's this file that can be deployed into an application server to run GeekSeek locally; by default, we'll be using _WildFly_ from the JBoss Community.
+Packaging the full application will result in a WAR (Web Archive) file located at _application/target/geekseek-(version).war_.  It's this file that can be deployed into an application server to run GeekSeek locally; by default, we'll be using _WildFly_ from the JBoss pass:[<phrase role='keep-together'>Community.</phrase>]
 
 ===== Running GeekSeek
 
