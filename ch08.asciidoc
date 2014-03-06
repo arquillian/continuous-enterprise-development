@@ -367,7 +367,7 @@ Note that for +GET+, +PUT+, and +DELETE+ operations we must know which entity to
 
 With this base class in place, we have effectively made a nice mapping between the DAP API as part of our requirements and the backend +Repository+ and JPA.  Incoming client requests are mapped to business methods, which in turn delegate the appropriate action to the persistence layer and supply a response.
 
-Let's have a look at a concrete implementation of the +RepositoryResource+, one that handles interaction with +User+ domain objects.  We've aptly named this the +org.cedj.geekseek.web.rest.user.UserResource+:
+Let's have a look at a concrete implementation of the +RepositoryResource+, one that handles interaction with +User+ domain objects.  We've aptly named this the +org.cedj.+ pass:[<phrase role='keep-together'><literal>geekseek.web.rest.user.UserResource</literal></phrase>]:
 
 [source,java]
 ----
