@@ -406,7 +406,7 @@ private static class Key implements Serializable {
     }
 ----
 
-The +Reference.Key+ very((("value equality"))) simply draws a link between a source primary key and a target primary key, the IDs of the entities it is linking.  Additionally, we assign a +type+ to note what the relationship is reflecting.  Because we want to determine _value equality_ using the +Object.equals+ method, we override the +equals+ and +hashCode+ methods (by +Object+ contract, objects with equal values _must_ have equal ++hashCode++s).
+The +Reference.Key+ very((("value equality"))) simply draws a link between a source primary key and a target primary key, the IDs of the entities it is linking.  Additionally, we assign a +type+ to note what the relationship is reflecting.  Because we want to determine _value equality_ using the +Object.equals+ method, we override the +equals+ and +hashCode+ methods (by pass:[<phrase role='keep-together'><literal>Object</literal></phrase>] contract, objects with equal values _must_ have equal ++hashCode++s).
 
 The rest of the +Relation+ class is straightforward:
 
