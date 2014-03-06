@@ -332,7 +332,7 @@ myPackage.jar:
 /org/alr/test/TestClass.class
 ----
 
-So let's see what's going on here.  First we create a +JavaArchive+ and add all the contents of the current ++Class++'s +Package+. Then we dump the output to the console, just to see what's included.  In the final line, we again use the +Assignable+ facilities of the +JavaArchive+ view to get us into a new view: one capable of exporting to ZIP format.  In this case we use the appropriately named +ZipExporter+, allowing us to export to a +File+, +OutputStream+, or even get the contents as an +InputStream+ so we can deal with the bytes ourselves.
+So let's see what's going on here.  First we create a +JavaArchive+ and add all the contents of the current ++Class++'s +Package+. Then we dump the output to the console, just to see what's included.  In the final line, we again use the +Assignable+ facilities of the +JavaArchive+ view to get us into a new view: one capable of exporting to ZIP format.  In this case we use the appropriately named +ZipExporter+, allowing us to export to a +File+, +OutputStream+, or even get the contents as an +InputStream+ so we can deal with the bytes pass:[<phrase role='keep-together'>ourselves.</phrase>]
 
 <<table2-4>> lists the three types of exporters that ship with ShrinkWrap.
 
@@ -370,7 +370,7 @@ The code for running an import to roundtrip the previous example might look like
 
 Note how we can pass +ZipImporter+ into the +ShrinkWrap.create+ method, because it's +Assignable+ as well!  Beginning to notice a theme here?
 
-This concludes our brief introduction into manipulating archive content with ShrinkWrap.(((range="endofrange", startref="ix_ch02-asciidoc4")))(((range="endofrange", startref="ix_ch02-asciidoc3")))
+This concludes our brief introduction into manipulating archive content with pass:[<phrase role='keep-together'>ShrinkWrap.</phrase>](((range="endofrange", startref="ix_ch02-asciidoc4")))(((range="endofrange", startref="ix_ch02-asciidoc3")))
 
 ==== ShrinkWrap Resolvers
 
@@ -510,7 +510,7 @@ You can import the ShrinkWrap Resolvers BOM via the following snippet:
 
 ((("Apache Maven","resolving coordinates with ShrinkWrap", id="ix_ch02-asciidoc6", range="startofrange")))((("ShrinkWrap Resolvers","Maven coordinates, resolving with", id="ix_ch02-asciidoc7", range="startofrange")))Maven coordinates, in their canonical form, are specified as follows: +groupId:artifactId:[packagingType:[classifier]]:version+. Often, those are referred as +G+ pass:[<phrase role='keep-together'>(groupId)</phrase>], +A+ (artifactId), +P+ (packagingType), +C+ (classifier), and +V+ (version). If you omit +P+ and +C+, you will get the default value, which uses +jar+ as the packaging type and an empty classifier. ShrinkWrap Resolvers additionally allows you to skip +V+ in case it has version information available from the POM; here are some use cases:
 
-* The most simple use case is to resolve a file using coordinates. Here, the resolver locates an artifact defined by +G:A:V+ and resolves it including all transitive dependencies. The result is formatted as array of type +File+:
+* The simplest use case is to resolve a file using coordinates. Here, the resolver locates an artifact defined by +G:A:V+ and resolves it including all transitive dependencies. The result is formatted as an array of type +File+:
 +
 [source,java]
 ----
@@ -525,7 +525,7 @@ File[] = Maven.resolver().resolve("G:A:V").withTransitivity().asFile();
 Maven.resolver().resolve("G:A:V").withoutTransitivity().asSingleFile();
 ----
 
-* Very often, you need to resolve more than one artifact. The method +resolve(String...)+ allows you to specify many artifacts at the same time. The result of the call will be an array of +File+ composed of artifacts defined by +G1:A1:V1+ and +G2:A2:V2+, including their transitive dependencies:
+* Very often, you need to resolve more than one artifact. The +resolve(String...)+ method allows you to specify many artifacts at the same time. The result of the call will be an array of +File+ composed of artifacts defined by +G1:A1:V1+ and +G2:A2:V2+, including their transitive dependencies:
 +
 [source,java]
 ----
