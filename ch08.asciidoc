@@ -173,7 +173,7 @@ Additionally, we ((("Domain Application Protocol (DAP)")))want to lay out a map 
 ** +/conference/[c_id]/session application/vnd.ced+xml;type=session+
 *** +GET+ -> List
 *** +POST+ -> Add
-** pass:[<phrase role='keep-together'><literal>/conference/[c_id/session/[s_id] application/vnd.ced+xml;</literal></phrase>] pass:[<phrase role='keep-together'><literal>type=session</literal></phrase>]
+** +/conference/[c_id/session/[s_id] application/vnd.ced+xml;type=session+
 *** +GET+ -> Single
 *** +PUT+ -> Update
 *** +DELETE+ -> Remove
