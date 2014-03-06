@@ -14,7 +14,7 @@ This chapter((("continuous integration"))) will ultimately link a +git push+ to 
 
 === Obtaining JBoss EAP
 
-((("application assembly","JBoss EAP", id="ix_ch11-asciidoc2", range="startofrange")))((("application services","JBoss EAP", id="ix_ch11-asciidoc2a", range="startofrange")))((("assembly (of applications)","JBoss EAP", id="ix_ch11-asciidoc3", range="startofrange")))((("JBoss Enterprise Application Platform (JBoss EAP)", id="ix_ch11-asciidoc4", range="startofrange"))) ((("JBoss Enterprise Application Platform (JBoss EAP)","obtaining", id="ix_ch11-asciidoc5", range="startofrange")))_JBoss Enterprise Application Platform_ (EAP) is((("Red Hat")))((("WildFly application service"))) Red Hat's supportable application server distribution born from the community open source _WildFly_ project (formerly known as the JBoss Application Server).  A full discussion of the relationship and differences between community and supportable middleware is detailed by http://www.redhat.com/products/jbossenterprisemiddleware/community-enterprise/[Red Hat], and some of the most important points are:
+((("application assembly","JBoss EAP", id="ix_ch11-asciidoc2", range="startofrange")))((("application services","JBoss EAP", id="ix_ch11-asciidoc2a", range="startofrange")))((("assembly (of applications)","JBoss EAP", id="ix_ch11-asciidoc3", range="startofrange")))((("JBoss Enterprise Application Platform (JBoss EAP)", id="ix_ch11-asciidoc4", range="startofrange"))) ((("JBoss Enterprise Application Platform (JBoss EAP)","obtaining", id="ix_ch11-asciidoc5", range="startofrange")))_JBoss Enterprise Application Platform_ (EAP) is((("Red Hat")))((("WildFly application service"))) Red Hat's supportable application server distribution born from the community open source _WildFly_ project (formerly known as the JBoss Application Server).  A full discussion of the relationship and differences between community and supportable middleware is detailed by http://www.redhat.com/products/jbossenterprisemiddleware/community-enterprise/[Red Hat], and some of the most important points are as follows:
 
 * The community projects are built to innovate quickly and push new features at a rapid rate.
 * Supportable products are intended to have a multiyear life span, and receive updates and bug fixes over this time period.
@@ -24,7 +24,7 @@ In March of 2013, the JBoss Senior Director of Engineering https://community.jbo
 
 EAP has some additional differences with WildFly, which become very apparent during our development experience.  Though EAP is available for free, there is a _Terms and Conditions_ prerequisite to its use, and therefore it is not currently available in the JBoss Nexus or Maven Central repositories.  We'll have to perform some extra steps to set up our environments for EAP before we can enable this option in our builds.
 
-First, let's obtain the EAP distribution and private JBoss EAP Maven repository from the http://www.jboss.org/jbossas/downloads/[JBoss Downloads] page, as shown in <<Figure10-1>>.
+First, let's obtain the EAP distribution and private JBoss EAP Maven repository from the http://www.jboss.org/jbossas/downloads/[JBoss Downloads page], as shown in <<Figure10-1>>.
 
 .Download JBoss EAP
 [[Figure10-1]]
@@ -140,7 +140,7 @@ Let's begin by unpacking this into a new repository alongside the default +~/.m2
 .m2 $> rm jboss-eap-6.1.0-maven-repository.zip
 ----
 
-This will leave us with the new EAP extension repository +jboss-eap-6.1.0.GA-maven-repository+ under our +.m2/+ directory.
+This will leave us with the new EAP extension repository +jboss-eap-6.1.0.GA-maven-repository+ under our _.m2/_ directory.
 
 Now we must let Maven know about our new repository, so we can define it in the default user-level _~/.m2/settings.xml_.  Note that we're actually free to use any settings file we choose, though if we opt outside of the default settings file we'll have to manually specify our settings configuration to the +mvn+ command using the +-s /path/to/settings/file+ switch.
 
@@ -260,7 +260,7 @@ Our goal here is to set up a continuous integration environment that will serve 
 
 In this way we chain events together in order to automate the human action of a code commit all the way through deployment to a publicly accessible application server.
 
-Although we ((("Jenkins CI Server")))((("authoritative build servers","Jenkins CI Server")))have our choice of build servers and cloud services backing them, we've chosen for our examples the http://jenkins-ci.org/[Jenkins CI Server] (the project forked off http://hudson-ci.org/[Hudson]) run by the http://www.cloudbees.com/[CloudBees] service.  Of course, we could install a CI server and maintain it ourselves, but the excellent folks at CloudBees have proven more than capable at keeping our infrastructure running, patched, and updated.  Additionally, they offer a few extension services (which we'll soon see) that fit well with our desired use cases.  
+Although we ((("Jenkins CI Server")))((("authoritative build servers","Jenkins CI Server")))have our choice of build servers and cloud services backing them, we've chosen for our examples the http://jenkins-ci.org/[Jenkins CI Server] (the project forked off http://hudson-ci.org/[Hudson]) run by the http://www.cloudbees.com/[CloudBees service].  Of course, we could install a CI server and maintain it ourselves, but the excellent folks at CloudBees have proven more than capable at keeping our infrastructure running, patched, and updated.  Additionally, they offer a few extension services (which we'll soon see) that fit well with our desired use cases.  
 
 It's worth noting that the CloudBees team has kindly provided the Arquillian and ShrinkWrap communities with gratis service and support over the past several years, so we'd like to thank them for their contributions in keeping the open source ecosystem running smoothly.
 
