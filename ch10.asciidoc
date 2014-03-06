@@ -17,16 +17,16 @@ In general, our requirements remain simply to expose our operations in a human-c
 
 ((("GeekSeek","user interface for")))On a high level, we're looking to allow a user to take advantage of the application's primary purpose: we'd like to modify the state of our domain objects in a consistent fashion.  We can state these:
 
-* As a User I should be able Add/Change/Delete a Conference
-* As a User I should be able Add/Change/Delete a Session to Conferences
-* As a User I should be able Add/Change/Delete an Attachment to Sessions and Conferences
-* As a User I should be able Add/Change/Delete a Venue (and attach to Conferences and Sessions)
+* As a User I should be able to Add/Change/Delete a Conference
+* As a User I should be able to Add/Change/Delete a Session to Conferences
+* As a User I should be able to Add/Change/Delete an Attachment to Sessions and Conferences
+* As a User I should be able to Add/Change/Delete a Venue (and attach to Conferences and Sessions)
 
 === Implementation
 
 ((("user interface","implementing", id="ix_ch10-asciidoc1", range="startofrange")))Our frontend is ((("Model, View, Controller (MVC) pattern")))((("AngularJS")))written using the popular JavaScript framework http://angularjs.org/[AngularJS]: a framework that lets us extend the HTML syntax, write client-side components in the familiar Model, View, Controller (MVC) pattern, and allow for a two-way binding of our data models.
 
-((("HATEOAS, handling with AngularJS")))AngularJS has a built-in abstraction to work with +Resources+ like REST, but it lacks built-in support for HATEOAS. The AngularJS `Resource` can easily operate on a single +Resource+, but with no automatic link support or knowledge of the +OPTIONS+ that the +Resource+ might support. For our frontend view to be completely driven by the backend services we need this extra layer of support.
+((("HATEOAS, handling with AngularJS")))AngularJS has a built-in abstraction to work with +Resources+ like REST, but it lacks built-in support for HATEOAS. The AngularJS `Resource` can easily operate on a single pass:[<phrase role='keep-together'><literal>Resource</literal></phrase>], but with no automatic link support or knowledge of the +OPTIONS+ that the +Resource+ might support. For our frontend view to be completely driven by the backend services, we need this extra layer of support.
 
 To address HATEOAS in the client view we've created a simple object we call +RestGraph+. The main responsibility of this object is to discover linked +Resources+ in the +Response+ and determine what we're allowed to do with the given +Resource+.
 
@@ -122,7 +122,7 @@ We choose to map the +MediaTypes+ described in the DAP to HTML templates in the 
 }
 ----
 
-By combining the current +Action+ (View, Update, Create) with the +MediaType+ subtype argument, we can identify a unique template for how to represent the current +Resource+ as HTML.(((range="endofrange", startref="ix_ch10-asciidoc1")))
+By combining the current +Action+ (View, Update, Create) with the +MediaType+ subtype argument, we can identify a unique template for how to represent the current pass:[<phrase role='keep-together'><literal>Resource</literal></phrase>] as HTML.(((range="endofrange", startref="ix_ch10-asciidoc1")))
 
 As an example, the +Conference+ +MediaType+ in +View+ mode could look like this:
 [source, html]
