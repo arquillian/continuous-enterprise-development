@@ -354,7 +354,7 @@ We noted earlier that our user relationship model is a natural graph and that ou
 
 ==== Chapter 7: Business Logic and the Services Layer
 
-With our ((("Context and Dependency Injection (CDI)")))((("Enterprise JavaBeans (EJB)")))persistence layers covered, we need to expose some way of allowing users to interact with the data and carry out the business logic demanded by our requirements.  Java EE recommends encapsulating business logic in components such as _Enterprise JavaBeans (EJBs)_ or _Contexts and Dependency Injection (CDI)_ beans; we'll be using primarily EJBs.
+With our ((("Context and Dependency Injection (CDI)")))((("Enterprise JavaBeans (EJB)")))persistence layers covered, we need to expose some way of allowing users to interact with the data and carry out the business logic demanded by our requirements.  Java EE recommends encapsulating business logic in components such as _Enterprise JavaBeans_ (EJBs) or _Contexts and Dependency Injection_ (CDI) beans; we'll be using primarily EJBs.
 
 EJBs and ((("Remote Procedure Call (RPC)")))CDI beans are very handy for either direct calling or using a _remote procedure call_ (RPC) style, but they don't do much to inform us as users about the possible state transitions and available operations as we navigate the application.
 
@@ -375,6 +375,10 @@ Our featureset requirements clearly couple user registration with an existing Tw
 The user ((("Drone")))interface represents the visible elements with which end users will interact to submit form data and view our domain objects in a unified aggregate view.  We test the UI through _Arquillian Drone_, _Arquillian Warp_, and hooks into the http://www.seleniumhq.org/[Selenium project].  
 
 In this fashion we automate and emulate real user input by writing tests to push data into the browser and reading the response after it's been rendered.
+
+++++
+<?hard-pagebreak?>
+++++
 
 ==== Chapter 11: Assembly and Deployment
 
