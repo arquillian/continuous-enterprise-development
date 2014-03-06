@@ -466,7 +466,7 @@ Now we can flush out the accessors/mutators of this POJO entity, applying some i
 }
 ----
 
-Similar in form to the +Conference+ entity, +org.cedj.app.domain.conference.model.Session+ looks like:
+Similar in form to the +Conference+ entity, +org.cedj.app.domain.conference.model.Session+ looks like this:
 
 [source,java]
 ----
