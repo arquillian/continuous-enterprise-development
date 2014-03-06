@@ -405,16 +405,12 @@ $> sudo umount /mnt/cloudbees/arquillian/private
 $> sudo mount -a
 ----
 
-[NOTE]
-====
-It's not atypical for large hold times while the cache synchronizes over the network:
+Note that it's not atypical for large hold times while the cache synchronizes over the network:
 
 ----
-/sbin/umount.davfs: waiting while mount.davfs (pid 11125) synchronizes 
-the cache
+/sbin/umount.davfs: waiting while mount.davfs (pid 11125) synchronizes the cache
 ....
 ----
-====
 
 Now we can manually trigger a build of our project, and if all's set up correctly, we'll see our test result come out clear.(((range="endofrange", startref="ix_ch11-asciidoc17")))(((range="endofrange", startref="ix_ch11-asciidoc16"))) (((range="endofrange", startref="ix_ch11-asciidoc13")))(((range="endofrange", startref="ix_ch11-asciidoc12")))
 
