@@ -1077,7 +1077,7 @@ We have similar tests in place to validate the other conditions:
     @Test public void shouldSetUpdatedDate() throws Exception {...}
 ----
 
-With our base class containing most of our support for the transactional specification tests, now we can provide a concrete implementation for our +Attachment+ entities.  We do this in +org.cedj.geekseek.domain.attachment.test.integration.AttachmentRepositoryTransactionalTestCase+:
+With our base class containing most of our support for the transactional specification tests, now we can provide a concrete implementation for our +Attachment+ entities.  We do this in pass:[<phrase role='keep-together'><literal>org.cedj.geekseek.domain.attachment.test.integration.Attachment</literal></phrase>] pass:[<phrase role='keep-together'><literal>RepositoryTransactionalTestCase</literal></phrase>]:
 
 [source,java]
 ----
