@@ -410,7 +410,8 @@ $> sudo mount -a
 It's not atypical for large hold times while the cache synchronizes over the network:
 
 ----
-/sbin/umount.davfs: waiting while mount.davfs (pid 11125) synchronizes the cache
+/sbin/umount.davfs: waiting while mount.davfs (pid 11125) synchronizes 
+the cache
 ....
 ----
 ====
