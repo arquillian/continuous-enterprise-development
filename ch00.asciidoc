@@ -55,7 +55,7 @@ This element indicates a warning or caution.
 
 === Using Code Examples
 
-Supplemental material (code examples, exercises, etc.) is available for download at link:$$https://continuousdev.org$$[].  We offer a guide to get started in <<ch04>>.
+Supplemental material (code examples, exercises, etc.) is available for download at link:$$http://continuousdev.org$$[].  We offer a guide to get started in <<ch04>>.
 
 This book is here to help you get your job done.  All contents here are licensed under http://creativecommons.org/licenses/by-sa/2.0/['Creative Commons Attribution-ShareAlike 2.0 Generic'], and we invite the community at large to contribute work including feature requests, typographical error corrections, and enhancements via our http://bit.ly/1e7kQRD[GitHub Issue Tracker].  You may reuse any of the text or examples in compliance with the license, which requires attribution.  See full license for details.
 
