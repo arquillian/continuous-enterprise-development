@@ -1146,7 +1146,7 @@ This will be another relatively simple Arquillian test case, running inside the 
     }
 ----
 
-This deployment will include our +GraphDatabaseProducer+, so we'll be able to inject a +GraphRelationRepository+ in our test case to create, remove, and find +Relation+ edges.  This we'll obtain easily via injection into the test instance:
+This deployment will include our +GraphDatabaseProducer+, so we'll be able to inject a +GraphRelationRepository+ in our test case to create, remove, and find +Relation+ edges.  We'll obtain this easily via injection into the test instance:
 
 [source,java]
 ----
