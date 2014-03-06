@@ -3,7 +3,7 @@
 
 [quote, Bill Toomey]
 ____
-Whatever pursuit you undertake, the requirements should start with a love of what it is pass:[<phrase role='keep-together'>that you are pursuing.</phrase>]
+Whatever pursuit you undertake, the requirements should start pass:[<phrase role='keep-together'>with a love of what it is that you are pursuing.</phrase>]
 ____
 
 ((("application requirements", id="ix_ch04-asciidoc0", range="startofrange")))((("GeekSeek","requirements for, defining", id="ix_ch04-asciidoc1", range="startofrange")))Although the previous chapter provides decent proof that it's possible to jumpstart development on a greenfield Java EE project without too much hassle, we all recognize that this may be a far cry from how applications are built in the real world.  The benefits of quickly going from a blank canvas to a deployed, functioning application are largely educational or handy in rapid prototyping, but in the majority of cases we're likely looking to:
