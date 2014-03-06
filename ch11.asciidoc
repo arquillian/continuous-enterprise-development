@@ -563,9 +563,9 @@ Then log in to your OpenShift Management Console and select https://openshift.re
 [[Figure10-17]]
 image::images/cedj_12in17.png[OpenShift Public Keys]
 
-Switching back to our Jenkins job configuration screen, toward the bottom is a section where we can add "postbuild" steps (see <<Figure10-18>>).  Let's create a shell-based action that will be set to execute only upon successful build.
+Switching back to our Jenkins job configuration screen, toward the bottom is a section where we can add "post-build" steps (see <<Figure10-18>>).  Let's create a shell-based action that will be set to execute only upon successful build.
 
-.CloudBees Post Build
+.CloudBees post-build steps
 [[Figure10-18]]
 image::images/cedj_12in18.png[CloudBees Post Build]
 
