@@ -487,7 +487,7 @@ The final important fixture of the Arquillian test anatomy is the +@Deployment+ 
     }
 ----
 
-Because ((("Enterprise Application Archives (EARs)")))((("Java Archives (JARs)")))((("Web Archives (WARs)")))Java EE application servers work off deployments like _Web Archives (WARs)_, _Java Archives (JARs)_, or _Enterprise Archives (EARs)_, we need to instruct Arquillian with the artifact to be deployed.  This method must be +static+ and return any ShrinkWrap +Archive+ type; for this first exercise we'll simply grab the output of the current project's build _feedback.war_, but as we'll soon see in later examples, we don't need to rely on flat files at all!  This will free us to skip the build entirely in between code changes and test runs, instead letting us rely ShrinkWrap's packaging of _.class_ files created from the IDE's incremental complication features.
+Because ((("Enterprise Application Archives (EARs)")))((("Java Archives (JARs)")))((("Web Archives (WARs)")))Java EE application servers work off deployments like _Web Archives (WARs)_, _Java Archives (JARs)_, or _Enterprise Archives (EARs)_, we need to instruct Arquillian with the artifact to be deployed.  This method must be +static+ and return any ShrinkWrap +Archive+ type; for this first exercise we'll simply grab the output of the current project's build _feedback.war_, but as we'll soon see in later examples, we don't need to rely on flat files at all!  This will free us to skip the build entirely in between code changes and test runs, instead letting us rely on ShrinkWrap's packaging of _.class_ files created from the IDE's incremental complication features.
 
 The rest of the file is all test logic!  Remember, the focus of the Arquillian programming model is to allow you to write less boilerplate and setup, and focus on the bits of code that only you as the developer can write.  It's not your job to deal with bootstrapping an application server or calling upon vendor-specific deployment hooks; Arquillian will handle all of that for you behind the scenes.(((range="endofrange", startref="ix_ch03-asciidoc6")))(((range="endofrange", startref="ix_ch03-asciidoc5")))(((range="endofrange", startref="ix_ch03-asciidoc4")))
 
@@ -545,7 +545,7 @@ We're up and running!  Point your browser of choice to the root of the applicati
 [[Figure3-5]]
 image::images/cedj_04in05.png["Feedback Application Home"]
 
-Clicking the Feedback Entry button in <<Figure3-6>> will grant us access to the CRUD editor for this entity.  From here we can create a new row in the database table.
+Clicking the Feedback Entry button in <<Figure3-5>> will grant us access to the CRUD editor for this entity.  From here we can create a new row in the database table, as shown in <<Figure3-6>>.
 
 .New feedback entry
 [[Figure3-6]]
@@ -598,7 +598,7 @@ With assurance that our application has some minimal level of tested functionali
 
 ((("development process","deployment", id="ix_ch03-asciidoc10", range="startofrange")))((("JBoss Developer Studio (JBDS)","deployment", id="ix_ch03-asciidoc11", range="startofrange")))((("JBoss Developer Studio (JBDS)","OpenShift and", id="ix_ch03-asciidoc12", range="startofrange")))((("OpenShift application service","deploying to, via JBDS", id="ix_ch03-asciidoc13", range="startofrange")))JBDS provides us a convenient user interface to the OpenShift cloud service, which will run our applications on the publicly available Web.  Complete information is available at the https://www.openshift.com/[OpenShift] site; for our purposes we'll be running the Java EE web app we created earlier in a JBoss AS7 _cartridge_, OpenShift's moniker for a canned set of cloud services.
 
-Before continuing, we are required to create an account; we can do this by clicking the SIGN UP button from the home page and completing the requisite form, as shown in <<Figure3-9>>.
+Before continuing, we are required to create an account; we can do this by clicking the Sign Up button from the home page and completing the requisite form, as shown in <<Figure3-9>>.
 
 .OpenShift signup
 [[Figure3-9]]
