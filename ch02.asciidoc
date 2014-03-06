@@ -100,9 +100,9 @@ In this text, we'll be using the open source DVCS _Git_.
 
 From a high level, we've chosen Git for our projects because it enables:
 
-* True feature (topic) development.  Branching is quick, easy, and cheap.  You can work on feature X in isolation, with the ability to put your changes _on top of_ development that may be occurring in the mainline branch.
-* Integration with third-party systems built to respond to Git events.  For instance, we'll be able to trigger builds and production deployments by pushing our local changes to a remote repository.
-* Rewriting of local history.  Often it's handy to commit liberally, giving yourself many "save" points along the way.  However, before making these (sometimes breaking) changes visible to the rest of the world, it's good practice to "squash" the mini-changes into a cohesive, singular commit.  This helps keep the version history sane and facilitates later auditing if a bug should arise.
+True feature (topic) development::  Branching is quick, easy, and cheap.  You can work on feature X in isolation, with the ability to put your changes _on top of_ development that may be occurring in the mainline branch.
+Integration with third-party systems built to respond to Git events::  For instance, we'll be able to trigger builds and production deployments by pushing our local changes to a remote repository.
+Rewriting of local history::  Often it's handy to commit liberally, giving yourself many "save" points along the way.  However, before making these (sometimes breaking) changes visible to the rest of the world, it's good practice to "squash" the mini-changes into a cohesive, singular commit.  This helps keep the version history sane and facilitates later auditing if a bug should arise.
 
 Again, it is not our aim to fully delve into the mechanics of each tool we'll be employing.  However, we will be issuing Git commands and explaining their use along the way.  You can find a very good reference on the myriad Git subroutines in http://git-scm.com/book[_Pro Git_] by Scott Chacon (Apress, 2009), available for free in digital editions and in print via online retailers.
 
@@ -132,7 +132,7 @@ Picking up where unit tests leave off, Arquillian handles all the plumbing of co
 
 The Arquillian project ((("Arquillian","core principles")))adheres to three core principles:
 
-Tests should be portable to any supported container.:: Keeping container-specific APIs out of the tests enables developers to verify application portability by running tests in a variety of containers. It also means that lightweight containers can be used as a substitute for full containers during development.
+Tests should be portable to any supported container.:: Keeping container-specific APIs out of the tests enables developers to verify application portability by running tests in a variety of containers. It also means that lightweight containers can be used as a substitute for full containers during pass:[<phrase role='keep-together'>development.</phrase>]
 Tests should be executable from both the IDE and the build tool.::  By leveraging the IDE, the developer can skip the build for a faster turnaround and has a familiar environment for debugging. These benefits shouldn’t sacrifice the ability to run the tests in continuous integration using a build tool.
 The platform should extend or integrate existing test frameworks.:: An extensible architecture encourages reuse of existing software and fosters a unified Java testing ecosystem.  Regardless of how complex it becomes, executing an Arquillian test is as simple as selecting Run As -> Test in the IDE or executing the “test” goal from the build tool, as shown in <<Figure2-4>>.
 
@@ -211,7 +211,7 @@ In Maven, these can be brought in under the proper scopes easily by using the Sh
 
 For projects not using the Maven repository system, the ShrinkWrap Distribution makes all modules available as a download, and you can set up the dependencies manually to suit your needs. Here are the prerequisites:
 
-* JRE5+ Runtime
+* JRE5+ runtime
 * No additional dependencies
 
 ShrinkWrap can run on any Java5 runtime or higher, but requires at least JDK6 for compilation.
@@ -332,7 +332,7 @@ myPackage.jar:
 /org/alr/test/TestClass.class
 ----
 
-So let's see what's going on here.  First we create a +JavaArchive+ and add all the contents of the current ++Class++'s +Package+ . Then we dump the output to the console, just to see what's included.  In the final line, we again use the +Assignable+ facilities of the +JavaArchive+ view to get us into a new view: one capable of exporting to ZIP format.  In this case we use the appropriately named +ZipExporter+, allowing us to export to a +File+, +OutputStream+, or even get the contents as an +InputStream+ so we can deal with the bytes ourselves.
+So let's see what's going on here.  First we create a +JavaArchive+ and add all the contents of the current ++Class++'s +Package+. Then we dump the output to the console, just to see what's included.  In the final line, we again use the +Assignable+ facilities of the +JavaArchive+ view to get us into a new view: one capable of exporting to ZIP format.  In this case we use the appropriately named +ZipExporter+, allowing us to export to a +File+, +OutputStream+, or even get the contents as an +InputStream+ so we can deal with the bytes ourselves.
 
 <<table2-4>> lists the three types of exporters that ship with ShrinkWrap.
 
