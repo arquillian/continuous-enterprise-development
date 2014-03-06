@@ -116,9 +116,9 @@ This is because database systems have varying strengths when we couple data repr
 [options="header"]
 |======
 |Cardinality|Name|Example 
-|1:1|One-to-one|I have one nose; my nose belongs to only me
-|1:N|One-to-many|I have many fingers; my fingers belong to only me
-|N:N|Many-to-many|I have many friends; my friends also have many other friends besides me
+|1:1|One-to-one|I have one nose; my nose belongs to only me.
+|1:N|One-to-many|I have many fingers; my fingers belong to only me.
+|N:N|Many-to-many|I have many friends; my friends also have many other friends besides me.
 |======
 
 So in the case of the entities for our application as defined by our desired featureset, we can draw the following relationships:
@@ -126,15 +126,15 @@ So in the case of the entities for our application as defined by our desired fea
 [options="header"]
 |======
 |#|Entity 1|Entity 2|Cardinality|Description
-|1|Conference|Session|1:N|A conference may have many sessions
-|2|Session|Room|N:N|A session may take place in many rooms (spanned together)
-|3|Venue|Room|1:N|A venue may have many rooms; a room exists only in one venue
-|4|Conference|Venue|1:N|A conference may take place in many venues
-|5|Conference|Attachment|1:N|A conference may have many attachments
-|6|Session|Attachment|1:N|A session may have many attachments
-|7|Venue|Attachment|1:N|A venue may have many attachments
-|8|Room|Attachment|1:N|A room may have many attachments
-|9|User|User|N:N|A user may follow many other users on Twitter, and may also have many followers
+|1|Conference|Session|1:N|A conference may have many sessions.
+|2|Session|Room|N:N|A session may take place in many rooms (spanned together).
+|3|Venue|Room|1:N|A venue may have many rooms; a room exists only in one venue.
+|4|Conference|Venue|1:N|A conference may take place in many venues.
+|5|Conference|Attachment|1:N|A conference may have many attachments.
+|6|Session|Attachment|1:N|A session may have many attachments.
+|7|Venue|Attachment|1:N|A venue may have many attachments.
+|8|Room|Attachment|1:N|A room may have many attachments.
+|9|User|User|N:N|A user may follow many other users on Twitter, and may also have many followers.
 |======
 
 In graphical terms, this may look a little like <<Figure4-1>>.
@@ -171,7 +171,7 @@ We mentioned ((("authoritative repositories")))((("copying repositories")))((("f
 
 ===== Obtaining the source
 
-((("GeekSeek","obtaining", id="ix_ch04-asciidoc5", range="startofrange")))The first step toward obtaining the source is to sign up for a GitHub account.  Though it's absolutely possible to clone the authoritative repo locally, without an account either here or at some other writable host you won't have an avenue to push changes of your own or contribute ideas.  Because signing up for an account is free for our uses and has become commonplace especially in open source development, it's the avenue we'll advise.
+((("GeekSeek","obtaining", id="ix_ch04-asciidoc5", range="startofrange")))The first step toward obtaining the source is to sign up for a GitHub account.  Though it's absolutely possible to clone the authoritative repo locally, without an account either here or at some other writable host you won't have an avenue to push changes of your own or contribute ideas.  Because signing up for an account is free for our uses and has become commonplace especially in open source development, it's the avenue we'll pass:[<phrase role='keep-together'>advise.</phrase>]
 
 As shown in <<Figure4-3>>, signup is fairly simple, and the process starts at https://github.com.
 
