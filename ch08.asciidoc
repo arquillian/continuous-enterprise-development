@@ -145,7 +145,7 @@ Because the specification supplies only a contract by which JAX-RS implementatio
 
 Thus far, we've visited and described the internal mechanisms with which we interact with data.  Now we're able to work on building an API for clients to access the domain state in a self-describing fashion, and RESTful design coupled with JAX-RS affords us the tools to expose our application's capabilities in a commonly understood way.
 
-We'd like to encourage third-party integrators--clients about whom we may not have any up-front knowledge--to view, update, and create domain objects within the GeekSeek application.  Therefore, our use case requirements will be simply summed up as:
+We'd like to encourage third-party integrators--clients about whom we may not have any up-front knowledge--to view, update, and create domain objects within the GeekSeek application.  Therefore, our use case requirements will be simply summed up as the following:
 
 * As a third-party integrator, I should be able to perform CRUD operations upon:
 ** A Conference
