@@ -636,7 +636,7 @@ Rejects all dependencies that were not directly specified for resolution. This m
 Rejects dependencies defined by +G:A+ (version is not important for comparison, so it can be omitted altogether). By default, it is transitive: +RejectDependenciesStrategy("G:A", "G:B")+ means that all dependencies that originate at +G:A+ or +G:B+ are removed as well. If you want to change that behavior to reject defined dependencies but to keep their descendants, instantiate the following strategy: +RejectDependenciesStrategy(false, "G:A", "G:B")+
 
 | +TransitiveStrategy+ | 
-Acceps all dependencies of artifacts. Equals +AcceptAllStrategy+.
+Accepts all dependencies of artifacts. Equals +AcceptAllStrategy+.
 
 |====
 
@@ -676,7 +676,7 @@ ShrinkWrap Resolvers will not consume _settings.xml_ files specified on the comm
 
 ShrinkWrap Resolvers((("POM","models"))) constructs a so called _effective POM model_ (simplified, that is your _pom.xml_ file plus parent hierarchy and Super POM, the Maven default POM file). In order to construct the model, it uses all local repositories, the classpath repository, and all remote repositories. Once the model is loaded, you can automatically add the metadata in there to artifacts you want to resolve. The following use cases are supported:
 
-* Resolving an artifact with the version defined in effective POM. In case, you want to resolve +G:A:V+, you can simply specify +G:A+ instead. For artifacts with non-JAR packaging type or classifier, you must use alternative syntax with a question mark +?+, such as +G:A:P:?+ or +G:A:P:C:?+:
+Resolving an artifact with the version defined in effective POM:: In case you want to resolve +G:A:V+, you can simply specify +G:A+ instead. For artifacts with non-JAR packaging type or classifier, you must use alternative syntax with a question mark +?+, such as +G:A:P:?+ or +G:A:P:C:?+:
 +
 [source,java]
 ----
@@ -687,7 +687,7 @@ Maven.resolver().loadPomFromClassLoaderResource("/path/to/pom.xml")
   .resolve("G:A:P:?").withTransitivity().asFile();
 ----
 
-* Resolving artifacts defined in effective POM. ShrinkWrap resolvers allows you to import artifacts defined with a specific scope into the list of artifacts to be resolved. This way, you don't need to alter your tests if you change dependencies of your application. You can either use +importDependencies(ScopeType...)+ or convenience methods that cover the most frequent usages (+importRuntimeDependencies()+, +importTestDependencies()+, and +importRuntimeAndTestDependencies()+:
+Resolving artifacts defined in effective POM:: ShrinkWrap resolvers allows you to import artifacts defined with a specific scope into the list of artifacts to be resolved. This way, you don't need to alter your tests if you change dependencies of your application. You can either use +importDependencies(ScopeType...)+ or convenience methods that cover the most frequent usages (+importRuntimeDependencies()+, +importTestDependencies()+, and +importRuntimeAndTestDependencies()+:
 +
 [source,java]
 ----
@@ -704,7 +704,7 @@ Maven.resolver().loadPomFromFile("/path/to/pom.xml").
 "Runtime" in convenience methods means all the Maven scopes that are used in the application runtime, which are +compile+, +runtime+, +import+, and +system+. If you need to select according to Maven scopes, go for +importDependencies(ScopeType...)+ instead.
 ====
 
-* Specifying plug-ins to be activated. By default, ShrinkWrap Resolvers activates profiles based on property value, file presence, active by default profiles, operating system, and JDK. However, you can force profiles the same way you would via +-P+ in Maven:
+Specifying plug-ins to be activated:: By default, ShrinkWrap Resolvers activates profiles based on property value, file presence, active by default profiles, operating system, and JDK. However, you can force profiles the same way you would via +-P+ in Maven:
 +
 [source,java]
 ----
