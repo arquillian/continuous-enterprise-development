@@ -404,7 +404,7 @@ Because we inherit all the support to interact with JPA from the parent +Reposit
 * Supply the custom media types for user representations.
 * Set the resource type, the domain object type, and the representation type in the constructor.
 
-Now we can handle CRUD operations for +User+ domain objects; similar implementations to this are also in place for +Conference+, +Session+, etc.f811.240
+Now we can handle CRUD operations for +User+ domain objects; similar implementations to this are also in place for +Conference+, +Session+, etc.
 
 ==== The Representation Converter
 
@@ -415,7 +415,7 @@ Now we can handle CRUD operations for +User+ domain objects; similar implementat
 * Link resources
 * Render itself in multiple different representations and formats
 
-Additionally, some resources act as proxies and have no representation on their own.  To allow these resources to operate in a modular fashion, we need a way to describe conversion--for example, the relation resource links users to a conference (attendees, speakers). The relation it self knows nothing about the source or target types, but it knows how to get a converter that supports converting between these types.  To handle this, we supply the +org.cedj.geekseek.web.rest.core.RepresentationConverter+:
+Additionally, some resources act as proxies and have no representation on their own.  To allow these resources to operate in a modular fashion, we need a way to describe conversion--for example, the relation resource links users to a conference (attendees, speakers). The relation itself knows nothing about the source or target types, but it knows how to get a converter that supports converting between these types.  To handle this, we supply the +org.cedj.geekseek.web.rest.core.RepresentationConverter+:
 
 [source,java]
 ----
@@ -544,7 +544,7 @@ public class RESTInterceptorEnabler {
 }
 ----
 
-Marking the +RESTInterceptorEnabler+ with +@REST+ and +@Interceptor+ binds the +RESTInterceptorEnabler+ to the use of the +@REST+ annotation; then we can inject all valid +RESTInterceptor+ instances and invoke them according to a sorted order in the +intercept+ method annotated with +@AroundInvoke+.  With our custom chain, we can rely on CDI to provide an +Instance<X>+ of our desired custom interceptor type dynamically based on what is deployed rather then what is configured.
+Marking the +RESTInterceptorEnabler+ with +@REST+ and +@Interceptor+ binds the +RESTInterceptorEnabler+ to the use of the +@REST+ annotation; then we can inject all valid +RESTInterceptor+ instances and invoke them according to a sorted order in the pass:[<phrase role='keep-together'><literal>intercept</literal></phrase>] method annotated with +@AroundInvoke+.  With our custom chain, we can rely on CDI to provide an +Instance<X>+ of our desired custom interceptor type dynamically based on what is deployed rather then what is configured.
 
 In practice, this means that our +SecurityInterceptor+, +LinkedInterceptor+, and +ValidatedInterceptor+ (our implementations of type +RESTInterceptor+) will all be invoked for business methods on classes marked +@ResourceModel+.
 
