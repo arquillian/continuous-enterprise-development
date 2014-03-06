@@ -286,7 +286,7 @@ The next step is to configure the build parameters, as shown in <<Figure10-5>>. 
 [[Figure10-5]]
 image::images/cedj_12in05.png["CloudBees SCM"]
 
-Now we'll tell Maven how to run the build; remember, we want to enable the +arq-jbosseap-managed+ profile, so we'll note that in the "Goals and options" section (see <<Figure10-6>>).  Also, we'll enable our alternative settings file, which will expose our +private+ repository to our build.(((range="endofrange", startref="ix_ch11-asciidoc15")))(((range="endofrange", startref="ix_ch11-asciidoc14")))
+Now we'll tell Maven how to run the build; remember, we want to enable the +arq-jbosseap-managed+ profile, so we'll note that in the "Goals and options" section (see <<Figure10-6>>).  Also, we'll enable our alternative settings file, which will expose our pass:[<phrase role='keep-together'><literal>private</literal></phrase>] repository to our build.(((range="endofrange", startref="ix_ch11-asciidoc15")))(((range="endofrange", startref="ix_ch11-asciidoc14")))
 
 .CloudBees build config
 [[Figure10-6]]
@@ -298,7 +298,7 @@ image::images/cedj_12in06.png["CloudBees Build Config"]
 
 To copy our EAP Maven Repository into the CloudBees Jenkins +private+ repo, we'll make use of the WebDAV protocol, an extension of HTTP that permits writing to WWW resources.  There are a variety of system-dependent tools to mount DAV volumes, and CloudBees addresses some known working techniques in its http://wiki.cloudbees.com/bin/view/DEV/Mounting+DAV+Repositories[documentation].  For illustrative purposes, we'll apply *nix-specific software in this guide, loosely based off the((("CloudBees","documentation"))) http://wiki.cloudbees.com/bin/view/DEV/CloudBees+Maven+Repository+-+Mounting[CloudBees Linux Documentation].
 
-First we need to install the((("davfs2 project"))) http://savannah.nongnu.org/projects/davfs2[davfs2] project, a set of libraries enabling the mounting of a WebDAV resource as a standard logical volume.  In most Linux-based systems with a package manager, installation can be done using +apt-get+ or +yum+:
+First we need to install the((("davfs2 project"))) http://savannah.nongnu.org/projects/davfs2[davfs2 project], a set of libraries enabling the mounting of a WebDAV resource as a standard logical volume.  In most Linux-based systems with a package manager, installation can be done using +apt-get+ or +yum+:
 
 ----
 $> sudo apt-get install davfs2
@@ -340,9 +340,9 @@ The +private+ repository requires authentication, so we must add authentication 
 {/mnt/location/path}   {cloudbees username}   {password}
 ----
 
-Note the CloudBees username here is available on the details page under "Authenticated Access" (as shown in <<Figure10-7>>), located at https://forge.cloudbees.com/a/domainId/repositories/private.
+Note the CloudBees username here is available on the details page under "Authenticated access" (as shown in <<Figure10-7>>), located at https://forge.cloudbees.com/a/domainId/repositories/private.
 
-.CloudBees Authenticated Access
+.CloudBees Authenticated access
 [[Figure10-7]]
 image::images/cedj_12in07.png["CloudBees Authenticated Access"]
 
@@ -405,12 +405,15 @@ $> sudo umount /mnt/cloudbees/arquillian/private
 $> sudo mount -a
 ----
 
-Note: it's not atypical for large hold times while the cache synchronizes over the network:
+[NOTE]
+====
+It's not atypical for large hold times while the cache synchronizes over the network:
 
 ----
 /sbin/umount.davfs: waiting while mount.davfs (pid 11125) synchronizes the cache
 ....
 ----
+====
 
 Now we can manually trigger a build of our project, and if all's set up correctly, we'll see our test result come out clear.(((range="endofrange", startref="ix_ch11-asciidoc17")))(((range="endofrange", startref="ix_ch11-asciidoc16"))) (((range="endofrange", startref="ix_ch11-asciidoc13")))(((range="endofrange", startref="ix_ch11-asciidoc12")))
 
