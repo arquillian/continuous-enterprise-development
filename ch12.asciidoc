@@ -2,7 +2,7 @@
 
 [quote, Winston Churchill]
 ____
-Now this is not the end. It is not even the beginning of the end. But it is, perhaps, the end of the beginning.
+Now this is not the end. It is not even the beginning of the end. pass:[<phrase role='keep-together'>But it is, perhaps, the end of the beginning.</phrase>]
 ____
 
 Enterprise Java is, as technologies go, not a highly opinionated landscape; it does not prescribe only one way of accomplishing a task.  Although Java EE provides a suite of APIs, we've seen in our GeekSeek example that it may be appropriate to look outside the platform and integrate with external frameworks.  This freedom carries with it a burden of choice: developers new and seasoned alike may find that bringing together a working application at all layers may carry complexity.
