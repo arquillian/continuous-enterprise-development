@@ -687,7 +687,7 @@ Maven.resolver().loadPomFromClassLoaderResource("/path/to/pom.xml")
   .resolve("G:A:P:?").withTransitivity().asFile();
 ----
 
-Resolving artifacts defined in effective POM:: ShrinkWrap resolvers allows you to import artifacts defined with a specific scope into the list of artifacts to be resolved. This way, you don't need to alter your tests if you change dependencies of your application. You can either use +importDependencies(ScopeType...)+ or convenience methods that cover the most frequent usages (+importRuntimeDependencies()+, +importTestDependencies()+, and +importRuntimeAndTestDependencies()+:
+Resolving artifacts defined in effective POM:: ShrinkWrap resolvers allows you to import artifacts defined with a specific scope into the list of artifacts to be resolved. This way, you don't need to alter your tests if you change dependencies of your application. You can either use +importDependencies(ScopeType...)+ or convenience methods that cover the most frequent usages (+importRuntimeDependencies()+, +importTestDependencies()+, and +importRuntimeAndTestDependencies()+):
 +
 [source,java]
 ----
@@ -701,7 +701,7 @@ Maven.resolver().loadPomFromFile("/path/to/pom.xml").
 +
 [TIP]
 ====
-"Runtime" in convenience methods means all the Maven scopes that are used in the application runtime, which are +compile+, +runtime+, +import+, and +system+. If you need to select according to Maven scopes, go for +importDependencies(ScopeType...)+ instead.
+"Runtime" in convenience methods means all the Maven scopes that are used in the application runtime, which are +compile+, +runtime+, +import+, and +system+. If you need to select according to Maven scopes, go for +importDependencies(ScopeType...)+ pass:[<phrase role='keep-together'>instead.</phrase>]
 ====
 
 Specifying plug-ins to be activated:: By default, ShrinkWrap Resolvers activates profiles based on property value, file presence, active by default profiles, operating system, and JDK. However, you can force profiles the same way you would via +-P+ in Maven:
@@ -749,9 +749,9 @@ The following features are in their early development stages. However, they shou
 
 ===== ShrinkWrap Resolvers Maven plug-in
 
-((("Apache Maven","experimental ShrinkWrap Resolver interfaces for")))((("Apache Maven","ShrinkWrap Resolvers plug-in")))((("ShrinkWrap Resolvers","experimental Maven interfaces")))((("ShrinkWrap Resolvers","Maven plug-in")))The ShrinkWrap Resolvers Maven plug-in allows you to propagate settings specified on the command line into test execution. Settings include paths to the _pom.xml_ file and _settings.xml_ files, activated/disabled profiles, offline flag, and path to local repository. No support for IDE exists at this moment.
+((("Apache Maven","experimental ShrinkWrap Resolver interfaces for")))((("Apache Maven","ShrinkWrap Resolvers plug-in")))((("ShrinkWrap Resolvers","experimental Maven interfaces")))((("ShrinkWrap Resolvers","Maven plug-in")))The ShrinkWrap Resolvers Maven plug-in allows you to propagate settings specified on the command line into test execution. Settings include paths to the _pom.xml_ and _settings.xml_ files, activated/disabled profiles, offline flag, and path to local repository. No support for IDE exists at this moment.
 
-To activate the plug-in, you need to add following snippet to the +<build>+ section of your _pom.xml_ file:
+To activate the plug-in, you need to add the following snippet to the +<build>+ section of your _pom.xml_ file:
 
 [source,xml]
 ----
@@ -831,7 +831,7 @@ The online user guide for WildFly is located at http://bit.ly/MAyZAR.
 
 ==== OpenShift
 
-((("application services","OpenShift")))((("OpenShift application service")))((("services, application","OpenShift")))Although getting our applications running on our own machine is a great step in developing, the beauty of the Internet is that we can expose our content and services to the world at large.  Until very recently, Java EE hosting typically involved a dedicated and expensive server colocated in a data center.  With the rapid advent of virtualization and the cloud, we're now able to gain public access much more easily, and at far reduced cost.
+((("application services","OpenShift")))((("OpenShift application service")))((("services, application","OpenShift")))Although getting our applications running on our own machine is a great step in developing, the beauty of the Internet is that we can expose our content and services to the world at large.  Until very recently, Java EE hosting typically involved a dedicated and expensive server colocated in a data center.  With the rapid advent of virtualization and the cloud, we're now able to gain public access much more easily, and at a far reduced cost.
 
 http://www.openshift.com[_OpenShift_] is Red Hat's free ((("Platform as a Service (PaaS)")))Platform as a Service (PaaS) for applications.  Although it supports a variety of frameworks bundled as "cartridges," we'll be using OpenShift's built-in JBoss AS7 support.  With just a little bit of initial setup, pushing changes from our local Git repository to the OpenShift remote will trigger a build and deployment of our application for all to see.  We'll be relieved of the responsibility of obtaining a server, installing JBossAS, configuring the networking and firewalls, or manually deploying new versions.
 
