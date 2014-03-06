@@ -159,7 +159,7 @@ As an example, the +Conference+ +MediaType+ in +View+ mode could look like this:
 
 === Requirement Test Scenarios
 
-((("requirement test scenarios","for user interface", sortas="user interface", id="ix_ch10-asciidoc2", range="startofrange")))((("user interface","requirement test scenarios for", id="ix_ch10-asciidoc3", range="startofrange")))The UI for our GeekSeek application is based on a JavaScript frontend talking to a REST backend. In this scenario, there are some different approaches and types of testing we can do: one is for the pure JavaSscript code (e.g., client controllers) and the other part is the interaction with the browser and REST endpoints on the backend. 
+((("requirement test scenarios","for user interface", sortas="user interface", id="ix_ch10-asciidoc2", range="startofrange")))((("user interface","requirement test scenarios for", id="ix_ch10-asciidoc3", range="startofrange")))The UI for our GeekSeek application is based on a JavaScript frontend talking to a REST backend. In this scenario, there are some different approaches and types of testing we can do: one is for the pure JavaScript code (e.g., client controllers) and the other part is the interaction with the browser and REST endpoints on the backend. 
 
 ==== Pure JavaScript
 
@@ -244,7 +244,7 @@ asyncTest("can remove?", 1, function() {
 
 When we execute the +GraphTestCase+ Java class as part of the test execution, Arquillian QUnit will create and configure https://docs.jboss.org/author/display/ARQ/Drone[Drone] and https://community.jboss.org/wiki/ArquillianGraphene2[Graphene] to represent our defined environment.  It then parses the QUnit JavaScript to extract the real test names and replace the Java JUnit defined ones. That means that in our test results we'll see test names like "can remove?" and "can get?" as opposed to "testGraph."
 
-We have ((("PhantomJS browser")))configured Drone to use the http://phantomjs.org/[PhantomJS] browser; this headless browser allows us to run on a CI server without a graphical environment.  This is easily configurable via _arquillian.xml_.  
+We have ((("PhantomJS browser")))configured Drone to use the http://phantomjs.org/[PhantomJS browser]; this headless browser allows us to run on a CI server without a graphical environment.  This is easily configurable via _arquillian.xml_.  
 
 With this setup we now have control over our JavaScript client code and can integrate JavaScript tests in our test pipeline.
 
@@ -538,7 +538,7 @@ public class AddConferenceStory {
 
 The +shouldShowErrorMessageOnMissingDatesInConferenceForm+ test method takes the following actions:
 
-* Go the +MainPage+ (as injected).
+* Go to the +MainPage+ (as injected).
 * Get all +ActionLinks+.
 * Verify there is an +ActionLink+ named 'conference'.
 * Click the 'conference' +ActionLink+.
