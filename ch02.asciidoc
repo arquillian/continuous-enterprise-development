@@ -747,6 +747,10 @@ Path to local repository with cached artifacts. Overrides value defined in any o
 The following features are in their early development stages. However, they should work for the most common use cases. Feel free to report a bug in the https://issues.jboss.org/browse/SHRINKRES[SHRINKRES project] if you encounter problems.
 ====
 
+++++
+<?hard-pagebreak?>
+++++
+
 ===== ShrinkWrap Resolvers Maven plug-in
 
 ((("Apache Maven","experimental ShrinkWrap Resolver interfaces for")))((("Apache Maven","ShrinkWrap Resolvers plug-in")))((("ShrinkWrap Resolvers","experimental Maven interfaces")))((("ShrinkWrap Resolvers","Maven plug-in")))The ShrinkWrap Resolvers Maven plug-in allows you to propagate settings specified on the command line into test execution. Settings include paths to the _pom.xml_ and _settings.xml_ files, activated/disabled profiles, offline flag, and path to local repository. No support for IDE exists at this moment.
