@@ -45,7 +45,7 @@ Maven is not without its detractors, however.  It's been criticized for a few po
 
 * Maven plug-in versions are not bound to Maven Core versions, making guaranteed reproducible builds between different environments difficult to guarantee.
 * Project Object Model (POM, i.e., _pom.xml_) syntax, which is the metadata describing a project's makeup, is verbose.
-* Transitive dependencies as a default trigger a lot of downloading on first build.  Without care, a project may inherit more dependencies than are necessary or desired.
+* Transitive dependencies as a default trigger a lot of downloading on first build.  Without care, a project may inherit more dependencies than are necessary or pass:[<phrase role='keep-together'>desired.</phrase>]
 * Deviation from the defined Maven standard is often difficult to reconcile.
 
 It _is_ possible to use Maven-structured repositories from outside Maven.  In fact, standalone dependency manager http://ant.apache.org/ivy/[Apache Ivy] (often used in concert with task-based tool http://ant.apache.org/[Apache Ant]), does just that.  Groovy-based http://www.gradle.org/[Gradle] seeks to provide the flexibility of Ant with the dependency management of Maven.
