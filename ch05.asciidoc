@@ -90,7 +90,7 @@ Now, let's take a look at how that same information might be represented in a re
 |+UNSIGNED INTEGER+|mother
 |============
 
-Already we see some differences here.  The +id+, +name+, and +male+ fields are as we might expect; simple data types where a Java +Long+ is now represented as a database +UNSIGNED INTEGER+, a Java +String+ maps to a +VARCHAR(255)+ (variable-length character `String` with maximum length of 255), and a Java +Boolean+ becomes a +BIT+ type.  But instead of a direct reference to the +mother+ or +father+, instead we see the data type there is +UNSIGNED+ pass:[<phrase role='keep-together'><literal>INTEGER</literal></phrase>].  Why?
+Already we see some differences here.  The +id+, +name+, and +male+ fields are as we might expect; simple data types where a Java +Long+ is now represented as a database +UNSIGNED INTEGER+, a Java +String+ maps to a +VARCHAR(255)+ (variable-length character `String` with maximum length of 255), and a Java +Boolean+ becomes a +BIT+ type.  But instead of a direct reference to the +mother+ or +father+, instead we see that the data type there is +UNSIGNED+ pass:[<phrase role='keep-together'><literal>INTEGER</literal></phrase>].  Why?
 
 This is ((("foreign keys")))((("primary key")))the defining characteristic of _relationality_ in RDBMS.  These fields are in fact pointers to the _primary key_, or the identifying +id+ field of another record.  As such, they are called _foreign keys_.  So our data may look something like <<table5-2>>.
 
