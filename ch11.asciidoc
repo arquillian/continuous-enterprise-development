@@ -248,7 +248,7 @@ To run our GeekSeek build with tests against EAP in managed mode, we apply the +
 code $> mvn clean install -Parq-jbosseap-managed,jboss-eap-6.1.0
 ----
 
-In this fashion, we can now automate our testing with EAP just as we've been doing with WildFly.(((range="endofrange", startref="ix_ch11-asciidoc7"))) (((range="endofrange", startref="ix_ch11-asciidoc4")))(((range="endofrange", startref="ix_ch11-asciidoc3")))(((range="endofrange", startref="ix_ch11-asciidoc2a")))(((range="endofrange", startref="ix_ch11-asciidoc2")))
+In this fashion, we can now automate our testing with EAP just as with WildFly.(((range="endofrange", startref="ix_ch11-asciidoc7"))) (((range="endofrange", startref="ix_ch11-asciidoc4")))(((range="endofrange", startref="ix_ch11-asciidoc3")))(((range="endofrange", startref="ix_ch11-asciidoc2a")))(((range="endofrange", startref="ix_ch11-asciidoc2")))
 
 === Continuous Integration and the Authoritative Build Server
 
