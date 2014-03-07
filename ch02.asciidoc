@@ -359,6 +359,11 @@ Of course, we can also obtain a ShrinkWrap archive from a flat file in a similar
 |+org.jboss.shrinkwrap.api.importer.ZipImporter+|ZIP
 |==========================
 
+
+++++
+<?hard-pagebreak?>
+++++
+
 The code for running an import to roundtrip the previous example might look like this:
 
 [source,java]
