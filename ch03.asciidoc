@@ -105,7 +105,7 @@ Let's add ((("Java Persistence API")))support for Java Persistence API (JPA) to 
 $> persistence setup --provider HIBERNATE --container JBOSS_AS7;
 ----
 
-In this case we've chosen http://www.hibernate.org/[Hibernate] as our persistence provider, and have targeted JBoss AS7 as our container.  Forge will equip our POM with the proper dependencies and supply us with a default _persistence.xml_ preconfigured to work with the AS7 runtime (remember, for a list of supported options, look to tab completion):
+In this case we've chosen http://www.hibernate.org/[Hibernate] as our persistence provider, and have targeted JBoss AS7 as our container.  Forge will equip our POM with the proper dependencies and supply us with a default _persistence.xml_ preconfigured to work with the AS7 runtime (for a list of supported options, look to tab completion):
 
 ----
 ***SUCCESS*** Installed [forge.spec.jpa] successfully.
@@ -487,7 +487,7 @@ The final important fixture of the Arquillian test anatomy is the +@Deployment+ 
     }
 ----
 
-Because ((("Enterprise Application Archives (EARs)")))((("Java Archives (JARs)")))((("Web Archives (WARs)")))Java EE application servers work off deployments like _Web Archives (WARs)_, _Java Archives (JARs)_, or _Enterprise Archives (EARs)_, we need to instruct Arquillian with the artifact to be deployed.  This method must be +static+ and return any ShrinkWrap +Archive+ type; for this first exercise we'll simply grab the output of the current project's build _feedback.war_, but as we'll soon see in later examples, we don't need to rely on flat files at all!  This will free us to skip the build entirely in between code changes and test runs, instead letting us rely on ShrinkWrap's packaging of _.class_ files created from the IDE's incremental complication features.
+Because ((("Enterprise Application Archives (EARs)")))((("Java Archives (JARs)")))((("Web Archives (WARs)")))Java EE application servers work off deployments like _Web Archives_ (WARs), _Java Archives_ (JARs), or _Enterprise Archives_ (EARs), we need to instruct Arquillian with the artifact to be deployed.  This method must be +static+ and return any ShrinkWrap +Archive+ type; for this first exercise we'll simply grab the output of the current project's build _feedback.war_, but as we'll soon see in later examples, we don't need to rely on flat files at all!  This will free us to skip the build entirely in between code changes and test runs, instead letting us rely on ShrinkWrap's packaging of _.class_ files created from the IDE's incremental complication features.
 
 The rest of the file is all test logic!  Remember, the focus of the Arquillian programming model is to allow you to write less boilerplate and setup, and focus on the bits of code that only you as the developer can write.  It's not your job to deal with bootstrapping an application server or calling upon vendor-specific deployment hooks; Arquillian will handle all of that for you behind the scenes.(((range="endofrange", startref="ix_ch03-asciidoc6")))(((range="endofrange", startref="ix_ch03-asciidoc5")))(((range="endofrange", startref="ix_ch03-asciidoc4")))
 
