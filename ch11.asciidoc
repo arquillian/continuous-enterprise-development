@@ -366,7 +366,7 @@ We must also enable this private repository in our build configuration.  In the 
 
 Under +<servers>+:
 
-[source,java]
+[source,xml]
 ----
 <server>
   <id>cloudbees-private-maven-repository</id>
@@ -379,7 +379,7 @@ Under +<servers>+:
 
 And under +<profiles>+:
 
-[source,java]
+[source,xml]
 ----
 <profile>
   <id>cloudbees.private.maven.repository</id>
@@ -405,7 +405,6 @@ And under +<profiles>+:
 
 Keep in mind that some mounting systems (including +davfs2+) may cache content locally, and avoid flushing bytes to the remote CloudBees DAV repository immediately for performance reasons. To force a flush, we can unmount, then remount the volume:
 
-[source,java]
 ----
 $> sudo umount /mnt/cloudbees/arquillian/private
 $> sudo mount -a
