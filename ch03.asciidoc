@@ -603,7 +603,7 @@ Before continuing, we are required to create an account; we can do this by click
 
 .OpenShift signup
 [[Figure3-9]]
-image::images/cedj_04in09.png[scale="50"]
+image::images/cedj_04in09.png[scale="40"]
 
 Existing users can simply log in to see active applications, as shown in <<Figure3-10>>.
 
