@@ -34,7 +34,6 @@ Once we agree to the Terms and Conditions, the links to download will begin the 
 
 Let's install EAP by unzipping it into a location on the filesystem.  Anywhere will do; for instance, in *nix-like systems we can handle this from the command line:
 
-[source,java]
 ----
 ~ $> mkdir -p /home/alr/opt/jboss/eap; cd /home/alr/opt/jboss/eap
 eap $> mv /home/alr/Downloads/jboss-eap-6.1.0.zip .
@@ -45,7 +44,6 @@ Using this, we'd now have EAP installed at _/home/alr/opt/jboss/eap/jboss-eap-6.
 
 Now let's place our EAP Maven repository somewhere useful.  It might be enticing to mix in these artifacts with our default Maven repository (typically located at _USER_HOME/.m2/repository_), but let's keep things separated and create a new extension repo for our product bits.  This way we'll have the option of enabling this repository explicitly in our builds and won't ever have to worry about placing these artifacts alongside ones found in Maven Central.  We'll choose _USER_HOME/.m2/jboss-eap-6.1.0.GA-maven-repository_ (the default folder name contained inside the ZIP, under our user's Maven directory): (((range="endofrange", startref="ix_ch11-asciidoc5")))
 
-[source,java]
 ----
 Downloads $> unzip jboss-eap-6.1.0-maven-repository.zip
 Downloads $> mv jboss-eap-6.1.0-maven-repository ~/.m2/
@@ -60,7 +58,6 @@ With our EAP installation in place, we're now in a position to exercise our appl
 
 ((("JBoss Enterprise Application Platform (JBoss EAP)","remote container", id="ix_ch11-asciidoc6", range="startofrange")))First we'll run EAP as a standalone process.  Opening a terminal or console window, let's +cd+ into the directory in which we unzipped the distribution.  From there we can export an environment variable to set _JBOSS_HOME_ to the present working directory (using the +export+ command on *nix systems or simply +set+ on Windows machines):
 
-[source,java]
 ----
 $> cd /home/alr/opt/jboss/eap/jboss-eap-6.1/
 jboss-eap-6.1 $> export JBOSS_HOME=`pwd`
@@ -68,7 +65,6 @@ jboss-eap-6.1 $> export JBOSS_HOME=`pwd`
 
 Now we'll launch the EAP server in standalone (nondomain) mode by using the provided scripts in the _bin_ directory:
 
-[source,java]
 ----
 jboss-eap-6.1 $> cd bin
 bin $> ./standalone.sh
