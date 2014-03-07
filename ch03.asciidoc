@@ -569,6 +569,7 @@ Although CRUD applications are little more than a UI frontend to an entity, the 
 
 With our new entry now persisted into the database, let's undeploy the application in preparation to perform our first integration test run with Arquillian: (((range="endofrange", startref="ix_ch03-asciidoc9")))(((range="endofrange", startref="ix_ch03-asciidoc8")))
 
+[source,java]
 ----
 $> as7 undeploy
 ...
