@@ -34,6 +34,7 @@ Once we agree to the Terms and Conditions, the links to download will begin the 
 
 Let's install EAP by unzipping it into a location on the filesystem.  Anywhere will do; for instance, in *nix-like systems we can handle this from the command line:
 
+[source,java]
 ----
 ~ $> mkdir -p /home/alr/opt/jboss/eap; cd /home/alr/opt/jboss/eap
 eap $> mv /home/alr/Downloads/jboss-eap-6.1.0.zip .
