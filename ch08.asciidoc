@@ -803,8 +803,8 @@ In this deployment, we'll also use "fake" implementations for the Repository/JPA
 [source,java]
 ----
 @ApplicationScoped
-public abstract class TestRepository<
-  T extends Identifiable> implements Repository<T> { .. }
+public abstract class TestRepository<T extends Identifiable> 
+    implements Repository<T> { .. }
 
 public class TestConferenceRepository extends
   TestRepository<Conference> { .. }
@@ -1010,14 +1010,6 @@ Accept-Encoding: gzip,deflate[\r][\n]
 Because we've coded our JAX-RS endpoints and backing business objects correctly, we'll receive the expected reply (an HTTP +200 OK+ status):
 
 ----
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns3:conference xmlns:ns2="urn:ced:link" xmlns:ns3="urn:ced:conference">
-<ns2:link href="http://127.0.1.1:18080/9676980f-2fc9-4103-ae28-fd0261d1d7c3/
-api/conference/ac5390ad-5483-4239-850c-62efaeee7bf1" rel="self"/>
-<ns2:link href="http://127.0.1.1:18080/9676980f-2fc9-4103-ae28-fd0261d1d7c3/
-api/conference/ac5390ad-5483-4239-850c-62efaeee7bf1/session" rel="session"/>
-<end>2013-08-21T00:14:44.159-04:00</end><name>Name</name><start>
-2013-08-21T00:14:44.159-04:00</start><tagLine>TagLine</tagLine></ns3:conference>"
 HTTP/1.1 200 OK
 X-Arq-Enrichment-Response=3778738317992283532
 Last-Modified=Wed, 21 Aug 2013 04:14:44 GMT
