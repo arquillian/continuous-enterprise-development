@@ -330,7 +330,7 @@ Next we can put in place the fields holding the state for +Conference+:
     private Duration duration;
 
     @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, 
-    mappedBy = "conference", cascade = CascadeType.ALL)
+        mappedBy = "conference", cascade = CascadeType.ALL)
     private Set<Session> sessions;
 
     public Conference() {
@@ -665,6 +665,11 @@ We'll start by defining the Arquillian Persistence Extension in the +dependencyM
 ----
 
 And we'll also enable this in the +dependencies+ section of the POMs of the projects in which we'll be using the extension:
+
+
+++++
+<?hard-pagebreak?>
+++++
 
 +code/application/domain/pom.xml+:
 [source,xml]
