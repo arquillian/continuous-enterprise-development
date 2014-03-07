@@ -101,7 +101,6 @@ Users of http://bit.ly/MABuTN[Maven Archetypes] may be familiar with this type o
 
 Let's add ((("Java Persistence API")))support for Java Persistence API (JPA) to our project, a task that typically would involve some searching for the correct dependencies for the spec APIs (as well as those for any vendor-specific extensions).  Forge is helpful here as well, via its +persistence+ plug-in:
 
-[source,java]
 ----
 $> persistence setup --provider HIBERNATE --container JBOSS_AS7;
 ----
@@ -146,7 +145,6 @@ Let's make one tweak; the property +hibernate.hbm2ddl.auto+ is set to automatica
 
 Java EE6 introduced((("Bean Validation Specification"))) the http://jcp.org/en/jsr/detail?id=303[Bean Validation Specification], which allows for validation constraints at the database, application, and view layers all with a single declaration.  Let's enable BV for our project, similar to how we put in place support for persistence:
 
-[source,java]
 ----
 $> validation setup --provider HIBERNATE_VALIDATOR
 ----
@@ -178,7 +176,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 Now we're all set to add some entities to our project.  For the uninitiated, this will be our interface to accessing persistent (i.e., database-backed) data as an object.  For now we'll just create one simple bean to represent a database table, and we'll call it `FeedbackEntry`:
 
-[source,java]
 ----
 $> entity --named FeedbackEntry;
 ----
@@ -274,7 +271,6 @@ public class FeedbackEntry implements Serializable
 
 Our +FeedbackEntry+ entity should be capable of recording feedback for some user with a Twitter ID, so let's add fields to represent that data (as well as some validation constraints dictating that these cannot be +null+):
 
-[source,java]
 ----
 field string --named twitterHandle;
 constraint NotNull --onProperty twitterHandle;
