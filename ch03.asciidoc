@@ -103,6 +103,7 @@ Users of http://bit.ly/MABuTN[Maven Archetypes] may be familiar with this type o
 
 Let's add ((("Java Persistence API")))support for Java Persistence API (JPA) to our project, a task that typically would involve some searching for the correct dependencies for the spec APIs (as well as those for any vendor-specific extensions).  Forge is helpful here as well, via its +persistence+ plug-in:
 
+[source,java]
 ----
 $> persistence setup --provider HIBERNATE --container JBOSS_AS7;
 ----
