@@ -423,7 +423,7 @@ Now we can manually trigger a build of our project, and if all's set up correctl
 
 ((("CloudBees","Git push events and")))((("Git","push events and CloudBees")))Let's take things one step further in terms of automation.  We don't have to click the Build Now button on our CI server every time we'd like to run a build.  With some extra configuration we can set up a trigger for new +git push+ events on the authoritative source repository to start a new CI build.
 
-CloudBees http://developer.cloudbees.com/bin/view/DEV/GitHub+Commit+Hooks+HOWTO[documents this process], and we'll follow along these guidelines.  
+CloudBees http://bit.ly/1noQQYE[documents this process], and we'll follow along these guidelines.  
 
 First we must log in to the CloudBees Jenkins home and select the GitHub plug-in for installation at the Manage Jenkins -> Manage Plugins screen.  Jenkins will download and install the plug-in, then reboot the instance.  Then we can go to Manage Jenkins -> Configure System and select "Manually manage hook URLs" under the "GitHub Web Hook" setting.  Save and exit the screen.
 
