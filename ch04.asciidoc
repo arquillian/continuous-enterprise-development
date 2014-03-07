@@ -191,12 +191,14 @@ Before bringing in your fork of the repository locally, you'll need to have a Gi
 
 Installation is platform-specific, but in flavors of Linux, this is easily enough achieved via your package manager of choice:
 
+[source,java]
 ----
 $> sudo apt-get install -y git
 ----
 
 +apt-get+ is the default for Debian-based distributions including Ubuntu and Linux Mint; for others (including RHEL and Fedora), +yum+ may be more appropriate:
 
+[source,java]
 ----
 $> sudo yum install -y git
 ----
@@ -205,6 +207,7 @@ You can obtain the Git Client for Windows as an executable installer at http://g
 
 You can verify your installation at the command prompt by executing:
 
+[source,java]
 ----
 $> git --version
 git version 1.8.1.2
@@ -218,6 +221,7 @@ image::images/cedj_05in03.png["GitHub URI to Clone"]
 
 Then simply move to a directory in which you'd like to place your local clone, and issue the +git clone+ command, passing in the URI to your GitHub repository.  For instance:
 
+[source,java]
 ----
 $> git clone git@github.com:ALRubinger/continuous-enterprise-development.git
 Cloning into 'continuous-enterprise-development'...
@@ -230,6 +234,7 @@ Resolving deltas: 100% (534/534), done.
 
 This will create a new directory called _continuous-enterprise-development_, under which you'll be able to see the book's source in the root and all supporting code under the _code_ directory.  The _GeekSeek_ application root is housed under _code/application_:
 
+[source,java]
 ----
 $> ls -l
 total 492
