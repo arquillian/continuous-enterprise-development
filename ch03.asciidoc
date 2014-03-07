@@ -513,12 +513,14 @@ After a series of informative build output messages from Maven, we should see +B
 
 The missing bit is that we need a server into which we can deploy our web app!  JBoss AS7 has a simple installation process (simply download and unzip onto the filesystem), but again Forge can help automate this for us, so we don't need to locate the JBossAS binaries.  For this we'll turn to the Forge JBoss AS7 plug-in, which is installed similarly to the Arquillian plug-in we put in place in the previous section:
 
+[source,java]
 ----
 $> forge install-plugin jboss-as-7
 ----
 
 Once installation is complete, we can use the newly acquired +as7+ command to set up our server:
 
+[source,java]
 ----
 $> as7 setup
 ----
@@ -527,6 +529,7 @@ You'll be prompted for your +$JAVA_HOME+ location and JBoss AS7 version; be sure
 
 Now it's time to fire up the server.  We'll first +cd+ into the root of our project in the Forge shell, then execute the following command:
 
+[source,java]
 ----
 $> as7 start --jboss-home target/jboss-as-dist/jboss-as-7.1.1.Final/
 ----
@@ -539,6 +542,7 @@ If you've opted for a different version of JBoss AS7, you may have to make subst
 
 With the server up, let's deploy our application:
 
+[source,java]
 ----
 $> as7 deploy
 ----
