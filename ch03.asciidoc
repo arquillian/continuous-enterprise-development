@@ -495,7 +495,6 @@ The rest of the file is all test logic!  Remember, the focus of the Arquillian p
 
 ((("development process","running applications locally", id="ix_ch03-asciidoc8", range="startofrange")))((("JBoss Forge","running applications locally", id="ix_ch03-asciidoc9", range="startofrange")))Time to see our generated application in action.  First we should run the build to package our flat-file deployable _feedback.war_ for manual deployment into JBoss AS7.  We can trigger Maven from the Forge Console:
 
-[source,java]
 ----
 $> build --notest --profile arq-jboss_as_remote_7.x;
 ----
