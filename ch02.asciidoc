@@ -144,6 +144,7 @@ image::images/cedj_03in01.png["RunAs > JUnit"]
 
 ((("ShrinkWrap", id="ix_ch02-asciidoc3", range="startofrange")))((("test platforms","ShrinkWrap", id="ix_ch02-asciidoc4", range="startofrange")))From the onset, ShrinkWrap was born from a need to more easily test Java Enterprise deployments. Traditionally defined as flat-file archives adhering to the ZIP standard, these have necessitated the introduction of some build step to package up all application resources. And a build step takes time:
 
+[source,java]
 ----
 $ mvn clean install
 ... terrifying output trace ...
