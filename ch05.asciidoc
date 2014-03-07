@@ -664,12 +664,14 @@ We'll start by defining the Arquillian Persistence Extension in the +dependencyM
   </dependencyManagement>
 ----
 
-And we'll also enable this in the +dependencies+ section of the POMs of the projects in which we'll be using the extension:
-
 
 ++++
 <?hard-pagebreak?>
 ++++
+
+And we'll also enable this in the +dependencies+ section of the POMs of the projects in which we'll be using the extension:
+
+
 
 +code/application/domain/pom.xml+:
 [source,xml]
