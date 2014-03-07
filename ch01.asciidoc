@@ -59,7 +59,7 @@ This _fail-fast_ policy((("fail-fast policies"))) is equally as important at run
 
 === Software Development Processes
 
-((("software development process", id="ix_ch01-asciidoc0", range="startofrange")))_Methodology.  Doctrine.  Paradigm._  Whatever we call it, our process (or absence of one!) is the script we follow on a day-to-day basis that guides our approach to building software.  Typically inspired by the central themes we believe contribute to quality and efficiency, a model for development workflow may be a powerful tool in keeping you and your team from heading down an unproductive path.  Many well-documented approaches exist, and knowing their motivations can help inform your own decisions in choosing a sensible model for your project.
+((("software development process", id="ix_ch01-asciidoc0", range="startofrange")))_Methodology.  Doctrine.  Paradigm._  Whatever we call it, our process (or absence of one!) is the script we follow on a day-to-day basis that guides our approach to building pass:[<phrase role='keep-together'>software.</phrase>]  Typically inspired by the central themes we believe contribute to quality and efficiency, a model for development workflow may be a powerful tool in keeping you and your team from heading down an unproductive path.  Many well-documented approaches exist, and knowing their motivations can help inform your own decisions in choosing a sensible model for your project.
 
 ==== Serial Models
 
