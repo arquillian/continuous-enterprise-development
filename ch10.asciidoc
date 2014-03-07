@@ -261,7 +261,7 @@ One could argue that we're now moving over from integration into functional test
 
 We use Drone to control the lifecycle of the browser and Graphene to wrap the browser and provide client-side object injection.
 
-We rely on ((("PageFragments")))((("PageObjects")))((("Selenium")))a pattern called http://code.google.com/p/selenium/wiki/PageObjects[PageObjects] from Selenium to encapsulate the logic within a page in a type-safe and programmable API. With Graphene we can take the PageObject concept one step further and use PageFragments. PageFragments are reusable components that you might find within a page. We might have a +Conference+ object displayed on multiple different pages or a Login controller repeated in all headers.
+We rely on ((("PageFragments")))((("PageObjects")))((("Selenium")))a pattern called http://bit.ly/1noOxoo[PageObjects] from Selenium to encapsulate the logic within a page in a type-safe and programmable API. With Graphene we can take the PageObject concept one step further and use PageFragments. PageFragments are reusable components that you might find within a page. We might have a +Conference+ object displayed on multiple different pages or a Login controller repeated in all headers.
 
 By encapsulating the references to the HTML IDs and CSS rules within PageObjects and PageFragments, we can create reusable TestObjects that represent our application.
 
