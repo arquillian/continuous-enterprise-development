@@ -383,6 +383,7 @@ This instructs Forge to connect to its plug-in repository, grab the latest versi
 
 With the Arquillian plug-in installed, we now have access to the +arquillian+ command.  Let's instruct Forge to equip our POM with the dependencies needed to run Arquillian tests on the JBoss AS7 container:
 
+[source,java]
 ----
 $> arquillian setup --containerType REMOTE 
    --containerName JBOSS_AS_REMOTE_7.X --testframework
@@ -398,6 +399,7 @@ You'll be prompted for the versions of Arquillian, JUnit, and JBoss AS7 that you
 
 With the POM config changes out of the way, let's ask Forge to now create for us a jumping-off point from which we'll write our test:
 
+[source,java]
 ----
 $> arquillian create-test 
    --class org.cedj.ch03.feedback.model.FeedbackEntry.java
