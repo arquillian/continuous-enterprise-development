@@ -157,6 +157,10 @@ As an example, the +Conference+ +MediaType+ in +View+ mode could look like this:
 </div>
 ----
 
+++++
+<?hard-pagebreak?>
+++++
+
 === Requirement Test Scenarios
 
 ((("requirement test scenarios","for user interface", sortas="user interface", id="ix_ch10-asciidoc2", range="startofrange")))((("user interface","requirement test scenarios for", id="ix_ch10-asciidoc3", range="startofrange")))The UI for our GeekSeek application is based on a JavaScript frontend talking to a REST backend. In this scenario, there are some different approaches and types of testing we can do: one is for the pure JavaScript code (e.g., client controllers) and the other part is the interaction with the browser and REST endpoints on the backend. 
