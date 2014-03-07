@@ -56,7 +56,7 @@ As always, before digging into the implementation, we'll define some requirement
 
 Our GeekSeek application will therefore introduce the requirement: "Send an Email to the New User Upon Successful Signup."
 
-At first blush, this seems like a fairly trivial problem to solve.  The((("JavaMail API"))) http://www.oracle.com/technetwork/java/javamail/index.html[JavaMail] API is straightforward enough to use (though a bit dated), and is included as part of the Java EE Platform.
+At first blush, this seems like a fairly trivial problem to solve.  The((("JavaMail API"))) http://bit.ly/1noNtRq[JavaMail] API is straightforward enough to use (though a bit dated), and is included as part of the Java EE Platform.
 
 Unfortunately, there ((("GeekSeek","issues to consider")))are many issues to consider beyond the boilerplate code required to send the email itself:
 
