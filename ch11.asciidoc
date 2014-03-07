@@ -533,6 +533,7 @@ Assuming the CNAME is properly set up with your domain registrar, the record has
 
 ((("OpenShift application service","default application, removing")))Now let's clear the way for our real application.  First we'll clone the OpenShift application repository into our local workspace.  The Git URL for your application is displayed on the application's status screen on your OpenShift account.  The +git clone+ command will look a little like this:
 
+[source,java]
 ----
 $> git clone ssh://(somehash))@geekseek-continuousdev.
 rhcloud.com/~/git/geekseek.git/
@@ -552,6 +553,7 @@ Resolving deltas: 100% (1/1), done.
 
 Now we have a full copy of the OpenShift application's repository on our local disk.  Because we don't need the default landing page shown in <<Figure10-13>>, we can safely remove it. We can do this easily by +cd+-ing into our repository directory, removing the files in question with +git rm+, committing the changes, and then pushing the commit to the remote OpenShift repository:
 
+[source,java]
 ----
 $> cd geekseek
 geekseek $>  git rm -rf pom.xml src/
@@ -592,6 +594,7 @@ image::images/cedj_12in18.png[CloudBees Post Build]
 
 The following script will handle the task for us:
 
+[source,java]
 ----
 if [ -d geekseek ]; then
   cd geekseek
@@ -625,6 +628,7 @@ As we've seen before, OpenShift will dutifully exercise the remote operations to
 
 Using the OpenShift client command-line tools, we can tail the server logs for the application to monitor status:
 
+[source,java]
 ----
 $> rhc tail {openshift_appname} -l {openshift_username}
 ----
