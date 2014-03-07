@@ -319,7 +319,7 @@ use_locks 0
 ask_auth 1
 if_match_bug 1
 ----
-The last line is unique to https://bugs.launchpad.net/ubuntu/+source/davfs2/+bug/466960[Ubuntu-based x64 systems].
+The last line is unique to http://bit.ly/1noQj95[Ubuntu-based x64 systems].
 
 Now we can create a directory that will act as our mounting point; we've chosen _/mnt/cloudbees/arquillian/private_:
 
