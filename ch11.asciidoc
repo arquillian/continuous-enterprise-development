@@ -253,6 +253,7 @@ Now, assuming we enable the +jboss-eap-6.1.0+ profile in our builds, we'll be ab
 
 To run our GeekSeek build with tests against EAP in managed mode, we apply the +jboss-eap-6.1.0+ profile to enable our custom repository, and the +arq-jbosseap-managed+ profile to configure Arquillian with the proper adaptors:
 
+[source,java]
 ----
 code $> mvn clean install -Parq-jbosseap-managed,jboss-eap-6.1.0
 ----
@@ -310,18 +311,21 @@ To copy our EAP Maven Repository into the CloudBees Jenkins +private+ repo, we'l
 
 First we need to install the((("davfs2 project"))) http://savannah.nongnu.org/projects/davfs2[davfs2 project], a set of libraries enabling the mounting of a WebDAV resource as a standard logical volume.  In most Linux-based systems with a package manager, installation can be done using +apt-get+ or +yum+:
 
+[source,java]
 ----
 $> sudo apt-get install davfs2
 ----
 
 or:
 
+[source,java]
 ----
 $> sudo yum install davfs2
 ----
 
 Next we'll ensure that our _/etc/conf/davfs2/davfs2.conf_ configuration file is set up appropriately; be sure to edit yours to match the following:
 
+[source,java]
 ----
 $> cat /etc/davfs2/davfs2.conf
 use_locks 0
@@ -332,6 +336,7 @@ The last line is unique to https://bugs.launchpad.net/ubuntu/+source/davfs2/+bug
 
 Now we can create a directory that will act as our mounting point; we've chosen _/mnt/cloudbees/arquillian/private_:
 
+[source,java]
 ----
 $> mkdir -p /mnt/cloudbees/arquillian/private
 ----
@@ -358,12 +363,14 @@ image::images/cedj_12in07.png["CloudBees Authenticated Access"]
 
 Now we should be ready to mount our volume (subsequent reboots to the system should do this automatically due to our +fstab+ configuration):
 
+[source,java]
 ----
 $> sudo mount /mnt/cloudbees/arquillian/private/
 ----
 
 With our volume mounted, any file activities we make under _/mnt/cloudbees/arquillian/private/_ will be reflected in our remote +private+ CloudBees Maven Repository.  Let's copy the contents of the JBoss EAP Maven Repository into +private+:
 
+[source,java]
 ----
 sudo cp -Rv ~/.m2/jboss-eap-6.1.0.GA-maven-repository/* \
   /mnt/cloudbees/arquillian/private/
@@ -374,6 +381,8 @@ This may take some time as we copy all artifacts and the directory structure ove
 We must also enable this private repository in our build configuration.  In the private repo (which we have mounted) is a file called _maven/settings.xml_.  We'll edit it to add the following sections.
 
 Under +<servers>+:
+
+[source,java]
 ----
 <server>
   <id>cloudbees-private-maven-repository</id>
@@ -385,6 +394,8 @@ Under +<servers>+:
 ----
 
 And under +<profiles>+:
+
+[source,java]
 ----
 <profile>
   <id>cloudbees.private.maven.repository</id>
@@ -410,6 +421,7 @@ And under +<profiles>+:
 
 Keep in mind that some mounting systems (including +davfs2+) may cache content locally, and avoid flushing bytes to the remote CloudBees DAV repository immediately for performance reasons. To force a flush, we can unmount, then remount the volume:
 
+[source,java]
 ----
 $> sudo umount /mnt/cloudbees/arquillian/private
 $> sudo mount -a
@@ -500,12 +512,14 @@ image::images/cedj_12in15.png[Add Alias]
 
 Alternatively, you can acquire the https://www.openshift.com/developers/rhc-client-tools-install[OpenShift client-side command-line tools].  These rely on a Ruby installation of 1.8.7 or greater on your system, and are obtained by installing a Ruby gem:
 
+[source,java]
 ----
 $> sudo gem install rhc
 ----
 
 Once the gem is installed, you can add the domain record to OpenShift using the command +rhc alias add+ __++appName alias++__ +-l+ __++username++__. For instance:
 
+[source,java]
 ----
 $> $ rhc alias add geekseek geekseek.continuousdev.org -l admin@continuousdev.org
 Password: *****************
