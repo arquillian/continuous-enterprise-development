@@ -659,8 +659,8 @@ As shown, this is a fairly simple undertaking given a little research into prope
             }
 
             @Override
-            protected void initialize(Relationship rel, Map<String, Object> 
-                properties) {
+            protected void initialize(Relationship rel, 
+                Map<String, Object> properties) {
                 rel.setProperty(PROP_CREATED, System.currentTimeMillis());
             }
         };
