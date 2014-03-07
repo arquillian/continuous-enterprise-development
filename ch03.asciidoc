@@ -580,6 +580,7 @@ The deployment operation (UNDEPLOY_IGNORE_MISSING) was successful.
 
 ((("Arquillian","running integration tests")))((("development process","running integration tests")))At this point, we still have a running JBoss AS7 server and have undeployed the `feedback` application.  Because we'd chosen the +JBOSS_AS_REMOTE_7.X+ option as part of the Forge Arquillian plug-in +setup+ command, our POM is equipped with a profile that enables a dependency on the JBoss AS7 Arquillian container:
 
+[source,java]
 ----
     <profile>
       <id>arq-jboss_as_remote_7.x</id>
