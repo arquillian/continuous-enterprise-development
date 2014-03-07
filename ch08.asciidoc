@@ -1009,6 +1009,7 @@ Accept-Encoding: gzip,deflate[\r][\n]
 
 Because we've coded our JAX-RS endpoints and backing business objects correctly, we'll receive the expected reply (an HTTP +200 OK+ status):
 
+[source,xml]
 ----
 HTTP/1.1 200 OK
 X-Arq-Enrichment-Response=3778738317992283532
