@@ -276,6 +276,7 @@ public class FeedbackEntry implements Serializable
 
 Our +FeedbackEntry+ entity should be capable of recording feedback for some user with a Twitter ID, so let's add fields to represent that data (as well as some validation constraints dictating that these cannot be +null+):
 
+[source,java]
 ----
 field string --named twitterHandle;
 constraint NotNull --onProperty twitterHandle;
@@ -362,6 +363,7 @@ And ((("testable development")))that's enough for now; we've created the skeleto
 
 ((("Arquillian","writing integration tests", id="ix_ch03-asciidoc4", range="startofrange")))((("development process","integration tests", id="ix_ch03-asciidoc5", range="startofrange")))((("integration testing", id="ix_ch03-asciidoc6", range="startofrange")))We've mentioned before that Forge is based on a plug-in architecture; all commands we've used thus far are actually plug-ins called by the Forge runtime when we request them in the console.  Up to this point, we've used support that comes standard with the Forge distribution.  Now we'd like to add some tests, and we'll use the Arquillian Test Platform as both the programming model and the JUnit test runner.  The first order of business is to install the Arquillian plug-in into our Forge runtime, and we do this by way of the +forge install-plugin+ command:
 
+[source,java]
 ----
 $> forge install-plugin arquillian
 Connecting to remote repository [https://raw.github.com/forge/plugin-repository/
