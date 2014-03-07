@@ -242,9 +242,8 @@ This method, of course, is synchronous up until the mail message is delivered to
 
 [source,java]
 ----
-public void queueMailForDelivery(final MailMessageBuilder.MailMessage 
-mailMessage)
-        throws IllegalArgumentException {
+public void queueMailForDelivery(
+    final MailMessageBuilder.MailMessage mailMessage) throws IllegalArgumentException {
 
     // Precondition check
     if (mailMessage == null) {
@@ -257,7 +256,7 @@ mailMessage)
           .createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
         final MessageProducer producer = session.createProducer(smtpQueue);
         final ObjectMessage jmsMessage = 
-        session.createObjectMessage(mailMessage);
+            session.createObjectMessage(mailMessage);
         producer.send(jmsMessage);
     } catch (final JMSException jmse) {
         throw new RuntimeException(
