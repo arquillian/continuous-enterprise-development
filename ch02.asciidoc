@@ -620,6 +620,12 @@ Maven.resolver().resolve("G:A:V").using(
 +
 Strategies((("optional dependencies")))((("provided scopes")))((("test scopes"))) are composed of an array of +MavenResolutionFilter+ instances and +TransitiveExclusionPolicy+ instances. Defining the former allows you to transform a dependency graph of resolved artifacts, and defining the latter allows you to change default behavior when resolving transitive dependencies. By default, Maven does not resolve any dependencies in _provided_ and _test_ scope, and it also skips _optional_ dependencies. ShrinkWrap Resolvers behaves the same way by default, but allows you to change that behavior. This comes in handy especially when you want to, for instance, resolve all provided dependencies of +G:A:V+. For your convenience, ShrinkWrap Resolvers ships with the strategies described in <<table2-7>>.
 +
+
+
+++++
+<?hard-pagebreak?>
+++++
+
 .Strategies available in ShrinkWrap Resolvers
 [[table2-7]]
 [cols="1,3"]
