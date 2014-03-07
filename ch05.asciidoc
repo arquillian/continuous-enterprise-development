@@ -886,5 +886,10 @@ Our test class has similar methods to enforce related behaviors mandated by our 
     public void shouldBeAbleToChangeSession() {...}
 ----
 
+
+++++
+<?hard-pagebreak?>
+++++
+
 By using Arquillian's injection facilities along with the additional transactions and data-checking support offered by the Persistence Extension, we can, with very little test logic, perform powerful assertions which validate that our data is making its way to the real persistence layer without the use of mock objects.(((range="endofrange", startref="ix_ch05-asciidoc15")))(((range="endofrange", startref="ix_ch05-asciidoc14")))(((range="endofrange", startref="ix_ch05-asciidoc13"))) (((range="endofrange", startref="ix_ch05-asciidoc12")))(((range="endofrange", startref="ix_ch05-asciidoc11")))(((range="endofrange", startref="ix_ch05-asciidoc10")))(((range="endofrange", startref="ix_ch05-asciidoc9")))
 
