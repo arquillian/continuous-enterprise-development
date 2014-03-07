@@ -259,7 +259,6 @@ This will pull the current upstream version of the application into your local d
 
 ((("GeekSeek","building")))((("GeekSeek","testing")))We'll be using the Maven software management tool to handle our build, test, and packaging needs.  The Java 7 JDK is a prerequisite we'll assume is installed on your system, referenced by the environment variable +JAVA_HOME+, and the executables in _$JAVA_HOME/bin_ available on the system +PATH+; you can simply download and extract Maven on your drive to _MAVEN_HOME_ from http://maven.apache.org/download.cgi.  Ensure that _MAVEN_HOME/bin_ is on your +PATH+, and you'll be good to go:
 
-[source,java]
 ----
 $> mvn -version
 Apache Maven 3.0.5 (r01de14724cdef164cd33c7c8c2fe155faf9602da; 
@@ -273,7 +272,6 @@ OS name: "linux", version: "3.8.0-19-generic", arch: "amd64", family: "unix"
 
 You build and test GeekSeek by invoking the +package+ phase of Maven on the _pom.xml_ file located in _code/application_:
 
-[source,java]
 ----
 application $> mvn package
   ...lots of output
@@ -292,7 +290,6 @@ Packaging the full application will result in a WAR (Web Archive) file located a
 
 WildFly is available for http://www.wildfly.org/downloads[free download], and should be extracted to a location we'll call _JBOSS_HOME_.  By executing _JBOSS_HOME/bin/standalone.sh_, the server will start:
 
-[source,java]
 ----
 wildfly-8.0.0.Alpha2 $> JBOSS_HOME=`pwd`
 wildfly-8.0.0.Alpha2 $> cd bin/
@@ -317,7 +314,6 @@ services (56 services are lazy, passive or on-demand)
 
 Copying the _application/target/geekseek-(version).war_ file into _JBOSS_HOME/standalone/deployments_ will trigger deployment of the GeekSeek application:
 
-[source,java]
 ----
 $> cp code/application/application/target/geekseek-1.0.0-alpha-1-SNAPSHOT.war 
 code/application/target/wildfly-8.0.0.Alpha2/standalone/deployments/
