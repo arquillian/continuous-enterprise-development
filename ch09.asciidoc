@@ -680,10 +680,10 @@ This interceptor prohibits access and returns an HTTP +401+ if the request is fo
             @Override
             public void perform() {
                 given().
-                        redirects().
-                            follow(false).
-                    then().
-                        statusCode(Status.SEE_OTHER.getStatusCode()).
+                    redirects().
+                        follow(false).
+                then().
+                    statusCode(Status.SEE_OTHER.getStatusCode()).
                 when().
                     get(whoAmIURL.toExternalForm());
             }
