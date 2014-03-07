@@ -104,6 +104,7 @@ Our ((("managed","container configuration")))experience with Arquillian up to th
 
 We've provided a Maven profile, +arq-jbosseap-remote+, to run our Arquillian tests against a running EAP process on the local machine.  From the GeekSeek source code root, simply pass this profile as an argument using the +-P+ switch to the +mvn+ command, and instead of using the default WildFly managed container (which will automatically start and stop), we'll instead use the running server that we started earlier:
 
+[source,java]
 ----
 code $> mvn clean install -Parq-jbosseap-remote
 ----
@@ -121,6 +122,7 @@ This may be a preferable technique to employ while developing; at the start of t
 
 Because we're done with the EAP instance we started earlier, let's end the process: (((range="endofrange", startref="ix_ch11-asciidoc6")))
 
+[source,java]
 ----
 bin $> ^C
 03:45:58,876 INFO  [org.jboss.as] 
@@ -137,6 +139,7 @@ Remember ((("extension repo")))that we downloaded the EAP Maven repository earli
 
 Let's begin by unpacking this into a new repository alongside the default +~/.m2/repository+ repo:
 
+[source,java]
 ----
 ~ $> cd ~/.m2/
 .m2 $> mv /home/alr/Downloads/jboss-eap-6.1.0-maven-repository.zip .
@@ -150,6 +153,7 @@ Now we must let Maven know about our new repository, so we can define it in the 
 
 We'll add our repository definition inside a profile, so that we can enable this at will without affecting other projects.  In this case we create the +jboss-eap-6.1.0+ profile:
 
+[source,xml]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
@@ -185,6 +189,7 @@ We'll add our repository definition inside a profile, so that we can enable this
 
 Now, we'll need to again find our EAP ZIP.  Then, using the profile we've created, we'll deploy our EAP distribution ZIP as a proper Maven artifact into the repository using the Maven +deploy+ plug-in. We must remember to pass in our profile using the +-P+ switch:
 
+[source,java]
 ----
 mvn deploy:deploy-file -DgroupId=org.jboss.as \
   -DartifactId=jboss-as-dist \
@@ -228,6 +233,7 @@ org/jboss/as/jboss-as-dist/maven-metadata.xml (313 B at 305.7 KB/sec)
 
 And in the _~/.m2/jboss-eap-6.1.0.GA-maven-repository/org/jboss/as/jboss-as-dist_ directory, we should see our EAP distribution ZIP along with some Maven-generated pass:[<phrase role='keep-together'>metadata</phrase>] files:
 
+[source,java]
 ----
 $> ls -R
 .:
