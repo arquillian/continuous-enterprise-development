@@ -514,6 +514,10 @@ public class SecuredOptionsTestCase {
 
 We start by defining a +@WarpTest+ to run from the client side (as denoted by +@RunAsClient+), and provide an +@Deployment+ with test-double elements like our +TestCurrentUserProducer+, as explained earlier.  Arquillian will inject the +baseURL+ of our deployment because we've annotated it with +@ArquillianResource+:
 
+++++
+<?hard-pagebreak?>
+++++
+
 [source,java]
 ----
     @Test
