@@ -192,6 +192,11 @@ Because the visibility of this code is +private+, we do not need to worry about 
 
 Of course, assertions ((("post-conditions")))may help us along the way, but they're not _tests_.  Tests exercise a code path and validate one or more _post-conditions_.  For instance, we might write the following client to validate that the public +welcome(String)+ example from <<proactive-section>> is working as we'd expect:
 
+
+++++
+<?hard-pagebreak?>
+++++
+
 [source,java]
 ----
 public class WelcomeJDKTest {
