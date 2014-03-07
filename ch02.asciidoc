@@ -108,7 +108,7 @@ Again, it is not our aim to fully delve into the mechanics of each tool we'll be
 
 === A Test Platform for Java EE
 
-((("test platforms", id="ix_ch02-asciidoc5a", range="startofrange")))Java EE 5 introduced a _POJO_ (Plain Old Java Object) programming ((("POJO (Plain Old Java Object)","programming model")))model, which freed developers from having to adhere to any particular class hierarchy for its business objects.  The introduction of http://bit.ly/MAgJYs[Contexts and Dependency Injection] (CDI) in Java EE 6 further pushed the notion of simple ((("Context and Dependency Injection (CDI)")))((("typesafe injection")))business objects by providing _typesafe injection_.  
+((("test platforms", id="ix_ch02-asciidoc5a", range="startofrange")))Java EE 5 introduced a _POJO_ (Plain Old Java Object) programming ((("POJO (Plain Old Java Object)","programming model")))model, which freed developers from having to adhere to any particular class hierarchy for its business objects.  The introduction of http://bit.ly/MAgJYs[Contexts and Dependency Injection (CDI)] in Java EE 6 further pushed the notion of simple ((("Context and Dependency Injection (CDI)")))((("typesafe injection")))business objects by providing _typesafe injection_.  
 
 The benefit to objects that can be easily created using the +new+ operator is the same as their drawback: when we manually instantiate objects for use in testing, we're not dealing with the same enterprise components we have in the target runtime.  An EJB becomes such only in the context of an EJB container; a servlet is a servlet only when created by a servlet container.  Any time we circumvent the target runtime environment to handle object creation and wiring on our own, we're((("mock objects"))) using _mock objects_.
 
