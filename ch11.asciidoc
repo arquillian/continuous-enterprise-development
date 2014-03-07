@@ -182,7 +182,6 @@ We'll add our repository definition inside a profile, so that we can enable this
 
 Now, we'll need to again find our EAP ZIP.  Then, using the profile we've created, we'll deploy our EAP distribution ZIP as a proper Maven artifact into the repository using the Maven +deploy+ plug-in. We must remember to pass in our profile using the +-P+ switch:
 
-[source,java]
 ----
 mvn deploy:deploy-file -DgroupId=org.jboss.as \
   -DartifactId=jboss-as-dist \
