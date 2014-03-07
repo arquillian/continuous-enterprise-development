@@ -323,7 +323,6 @@ The last line is unique to https://bugs.launchpad.net/ubuntu/+source/davfs2/+bug
 
 Now we can create a directory that will act as our mounting point; we've chosen _/mnt/cloudbees/arquillian/private_:
 
-[source,java]
 ----
 $> mkdir -p /mnt/cloudbees/arquillian/private
 ----
@@ -350,14 +349,12 @@ image::images/cedj_12in07.png["CloudBees Authenticated Access"]
 
 Now we should be ready to mount our volume (subsequent reboots to the system should do this automatically due to our +fstab+ configuration):
 
-[source,java]
 ----
 $> sudo mount /mnt/cloudbees/arquillian/private/
 ----
 
 With our volume mounted, any file activities we make under _/mnt/cloudbees/arquillian/private/_ will be reflected in our remote +private+ CloudBees Maven Repository.  Let's copy the contents of the JBoss EAP Maven Repository into +private+:
 
-[source,java]
 ----
 sudo cp -Rv ~/.m2/jboss-eap-6.1.0.GA-maven-repository/* \
   /mnt/cloudbees/arquillian/private/
