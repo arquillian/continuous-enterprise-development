@@ -66,12 +66,14 @@ As a decent shell, Forge supports tab-completion of commands and known parameter
 
 To ease up on our configuration options, let's first start off by instructing Forge to accept defaults:
 
+[source,java]
 ----
 $> set ACCEPT_DEFAULTS true;
 ----
 
 And now let's create the filesystem layout and _pom.xml_ for our new Maven-based Java EE project.  We'll be creating a simple application that will allow users to leave comments, so we'll name the application `feedback`:
 
+[source,java]
 ----
 $> new-project --named feedback --topLevelPackage org.cedj.ch03.feedback 
    --projectFolder feedback;
