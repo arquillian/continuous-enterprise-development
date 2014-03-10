@@ -552,6 +552,10 @@ In practice, this means that our +SecurityInterceptor+, +LinkedInterceptor+, and
 
 ((("GeekSeek","LinkableRepresentation", id="ix_ch08-asciidoc15", range="startofrange")))((("GeekSeek","REST implementation in", id="ix_ch08-asciidoc16", range="startofrange")))((("LinkableRepresentation (GeekSeek)", id="ix_ch08-asciidoc17", range="startofrange")))As you may have noticed from our DAP, we have a series of paths that accept a source media type and return another media type representing the data in question.  These are modeled by our +org.cedj.geekseek.web.rest.core.Representation+:
 
+++++
+<?hard-pagebreak?>
+++++
+
 
 [source,java]
 ----
