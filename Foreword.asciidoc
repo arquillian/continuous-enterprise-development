@@ -1,5 +1,5 @@
 [preface]
-[au="Adam Bien", auaffil="http://adam-bien.com"]
+[au="http://adam-bien.com[Adam Bien]", auaffil="http://adam-bien.com"]
 == Foreword
 
 Even ancient J2EE was never just about development. 
