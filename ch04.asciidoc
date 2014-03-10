@@ -149,13 +149,7 @@ image::images/cedj_0401.png[]
 
 Unfortunately, a quick peek at our data types and featureset shows that given enough time and interest in the application, we could reasonably expect entries for each of our main data types to grow, unbounded.
 
-Of particular ((("Facebook")))note is the many-to-many relationship among users.  Because a user may have both many followers and may follow many people, we have two unidirectional relationships; a follower of mine is not necessarily someone I follow.  This is in contrast to a mutual "friend" model employed by, say, the http://www.facebook.com[Facebook] social networking site.
-
-In effect, this relationship has a graph structure, as shown in <<Figure4-2>>.
-
-.Relationships modeled as a graph
-[[Figure4-2]]
-image::images/cedj_0402.png[]
+Of particular ((("Facebook")))note is the many-to-many relationship among users.  Because a user may have both many followers and may follow many people, we have two unidirectional relationships; a follower of mine is not necessarily someone I follow.  This is in contrast to a mutual "friend" model employed by, say, the http://www.facebook.com[Facebook] social networking site. In effect, this relationship has a graph structure.
 
 Although we might store and model this structure in any number of ways, it's worth noting that requesting transient relationships can be a problem with geometric time complexity.  That is, we'd need one query to find all of a user's followers.  Then, _for each_ of the results in that set, we'd need another query to find _their_ followers.  With each level we drill in to find followers, the problem becomes more prohibitively complex and unsolvable when organized in standard tables and rows.
 
