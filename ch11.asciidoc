@@ -573,6 +573,7 @@ image::images/cedj_12in18.png[CloudBees Post Build]
 
 The following script will handle the task for us:
 
+[source,bash]
 ----
 if [ -d geekseek ]; then
   cd geekseek
