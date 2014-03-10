@@ -97,7 +97,7 @@ While the full reasoning behind XP is detailed by((("Extreme Programming Explain
 
 In fact, XP, along with other models, has both inspired and acts as an implementation of a larger collection of iterative policies as outlined by((("Agile Software Development")))((("software development process","Agile")))((("Manifesto for Agile Software Development"))) the http://agilemanifesto.org/[_Manifesto for Agile Software Development_]. (((range="endofrange", startref="ix_ch01-asciidoc0")))
 
-=== Testing _Is_ Development
+=== Testing Is Development
 
 [quote, Tim Ottinger, Senior Consultant, Industrial Logic]
 ____
