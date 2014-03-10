@@ -1,12 +1,12 @@
 [colophon]
 = Colophon
 
-The animal on the cover of _Continuous Enterprise Development in Java_ is a Violet Turaco (_Musophaga violacea_), also known as a Plantain Eater, a large bird inhabiting West Africa in tropical savannas, wetlands, woodlands, and forests. Their plumage is a glossy violet color except for their thick orange bill, yellow forehead, and crimson crown. The main flight feathers on the wings are also crimson in color, however, despite these bright colors, the birds are often quite indistinguishable in the dense canopy of their forest home.
+The animal on the cover of _Continuous Enterprise Development in Java_ is a Violet Turaco (_Musophaga violacea_), also known as a Plantain Eater, a large bird inhabiting West Africa in tropical savannas, wetlands, woodlands, and forests. Its plumage is a glossy violet color except for its thick orange bill, yellow forehead, and crimson crown. The main flight feathers on the wings are also crimson in color. However, despite these bright colors, the birds are often quite indistinguishable in the dense canopy of their forest home.
 
-Like all turacos, the Violet Turaco is an important disperser of seeds. When flying in search of fruit, rounded wings and a long, widespread tail give the turaco great agility to maneuver through the dense treetops. Its flight is characterized by irregular, flapping wing beats interspersed with gliding. To cross an open space, they fly single file.
+Like all turacos, the Violet Turaco is an important disperser of seeds. When flying in search of fruit, rounded wings and a long, widespread tail give the turaco great agility when maneuvering through the dense treetops. Its flight is characterized by irregular, flapping wing beats interspersed with gliding. To cross an open space, they fly single file.
 
 Their diet consists of fruit, and they are quite partial to figs, but they will also eat leaves, buds, flowers, insects, snails, and slugs.
 
-For savanna species, the widespread destruction of gallery forest and riverine woodlands is a big threat. However, because of its wide distribution and great numbers, the Violet Turaco is not in imminent peril. For the same reason, it's not in danger from trapping for the pet trade. Local people slaughter them for their ostentatious red feathers.
+For savanna species, the widespread destruction of gallery forest and riverine woodlands is a big threat. However, because of its wide distribution and great numbers, the Violet Turaco is not in imminent peril. For the same reason, it's not in danger from trapping for the pet trade, though local people hunt them for their ostentatious red feathers.
 
 The cover image is from Wood's Animate Creation. The cover fonts are URW Typewriter and Guardian Sans. The text font is Adobe Minion Pro; the heading font is Adobe Myriad Condensed; and the code font is Dalton Maag's Ubuntu Mono.
