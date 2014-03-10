@@ -88,7 +88,7 @@ class.
 
 [NOTE]
 ====
-Because it's not our aim to provide a comprehensive overview of JAX-RS, we recommend((("RESTful Java with JAX-RS (Burke)")))((("Burke, Bill"))) pass:[<emphasis><ulink role="orm:hideurl" url="http://shop.oreilly.com/product/9780596158057.do">RESTful Java with JAX-RS</ulink></emphasis>] by Bill Burke (O'Reilly, 2009), a member of the JSR-339 Expert Group and lead of the JBoss Community's http://www.jboss.org/resteasy[RESTEasy implementation].  The second revision of the book, covering the latest 2.0 version of the specification, is now http://shop.oreilly.com/product/0636920028925.do[on sale].
+Because it's not our aim to provide a comprehensive overview of JAX-RS, we recommend((("RESTful Java with JAX-RS (Burke)")))((("Burke, Bill"))) pass:[<emphasis><ulink role="orm:hideurl" url="http://shop.oreilly.com/product/9780596158057.do">RESTful Java with JAX-RS</ulink></emphasis>] by Bill Burke (O'Reilly, 2009), a member of the JSR-339 Expert Group and lead of the JBoss Community's http://www.jboss.org/resteasy[RESTEasy implementation].  The second revision of the book, covering the latest 2.0 version of the specification, is now http://oreil.ly/restful_java_jax-rs_2_0[on sale].
 ====
 
 The((("JAX-RS Specification API"))) http://jsr311.java.net/nonav/javadoc/[JAX-RS Specification API] provides a set of annotations helpful to developers seeking to map incoming HTTP-based requests to backend services.  From the docs, these include:
