@@ -483,7 +483,7 @@ The general entry point for resolution is the convenience +org.jboss.shrinkwrap.
 
 [TIP]
 ====
-If you happen to use Arquillian BOM in `<dependencyManagement>`, it already contains a ShrinkWrap Resolvers version. You must import the ShrinkWrap Resolvers BOM preceding the Arquillian OM in order to attain the 2.0.0-x version. Adding a ShrinkWrap BOM is recommended in any case.
+If you happen to use Arquillian BOM in `<dependencyManagement>`, it already contains a ShrinkWrap Resolvers version. You must import the ShrinkWrap Resolvers BOM preceding the Arquillian BOM in order to attain the 2.0.0-x version. Adding a ShrinkWrap BOM is recommended in any case.
 
 You can import the ShrinkWrap Resolvers BOM via the following snippet:
 
