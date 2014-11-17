@@ -44,8 +44,8 @@
     <version.arquillian_persistence>1.0.0.Alpha6</version.arquillian_persistence>
     <version.arquillian_drone>1.2.1.Final</version.arquillian_drone>
     <version.arquillian_graphene>2.0.0.Final</version.arquillian_graphene>
-    <version.arquillian_warp>1.0.0.Beta1-SNAPSHOT</version.arquillian_warp>
-    <version.arquillian_warp_rest>1.0.0.Final-SNAPSHOT</version.arquillian_warp_rest>
+    <version.arquillian_warp>1.0.0.Alpha7</version.arquillian_warp>
+    <version.arquillian_warp_rest>1.0.0.Final</version.arquillian_warp_rest>
     <version.arquillian_qunit>1.0.0.Alpha1</version.arquillian_qunit>
     <version.restassured>2.3.0</version.restassured>
     <version.wildfly>8.0.0.Final</version.wildfly>
@@ -430,7 +430,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <includes>
-                <include>%regex[.*/unit/.*TestCase.*]</include>
+                <include>**/unit/*TestCase.*</include>
               </includes>
             </configuration>
           </plugin>
@@ -450,8 +450,8 @@
             <configuration>
               <!-- We append this configuration to the default -->
               <includes>
-                <include>%regex[.*/unit/.*TestCase.*]</include>
-                <include>%regex[.*/integration/.*TestCase.*]</include>
+                <include>**/unit/*TestCase.*</include>
+                <include>**/integration/*TestCase.*</include>
               </includes>
             </configuration>
           </plugin>
@@ -471,9 +471,9 @@
             <configuration>
               <!-- We append this configuration to the default -->
               <includes>
-                <include>%regex[.*/unit/.*TestCase.*]</include>
-                <include>%regex[.*/integration/.*TestCase.*]</include>
-                <include>%regex[.*/functional/.*TestCase.*]</include>
+                <include>**/unit/*TestCase.*</include>
+                <include>**/integration/*TestCase.*</include>
+                <include>**/functional/*TestCase.*</include>
               </includes>
             </configuration>
           </plugin>
